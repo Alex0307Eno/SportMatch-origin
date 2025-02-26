@@ -361,3 +361,13 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Rider IDE 設定
+.idea/
+*.sln.iml
+
+# 環境變數（避免敏感資訊洩漏）
+.env
+
+# ASP.NET Core 本地資料夾
+App_Data/

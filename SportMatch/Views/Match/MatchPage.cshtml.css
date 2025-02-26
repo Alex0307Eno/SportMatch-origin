@@ -1,0 +1,131 @@
+﻿.parallelogram {
+    transform: skew(-20deg);
+    padding: 60px 60px;
+    font-size: 2rem;
+    display: inline-block;
+    background: #007bff;
+    color: white;
+    border: none;
+    margin: 0px 35px;
+    border-radius: 20px;
+    position: relative;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease;
+}
+
+    .parallelogram:hover {
+        padding: 65px 65px;
+        /* box-shadow: 0 0 15px rgba(255, 255, 255, 1); */
+        /* animation: rainbow-glow 3s infinite; */
+        transition: 0.25s;
+        animation: rainbow-glow 3s infinite ease-in-out;
+    }
+
+@keyframes rainbow-glow {
+    0% {
+        box-shadow: 0 0 10px red;
+    }
+
+    14% {
+        box-shadow: 0 0 15px orange;
+    }
+
+    28% {
+        box-shadow: 0 0 15px yellow;
+    }
+
+    42% {
+        box-shadow: 0 0 15px green;
+    }
+
+    57% {
+        box-shadow: 0 0 15px blue;
+    }
+
+    71% {
+        box-shadow: 0 0 15px indigo;
+    }
+
+    85% {
+        box-shadow: 0 0 15px violet;
+    }
+
+    100% {
+        box-shadow: 0 0 10px red;
+    }
+}
+
+.parallelogram span {
+    display: inline-block;
+    transform: skew(20deg);
+}
+
+@font-face {
+    font-family: 'openhuninn';
+    src: url('../image/MatchPage/jf-openhuninn-2.1.ttf');
+}
+
+body {
+    background-image: url("~/image/MatchPage/SportMatch.jpg");
+    background-size: cover;
+    position: relative;
+    font-family: 'openhuninn';
+}
+
+    body::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);  白色半透明遮罩 
+        z-index: -1;
+    }
+
+#ball1 {
+    background-image: url("../image/MatchPage/ball.png");
+    /* transform: skew(20deg); */
+    background-position: -230px -90px;
+}
+
+#ball2 {
+    background-image: url("../image/MatchPage/ball.png");
+    /* transform: skew(20deg); */
+    background-position: -540px -90px;
+}
+
+#ball3 {
+    background-image: url("../image/MatchPage/ball.png");
+    /* transform: skew(20deg); */
+    background-position: -860px -70px;
+}
+
+#ballClass {
+    border-radius: 20px;
+}
+
+.filter-btn {
+    color: white;
+}
+
+    .filter-btn.active {
+        background-color: rgb(175, 175, 175) !important;
+        color: rgb(0, 0, 0);
+    }
+
+        .filter-btn.active::before {
+            content: url('/image/MatchPage/caret-right.svg');
+        }
+
+.accordion-collapse {
+    background-color: antiquewhite;
+}
+
+#heartIcon:hover {
+    transform: scale(1.2);
+}
+
+#personalInfo:hover {
+    transform: scale(1.1);
+}

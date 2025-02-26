@@ -1,0 +1,88 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@{
+    Layout = null;
+}
+@model SportMatch.Models.RegisterModel
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>會員註冊</title>
+    <link rel="stylesheet" href="~/css/register.css" />
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-card">
+            <h1 class="register-title">會員註冊</h1>
+            <form class="register-form" id="registerForm" action="/Account/Register" method="POST">
+                <div class="form-group">
+                    @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        <div class="error-message">@error.ErrorMessage</div>
+                    }
+                    <label for="username">用戶名</label>
+                    <input type="text"
+                           id="username"
+                           placeholder="輸入用戶名"
+                           required />
+                </div>
+                <div class="form-group">
+                    <label for="email">電子郵件</label>
+                    <input type="email"
+                           id="email"
+                           placeholder="輸入電子郵件"
+                           required />
+                    <button type="button" id="sendCodeBtn" class="btn-send-code">
+                        發送驗證碼
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label for="verification-code">驗證碼</label>
+                    <input type="text"
+                           id="verification-code"
+                           placeholder="輸入驗證碼"
+                           required />
+                </div>
+                <div class="form-group">
+                    <label for="password">密碼</label>
+                    <input type="password"
+                           id="password"
+                           placeholder="輸入密碼"
+                           required />
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">確認密碼</label>
+                    <input type="password"
+                           id="confirm-password"
+                           placeholder="再次輸入密碼"
+                           required />
+                </div>
+                <div class="form-group">
+                    <button type="submit" class="btn-submit">註冊</button>
+                </div>
+            </form>
+            <div class="form-footer">
+                <p>
+                    已有帳號？
+                    <button class="btn-login-home" onclick="redirectToHome()">
+                        <i class="fas fa-sign-in-alt"></i> 現在登入
+                    </button>
+                </p>
+            </div>
+        </div>
+    </div>
+    <script src="~/js/register.js" defer></script>
+    <script>
+
+                function redirectToHome() {
+            localStorage.setItem("showLoginModal", "true"); // 設定標記
+            window.location.href = "/"; // 導向首頁
+        }
+
+    </script>
+</body>
+</html>

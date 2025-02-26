@@ -1,0 +1,126 @@
+﻿@{
+    Layout = null; // 如果這是獨立頁面，不用布局
+}
+
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>交易進行中</title>
+    <style>
+        /* 全畫面遮罩 */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        /* 彈出視窗樣式 */
+        .modal {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        /* 加載動畫 */
+        @@keyframes spin {
+            0%
+
+        {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+
+        }
+
+        .loader {
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #3498db;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 10px auto;
+        }
+
+        /* 禁止選取文字 */
+        body {
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="overlay" id="loadingOverlay">
+        <div class="modal">
+            <div class="loader"></div>
+            <h2>交易進行中</h2>
+            <p>請勿關閉頁面或進行其他操作</p>
+        </div>
+    </div>
+
+    <script>
+        let transactionComplete = false; // 控制交易完成的變數
+
+        // 防止頁面關閉或重新整理
+        window.addEventListener("beforeunload", function (event) {
+            if (!transactionComplete) {
+                const message = "交易進行中，請勿重新整理或關閉頁面！";
+                event.preventDefault();
+                event.returnValue = message;
+            }
+        });
+
+        // 防止返回上一頁
+        history.pushState(null, null, location.href);
+        window.addEventListener("popstate", function (event) {
+            if (!transactionComplete) {
+                history.pushState(null, null, location.href); // 強制停留在此頁面
+                alert("交易進行中，請勿返回上一頁！");
+            }
+        });
+
+        // 禁止快捷鍵 (F5, Ctrl+R, Ctrl+W, Alt+F4)
+        document.addEventListener("keydown", function (event) {
+            if (
+                event.key === "F5" ||
+                (event.ctrlKey && event.key === "r") ||
+                (event.ctrlKey && event.key === "w") ||
+                (event.altKey && event.key === "F4")
+            ) {
+                event.preventDefault();
+                alert("交易進行中，請勿重新整理或關閉頁面！");
+            }
+        });
+
+        // 防止點擊背景關閉彈出層
+        document
+            .getElementById("loadingOverlay")
+            .addEventListener("click", function (event) {
+                event.stopPropagation();
+            });
+
+        // 模擬交易完成，5秒後解除所有限制並關閉頁面
+        setTimeout(() => {
+            transactionComplete = true;
+            document.getElementById("loadingOverlay").style.display = "none";
+            alert("交易完成，頁面即將關閉！");
+
+            // 提示用戶手動關閉頁面
+            alert("請手動關閉頁面或返回主頁。");
+        }, 5000); // 設定5秒後完成交易
+    </script>
+</body>
+</html>

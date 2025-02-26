@@ -1,0 +1,220 @@
+﻿/* 通用樣式重置 */
+body,
+h1,
+p,
+a,
+form,
+input,
+button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Arial", sans-serif;
+}
+
+/* 頁面背景 */
+body {
+    background: linear-gradient(135deg, #e74c3c, #3498db, #2ecc71, #f1c40f);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    animation: gradient-rotation 8s linear infinite;
+    background-size: 200% 200%;
+}
+
+@keyframes gradient-rotation {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    25% {
+        background-position: 50% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    75% {
+        background-position: 50% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 5px;
+}
+
+/* 註冊容器 */
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    padding: 20px;
+}
+
+/* 註冊卡片 */
+.register-card {
+    width: 100%;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.9); /* 半透明背景 */
+    backdrop-filter: blur(10px); /* 背景霧化 */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.register-title {
+    text-align: center;
+    color: #4a90e2;
+    margin-bottom: 1.5rem;
+}
+
+.register-form .form-group {
+    margin-bottom: 1rem;
+}
+
+.register-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.register-form input {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+/* 發送驗證碼按鈕 */
+.btn-send-code {
+    margin-top: 0.5rem;
+    padding: 0.5rem;
+    background: #3498db;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+    .btn-send-code:hover {
+        background: #2980b9;
+    }
+
+    .btn-send-code:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.5);
+    }
+
+    .btn-send-code:active {
+        transform: translateY(1px);
+        box-shadow: 0 3px 10px rgba(52, 152, 219, 0.2);
+    }
+
+/* 註冊按鈕 */
+.btn-submit {
+    width: 100%;
+    padding: 0.75rem;
+    background: wheat;
+    color: black;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+
+    .btn-submit:hover {
+        background: red;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-submit:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.5);
+    }
+
+    .btn-submit:active {
+        transform: translateY(1px);
+        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.2);
+    }
+
+/* 註冊頁腳 */
+.register-footer {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #555;
+}
+
+    .register-footer a {
+        color: #3498db;
+        text-decoration: none;
+    }
+
+        .register-footer a:hover {
+            text-decoration: underline;
+        }
+
+/* 註冊成功通知樣式 */
+#successNotification {
+    position: fixed;
+    top: 50%; /* 垂直居中 */
+    left: 50%; /* 水平居中 */
+    transform: translate(-50%, -50%); /* 修正偏移量，達到真正居中 */
+    background-color: #4caf50; /* 綠色背景 */
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    opacity: 0; /* 初始隱藏 */
+    display: none; /* 初始隱藏 */
+    transition: opacity 0.5s ease, transform 0.5s ease; /* 添加過渡效果 */
+    z-index: 1000;
+}
+
+    #successNotification.show {
+        opacity: 1;
+        transform: translateY(0); /* 彈出效果 */
+    }
+.btn-login-home {
+    background: linear-gradient(135deg, #ff7eb3, #ff758c);
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    
+    padding: 12px 24px;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+    .btn-login-home:hover {
+        background: linear-gradient(135deg, #ff758c, #ff5e62);
+        box-shadow: 0px 4px 10px rgba(255, 94, 98, 0.4);
+        transform: translateY(-2px);
+    }
+
+    .btn-login-home:active {
+        transform: scale(0.95);
+    }
+
+    .btn-login-home i {
+        font-size: 18px;
+    }

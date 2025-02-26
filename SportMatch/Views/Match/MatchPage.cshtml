@@ -1,0 +1,474 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<div class="container-xl mt-3">
+	<div class="bg-muted p-3 text-center"
+		 style="height: 20vh; display: flex; align-items: center; justify-content: center;" id="ballClass">
+		<button class="parallelogram" id="ball1" onclick="toggleAccordion('sport1')"><span>羽球</span></button>
+		<button class="parallelogram" id="ball2" onclick="toggleAccordion('sport2')"><span>籃球</span></button>
+		<button class="parallelogram" id="ball3" onclick="toggleAccordion('sport3')"><span>排球</span></button>
+	</div>
+
+	<div class="row mt-3" style="height: 100vh;">
+		<div class="col-md-3">
+			<!-- 漢堡選單區域 -->
+			<div class="bg-muted p-3 mt-5">
+				<div class="accordion" id="sportsFilter">
+					<div class="accordion-item">
+						<h2 class="accordion-header">
+							<button class="bg-secondary accordion-button filter-btn" onclick="toggleActive(this)"
+									type="button" data-bs-toggle="collapse" data-bs-target="#sport1"
+									style="font-size:x-large;">
+								羽球
+							</button>
+						</h2>
+						<div id="sport1" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
+							<div class="accordion-body ">
+								<button class="btn btn-secondary w-100 mb-2">資展盃</button>
+								<button class="btn btn-secondary w-100 mb-2">公益盃</button>
+							</div>
+						</div>
+					</div>
+					<div class="accordion-item">
+						<h2 class="accordion-header">
+							<button class="bg-secondary accordion-button filter-btn" onclick="toggleActive(this)"
+									type="button" data-bs-toggle="collapse" data-bs-target="#sport2"
+									style="font-size:x-large;">
+								籃球
+							</button>
+						</h2>
+						<div id="sport2" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
+							<div class="accordion-body">
+								<button class="btn btn-secondary w-100 mb-2">P-Legend</button>
+								<button class="btn btn-secondary w-100 mb-2">NBA</button>
+							</div>
+						</div>
+					</div>
+					<div class="accordion-item">
+						<h2 class="accordion-header">
+							<button class="bg-secondary accordion-button filter-btn" onclick="toggleActive(this)"
+									type="button" data-bs-toggle="collapse" data-bs-target="#sport3"
+									style="font-size:x-large;">
+								排球
+							</button>
+						</h2>
+						<div id="sport3" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
+							<div class="accordion-body">
+								<button class="btn btn-secondary w-100 mb-2">公所盃</button>
+								<button class="btn btn-secondary w-100 mb-2">台灣聯賽</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 輪播圖區域 -->
+			<div class="bg-muted p-3">
+				<label for="" style="font-size: x-large;color: white;">賽事快訊</label>
+				<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active" data-bs-interval="3000">
+							<a id="imgshref" href="http://oakland.athletics.mlb.com/" target="_blank">
+								<img src="~/image/MatchPage/badminton.webp" class="d-block w-100" alt="...">
+							</a>
+						</div>
+						<div class="carousel-item" data-bs-interval="3000">
+							<a id="imgshref" href="http://oakland.athletics.mlb.com/" target="_blank">
+								<img src="~/image/MatchPage/basketball.webp" class="d-block w-100" alt="...">
+							</a>
+						</div>
+						<div class="carousel-item" data-bs-interval="3000">
+							<a id="imgshref" href="http://oakland.athletics.mlb.com/" target="_blank">
+								<img src="~/image/MatchPage/volleyball.webp" class="d-block w-100" alt="...">
+							</a>
+						</div>
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+							data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+							data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+			</div>
+			<div class="bg-muted p-3">
+				<label for="" style="font-size: x-large;color: white;">商品優惠</label>
+				<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel">
+					<div class="carousel-inner">
+						<div class="carousel-item active" data-bs-interval="3000">
+							<a id="imgshref" href="http://oakland.athletics.mlb.com/" target="_blank">
+								<img src="~/image/MatchPage/badminton-1.webp" class="d-block w-100" alt="...">
+							</a>
+						</div>
+						<div class="carousel-item" data-bs-interval="3000">
+							<a id="imgshref" href="http://oakland.athletics.mlb.com/" target="_blank">
+								<img src="~/image/MatchPage/basketball-1.webp" class="d-block w-100" alt="...">
+							</a>
+						</div>
+						<div class="carousel-item" data-bs-interval="3000">
+							<a id="imgshref" href="http://oakland.athletics.mlb.com/" target="_blank">
+								<img src="~/image/MatchPage/volleyball-1.webp" class="d-block w-100" alt="...">
+							</a>
+						</div>
+					</div>
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
+							data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
+							data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-9">
+			<!-- 篩選條件區域 -->
+			<form>
+				<div class="d-flex justify-content-end align-items-center mb-3">
+					<input type="radio" name="filter" class="me-2" id="radioOption1"><label for="radioOption1"
+																							style="color: white;">招募隊友</label>
+					<input type="radio" name="filter" class="ms-3 me-2" id="radioOption2"><label for="radioOption2"
+																							style="color: white;">尋找隊伍</label>
+					<select class="form-select w-auto ms-3">
+						<option>地區</option>
+						<option>北區</option>
+						<option>中區</option>
+						<option>南區</option>
+						<option>東區</option>
+					</select>
+					<select class="form-select w-auto ms-2">
+						<option>運動位置</option>
+						<option>中鋒</option>
+						<option>大前鋒</option>
+						<option>小前鋒</option>
+						<option>得分後衛</option>
+						<option>控球後衛</option>
+					</select>
+					<select class="form-select w-auto ms-2">
+						<option>性別</option>
+						<option>男</option>
+						<option>女</option>
+						<option>混和</option>
+					</select>
+					<input type="submit" value="搜尋" class="btn btn-success ms-2 w-auto">
+				</div>
+			</form>
+
+			<!-- 球員/球隊區域 -->
+			<div class="row">
+				<div class="col-md-6 mb-3">
+					<div class="card mb-3 text-bg-dark border-warning" style="max-width: 540px;">
+						<div class="row g-0">
+							<div class="col-md-4">
+								<img src="~/image/MatchPage/001.png" class="img-fluid rounded-start" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h4 class="card-title">妙蛙種子</h4>
+									<p class="card-text">擅長位置：控球後衛</p>
+									<div class="row">
+										<div class="col-md-8 d-flex align-items-center">
+											<label class="card-text">個人簡介</label>
+											<a id="personalInfo" class="bi bi-info-square ms-2"
+											   style="color: white;cursor: pointer;" data-bs-toggle="modal"
+											   data-bs-target="#playerModal"
+											   onclick="updateInfoModalContent('妙蛙種子', '擅長位置：控球後衛','/image/MatchPage/001.png')"></a>
+										</div>
+										<div class="col-md-4">
+											<a href="#" class="btn btn-primary" style="border-radius: 60px;"
+											   data-bs-toggle="modal" data-bs-target="#playerApply"
+											   onclick="updateApplyModalContent('妙蛙種子', '擅長位置：控球後衛')">招募</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 mb-3">
+					<div class="card mb-3 text-bg-dark border-warning" style="max-width: 540px;">
+						<div class="row g-0">
+							<div class="col-md-4">
+								<img src="./image/MatchPage/002.png" class="img-fluid rounded-start" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h4 class="card-title">妙蛙草</h4>
+									<p class="card-text">擅長位置：小前鋒</p>
+									<div class="row">
+										<div class="col-md-8 d-flex align-items-center">
+											<label class="card-text">個人簡介</label>
+											<a id="personalInfo" class="bi bi-info-square ms-2"
+											   style="color: white;cursor: pointer;"></a>
+										</div>
+										<div class="col-md-4">
+											<a href="#" class="btn btn-primary" style="border-radius: 60px;">招募</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 mb-3">
+					<div class="card mb-3 text-bg-dark border-warning" style="max-width: 540px;">
+						<div class="row g-0">
+							<div class="col-md-4">
+								<img src="./003.png" class="img-fluid rounded-start" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h4 class="card-title">妙蛙花</h4>
+									<p class="card-text">擅長位置：中鋒</p>
+									<div class="row">
+										<div class="col-md-8 d-flex align-items-center">
+											<label class="card-text">個人簡介</label>
+											<a id="personalInfo" class="bi bi-info-square ms-2"
+											   style="color: white;cursor: pointer;"></a>
+										</div>
+										<div class="col-md-4">
+											<a href="#" class="btn btn-primary" style="border-radius: 60px;">招募</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 mb-3">
+					<div class="card mb-3 text-bg-dark border-warning" style="max-width: 540px;">
+						<div class="row g-0">
+							<div class="col-md-4">
+								<img src="./004.png" class="img-fluid rounded-start" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h4 class="card-title">小火龍</h4>
+									<p class="card-text">擅長位置：大前鋒</p>
+									<div class="row">
+										<div class="col-md-8 d-flex align-items-center">
+											<label class="card-text">個人簡介</label>
+											<a id="personalInfo" class="bi bi-info-square ms-2"
+											   style="color: white;cursor: pointer;"></a>
+										</div>
+										<div class="col-md-4">
+											<a href="#" class="btn btn-primary" style="border-radius: 60px;">招募</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 mb-3">
+					<div class="card mb-3 text-bg-dark border-warning" style="max-width: 540px;">
+						<div class="row g-0">
+							<div class="col-md-4">
+								<img src="./005.png" class="img-fluid rounded-start" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h4 class="card-title">火恐龍</h4>
+									<p class="card-text">擅長位置：控球後衛</p>
+									<div class="row">
+										<div class="col-md-8 d-flex align-items-center">
+											<label class="card-text">個人簡介</label>
+											<a id="personalInfo" class="bi bi-info-square ms-2"
+											   style="color: white;cursor: pointer;"></a>
+										</div>
+										<div class="col-md-4">
+											<a href="#" class="btn btn-primary" style="border-radius: 60px;">招募</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 mb-3">
+					<div class="card mb-3 text-bg-dark border-warning" style="max-width: 540px;">
+						<div class="row g-0">
+							<div class="col-md-4">
+								<img src="./006.png" class="img-fluid rounded-start" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h4 class="card-title">噴火龍</h4>
+									<p class="card-text">擅長位置：得分後衛</p>
+									<div class="row">
+										<div class="col-md-8 d-flex align-items-center">
+											<label class="card-text">個人簡介</label>
+											<a id="personalInfo" class="bi bi-info-square ms-2"
+											   style="color: white;cursor: pointer;"></a>
+										</div>
+										<div class="col-md-4">
+											<a href="#" class="btn btn-primary" style="border-radius: 60px;">招募</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 mb-3">
+					<div class="card mb-3 text-bg-dark border-warning" style="max-width: 540px;">
+						<div class="row g-0">
+							<div class="col-md-4">
+								<img src="./006.png" class="img-fluid rounded-start" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h4 class="card-title">噴火龍</h4>
+									<p class="card-text">擅長位置：得分後衛</p>
+									<div class="row">
+										<div class="col-md-8 d-flex align-items-center">
+											<label class="card-text">個人簡介</label>
+											<a id="personalInfo" class="bi bi-info-square ms-2"
+											   style="color: white;cursor: pointer;"></a>
+										</div>
+										<div class="col-md-4">
+											<a href="#" class="btn btn-primary" style="border-radius: 60px;">招募</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-6 mb-3">
+					<div class="card mb-3 text-bg-dark border-warning" style="max-width: 540px;">
+						<div class="row g-0">
+							<div class="col-md-4">
+								<img src="./006.png" class="img-fluid rounded-start" alt="...">
+							</div>
+							<div class="col-md-8">
+								<div class="card-body">
+									<h4 class="card-title">噴火龍</h4>
+									<p class="card-text">擅長位置：得分後衛</p>
+									<div class="row">
+										<div class="col-md-8 d-flex align-items-center">
+											<label class="card-text">個人簡介</label>
+											<a id="personalInfo" class="bi bi-info-square ms-2"
+											   style="color: white;cursor: pointer;"></a>
+										</div>
+										<div class="col-md-4">
+											<a href="#" class="btn btn-primary" style="border-radius: 60px;">招募</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- 上/下頁切換 -->
+			<nav>
+				<ul class="pagination justify-content-center mt-3">
+					<li class="page-item">
+						<a class="page-link bg-dark border-warning" href="#"
+						   style="color: white;">上一頁</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link bg-dark border-warning" href="#"
+						   style="color: white;">1</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link bg-dark border-warning" href="#"
+						   style="color: white;">2</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link bg-dark border-warning" href="#"
+						   style="color: white;">3</a>
+					</li>
+					<li class="page-item">
+						<a class="page-link bg-dark border-warning" href="#"
+						   style="color: white;">下一頁</a>
+					</li>
+				</ul>
+			</nav>
+		</div>
+	</div>
+</div>
+<!-- 簡介模態視窗 -->
+<div class="modal fade" id="playerModal" tabindex="-1" aria-labelledby="playerModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content text-bg-dark border-warning">
+			<div class="modal-header">
+				<h5 class="modal-title" id="playerModalLabel">個人簡介</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+						style="filter: invert(1);"></button>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-6">
+						<img id="playerImg" src="..." class="img-fluid rounded-start" alt="...">
+					</div>
+					<div class="col-md-6">
+						<div class="d-flex align-items-center">
+							<h4 id="modal-player-name"></h4>
+							<a id="heartIcon" class="h3 bi bi-heart"
+							   style="position: absolute;right: 10px;cursor: pointer;"
+							   onclick="addToMyFavorite()"></a>
+						</div>
+						<p id="modal-player-position"></p>
+						<label for="">**這裡放入個人簡介內容**</label>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">關閉</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- 吐司提示 -->
+<div id="heartToast" class="toast align-items-center position-absolute top-0 start-50 translate-middle-x mt-3" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 1056;">
+	<div class="d-flex">
+		<div class="toast-body" id="toastMessage">
+			Hello, world! This is a toast message.
+		</div>
+		<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+	</div>
+</div>
+<!-- 申請模態視窗 -->
+<div class="modal fade" id="playerApply" tabindex="-1" aria-labelledby="playerModalLabel" aria-hidden="true"
+	 data-bs-backdrop="static">
+	<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+		<div class="modal-content text-bg-dark border-warning">
+			<div class="modal-header">
+				<h5 class="modal-title" id="playerModalLabel">招募確認</h5>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+						style="filter: invert(1);"></button>
+			</div>
+			<div class="modal-body">
+				<h4 id="modal-apply-name"></h4>
+				<p id="modal-apply-position"></p>
+				<div class="mb-3">
+					<label for="exampleTextarea" class="form-label">備註：</label>
+					<textarea class="form-control" id="exampleTextarea" rows="2" maxlength="50"
+							  placeholder="請輸入您的內容..."></textarea>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger" data-bs-dismiss="modal">關閉</button>
+				<button type="button" class="btn btn-primary">送出</button>
+			</div>
+		</div>
+	</div>
+</div>	
+@section Scripts {
+	<script src="~/js/MatchPage.js"></script>
+}

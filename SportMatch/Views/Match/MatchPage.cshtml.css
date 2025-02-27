@@ -1,13 +1,14 @@
 ﻿.parallelogram {
     transform: skew(-20deg);
-    padding: 60px 60px;
-    font-size: 2rem;
+/*    transform: scale(2);*/
+    padding: 80px 30px;
+    font-size: 1.5rem;
     display: inline-block;
     background: #007bff;
     color: white;
     border: none;
-    margin: 0px 35px;
-    border-radius: 20px;
+    margin: 0px 20px;
+    border-radius: 10px;
     position: relative;
     cursor: pointer;
     transition: box-shadow 0.3s ease;
@@ -60,38 +61,27 @@
     transform: skew(20deg);
 }
 
-/*@font-face {
+@font-face {
     font-family: 'openhuninn';
     src: url('../image/MatchPage/jf-openhuninn-2.1.ttf');
-}*/
-
-/*#background {
-    background-image: url("../image/MatchPage/SportMatch.jpg");
-    background-size: cover;
-    position: absolute;*/
-/*    font-family: 'openhuninn';*/
-    /*z-index: -2;
 }
 
-#background::before {
+#background {
+    background-image: url("../image/MatchPage/SportMatch.jpg");
+    background-size: cover;
+    font-family: 'openhuninn';
+    z-index: -51;
+}
+
+#bg-overlay {
     content: "";
-    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);
-    z-index: -1;
+    z-index: -50;
 }
-
-.accordion, .carousel, .card, .pagination, modal, .toast {
-    position: relative;
-    z-index: 1050;
-}
-#main {
-    position: relative;
-    z-index: 0;
-}*/
 #ball1 {
     background-image: url("../image/MatchPage/ball.png");
     /* transform: skew(20deg); */
@@ -122,6 +112,4 @@
     transform: scale(1.2);
 }
 
-#personalInfo:hover {
-    transform: scale(1.1);
-}
+

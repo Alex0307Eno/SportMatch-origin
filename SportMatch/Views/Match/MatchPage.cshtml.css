@@ -114,19 +114,6 @@
     border-radius: 20px;
 }
 
-.filter-btn {
-    color: white;
-}
-
-    .filter-btn.active {
-        background-color: rgb(175, 175, 175) !important;
-        color: rgb(0, 0, 0);
-    }
-
-        .filter-btn.active::before {
-            content: url('/image/MatchPage/caret-right.svg');
-        }
-
 .accordion-collapse {
     background-color: antiquewhite;
 }

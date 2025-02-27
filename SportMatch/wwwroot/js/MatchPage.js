@@ -1,12 +1,12 @@
 ﻿// 更新模態視窗內容
 function updateInfoModalContent(playerName, playerPosition, imgSrc) {
     document.getElementById('modal-player-name').innerText = playerName;
-    document.getElementById('modal-player-position').innerText = playerPosition;
+    document.getElementById('modal-player-position').innerText = ("擅長位置："+ playerPosition);
     document.getElementById('playerImg').src = imgSrc;
 }
 function updateApplyModalContent(playerName, playerPosition) {
     document.getElementById('modal-apply-name').innerText = playerName;
-    document.getElementById('modal-apply-position').innerText = playerPosition;
+    document.getElementById('modal-apply-position').innerText = ("擅長位置：" + playerPosition);
 }
 function addToMyFavorite() {
     var dom = document.getElementById('heartIcon');
@@ -27,15 +27,6 @@ function addToMyFavorite() {
         // alert("已取消收藏");
     }
     toast.show();
-}
-function toggleActive(button) {
-    let buttons = document.querySelectorAll('.filter-btn');
-    buttons.forEach(btn => {
-        if (btn !== button) {
-            btn.classList.remove('active');
-        }
-    });
-    button.classList.toggle('active');
 }
 function toggleAccordion(sportId) {
     let target = document.getElementById(sportId);

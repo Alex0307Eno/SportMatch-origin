@@ -38,6 +38,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddSingleton<VerificationCodeService>();
 builder.Services.AddHttpContextAccessor(); // 讓 IHttpContextAccessor 可以被注入
 builder.Services.AddControllersWithViews(); // 其他服務配置
+builder.Services.AddHttpClient(); // 註冊 IHttpClientFactory
 
 var app = builder.Build();
 

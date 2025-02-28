@@ -123,14 +123,18 @@
             </form>
             <div class="social-login">
                 <p>其他登入方式</p>
-                <div class="social-buttons">
+                <div class="social-a">
                     <button class="social-btn facebook">
                         <i class="fab fa-facebook-f"></i>
                     </button>
                     <button class="social-btn google">
                         <i class="fab fa-google"></i>
                     </button>
-                    <button class="social-btn line"><i class="fab fa-line"></i></button>
+                    <a href="@Url.Action("LineLogin", "Account")" class="social-btn line">
+                        <i class="fab fa-line"></i> 使用 LINE 登入
+                    </a>
+
+
                 </div>
             </div>
         </div>

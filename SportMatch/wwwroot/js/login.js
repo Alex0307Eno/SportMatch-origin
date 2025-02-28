@@ -144,6 +144,15 @@ function updateUIAfterLogin(email) {
 
     document.querySelector(".user-email").textContent = email;
 }
+// LINE 登入成功後更新 UI
+function handleLineLoginSuccess(email, displayName) {
+    localStorage.setItem("loggedInEmail", email);
+    localStorage.setItem("isLoggedIn", "true");
+    updateUIAfterLogin(email, displayName);
+    alert("LINE 登入成功！");
+    closeModal();
+}
+
 
 // 密碼顯示/隱藏邏輯
 const togglePassword = document.querySelector(".toggle-password");
@@ -164,7 +173,7 @@ if (savedEmail) {
 }
 
 // 顯示當前登錄的帳號
-const loggedInEmail = localStorage.getItem("loggedInEmail");
+const loggedInEmail = localStorage.getItem("loggedInUserName");
 if (loggedInEmail) {
     updateUIAfterLogin(loggedInEmail);
 }

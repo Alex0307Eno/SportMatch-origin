@@ -6,6 +6,9 @@ using Microsoft.Extensions.Configuration;
 using System.Net;
 using System.Net.Mail;
 using System.Security.Cryptography;
+using System.Web;
+using System.Text.Json.Nodes;
+using System.Net.Http.Headers;
 
 namespace SportMatch.Controllers
 {
@@ -13,11 +16,15 @@ namespace SportMatch.Controllers
     {
         private readonly UserContext _context;
         private readonly IConfiguration _configuration;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public AccountController(UserContext context, IConfiguration configuration)
+
+        public AccountController(UserContext context, IConfiguration configuration, IHttpClientFactory httpClientFactory)
         {
             _context = context;
             _configuration = configuration;
+            _httpClientFactory = httpClientFactory;
+
         }
 
         // 註冊頁面
@@ -33,6 +40,8 @@ namespace SportMatch.Controllers
         {
             return View(); // 返回忘記密碼視圖
         }
+
+       
 
         // 發送臨時密碼的 API
         [HttpPost]
@@ -104,6 +113,143 @@ namespace SportMatch.Controllers
             return Ok(new { success = true, message = "登入成功" });
         }
 
+        // 1️⃣ 這個方法用來導向 LINE Login 授權頁面
+        public IActionResult LineLogin()
+        {
+            string clientId = _configuration["LineLogin:ClientId"];
+            string redirectUri = "https://7071-106-107-190-121.ngrok-free.app/Account/LineLoginCallback";
+            string encodedRedirectUri = HttpUtility.UrlEncode(redirectUri);
+            string state = Guid.NewGuid().ToString(); // 生成防止 CSRF 的隨機字串
+
+            HttpContext.Session.SetString("LineLoginState", state); // 儲存狀態值
+
+            string loginUrl = $"https://access.line.me/oauth2/v2.1/authorize?response_type=code" +
+                $"&client_id={clientId}" +
+                $"&redirect_uri={HttpUtility.UrlEncode(redirectUri)}" +
+                $"&state={state}" +
+                $"&scope=profile%20openid%20email"; // 要求用戶的 Email 和基本資料
+
+            return Redirect(loginUrl);
+        }
+
+
+        // 2️⃣ 這個方法處理 LINE 回傳的授權碼
+        public async Task<IActionResult> LineLoginCallback(string code, string state)
+        {
+            var userInfo = await GetLineUserProfile(code);
+            if (userInfo == null)
+            {
+                return BadRequest("無法獲取 LINE 用戶資訊");
+            }
+
+            // 查詢是否已存在該用戶
+            var existingUser = _context.Users.FirstOrDefault(u => u.Email == userInfo.Email);
+            if (existingUser == null)
+            {
+                var newUser = new User
+                {
+                    UserName = userInfo.DisplayName,
+                    Email = userInfo.Email,
+                    LineId = userInfo.UserId ?? string.Empty,  // 設定預設值
+                    Password = BCrypt.Net.BCrypt.HashPassword(Guid.NewGuid().ToString())
+                };
+                _context.Users.Add(newUser);
+                _context.SaveChanges();
+                existingUser = newUser;
+            }
+
+            // 在這裡檢查 existingUser.Email 是否為 null
+            string userEmail = existingUser.Email ?? string.Empty;
+
+            // 儲存至 Session，避免 null 傳入
+            HttpContext.Session.SetString("UserEmail", userEmail);
+            HttpContext.Session.SetString("UserName", existingUser.UserName);
+
+            return RedirectToAction("Index", "Home");
+        }
+
+
+        private async Task<(string AccessToken, string IdToken)?> ExchangeAccessToken(string code)
+        {
+            var client = _httpClientFactory.CreateClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://api.line.me/oauth2/v2.1/token")
+            {
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["grant_type"] = "authorization_code",
+                    ["code"] = code,
+                    ["redirect_uri"] = _configuration["LineLogin:RedirectUri"],
+                    ["client_id"] = _configuration["LineLogin:ClientId"],
+                    ["client_secret"] = _configuration["LineLogin:ClientSecret"]
+                })
+            };
+
+            var response = await client.SendAsync(request);
+            if (!response.IsSuccessStatusCode) return null;
+
+            var content = await response.Content.ReadAsStringAsync();
+            var json = JsonNode.Parse(content);
+
+            return (json["access_token"]?.GetValue<string>(), json["id_token"]?.GetValue<string>());
+        }
+
+        private async Task<LineUserProfile?> GetLineUserProfile(string code)
+        {
+            var client = _httpClientFactory.CreateClient();
+
+            // 交換 access_token
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://api.line.me/oauth2/v2.1/token")
+            {
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    ["grant_type"] = "authorization_code",
+                    ["code"] = code,
+                    ["redirect_uri"] = _configuration["LineLogin:RedirectUri"],
+                    ["client_id"] = _configuration["LineLogin:ClientId"],
+                    ["client_secret"] = _configuration["LineLogin:ClientSecret"]
+                })
+            };
+
+            var response = await client.SendAsync(request);
+            if (!response.IsSuccessStatusCode)
+            {
+                // 如果交換 access_token 失敗，直接返回 null
+                return null;
+            }
+
+            var content = await response.Content.ReadAsStringAsync();
+            var json = JsonNode.Parse(content);
+
+            var accessToken = json["access_token"]?.GetValue<string>();
+            if (string.IsNullOrEmpty(accessToken))
+            {
+                // 如果 access_token 是空的，返回 null
+                return null;
+            }
+
+            // 使用 access_token 獲取 LINE 用戶的個人資料
+            var profileRequest = new HttpRequestMessage(HttpMethod.Get, "https://api.line.me/v2/profile");
+            profileRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+
+            var profileResponse = await client.SendAsync(profileRequest);
+            if (!profileResponse.IsSuccessStatusCode)
+            {
+                // 如果獲取用戶資料失敗，返回 null
+                return null;
+            }
+
+            var profileContent = await profileResponse.Content.ReadAsStringAsync();
+            var profileJson = JsonNode.Parse(profileContent);
+
+            // 解析 LINE 用戶資料並返回
+            return new LineUserProfile
+            {
+                UserId = profileJson["userId"]?.GetValue<string>(),
+                DisplayName = profileJson["displayName"]?.GetValue<string>(),
+                Email = profileJson["email"]?.GetValue<string>()
+            };
+        }
+
 
 
 
@@ -167,7 +313,7 @@ namespace SportMatch.Controllers
         public IActionResult VerifyEmail([FromBody] VerificationModel model)
         {
             // 驗證碼是否正確
-            if (!VerifyVerificationCode(model.VerificationCode))
+            if (!VerifyVerificationCode(model.VerificationCode!))
             {
                 return BadRequest(new { success = false, message = "驗證碼錯誤，請重新發送驗證碼" });
             }
@@ -190,12 +336,12 @@ namespace SportMatch.Controllers
                 }
 
                 // 檢查驗證碼是否正確
-                if (!VerifyVerificationCode(model.VerificationCode))
+                if (!VerifyVerificationCode(model.VerificationCode!))
                 {
                     return BadRequest(new { success = false, message = "驗證碼不正確，請重新發送驗證碼" });
                 }
 
-                // 密碼加密（這裡使用的是簡單示範，實際應使用加密算法，如 BCrypt 或 ASP.NET Identity）
+                // 密碼加密
                 var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
                 // 創建新用戶
@@ -236,7 +382,7 @@ namespace SportMatch.Controllers
 
                 var mailMessage = new MailMessage
                 {
-                    From = new MailAddress(_configuration["EmailSettings:SMTPUser"]),
+                    From = new MailAddress(_configuration["EmailSettings:SMTPUser"]!),
                     Subject = subject,
                     Body = body,
                     IsBodyHtml = true
@@ -262,7 +408,7 @@ namespace SportMatch.Controllers
         // 驗證驗證碼是否正確
         private bool VerifyVerificationCode(string enteredCode)
         {
-            string storedVerificationCode = TempData["VerificationCode"]?.ToString();
+            string storedVerificationCode = TempData["VerificationCode"]?.ToString()!;
             return storedVerificationCode == enteredCode;
         }
     }
@@ -273,7 +419,7 @@ namespace SportMatch.Controllers
         public string? UserName { get; set; }
         public string? Email { get; set; }
         public string? Password { get; set; }
-        public string VerificationCode { get; set; } // 驗證碼
+        public string? VerificationCode { get; set; } // 驗證碼
     }
 
     // 定義登入模型
@@ -292,14 +438,21 @@ namespace SportMatch.Controllers
     // 定義驗證碼模型
     public class VerificationModel
     {
-        public string VerificationCode { get; set; } // 驗證碼
+        public string?  VerificationCode { get; set; } // 驗證碼
     }
     public class ResetPasswordModel
     {
-        public string Email { get; set; }  // 用戶的電子郵件
-        public string VerificationCode { get; set; }  // 驗證碼
-        public string NewPassword { get; set; }  // 新密碼
-        public string ConfirmPassword { get; set; }  // 確認新密碼
+        public string? Email { get; set; }  // 用戶的電子郵件
+        public string? VerificationCode { get; set; }  // 驗證碼
+        public string? NewPassword { get; set; }  // 新密碼
+        public string? ConfirmPassword { get; set; }  // 確認新密碼
     }
+    public class LineUserProfile
+    {
+        public string? UserId { get; set; }
+        public string? DisplayName { get; set; }
+        public string? Email { get; set; }
+    }
+
 
 }

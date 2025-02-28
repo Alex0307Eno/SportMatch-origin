@@ -8,11 +8,16 @@ public partial class User
 {
     public int UID { get; set; }
 
-    public string? UserName { get; set; }
+    public string Role { get; set; } // 新增角色屬性
 
-    public string? Email { get; set; }
+    public string  UserName { get; set; }
 
-    public string? Password { get; set; } // 儲存加密後的密碼
+    public string  Email { get; set; }
+
+    public string  Password { get; set; } // 儲存加密後的密碼
+        
+    public string  LineId { get; set; }   // LINE 用戶ID (新增的屬性)
+
 
     // 設置加密密碼
     public void SetPassword(string plainPassword)

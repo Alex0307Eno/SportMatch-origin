@@ -678,7 +678,7 @@ h2 {
         margin-bottom: 0.5rem;
     }
 
-.social-buttons {
+.social-a {
     display: flex;
     justify-content: space-around;
     gap: 0.5rem;

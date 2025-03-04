@@ -6,6 +6,7 @@
 }
 
 body {
+   
     margin: 0;
     padding: 0;
     overflow-x: hidden; /* 防止水平滾動 */
@@ -26,6 +27,7 @@ body {
 }
 
 /* 按鈕樣式 */
+/* 按鈕樣式 */
 .btn-primary, .btn-secondary {
     color: white;
     border: none;
@@ -33,17 +35,18 @@ body {
     border-radius: var(--border-radius);
     cursor: pointer;
     font-size: 1rem;
-    transition: background 0.3s ease, transform 0.3s ease;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow);
 }
 
 .btn-primary {
-    background: var(--primary-color);
+    background: linear-gradient(145deg, #4a90e2, #3a7bd5); /* 漸變效果 */
 }
 
     .btn-primary:hover {
-        background: var(--secondary-color);
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        background: linear-gradient(145deg, #3a7bd5, #4a90e2); /* 改變漸變顏色 */
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* 更強的陰影效果 */
     }
 
     .btn-primary:focus {
@@ -53,34 +56,34 @@ body {
 
     .btn-primary:active {
         transform: translateY(1px);
-        box-shadow: 0 3px 10px rgba(37, 99, 235, 0.2);
+        box-shadow: 0 3px 8px rgba(37, 99, 235, 0.2);
     }
 
 .btn-secondary {
-    background: var(--secondary-color);
+    background: linear-gradient(145deg, #ff6600, #ff4500); /* 漸變效果 */
 }
 
     .btn-secondary:hover {
-        background: var(--primary-color);
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+        background: linear-gradient(145deg, #ff4500, #ff6600); /* 改變漸變顏色 */
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* 更強的陰影效果 */
     }
 
     .btn-secondary:focus {
         outline: none;
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+        box-shadow: 0 0 0 3px rgba(255, 102, 0, 0.5);
     }
 
     .btn-secondary:active {
         transform: translateY(1px);
-        box-shadow: 0 3px 10px rgba(59, 130, 246, 0.2);
+        box-shadow: 0 3px 8px rgba(255, 102, 0, 0.2);
     }
 
-/* 左側廣告 */
+/* 廣告區塊 - 預設樣式 (桌面版) */
 .left-shop, .right-shop {
     position: fixed;
     top: 100px; /* 距離頂部的距離 */
-    width: 250px; /* 廣告寬度 */
+    width: 150px; /* 廣告寬度 */
     background-color: #f8f8f8;
     padding: 20px;
     border-radius: 8px;
@@ -94,11 +97,39 @@ body {
 .right-shop {
     right: 20px; /* 距離頁面右側 20px */
 }
+
+/* 商品圖片 */
 .shop-section img {
-    width: 200px;
-    height: 200px;
+    width: 100px;
+    height: 100px;
     border-radius: 8px;
 }
+
+/* 平板模式 (小於 1024px) */
+@media screen and (max-width: 1024px) {
+    .left-shop, .right-shop {
+        width: 130px; /* 略縮小廣告區 */
+        padding: 15px;
+    }
+
+    .shop-section img {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+/* 手機模式 (小於 768px) */
+@media screen and (max-width: 968px) {
+    .left-shop, .right-shop {
+        
+        display: none; 
+    }
+
+   
+}
+
+
+
 /* Hero 區域 */
 .hero-section {
     position: relative;
@@ -159,7 +190,7 @@ body {
     }
 
     .shop-item button {
-        background-color: #ff6600;
+        background-color: #007bff;
         color: white;
         border: none;
         padding: 8px 15px;
@@ -168,7 +199,7 @@ body {
     }
 
         .shop-item button:hover {
-            background-color: #e55b00;
+            background-color: #0056b3;
         }
 
 /* 特色功能區樣式 */
@@ -180,6 +211,7 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 
 .features-grid {
     display: flex;
@@ -365,4 +397,78 @@ body {
     width: 200px;
     height: 200px;
 }
+/* 按鈕樣式 */
+.btn-event, .btn-venue {
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--shadow);
+}
 
+/* 事件按鈕 */
+.btn-event {
+    background: linear-gradient(145deg, #ff5e62, #ff9966); /* 漸變效果 */
+}
+
+    .btn-event:hover {
+        background: linear-gradient(145deg, #ff9966, #ff5e62); /* 反向漸變效果 */
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(255, 94, 98, 0.2); /* 增強陰影 */
+    }
+
+    .btn-event:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 94, 98, 0.5);
+    }
+
+    .btn-event:active {
+        transform: translateY(1px);
+        box-shadow: 0 3px 8px rgba(255, 94, 98, 0.2);
+    }
+
+/* 場地按鈕 */
+.btn-venue {
+    background: linear-gradient(145deg, #4CAF50, #2c6f2f); /* 綠色漸變效果 */
+}
+
+    .btn-venue:hover {
+        background: linear-gradient(145deg, #2c6f2f, #4CAF50); /* 反向漸變效果 */
+        transform: translateY(-3px);
+        box-shadow: 0 6px 15px rgba(76, 175, 80, 0.2); /* 增強陰影 */
+    }
+
+    .btn-venue:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.5);
+    }
+
+    .btn-venue:active {
+        transform: translateY(1px);
+        box-shadow: 0 3px 8px rgba(76, 175, 80, 0.2);
+    }
+#backToTopBtn {
+    float: right;
+    display: none;
+    position: fixed;
+    bottom: 40px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background-color: dodgerblue; /* 按鈕背景顏色 */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+    #backToTopBtn:hover {
+        background-color: #cc3700; /* 滑鼠懸停時改變顏色 */
+    }

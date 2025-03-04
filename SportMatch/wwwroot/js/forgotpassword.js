@@ -1,62 +1,56 @@
 ﻿document.addEventListener("DOMContentLoaded", function () {
-    const sendButton = document.getElementById("sendTempPasswordButton");
-    const modal = document.getElementById("successModal");
-    const closeModalButton = document.getElementById("closeModal");
     const emailInput = document.getElementById("email");
-    const messageBox = document.getElementById("tempPassword");
+    const sendCodeButton = document.getElementById("sendCodeButton");
+    const verificationSection = document.getElementById("verificationSection");
+    const verificationCodeInput = document.getElementById("verificationCode");
+    const verifyCodeButton = document.getElementById("verifyCodeButton");
+    const newPasswordSection = document.getElementById("newPasswordSection");
+    const newPasswordInput = document.getElementById("newPassword");
+    const submitNewPasswordButton = document.getElementById("submitNewPassword");
+    const messageDiv = document.getElementById("message");
 
-    // 當按下發送臨時密碼按鈕時
-    sendButton.addEventListener("click", function () {
+    // 🔹 點擊「發送驗證碼」按鈕
+    sendCodeButton.addEventListener("click", function () {
         const email = emailInput.value.trim();
 
-        // 驗證電子郵件格式
-        if (!isValidEmail(email)) {
-            displayMessage("請輸入有效的電子郵件", "error");
+        if (email === "") {
+            showMessage("請輸入電子郵件", "error");
             return;
         }
 
-        // 這裡發送請求至伺服器
-        fetch('/ForgotPassword/SendTempPassword', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: email })
-        })
-            .then(response => response.json().then(data => ({ status: response.status, body: data })))
-            .then(result => handleResponse(result))
-            .catch(handleError);
+        // TODO: 這裡應該呼叫後端 API 發送驗證碼
+        console.log(`發送驗證碼至: ${email}`);
+
+        // 顯示驗證碼輸入區
+        verificationSection.classList.remove("hidden");
+        showMessage("驗證碼已發送，請檢查您的信箱。", "success");
     });
 
-    // 模態視窗的關閉按鈕
-    closeModalButton.addEventListener("click", function () {
-        modal.style.display = "none"; // 隱藏模態視窗
-    });
+    // 🔹 點擊「驗證」按鈕
+    verifyCodeButton.addEventListener("click", function () {
+        const code = verificationCodeInput.value.trim();
 
-    // 顯示訊息
-    function displayMessage(message, type) {
-        messageBox.innerHTML = message;
-        messageBox.className = `message ${type}`;
-        messageBox.style.opacity = "1"; // 顯示訊息
-    }
-
-    // 驗證電子郵件格式
-    function isValidEmail(email) {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-    }
-
-    // 處理 API 響應
-    function handleResponse(result) {
-        if (result.status === 200) {
-            displayMessage("臨時密碼已發送至您的電子郵件。", "success");
-            modal.style.display = "flex"; // 顯示模態視窗
-        } else {
-            displayMessage(result.body.message || "發生錯誤，請稍後再試。", "error");
+        if (code === "") {
+            showMessage("請輸入驗證碼", "error");
+            return;
         }
-    }
 
-    // 處理錯誤
-    function handleError(error) {
-        displayMessage("無法連接到伺服器，請稍後再試。", "error");
-        console.error("Request failed: ", error);
+        // TODO: 這裡應該呼叫後端 API 檢查驗證碼是否正確
+        const isValidCode = true; // 假設驗證成功
+
+        if (isValidCode) {
+            showMessage("驗證成功，請輸入新密碼。", "success");
+
+            // 顯示「新密碼輸入區塊」
+            newPasswordSection.classList.remove("hidden");
+        } else {
+            showMessage("驗證碼錯誤，請重新輸入。", "error");
+        }
+    });
+
+    // 🔹 顯示訊息
+    function showMessage(text, type) {
+        messageDiv.textContent = text;
+        messageDiv.className = `message ${type}`;
     }
 });
-

@@ -25,6 +25,7 @@ function closeModal() {
 // 登出功能
 function logout() {
     localStorage.removeItem("loggedInEmail");
+    localStorage.removeItem("isLoggedIn");
     location.reload();
 }
 
@@ -37,13 +38,6 @@ loginForm.addEventListener("submit", async function (e) {
     const email = document.getElementById("email").value;
     const password = document.getElementById("password").value;
     const remember = document.getElementById("remember").checked;
-
-    // 確認傳送的資料
-    console.log("傳送的資料：", {
-        email: email,
-        password: password,
-        remember: remember
-    });
 
     const errorMessageElement = document.querySelector(".error-message");
     errorMessageElement.style.display = "none"; // 清除之前的錯誤訊息
@@ -61,10 +55,7 @@ loginForm.addEventListener("submit", async function (e) {
             }),
         });
 
-        // 確認後端回應格式為 JSON
-        const result = await response.json(); // 解析回應 JSON
-        console.log("後端回應結果:", result);
-
+        const result = await response.json();
         if (response.ok && result.success) {
             // 登入成功
             if (remember) {
@@ -95,20 +86,19 @@ loginForm.addEventListener("submit", async function (e) {
     }
 });
 
-
-
 // 更新登入後的 UI 顯示
-function updateUIAfterLogin(email) {
-    document.querySelector(".btn-login").style.display = "none";
-    document.querySelector(".btn-register").style.display = "none";
 
-    let userEmailContainer = document.querySelector(".user-email-container");
-    if (!userEmailContainer) {
-        userEmailContainer = document.createElement("div");
-        userEmailContainer.classList.add("user-email-container");
+function updateUIAfterLogin(username = "") {
+    document.querySelector(".btn-login").style.display = "none";  // 隱藏登入按鈕
+    document.querySelector(".btn-register").style.display = "none";  // 隱藏註冊按鈕
 
-        const userEmail = document.createElement("span");
-        userEmail.classList.add("user-email");
+    let userNameContainer = document.querySelector(".user-name-container");
+    if (!userNameContainer) {
+        userNameContainer = document.createElement("div");
+        userNameContainer.classList.add("user-name-container");
+
+        const userName = document.createElement("span");
+        userName.classList.add("user-name");
 
         const dropdownContent = document.createElement("div");
         dropdownContent.classList.add("dropdown-content");
@@ -128,30 +118,30 @@ function updateUIAfterLogin(email) {
         const logoutButton = document.createElement("button");
         logoutButton.textContent = "登出";
         logoutButton.classList.add("btn-logout");
-        logoutButton.onclick = function () {
-            localStorage.removeItem("loggedInEmail");
-            location.reload();
-        };
+        logoutButton.onclick = logout;  // 綁定登出邏輯
 
         dropdownContent.appendChild(profileLink);
         dropdownContent.appendChild(cartLink);
         dropdownContent.appendChild(favoritesLink);
         dropdownContent.appendChild(logoutButton);
-        userEmailContainer.appendChild(userEmail);
-        userEmailContainer.appendChild(dropdownContent);
-        document.querySelector(".user-actions").appendChild(userEmailContainer);
+        userNameContainer.appendChild(userName);
+        userNameContainer.appendChild(dropdownContent);
+        document.querySelector(".user-actions").appendChild(userNameContainer);
     }
 
-    document.querySelector(".user-email").textContent = email;
+    if (username) {
+        document.querySelector(".user-name").textContent = `${username}`;
+    } else {
+        document.querySelector(".user-name").textContent = username;
+    }
 }
-// LINE 登入成功後更新 UI
-function handleLineLoginSuccess(email, displayName) {
-    localStorage.setItem("loggedInEmail", email);
-    localStorage.setItem("isLoggedIn", "true");
-    updateUIAfterLogin(email, displayName);
-    alert("LINE 登入成功！");
-    closeModal();
-}
+
+
+
+
+
+
+
 
 
 // 密碼顯示/隱藏邏輯
@@ -173,7 +163,7 @@ if (savedEmail) {
 }
 
 // 顯示當前登錄的帳號
-const loggedInEmail = localStorage.getItem("loggedInUserName");
+const loggedInEmail = localStorage.getItem("loggedInEmail");
 if (loggedInEmail) {
     updateUIAfterLogin(loggedInEmail);
 }
@@ -192,34 +182,7 @@ function checkLogin(targetUrl) {
     }
 }
 
-
-// 簡單的登入狀態檢查（這裡可以改成從後端 API 取得真實的登入狀態）
+// 登入狀態檢查函式
 function getLoginStatus() {
     return localStorage.getItem("isLoggedIn") === "true";
-}
-function checkLogin(event, url) {
-    event.preventDefault(); // 防止連結直接跳轉
-
-    let isLoggedIn = getLoginStatus(); // 假設這個函式會返回 true 或 false
-
-    if (isLoggedIn) {
-        window.location.href = url; // 若已登入則正常跳轉
-    } else {
-        let confirmLogin = confirm("您尚未登入，是否要立即登入？");
-        if (confirmLogin) {
-            openLoginModal(); // 呼叫開啟登入視窗的函式
-        }
-    }
-}
-
-// 簡單的登入狀態檢查（這裡可以改成從後端 API 取得真實的登入狀態）
-function getLoginStatus() {
-    return localStorage.getItem("isLoggedIn") === "true";
-}
-function handleLoginSuccess() {
-    localStorage.setItem("isLoggedIn", "true");
-}
-function handleLogout() {
-    localStorage.removeItem("isLoggedIn");
-    window.location.reload();
 }

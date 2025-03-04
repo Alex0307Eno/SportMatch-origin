@@ -382,7 +382,7 @@ function updateUIAfterLogin(email) {
     document.querySelector(".btn-login").style.display = "none";
     document.querySelector(".btn-register").style.display = "none";
     document.querySelector(".user-email-container").style.display = "flex";
-    document.querySelector(".user-email").textContent = email;
+     
     document.querySelector(".cart-container").style.display = "flex";
     document.querySelector(".notifications-container").style.display = "flex";
 }
@@ -440,16 +440,18 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-const passwordField = document.getElementById('password'); // 確保 ID 與 HTML 一致
-const togglePasswordButton = document.querySelector('.toggle-password'); // 綁定 button
-const toggleIcon = document.getElementById('Pwhide'); // 綁定 icon
 
-togglePasswordButton.addEventListener('click', function () {
-    // 切換 input 的 type 屬性
-    const type = passwordField.type === 'password' ? 'text' : 'password';
-    passwordField.type = type;
+// Select the hamburger menu and nav links
+const hamburgerMenu = document.querySelector('.hamburger-menu');
+const navLinks = document.querySelector('.nav-links');
 
-    // 切換 icon 圖示
-    toggleIcon.setAttribute('name', type === 'password' ? 'lock-closed' : 'lock-open-outline');
+// Toggle the 'active' class when the hamburger menu is clicked
+hamburgerMenu.addEventListener('click', () => {
+    navLinks.classList.toggle('active');
 });
 
+// This function toggles the active class for the mobile menu
+function toggleHamburgerMenu() {
+    const navLinks = document.querySelector('.nav-links');
+    navLinks.classList.toggle('active');
+}

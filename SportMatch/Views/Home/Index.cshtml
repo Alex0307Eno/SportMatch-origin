@@ -1,4 +1,5 @@
 ﻿
+
 <main role="main" class="pb-3 container-fluid">
 
     <!-- 運動商城區塊 - 左側 -->
@@ -146,6 +147,35 @@
                         </div>
                         <button class="btn-venue">預約場地</button>
                     </div>
+
+                </div>
+                <div class="venue-card">
+                    <img src="venue1.jpg" alt="場地照片" />
+                    <div class="venue-info">
+                        <h3>陽光運動中心</h3>
+                        <p class="venue-location">台北市大安區</p>
+                        <div class="venue-features">
+                            <span><i class="fas fa-parking"></i> 停車場</span>
+                            <span><i class="fas fa-shower"></i> 淋浴間</span>
+                            <span><i class="fas fa-wifi"></i> WiFi</span>
+                        </div>
+                        <button class="btn-venue">預約場地</button>
+                    </div>
+
+                </div>
+                <div class="venue-card">
+                    <img src="venue1.jpg" alt="場地照片" />
+                    <div class="venue-info">
+                        <h3>陽光運動中心</h3>
+                        <p class="venue-location">台北市大安區</p>
+                        <div class="venue-features">
+                            <span><i class="fas fa-parking"></i> 停車場</span>
+                            <span><i class="fas fa-shower"></i> 淋浴間</span>
+                            <span><i class="fas fa-wifi"></i> WiFi</span>
+                        </div>
+                        <button class="btn-venue">預約場地</button>
+                    </div>
+
                 </div>
                 <!-- 可以新增更多場地卡片 -->
             </div>
@@ -191,8 +221,448 @@
                 
             </div>
         </div>
-    </footer>
+    <button onclick="scrollToTop()" id="backToTopBtn" title="回到頂部">
+        <i class="fas fa-arrow-up"></i>
+    </button>
 
+    </footer>
+<footer class="footer text-muted">
+    <div class="container">
+        &copy; 2025 - SportMatch -
+        <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    </div>
+
+
+</footer>
+
+
+<!-- Dark Mode 切換按鈕 -->
+<button id="darkModeToggle">
+    <span id="toggleIcon">🌙</span>
+</button>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const darkModeToggle = document.getElementById("darkModeToggle");
+        const toggleIcon = document.getElementById("toggleIcon");
+
+        // 檢查 LocalStorage 並設定初始狀態
+        if (localStorage.getItem("dark-mode") === "enabled") {
+            document.body.classList.add("dark-mode");
+            darkModeToggle.style.backgroundColor = "white"; // 切換按鈕為白色
+            toggleIcon.textContent = "🌞"; // 變成太陽
+        }
+
+        darkModeToggle.addEventListener("click", function () {
+            document.body.classList.toggle("dark-mode");
+
+            if (document.body.classList.contains("dark-mode")) {
+                localStorage.setItem("dark-mode", "enabled");
+                darkModeToggle.style.backgroundColor = "white"; // 按鈕變白
+                darkModeToggle.style.color = "black";
+                toggleIcon.textContent = "🌞"; // 變成太陽
+            } else {
+                localStorage.setItem("dark-mode", "disabled");
+                darkModeToggle.style.backgroundColor = "black"; // 按鈕變黑
+                darkModeToggle.style.color = "white";
+                toggleIcon.textContent = "🌙"; // 變成月亮
+            }
+        });
+    });
+</script>
+
+<style>
+    /* Dark Mode 樣式 */
+    body.dark-mode {
+        background-color: #121212; /* 背景變暗 */
+        color: white; /* 文字顏色為白色 */
+    }
+
+    /* 按鈕樣式 */
+    .btn-primary {
+        background: linear-gradient(145deg, #4a90e2, #3a7bd5);
+        color: white;
+    }
+
+    body.dark-mode .btn-primary {
+        background: linear-gradient(145deg, #333, #444); /* 暗色漸變 */
+        color: white;
+    }
+
+    .btn-primary:hover {
+        background: linear-gradient(145deg, #3a7bd5, #4a90e2);
+    }
+
+    body.dark-mode .btn-primary:hover {
+        background: linear-gradient(145deg, #444, #333); /* 漸變反轉 */
+    }
+
+    .btn-primary:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.5);
+    }
+
+
+
+    /* Dark Mode for Features Section */
+    body.dark-mode #features {
+        background-color: #1c1c1c; /* 設定背景顏色為深色 */
+        color: white; /* 文字顏色 */
+    }
+
+    #features h2 {
+        text-align: center;
+        font-size: 2rem;
+        color: white;
+        margin-bottom: 1.5rem;
+    }
+
+    .features-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1rem;
+    }
+
+    body.dark-mode .features-grid {
+        background-color: #181818; /* 更暗的背景色 */
+        padding: 1rem;
+    }
+
+    .feature-card {
+        background-color: #2a2a2a; /* 暗色卡片背景 */
+        padding: 1.5rem;
+        border-radius: 8px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    body.dark-mode .feature-card {
+        background-color: #333; /* 更暗的卡片背景 */
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5);
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    body.dark-mode .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 14px rgba(0, 0, 0, 0.7);
+    }
+
+
+
+    body.dark-mode .feature-card i {
+        color: #ff9900; /* 暗色模式下的圖示顏色 */
+    }
+
+    .feature-card h3 {
+        font-size: 1.5rem;
+        margin: 0.5rem 0;
+    }
+
+    .feature-card p {
+        font-size: 1rem;
+        color: #ccc; /* 文字顏色 */
+    }
+
+    /* 設置響應式佈局 */
+    @@media (max-width: 768px) {
+        .features-grid
+
+    {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    }
+
+    @@media (max-width: 480px) {
+        .features-grid
+
+    {
+        grid-template-columns: 1fr;
+    }
+
+    }
+
+
+    /* 頁面底部 */
+    .main-footer {
+        background-color: #1f2937;
+        color: white;
+    }
+
+    body.dark-mode .main-footer {
+        background-color: #212121; /* 深色底部 */
+    }
+
+    /* 卡片區塊 */
+    .feature-card {
+        background: #fff;
+        color: #333;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--shadow);
+        transition: all 0.3s ease;
+    }
+
+    body.dark-mode .feature-card {
+        background: #333;
+        color: white;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* 更深的陰影 */
+    }
+
+    .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-mode .feature-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5); /* 更強的陰影 */
+    }
+
+
+    /* 商品區塊 */
+    .shop-item {
+        background-color: #fff;
+        color: #333;
+        padding: 1rem;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+    }
+
+    body.dark-mode .shop-item {
+        background-color: #2a2a2a; /* 深色背景 */
+        color: white;
+    }
+
+    .shop-item:hover {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-mode .shop-item:hover {
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5); /* 更強的陰影 */
+    }
+
+    /* Button styles */
+    button {
+        background-color: #4caf50; /* Normal button color */
+        color: white;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+        button:hover {
+            background-color: #45a049; /* Darker shade when hovered */
+        }
+
+    /* Dark mode button styles */
+    body.dark-mode button {
+        background-color: #5bc0de; /* Light blue color in dark mode */
+        color: white;
+    }
+
+        body.dark-mode button:hover {
+            background-color: #46a8c7; /* Darker shade of light blue on hover */
+        }
+
+
+    /* 輪播圖樣式 */
+    .carousel-slide img {
+        filter: brightness(0.8); /* 調整圖片亮度 */
+    }
+
+    body.dark-mode .carousel-slide img {
+        filter: brightness(0.5); /* 更暗的圖片亮度 */
+    }
+
+    /* 場地卡片 */
+
+    /* Venues Section */
+    #venues {
+        background-color: #1c1c1c; /* 暗色背景 */
+        padding: 3rem 0;
+    }
+
+    body.dark-mode #venues {
+        background-color: #181818; /* 更暗的背景色 */
+    }
+
+    #venues h2 {
+        text-align: center;
+        color: white;
+        font-size: 2rem;
+    }
+
+    .venues-slider {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+    }
+
+    .venue-card {
+        background-color: #2a2a2a; /* 卡片背景顏色 */
+        color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        width: 30%;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        transition: transform 0.3s, box-shadow 0.3s;
+        margin-bottom: 1rem;
+    }
+
+    body.dark-mode .venue-card {
+        background-color: #333; /* 深色卡片背景 */
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.5); /* 更強的陰影 */
+    }
+
+    .venue-card:hover {
+        transform: translateY(-5px); /* 懸停時上升 */
+        box-shadow: 0 8px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    body.dark-mode .venue-card:hover {
+        transform: translateY(-5px); /* 更強的懸停效果 */
+        box-shadow: 0 8px 14px rgba(0, 0, 0, 0.7); /* 更深的陰影 */
+    }
+
+    .venue-card img {
+        width: 100%;
+        height: auto;
+        filter: brightness(0.8); /* 降低圖片亮度 */
+    }
+
+    body.dark-mode .venue-card img {
+        filter: brightness(0.5); /* 更暗的圖片效果 */
+    }
+
+    .venue-info {
+        padding: 1rem;
+    }
+
+        .venue-info h3 {
+            font-size: 1.5rem;
+            margin: 0.5rem 0;
+        }
+
+    .venue-location {
+        font-size: 1rem;
+        margin: 0.5rem 0;
+        color: #ccc; /* 偏灰色 */
+    }
+
+    .venue-features {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.9rem;
+        margin-bottom: 1rem;
+    }
+
+        .venue-features span {
+            color: #aaa;
+        }
+
+    body.dark-mode .venue-features span {
+        color: #fff; /* 文字顏色變白 */
+    }
+
+    .btn-venue {
+        background-color: #ff6600;
+        color: white;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    body.dark-mode .btn-venue {
+        background-color: #e55b00; /* 暗色模式的按鈕背景 */
+    }
+
+    .btn-venue:hover {
+        background-color: #e55b00;
+        transform: scale(1.05);
+    }
+
+    body.dark-mode .btn-venue:hover {
+        background-color: #ff6600; /* 懸停時的顏色 */
+    }
+
+    /* 設置響應式佈局 */
+    @@media (max-width: 768px) {
+        .venue-card
+
+    {
+        width: 100%;
+    }
+
+    }
+
+    /* Dark Mode for Footer */
+    body.dark-mode footer {
+        background-color: #121212; /* 深色背景 */
+        color: #ccc; /* 文字顏色 */
+        padding: 1rem 0; /* 內邊距 */
+    }
+
+        body.dark-mode footer a {
+            color: #ff6600; /* 連結顏色 */
+            text-decoration: none;
+        }
+
+            body.dark-mode footer a:hover {
+                text-decoration: underline; /* 連結懸浮下劃線 */
+            }
+
+
+    /* Dark Mode for Back to Top Button */
+    body.dark-mode #backToTopBtn {
+        background-color: #ff6600; /* 橘色背景 */
+        color: white;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+        body.dark-mode #backToTopBtn:hover {
+            background-color: #cc3700; /* 滑鼠懸停時變暗的橘色 */
+        }
+
+
+    
+
+
+    /* 切換按鈕樣式 */
+    #darkModeToggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: black; /* 預設黑色 */
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        border-radius: 50%;
+        font-size: 20px;
+        width: 50px;
+        height: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: background-color 0.5s, color 0.5s;
+    }
+
+        #darkModeToggle:hover {
+            opacity: 0.8;
+
+        }
+</style>
 
     <script src="~/js/site.js"></script>
 
@@ -201,4 +671,31 @@
             src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule
             src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+            <script>
+                    document.addEventListener("DOMContentLoaded", function () {
+        var backToTopBtn = document.getElementById("backToTopBtn");
 
+        if (!backToTopBtn) {
+            console.error("回到頂部按鈕未找到！");
+            return;
+        }
+
+        window.onscroll = function () {
+            scrollFunction();
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 1300) {
+                backToTopBtn.style.display = "block"; // 顯示按鈕
+            } else {
+                backToTopBtn.style.display = "none"; // 隱藏按鈕
+            }
+        }
+
+        backToTopBtn.addEventListener("click", function () {
+            window.scrollTo({ top: 0, behavior: "smooth" }); // 平滑滾動
+        });
+    });
+
+
+</script>

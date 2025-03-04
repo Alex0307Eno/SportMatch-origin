@@ -551,3 +551,4 @@ document.addEventListener("DOMContentLoaded", function () {
         document.querySelector(".notifications-container").style.display = "flex";
     }
 });
+

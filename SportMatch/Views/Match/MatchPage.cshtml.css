@@ -1,7 +1,7 @@
 ﻿.parallelogram {
     transform: skew(-20deg);
 /*    transform: scale(2);*/
-    padding: 80px 30px;
+    padding: 30px 30px;
     font-size: 1.5rem;
     display: inline-block;
     background: #007bff;

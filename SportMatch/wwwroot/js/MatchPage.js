@@ -39,7 +39,10 @@ $(document).ready(function () {
     loadCards(1);
 });
 
+// 一頁顯示幾個Card
 const pageSize = 8;
+
+// 動態載入卡片
 function loadCards(page) {
     $.ajax({
         url: "/Match/GetCards",

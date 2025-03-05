@@ -11,14 +11,14 @@
 </style>
 <div id="background">
 	<div id="bg-overlay">
-		<div id="main" class="container-xxl mt-3 ">
+		<div id="main" class="container-xxl">
 			<!-- 平行四邊形按鈕 -->
-			<div class="bg-muted p-3 text-center"
-				 style="height: 20vh; display: flex; align-items: center; justify-content: center;" id="ballClass">
-				<button class="parallelogram" id="ball1" onclick="toggleAccordion('sport1')"><span>羽球</span></button>
-				<button class="parallelogram" id="ball2" onclick="toggleAccordion('sport2')"><span>籃球</span></button>
-				<button class="parallelogram" id="ball3" onclick="toggleAccordion('sport3')"><span>排球</span></button>
-			</div>
+			@* <div class="bg-muted p-3 text-center mt-5" *@
+			@* 	 style="height: 20vh; display: flex; align-items: center; justify-content: center;" id="ballClass"> *@
+			@* 	<button class="parallelogram" id="ball1" onclick="toggleAccordion('sport1')"><span>羽球</span></button> *@
+			@* 	<button class="parallelogram" id="ball2" onclick="toggleAccordion('sport2')"><span>籃球</span></button> *@
+			@* 	<button class="parallelogram" id="ball3" onclick="toggleAccordion('sport3')"><span>排球</span></button> *@
+			@* </div> *@
 
 			<div class="row mt-3" style="">
 				<div class="col-md-3">
@@ -143,33 +143,49 @@
 
 				<div class="col-md-9">
 					<!-- 篩選條件區域 -->
-					<form>
+					<form action="/Match/GetSelection" method="post">
+						<div class="bg-muted p-3 text-center mt-5"
+							 style="height: 20vh; display: flex; align-items: center; justify-content: center;" id="ballClass">
+							<button class="parallelogram" id="ball1" onclick="toggleAccordion('sport1')"><span>羽球</span></button>
+							<button class="parallelogram" id="ball2" onclick="toggleAccordion('sport2')"><span>籃球</span></button>
+							<button class="parallelogram" id="ball3" onclick="toggleAccordion('sport3')"><span>排球</span></button>
+
+							@* <input type="button" class="parallelogram" id="ball4" onclick="toggleAccordion('sport1')" value="Sport1"> *@
+
+						</div>
 						<div class="d-flex justify-content-end align-items-center mb-3">
-							<input type="radio" name="filter" class="me-2" id="radioOption1"><label for="radioOption1"
-																									style="color: white;">招募隊友</label>
-							<input type="radio" name="filter" class="ms-3 me-2" id="radioOption2"><label for="radioOption2"
-																								  style="color: white;">尋找隊伍</label>
-							<select class="form-select w-auto ms-3">
-								<option>地區</option>
-								<option>北區</option>
-								<option>中區</option>
-								<option>南區</option>
-								<option>東區</option>
-							</select>
-							<select class="form-select w-auto ms-2">
-								<option>運動位置</option>
-								<option>中鋒</option>
-								<option>大前鋒</option>
-								<option>小前鋒</option>
-								<option>得分後衛</option>
-								<option>控球後衛</option>
-							</select>
-							<select class="form-select w-auto ms-2">
-								<option>性別</option>
-								<option>男</option>
-								<option>女</option>
-								<option>混和</option>
-							</select>
+							<div>
+								<input type="radio" name="MatchType" class="me-2" id="radioOption1" value="FindPlayer"><label for="radioOption1"
+																													  style="color: white;">招募隊友</label>
+								<input type="radio" name="MatchType" class="ms-3 me-2" id="radioOption2" value="FindTeam"><label for="radioOption2"
+																												 style="color: white;">尋找隊伍</label>
+							</div>
+							<div>
+								<select class="form-select w-auto ms-3" name="MatchArea">
+									<option>地區</option>
+									<option>北區</option>
+									<option>中區</option>
+									<option>南區</option>
+									<option>東區</option>
+								</select>
+							</div>
+							<div>
+								<select class="form-select w-auto ms-2" name="MatchRole">
+									<option>運動位置</option>
+									<option>中鋒</option>
+									<option>大前鋒</option>
+									<option>小前鋒</option>
+									<option>得分後衛</option>
+									<option>控球後衛</option>
+								</select>
+							</div>
+							<div>
+								<select class="form-select w-auto ms-2" name="MatchGender">
+									<option>性別</option>
+									<option>男</option>
+									<option>女</option>
+								</select>
+							</div>
 							<input type="submit" value="搜尋" class="btn btn-success ms-2 w-auto">
 						</div>
 					</form>
@@ -177,20 +193,22 @@
 					<!-- 球員/球隊區域 -->
 					<div style="height:90%">
 						<div class="row" id="CardContainer">
-							@* @{ *@
-							@* 	foreach (var item in PlayerCard!) *@
-							@* 	{ *@
-							@* 		// <h1>@item.Name</h1> *@
-							@* 		@await Html.PartialAsync("_PartialViewForMatchInfo", item) *@
-							@* 		; *@
-							@* 	} *@
-							@* } *@
+							@* 
+								@{ 
+							 	foreach (var item in PlayerCard!) 
+							 	{ 
+							 		// <h1>@item.Name</h1> 
+							 		@await Html.PartialAsync("_PartialViewForMatchInfo", item) 
+							 		; 
+							 	} 
+							 } 
+							 *@
 						</div>
 						<!-- 上/下頁切換 -->
 						<nav class="mb-3 ">
 							<ul id="pagination" class="pagination justify-content-center mt-3"></ul>
 						</nav>
-					</div>				
+					</div>
 				</div>
 			</div>
 		</div>

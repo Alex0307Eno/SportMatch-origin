@@ -1,0 +1,318 @@
+.dashboard-body {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 60vh 40vh;
+    gap: 20px;
+    padding: 0 0 20px;
+
+    .card {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        border: none;
+        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+
+        .header {
+            width: 100%;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 10px;
+
+            h3 {
+                display: flex;
+                align-items: center;
+                font-weight: bold;
+                text-wrap: nowrap;
+            }
+
+            .btn-group {
+                background-color: white;
+                border-radius: 8px;
+            }
+        }
+
+        /*即將到來的賽事*/
+        &.onComing-event {
+            width: 100%;
+            grid-column-start: 1;
+            grid-column-end: 4;
+
+            header {
+
+                h3 {
+                    margin-top: 7px;
+                }
+            }
+
+            .upComing-eventList {
+                border-collapse: separate;
+                border-spacing: 0 13px;
+
+                tr {
+
+                    th,td {
+                        vertical-align: middle;
+                        background-color: var(--bs-table-bg);
+                        vertical-align: center;
+                        padding:  1rem;
+                        text-overflow: ellipsis;
+                        overflow: hidden;
+                        white-space: nowrap;
+                        transition: all 0.3s;
+                        cursor: pointer;
+
+                        div {
+                            width: 100%;
+                            height: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                        }
+
+                        &:first-of-type {
+                            border-radius: 8px 0 0 8px;
+                        }
+
+                        &:last-of-type {
+                            border-radius: 0 8px 8px 0;
+                        }
+                    }
+
+                    th {
+                        height: 40px;
+                        font-weight: bold;
+                        background: var(--bs-body-bg);
+                    }
+
+                    td {
+                        height: 80px;
+                        background: var(--bs-body-bg);
+                        
+                        .dateBlock {
+                            width: 58px;
+                            display: flex;
+                            flex-direction: column;
+                            border-radius: 4px;
+                            overflow: hidden;
+                            margin: 0 auto;
+
+                            span {
+                                text-align: center;
+                                font-weight: bold;
+
+                                &.month {
+                                    padding: 5px 0;
+                                }
+
+                                &.date {
+                                    padding: 10px;
+                                    font-size: 18px;
+                                }
+                            }
+                        }
+                    }
+
+                    &:hover {
+
+                        td {
+                            background-color: var(--bs-table-hover-bg);
+                        }
+                    }
+                }
+            }
+        }
+        /*組隊邀請*/
+        &.team-invites {
+            .invited_fromTeam {
+
+                li {
+                    border-radius: 4px;
+                    transition: all 0.3s;
+                    cursor: pointer;
+
+                    &:hover {
+                        background-color: aliceblue;
+                    }
+
+                    div {
+                        display: flex;
+                        /*隊伍名+發送時間*/
+                        &:first-of-type {
+                            width: 57%;
+                            flex-direction: column;
+
+                            p {
+                                max-width: 85%;
+                                color: #6c757d;
+                            }
+
+                            span {
+                                font-size: 12px;
+                            }
+                        }
+
+                        &:last-of-type {
+                            flex-shrink: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        /*互動成就*/
+        &.my-activity {
+
+            .card-content {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                &>p {
+                    font-weight: bold;
+                    font-size: 22px;
+                    margin-right: 16px;
+                }
+
+                &>div {
+                    font-size: 53px;
+                    font-weight: bold;
+                }
+            }
+        }
+
+        /*購買紀錄*/
+        &.order-record {
+            grid-column-end: 2 span;
+
+            .card-content {
+                
+                table {
+                    
+                    .orderStatus {
+                        
+                        .bar {
+                            position: relative;
+                        }
+                        
+                        .statusText{
+                            
+                            p {
+                                position: relative;
+                                
+                                &::before {
+                                    content: "";
+                                    width: 15px;
+                                    height: 15px;
+                                    border-radius: 50%;
+                                    background-color: white;
+                                    position: absolute;
+                                    top: 80%;
+                                    left: -5px;
+                                    transform: translateY(-50%);
+                                    box-shadow: var(--shadow);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /*卡片內容*/
+        .card-content {
+            width: 100%;
+            height: 100%;
+            max-height: 100%;
+            overflow-y: scroll;
+        }
+    }
+
+    .group {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        &>h3 {
+            display: flex;
+            align-items: center;
+            font-weight: bold;
+            text-wrap: nowrap;
+            margin-bottom: 10px;
+        }
+
+        .card {
+            max-height: calc(95% / 2);
+            
+            /*我的隊伍*/
+            &.myTeams {
+
+                .card-content {
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 20px;
+
+                    div {
+                        width: 11.5vw;
+                        height: 11vh;
+                        padding: 16px;
+                        transition: all 0.3s;
+                        cursor: pointer;
+                        
+                        &:hover {
+                            scale: 1.1;
+                        }
+
+                        .teamName {
+                            font-size: 20px;
+                            color: #6c757d;
+                        }
+
+                        .member {
+                            width:  fit-content;
+                            display: flex;
+                            align-items: center;
+                            color: #c5e8ef;
+                            font-size: 35px;
+                            height: unset;
+                            padding: 0 11px;
+                            margin-top: 0.5rem;
+
+                            span {
+                                width:2rem;
+                                height: 2rem;
+                                background-color: white;
+                                margin-left: -10px;
+                                border-radius: 50%;
+
+                                &.moreUser {
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                                    font-size: 16px;
+                                    font-weight: bold;
+                                    color: #6b7280;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1450px) {
+    body {
+        main {
+            .main-wrap {
+                .dashboard-body {
+                    /*background-color: blue;*/
+                }
+            }
+        }
+    }
+}

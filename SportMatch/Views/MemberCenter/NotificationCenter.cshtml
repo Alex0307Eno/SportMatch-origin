@@ -1,0 +1,48 @@
+@model dynamic
+
+@{
+    Layout = "_MemberLayout";
+}
+<ul class="nav nav-underline">
+    <li class="nav-item">
+        <a class="nav-link active" aria-current="page" href="">所有通知</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="">系統通知</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="">活動通知</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" herf="">隊伍通知</a>
+    </li>
+    <button class="action btn btn-secondary btn-sm markAll_asRead d-flex align-items-center"><i class="fa-solid fa-check-double me-2"></i>已讀全部</button>
+</ul>
+<ul class="notification-list d-flex flex-column">
+    <h4 class="blockTitle text-secondary w-100 text-lg-start mb-3 border-secondary text-sm-start">今天</h4>
+    <li class="notification-item d-flex align-items-center mb-3 unread">
+        <div class="notifyIcon flex-shrink-0">
+            <i class="fa-solid fa-bell"></i>
+        </div>
+        <div class="content m-0">
+            <p><strong class="userName">大猩猩</strong> 邀請你加入 <strong class="team-name">稱霸松名山</strong></p>
+            <span class="time">10 分鐘前</span>
+        </div>
+        <div class="actions flex-shrink-0">
+            <button class="btn btn-primary">接受</button>
+            <button class="btn btn-outline-secondary">拒絕</button>
+        </div>
+    </li>
+    <li class="notification-item d-flex align-items-center mb-3 read">
+        <div class="notifyIcon flex-shrink-0">
+            <i class="fa-solid fa-calendar-days"></i>
+        </div>
+        <div class="content m-0">
+            <p><strong>2025 台中籃球公開賽</strong> - 倒數 16 天</p>
+            <span class="time">6 小時前</span>
+        </div>
+        <div class="actions flex-shrink-0">
+            <button class="btn btn-secondary text-light">再次報名</button>
+        </div>
+    </li>
+</ul>

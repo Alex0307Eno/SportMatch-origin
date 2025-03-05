@@ -1,0 +1,164 @@
+@model dynamic
+
+@{
+    Layout = "_MemberLayout";
+}
+
+<h2 class="mx-auto fw-bold fs-3 my-4">聯絡我們</h2>
+<div class="container-fluid content-wrap d-flex justify-content-center mt-5">
+    <div class="info w-75 me-5">
+        <h3 class="fs-5 fw-bold mb-3 text-secondary">關於我們</h3>
+        <p class="">
+            SportMatch
+            是一個專為熱愛運動的你打造的平台，致力於促進全民運動風氣，幫助運動愛好者輕鬆找到志同道合的夥伴，一同享受運動的樂趣。我們不僅提供便捷的賽事報名與瀏覽功能，讓用戶隨時掌握最新運動活動資訊，也為賽事主辦單位與廠商提供強大的管理工具，協助活動推廣與報名管理。
+            透過 SportMatch，賽事主辦方可以輕鬆上架賽事資訊，管理參賽者報名，並曝光賽事相關商品，擴大市場影響力。<br/>同時，我們的配對功能讓運動愛好者能夠快速組隊，發掘更多運動機會，從個人挑戰到團體競賽，應有盡有。
+            <br/>不論你是想尋找運動夥伴、參加比賽，還是希望推廣你的運動品牌與活動，SportMatch 都將是你最值得信賴的運動夥伴！
+        </p>
+        <h3 class="fs-5 fw-bold mt-4 mb-2 text-secondary">聯絡資訊</h3>
+        <ul>
+            <li class="mb-2"><i class="fa-regular fa-envelope me-2 text-secondary"></i>sportMatch.support@gmail.com</li>
+            <li class="mb-2"><i class="fa-solid fa-mobile-screen-button me-2" style="padding: 0 2px;"></i>09-78456345
+            </li>
+            <li class="mb-2"><i class="fa-brands fa-line me-2 text-secondary"></i>@@sportMatch</li>
+            <li class=""><i class="fa-solid fa-location-dot me-2 text-secondary" style="padding: 0 2px;"></i>地址地址地址地址地址地址地址地址地址地址地址地址地址地址地址
+            </li>
+        </ul>
+        <h3 class="fs-5 fw-bold mt-5 mb-3 text-secondary">常見問題 FAQ</h3>
+        <div class="accordion" id="accordionFAQ">
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        如何報名比賽？需要具備什麼資格？
+                    </button>
+                </h2>
+                <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionFAQ">
+                    <div class="accordion-body">
+                        <strong>請依照賽事要求提交您的正確資訊。繳完報名費後我方平台會將您自動推薦給合適的隊伍！</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        我可以在平台上預訂場地嗎？
+                    </button>
+                </h2>
+                <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFAQ">
+                    <div class="accordion-body">
+                        <strong>「場地介紹」僅提供資訊，請直接聯繫場地單位方。</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="accordion-item">
+                <h2 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        如何與我們合作？（異業合作 / 廣告 / 贊助）
+                    </button>
+                </h2>
+                <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFAQ">
+                    <div class="accordion-body">
+                        <strong>請填寫右方表單，並說明欲合作的方式或建議；SportMatch 將盡快回覆您！</strong>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form class="contactUs w-25 d-flex flex-column" action="
+">
+        <div class="mb-3">
+            <label for="nameInput" class="form-label fw-bold">姓名/公司名稱</label>
+            <input type="text" id="nameInput" class="form-control" placeholder="請輸入姓名或公司名稱"
+                   aria-required="true"
+                   required="required">
+        </div>
+        <div class="mb-3 ">
+            <label for="emailInput" class="form-label fw-bold">信箱</label>
+            <input type="email" id="emailInput" class="form-control" placeholder="請輸入電子郵件" aria-required="true"
+                   required="required">
+        </div>
+        <div class="mb-3">
+            <label for="phoneInput" class="form-label fw-bold">電話</label>
+            <input type="text" id="phoneInput" class="form-control" placeholder="若同意電話聯絡請輸入號碼"
+            >
+        </div>
+        <div class="mb-3 d-flex flex-column">
+            <label for="typeSelect" class="form-label fw-bold">類型</label>
+            <select class="form-control typeSelect" id="typeSelect" aria-label="請選擇聯絡類型" aria-required="true"
+                    required="required">
+                <option value="1">問題回報</option>
+                <option value="2">異業合作</option>
+                <option value="3">其他</option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="subjectInput" class="form-label fw-bold">主旨</label>
+            <input type="text" id="subjectInput" class="form-control" placeholder="請輸入主旨" aria-required="true"
+                   required="required">
+        </div>
+        <div class="mb-3">
+            <label for="contentTextArea" class="form-label fw-bold">內容</label>
+            <textarea class="form-control" placeholder="請輸入內容" id="contentTextArea" aria-required="true"
+                      style="height: 100px"></textarea>
+        </div>
+        <div class="d-flex align-items-center pt-1"><input type="checkbox" aria-required="true" required="required"><a
+                class="agreePrivatePolicy text-decoration-underline ps-2">同意隱私政策</a></div>
+        <input type="submit" class="btn btn-outline-secondary w-75 mt-4 mx-auto" value="送出"/>
+    </form>
+</div>
+<style>
+    .info {
+        max-width: 800px;
+
+        p {
+            line-height: 23px;
+        }
+
+        .accordion {
+            .accordion-header {
+                .accordion-button {
+                    font-weight: bold;
+
+                    i {
+                        transition: all 0.3s;
+                    }
+
+                    &::after {
+                        display: unset !important;
+                    }
+
+                    &:focus {
+                        outline: none;
+                        box-shadow: none;
+                    }
+
+                    &:not(.collapsed) {
+                        background-color: unset;
+
+                        i {
+                            rotate: 180deg;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .contactUs {
+        min-width: 400px;
+
+        & > div {
+            &:has([aria-required]) {
+                label {
+                    &::before {
+                        content: "*";
+                        color: red;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+</style>

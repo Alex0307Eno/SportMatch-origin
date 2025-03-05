@@ -78,6 +78,6 @@ app.UseEndpoints(endpoints =>
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Match}/{action=MatchPage}/{id?}");
+    pattern: "{controller=MemberCenter}/{action=Index}/{id?}");
 
 app.Run();

@@ -1,0 +1,139 @@
+﻿body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+body {
+    background-color: #ffffff;
+    height: 100vh;
+    width: 100vw;
+    position: relative;
+}
+
+.DoorContainer {
+    height: 100vh;
+    transform: translate(0, 0);
+    overflow: hidden;
+}
+
+.Image img {
+    position: absolute;
+}
+
+.TopMask {
+    transform: translate(0, -60vh);
+    width: 100%;
+    z-index: 1;
+    transition: transform 0.5s ease-in-out;
+    height: 100%;
+}
+
+.BottomMask {
+    transform: translate(0, -30vh);
+    width: 100%;
+    z-index: 2;
+    transition: transform 0.5s ease-in-out;
+}
+
+.DoorBackground {
+    height: 130%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    filter: blur(0);
+    transition: filter 1s ease;
+}
+
+.BadmintonLogo,
+.BasketballLogo,
+.VolleyballLogo {
+    z-index: 5;
+    clip-path: polygon(100% 0%, 50% 0%, 50% 0%, 100% 0%);
+    transition: clip-path 0.1s ease-in-out, filter 0.5s ease-out, opacity 0.2s ease-in;
+    height: 100%;
+    background-color: transparent;
+}
+
+.BadmintonLogo {
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+}
+
+.BasketballLogo {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.VolleyballLogo {
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+}
+
+.BadmintonLogo:hover {
+    content: url('/image/DoorImage/BadmintonLogo02.png');
+}
+
+.BasketballLogo:hover {
+    content: url('/image/DoorImage/BasketballLogo02.png');
+}
+
+.VolleyballLogo:hover {
+    content: url('/image/DoorImage/VolleyballLogo02.png');
+}
+
+.BadmintonLogo:active {
+    content: url('/image/DoorImage/BadmintonLogo03.png');
+}
+
+.BasketballLogo:active {
+    content: url('/image/DoorImage/BasketballLogo03.png');
+}
+
+.VolleyballLogo:active {
+    content: url('/image/DoorImage/VolleyballLogo03.png');
+}
+
+.ChooseText {
+    display: inline;
+    z-index: 6;
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    font-size: 48px;
+    visibility: hidden;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7), 0 0 0px #fff, 0 0 5px #fff;
+}
+
+.BadmintonLogoBackground,
+.BasketballLogoBackground,
+.VolleyballLogoBackground {
+    z-index: 4;
+    clip-path: polygon(100% 0%, 50% 0%, 50% 0%, 100% 0%);
+    transition: clip-path 0.1s ease-in-out;
+    height: 100%;
+    background-size: contain;
+}
+
+.BadmintonLogoBackground {
+    top: 50%;
+    left: 25%;
+    transform: translate(-50%, -50%);
+}
+
+.BasketballLogoBackground {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.VolleyballLogoBackground {
+    top: 50%;
+    left: 75%;
+    transform: translate(-50%, -50%);
+}

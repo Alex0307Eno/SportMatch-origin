@@ -1,0 +1,103 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@section Scripts {
+            <script src="~/Views/Mart/Mart.cshtml.js" asp-append-version="true"></script>
+}
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+
+<!-- 主頁面 -->
+<div class="row MartContainer">
+    <!-- 左側欄位 -->
+    <div class="BodyLiftField col-2 d-flex flex-column">
+        <h5 class="text-white ml-2 mt-2">篩選條件</h5>
+        <form>
+            <div class="accordion" id="FilterAccordion">      
+                <div class="accordion-item BootstrapItemClass">
+                    <h5 class="p-2 accordion-header">                                    
+                        <input type="radio" name="ParentCategory" id="ParentCategoryRadio0" data-bs-toggle="collapse" data-bs-target="#Collapse0" /><label class="px-3" for="ParentCategoryRadio0">全部</label>
+                    </h5>
+                    <div id="Collapse0" class="accordion-collapse collapse" data-bs-parent="#FilterAccordion"></div>
+                </div>
+
+                <!-- 父分類 -->
+                @foreach (var item in ViewBag.ForCategory)
+                {
+                            <div class="accordion-item BootstrapItemClass">
+                                <h5 class="p-2 accordion-header">
+                                    <input type="radio" name="ParentCategory" id="ParentCategoryRadio-@item.CategoryID" data-bs-toggle="collapse" data-bs-target="#Collapse-@item.CategoryID" />
+                                    <label class="px-3" for="ParentCategoryRadio-@item.CategoryID">@item.ParentCategory</label>
+                                </h5>
+                                    <div id="Collapse-@item.CategoryID" class="accordion-collapse collapse BootstrapChildItemClass" data-bs-parent="#FilterAccordion">
+                                    <div class="accordion-body">                            
+                                        <input type="checkbox" id="@item.ChildCategoryID1" class="ChildCategoryCheckbox" /><label for="@item.ChildCategoryID1">@item.ChildCategory1</label><br />
+                                        <input type="checkbox" id="@item.ChildCategoryID2" class="ChildCategoryCheckbox" /><label for="@item.ChildCategoryID2">@item.ChildCategory2</label>
+                                    </div>
+                                </div>
+                            </div>
+                }
+            <!-- 後續用迴圈加分類 -->
+            </div>
+
+        </form>
+        <!-- 側廣告 -->
+        <div class="mt-auto">
+            <a href="#"><img src="\image\\iconSide.jpg" alt="主廣告" class="img-fluid" /></a>
+        </div>
+    </div>
+
+
+
+    <!-- 商品欄位 -->
+    <div class="col-10 right-sidebar">
+        <!-- 主廣告 -->
+        <div class="mb-3">
+            <a href="#"><img src="\image\iconLong.jpg" alt="主廣告" class="img-fluid" /></a>
+        </div>
+        <!-- 換頁欄 -->
+        <div class="d-flex justify-content-between mb-3 PaginationBackground">
+            <nav>
+                <ul class="pagination">
+                <!-- 這邊使用JS加入HTML -->
+                </ul>
+              </nav>
+            <div>
+                <select class="form-select BootstrapItemClass">
+                    <option value="low-to-high">價格從低到高</option>
+                    <option value="high-to-low">價格從高到低</option>
+                </select>
+            </div>
+        </div>
+        <!-- 商品列表 -->
+        <div class="row ProductsList">
+        <!-- 這邊使用JS加入HTML -->
+        </div>
+
+        <!-- 加入我的最愛彈出視窗 -->
+        <div class="modal fade HeartModal" id="HeartModal" data-bs-backdrop="false" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content border-2 border-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="HeartModalMessage">已加入我的最愛</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 加入購物車彈出視窗 -->
+        <div class="modal fade HeartModal" id="GetCartModal" data-bs-backdrop="false" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content border-2 border-white">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="GetCartModalMessage">已加入購物車</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+

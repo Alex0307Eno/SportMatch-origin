@@ -1,0 +1,94 @@
+﻿/*.ModalFooterImages {
+    margin: -10% 0 -10% 0;
+    width: 40%;
+    height: 100%;
+}
+
+    .ModalFooterImages img {
+        height: 100%;
+        width: 30%;
+        margin-right: 10px;
+        object-fit: cover
+    }*/
+
+
+#GetCartModal .modal-dialog,
+#HeartModal .modal-dialog {
+    transform: none;
+}
+
+.HeartModal .modal-content {
+    background-color: #000000;
+}
+
+.HeartModal .modal-header {
+    border-bottom: none;
+}
+
+.HeartModal .modal-title {
+    color: #ffffff;
+}
+
+#ModelFooterProductImage01:active {
+    content: url('\image\icon.jpg');
+}
+
+#ModelFooterProductImage02:active {
+    content: url('\image\icon1.jpg');
+}
+
+/* 去除價格高低的藍色框及添加手型滑鼠 */
+select:focus {
+    outline: none;
+    background-color: #ff5f00;
+    box-shadow: #ff5f00;
+    border: 1px solid #ff5f00;
+}
+
+select:hover {
+    cursor: pointer;
+}
+
+form input[type="radio"], form input[type="checkbox"], form label {
+    cursor: pointer;
+}
+
+/*以下修正配色*/
+.MartContainer {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+.BootstrapItemClass {
+    background-color: #000000;
+    color: #ffffff;
+    border: 1px solid #ff5f00;
+}
+
+.BootstrapChildItemClass {
+    background-color: #ff5f00;
+    border: 1px solid #ff5f00;
+}
+
+.BootstrapItemClass.ListPage {
+    background-color: #000000;
+}
+
+
+/*添加背景*/
+.BodyLiftField {
+    background-color: #202020;
+    padding: 10px;
+}
+
+.PaginationBackground {
+    background-color: #202020;
+    padding: 16px 12px 0 12px;
+    margin: 1px;
+}
+
+.ProductsList {
+    background-color: #202020;
+    padding: 10px 0 0 0;
+    margin: 1px;
+}

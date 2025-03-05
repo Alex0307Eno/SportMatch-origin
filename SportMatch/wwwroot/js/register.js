@@ -7,37 +7,78 @@
     const emailInput = document.getElementById("email");
     const verificationCodeInput = document.getElementById("verification-code");
 
-    // 強密碼正則表達式
-    const strongPasswordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+    // 註冊成功通知容器
+    const successNotification = document.createElement("div");
+    successNotification.id = "successNotification";
+    successNotification.textContent = "註冊成功！歡迎加入！";
+    successNotification.style.display = "none";
+    document.body.appendChild(successNotification);
 
-    // 密碼輸入時進行即時檢查
-    password.addEventListener("input", function () {
-        if (!strongPasswordRegex.test(password.value)) {
-            errorMessage.textContent = "密碼必須至少 8 個字符，包含大小寫字母、數字和特殊符號";
-            errorMessage.style.color = "red";
-        } else {
-            errorMessage.textContent = "";
-        }
-    });
+    // 隱藏通知並跳轉到首頁
+    const hideNotification = () => {
+        successNotification.style.opacity = "0";
+        setTimeout(() => {
+            successNotification.style.display = "none";
+            window.location.href = "/"; // 跳轉到首頁
+        }, 300); // 與 CSS 過渡時間一致
+    };
+
+    // 顯示通知
+    const showNotification = () => {
+        successNotification.style.display = "block";
+        setTimeout(() => {
+            successNotification.style.opacity = "1";
+        }, 10); // 確保過渡效果正常觸發
+        setTimeout(hideNotification, 3000); // 3秒後隱藏並跳轉
+    };
+
+    // 發送驗證碼按鈕處理
+    if (sendCodeBtn) {
+        sendCodeBtn.addEventListener("click", async function () {
+            const email = emailInput.value;
+
+            if (!email) {
+                alert("請輸入電子郵件地址！");
+                return;
+            }
+
+            // 發送驗證碼到後端
+            try {
+                const response = await fetch("/Account/SendVerificationCode", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ email: email }),
+                });
+
+                const result = await response.json();
+
+                if (response.ok && result.success) {
+                    alert("驗證碼已發送到您的電子郵件！");
+                } else {
+                    alert(result.message || "發送驗證碼失敗，請再試一次");
+                }
+            } catch (error) {
+                console.error('發送驗證碼過程中發生錯誤:', error);
+                alert("發送驗證碼過程中發生錯誤，請稍後再試");
+            }
+        });
+    }
 
     // 表單提交處理
     if (form) {
         form.addEventListener("submit", async function (event) {
             event.preventDefault(); // 防止表單提交
 
+            // 簡單的前端驗證
             const username = document.getElementById("username").value;
             const email = emailInput.value;
             const verificationCode = verificationCodeInput.value;
             const passwordValue = password.value;
             const confirmPasswordValue = confirmPassword.value;
 
-            // 驗證密碼強度
-            if (!strongPasswordRegex.test(passwordValue)) {
-                alert("密碼強度不足！請確保包含大小寫字母、數字和特殊符號，且至少 8 個字符。");
-                return;
-            }
-
-            // 確保密碼一致
+            // 密碼與確認密碼一致檢查
             if (passwordValue !== confirmPasswordValue) {
                 alert("密碼不一致！");
                 return;
@@ -49,7 +90,7 @@
                 return;
             }
 
-            // 發送註冊請求
+            // 模擬向後端發送註冊請求
             try {
                 const response = await fetch("/Account/Register", {
                     method: "POST",
@@ -67,13 +108,13 @@
                 const result = await response.json();
 
                 if (response.ok && result.success) {
-                    alert("註冊成功！");
+                    showNotification();
                     form.reset(); // 重設表單
                 } else {
                     alert(result.message || "註冊失敗，請再試一次");
                 }
             } catch (error) {
-                console.error("註冊過程中發生錯誤:", error);
+                console.error('註冊過程中發生錯誤:', error);
                 alert("註冊過程中發生錯誤，請稍後再試");
             }
         });

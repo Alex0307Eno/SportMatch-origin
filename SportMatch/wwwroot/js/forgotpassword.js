@@ -1,56 +1,75 @@
-﻿document.addEventListener("DOMContentLoaded", function () {
-    const emailInput = document.getElementById("email");
-    const sendCodeButton = document.getElementById("sendCodeButton");
-    const verificationSection = document.getElementById("verificationSection");
-    const verificationCodeInput = document.getElementById("verificationCode");
-    const verifyCodeButton = document.getElementById("verifyCodeButton");
-    const newPasswordSection = document.getElementById("newPasswordSection");
-    const newPasswordInput = document.getElementById("newPassword");
-    const submitNewPasswordButton = document.getElementById("submitNewPassword");
-    const messageDiv = document.getElementById("message");
+﻿// 發送驗證碼按鈕事件
+document.getElementById("sendCodeButton").addEventListener("click", function () {
+    const email = document.getElementById("email").value;
+    const messageElement = document.getElementById("message");
 
-    // 🔹 點擊「發送驗證碼」按鈕
-    sendCodeButton.addEventListener("click", function () {
-        const email = emailInput.value.trim();
+    // 確保電子郵件格式正確
+    if (!validateEmail(email)) {
+        messageElement.textContent = "請輸入有效的電子郵件地址！";
+        messageElement.style.color = "red";
+        return;
+    }
 
-        if (email === "") {
-            showMessage("請輸入電子郵件", "error");
-            return;
-        }
+    // 模擬發送驗證碼
+    messageElement.textContent = "已發送驗證碼，請查收您的郵件！";
+    messageElement.style.color = "green";
 
-        // TODO: 這裡應該呼叫後端 API 發送驗證碼
-        console.log(`發送驗證碼至: ${email}`);
+    // 顯示驗證碼區塊
+    document.getElementById("verificationSection").classList.remove("hidden");
+});
 
-        // 顯示驗證碼輸入區
-        verificationSection.classList.remove("hidden");
-        showMessage("驗證碼已發送，請檢查您的信箱。", "success");
-    });
+// 驗證碼驗證按鈕事件
+document.getElementById("verifyCodeButton").addEventListener("click", function () {
+    const verificationCode = document.getElementById("verificationCode").value;
+    const messageElement = document.getElementById("message");
 
-    // 🔹 點擊「驗證」按鈕
-    verifyCodeButton.addEventListener("click", function () {
-        const code = verificationCodeInput.value.trim();
+    // 假設驗證碼是固定的 '123456'，這裡你可以修改成實際的驗證邏輯
+    if (verificationCode === "123456") {
+        messageElement.textContent = "驗證碼正確，請設置新密碼！";
+        messageElement.style.color = "green";
 
-        if (code === "") {
-            showMessage("請輸入驗證碼", "error");
-            return;
-        }
-
-        // TODO: 這裡應該呼叫後端 API 檢查驗證碼是否正確
-        const isValidCode = true; // 假設驗證成功
-
-        if (isValidCode) {
-            showMessage("驗證成功，請輸入新密碼。", "success");
-
-            // 顯示「新密碼輸入區塊」
-            newPasswordSection.classList.remove("hidden");
-        } else {
-            showMessage("驗證碼錯誤，請重新輸入。", "error");
-        }
-    });
-
-    // 🔹 顯示訊息
-    function showMessage(text, type) {
-        messageDiv.textContent = text;
-        messageDiv.className = `message ${type}`;
+        // 顯示新密碼區塊
+        document.getElementById("newPasswordSection").classList.remove("hidden");
+    } else {
+        messageElement.textContent = "驗證碼錯誤，請重試！";
+        messageElement.style.color = "red";
     }
 });
+
+// 提交新密碼
+document.getElementById("resetPasswordForm").addEventListener("submit", function (e) {
+    e.preventDefault(); // 防止表單提交
+
+    const newPassword = document.getElementById("newPassword").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
+    const messageElement = document.getElementById("message");
+
+    // 密碼匹配驗證
+    if (newPassword !== confirmPassword) {
+        messageElement.textContent = "新密碼與確認密碼不一致，請重新輸入！";
+        messageElement.style.color = "red";
+        return;
+    }
+
+    // 密碼長度驗證（假設最短 8 位且包含大小寫和特殊字符）
+    if (newPassword.length < 8) {
+        messageElement.textContent = "密碼至少需包含 8 位數字或字母！";
+        messageElement.style.color = "red";
+        return;
+    }
+
+    // 密碼設置成功
+    messageElement.textContent = "密碼重設成功！";
+    messageElement.style.color = "green";
+
+    // 模擬跳轉或顯示提示
+    setTimeout(function () {
+        window.location.href = "/"; // 跳轉回首頁或其他頁面
+    }, 2000);
+});
+
+// 驗證電子郵件格式的函數
+function validateEmail(email) {
+    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailPattern.test(email);
+}

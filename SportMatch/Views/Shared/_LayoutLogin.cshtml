@@ -2,24 +2,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<meta charset="UTF-8" />
-	<link rel="stylesheet"
-		  href="~/SportMatch.styles.css"
-		  asp-append-version="true" />
-	<link href="~/css/site.css" rel="stylesheet" />
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-	<link href="/Index/reset.css" rel="stylesheet" type="text/css" />
-	<link rel="stylesheet"
-		  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8" />
+    <link rel="stylesheet"
+          href="~/SportMatch.styles.css"
+          asp-append-version="true" />
+    <link href="~/css/site.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link href="/Index/reset.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
 
     <title>SportMatch</title>
-	
-  </head>
+
+</head>
 
 
 <body>
-    
     <style>
         /* 密碼與 email 顯示/隱藏按鈕 */
         .toggle-email,
@@ -53,7 +52,7 @@
             }
     </style>
     <div class="header-container">
-      
+
         <div class="logo">
             <!-- Logo 這裡可以放置你的網站 Logo -->
         </div>
@@ -64,8 +63,8 @@
             </div>
             <ul>
                 <li><a href="#home">首頁</a></li>
-                <li><a href="#matching" id="matchingLink">配對系統</a></li>
-                <li><a href="#events" id="eventsLink">賽事資訊</a></li>
+                <li><a href="#matching">配對系統</a></li>
+                <li><a href="#events">賽事資訊</a></li>
                 <li><a href="#venues">場地資訊</a></li>
                 <li><a href="#shop">運動商城</a></li>
             </ul>
@@ -89,8 +88,7 @@
                             <div class="no-notifications">目前沒有任何通知</div>
                         </div>
                     </div>
-                    <button onclick="openLoginModal()" class="btn-login">登入</button>
-                    <a href="@Url.Action("Register", "Account")" class="btn-register">註冊</a>
+                  
                     <div class="user-email-container" style="display: none">
                         <span class="user-email"></span>
                         <div class="dropdown-content">
@@ -108,16 +106,9 @@
             </div>
         </nav>
     </div>
-   
-    <!-- 自訂的確認框 -->
-    <div id="custom-confirm" class="confirm-modal" style="display:none;">
-        <div class="confirm-content">
-            <p id="confirm-message">您尚未登入，是否要立即登入？</p>
-            <button id="confirm-yes">確定</button>
-            <button id="confirm-no">取消</button>
-        </div>
-    </div>
-    
+
+
+
     <!-- 登入彈窗 -->
 
     <div id="loginModal" class="modal">
@@ -141,39 +132,39 @@
             <form action="/Account/Login" method="post" class="login-form" id="loginForm">
                 <div id="memberLogin" class="login-form-container">
 
-                <div class="input-group">
-                    <i class="fas fa-person"></i>
-                    <input type="email" id="email" placeholder="請輸入Email" required />
-                    <button type="button" class="toggle-email">
-                        <span class="icon">
-                            <ion-icon name="mail-outline"></ion-icon>
-                        </span>
-                    </button>
-                </div>
-
-                <div class="input-group password-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="請輸入密碼" required />
-                    <button type="button" class="toggle-password">
-                        <span class="icon">
-                            <ion-icon name="lock-closed" id="Pwhide"></ion-icon>
+                    <div class="input-group">
+                        <i class="fas fa-person"></i>
+                        <input type="email" id="email" placeholder="請輸入Email" required />
+                        <button type="button" class="toggle-email">
+                            <span class="icon">
+                                <ion-icon name="mail-outline"></ion-icon>
                             </span>
-                    </button>
-                </div>
-                <div class="remember-me">
-                    <label class="checkbox-container">
-                        <input type="checkbox" id="remember" />
-                        <span class="checkmark"></span>
-                        記住我的帳號
-                    </label>
-                </div>
+                        </button>
+                    </div>
+
+                    <div class="input-group password-group">
+                        <i class="fas fa-lock"></i>
+                        <input type="password" id="password" placeholder="請輸入密碼" required />
+                        <button type="button" class="toggle-password">
+                            <span class="icon">
+                                <ion-icon name="lock-closed" id="Pwhide"></ion-icon>
+                            </span>
+                        </button>
+                    </div>
+                    <div class="remember-me">
+                        <label class="checkbox-container">
+                            <input type="checkbox" id="remember" />
+                            <span class="checkmark"></span>
+                            記住我的帳號
+                        </label>
+                    </div>
                     <button type="submit" class="btn-submit" id="btn-submit">
                         <i class="fas fa-running"></i> 會員登入
                     </button>
-                <div class="error-message" style="display:none;"></div>     
+                    <div class="error-message" style="display:none;"></div>
 
-               
-                
+
+
                 </div>
 
             </form>
@@ -225,7 +216,7 @@
                         <i class="fab fa-google"></i>
                     </button>
                     <button class="social-btn line">
-                        <i class="fab fa-line"></i> 
+                        <i class="fab fa-line"></i>
                     </button>
 
 
@@ -234,24 +225,20 @@
         </div>
     </div>
 
-    <script
-      type="module"
-      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"
-    ></script>
-    <script
-      nomodule
-      src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"
-    ></script>
-    
+    <script type="module"
+            src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule
+            src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
 
     <script src="~/js/login.js"></script>
 
     <div class="container">
 
-      @RenderBody()
+        @RenderBody()
 
     </div>
-  </body>
+</body>
 </html>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -265,7 +252,7 @@
 
 
 
-  <script>
+<script>
           function switchLogin(type) {
         if (type === 'member') {
             document.getElementById('memberLogin').style.display = 'block';
@@ -279,6 +266,6 @@
             document.getElementById('vendorLoginBtn').classList.add('active');
         }
     }
-       
+
 </script>
 

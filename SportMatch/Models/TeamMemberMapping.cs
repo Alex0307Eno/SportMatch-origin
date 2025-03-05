@@ -21,5 +21,5 @@ public partial class TeamMemberMapping
 
     public virtual Team? TeamIdMemberNavigation { get; set; }
 
-    public virtual UserDatum User { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

@@ -17,7 +17,7 @@ public partial class Event
 
     public int EventGroupId { get; set; }
 
-    public byte[]? EventPic { get; set; }
+    public string EventPic { get; set; } = null!;
 
     public int SportId { get; set; }
 

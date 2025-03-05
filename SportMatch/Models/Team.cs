@@ -11,7 +11,7 @@ public partial class Team
 
     public int SportId { get; set; }
 
-    public byte[]? TeamPic { get; set; }
+    public string? TeamPic { get; set; }
 
     public string? TeamMemo { get; set; }
 
@@ -37,15 +37,13 @@ public partial class Team
 
     public virtual ICollection<JoinInformation> JoinInformations { get; set; } = new List<JoinInformation>();
 
-    public virtual ICollection<Pay> Pays { get; set; } = new List<Pay>();
-
     public virtual Role? Role { get; set; }
 
     public virtual Sport Sport { get; set; } = null!;
 
-    public virtual ICollection<TeamMemberMapping> TeamMemberMappingTeamIdLeaderNavigations { get; set; } = new List<TeamMemberMapping>();
+    public virtual ICollection<TeamMemberMapping> TeamMemberMappingTeamIdLeaderNavigations { get; set; }
 
     public virtual ICollection<TeamMemberMapping> TeamMemberMappingTeamIdMemberNavigations { get; set; } = new List<TeamMemberMapping>();
 
-    public virtual UserDatum User { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

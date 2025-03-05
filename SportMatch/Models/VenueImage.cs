@@ -9,7 +9,7 @@ public partial class VenueImage
 
     public int VenueId { get; set; }
 
-    public byte[] Image { get; set; } = null!;
+    public string Image { get; set; } = null!;
 
     public DateTime UploadedAt { get; set; }
 

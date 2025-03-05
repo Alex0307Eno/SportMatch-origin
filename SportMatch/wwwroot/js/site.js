@@ -552,3 +552,58 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// 檢查使用者是否登入
+function isLoggedIn() {
+    return document.body.dataset.userLoggedIn === "true";
+}
+// 自訂確認框
+function customConfirm(message, callback) {
+    let modal = document.getElementById("custom-confirm");
+    let confirmYes = document.getElementById("confirm-yes");
+    let confirmNo = document.getElementById("confirm-no");
+
+    // 設定訊息
+    document.getElementById("confirm-message").innerText = message;
+
+    // 顯示模態框
+    modal.style.display = "flex";
+
+    // 先移除舊的事件監聽，避免重複觸發
+    confirmYes.onclick = null;
+    confirmNo.onclick = null;
+
+    // 點擊確定
+    confirmYes.onclick = function () {
+        modal.style.display = "none";
+        callback(true);
+    };
+
+    // 點擊取消
+    confirmNo.onclick = function () {
+        modal.style.display = "none";
+        callback(false);
+    };
+}
+
+// 替換原本的 confirm()
+function promptLogin(event) {
+    event.preventDefault(); // 防止跳轉
+
+    if (!isLoggedIn()) {
+        customConfirm("您尚未登入，是否要立即登入？", function (confirmLogin) {
+            if (confirmLogin) {
+                openLoginModal(); // 打開登入模態框
+            }
+        });
+    } else {
+        window.location.href = event.target.href;
+    }
+}
+// 綁定事件
+document.getElementById("btn-event1").addEventListener("click", promptLogin);
+document.getElementById("btn-event2").addEventListener("click", promptLogin);
+document.getElementById("btn-event3").addEventListener("click", promptLogin);
+document.getElementById("btn-venue1").addEventListener("click", promptLogin);
+document.getElementById("btn-venue2").addEventListener("click", promptLogin);
+document.getElementById("btn-venue3").addEventListener("click", promptLogin);
+

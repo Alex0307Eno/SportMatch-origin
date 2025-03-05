@@ -15,17 +15,19 @@ public partial class Product
 
     public int Stock { get; set; }
 
-    public byte[] Image01 { get; set; } = null!;
+    public string Image01 { get; set; } = null!;
 
-    public byte[]? Image02 { get; set; }
+    public string? Image02 { get; set; }
 
-    public byte[]? Image03 { get; set; }
+    public string? Image03 { get; set; }
 
     public string ProductDetails { get; set; } = null!;
 
     public int? ParentProductId { get; set; }
 
     public DateTime ReleaseDate { get; set; }
+
+    public string OrderState { get; set; } = null!;
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 

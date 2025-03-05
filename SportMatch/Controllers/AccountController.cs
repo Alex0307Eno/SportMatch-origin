@@ -14,12 +14,12 @@ namespace SportMatch.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserContext _context;
+        private readonly SportMatchContext _context;
         private readonly IConfiguration _configuration;
         
 
 
-        public AccountController(UserContext context, IConfiguration configuration)
+        public AccountController(SportMatchContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
@@ -54,7 +54,7 @@ namespace SportMatch.Controllers
             }
 
             // 檢查電子郵件是否已註冊
-            var existingUser = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+            var existingUser = _context.User.FirstOrDefault(u => u.Email == model.Email);
             if (existingUser == null)
             {
                 return BadRequest(new { success = false, message = "找不到該電子郵件地址。" });
@@ -103,7 +103,7 @@ namespace SportMatch.Controllers
                 return BadRequest(new { success = false, message = "登入資料不正確" });
             }
 
-            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+            var user = _context.User.FirstOrDefault(u => u.Email == model.Email);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
             {
@@ -122,7 +122,7 @@ namespace SportMatch.Controllers
         // 驗證用戶帳號與密碼
         private bool ValidateUser(string email, string password)
         {
-            var user = _context.Users.FirstOrDefault(u => u.Email == email);
+            var user = _context.User.FirstOrDefault(u => u.Email == email);
 
             if (user == null)
             {
@@ -146,7 +146,7 @@ namespace SportMatch.Controllers
             }
 
             // 檢查電子郵件是否已註冊
-            var existingUser = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+            var existingUser = _context.User.FirstOrDefault(u => u.Email == model.Email);
             if (existingUser != null)
             {
                 return BadRequest(new { success = false, message = "此電子郵件已註冊" });
@@ -194,7 +194,7 @@ namespace SportMatch.Controllers
             if (ModelState.IsValid)
             {
                 // 檢查郵箱是否已註冊
-                var existingUser = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+                var existingUser = _context.User.FirstOrDefault(u => u.Email == model.Email);
                 if (existingUser != null)
                 {
                     return BadRequest(new { success = false, message = "該郵箱已被註冊" });
@@ -212,14 +212,14 @@ namespace SportMatch.Controllers
                 // 創建新用戶
                 var user = new User
                 {
-                    Role = "User", // 設置角色為用戶
+                    RoleId = 1, // 設置角色為用戶
                     UserName = model.UserName,
                     Email = model.Email,
                     Password = hashedPassword, // 存儲加密後的密碼
-                    RegisterTime = DateTime.Now
+                    CreatedAt = DateTime.Now
                 };
 
-                _context.Users.Add(user);
+                _context.User.Add(user);
                 _context.SaveChanges();
 
                 return Ok(new { success = true, message = "註冊成功" });

@@ -350,95 +350,81 @@ function clearError(input) {
     input.classList.remove("error");
 }
 
-function toggleNotifications() {
-    const dropdown = document.querySelector(".notifications-dropdown");
-    dropdown.classList.toggle("active");
-}
 
-function toggleCart() {
-    const dropdown = document.querySelector(".cart-dropdown");
-    dropdown.classList.toggle("active");
-}
 
-function handleLogin(event) {
-    event.preventDefault();
-    const email = document.getElementById("email").value;
-    localStorage.setItem("loggedInEmail", email);
-    updateUIAfterLogin(email);
-    closeModal();
-}
 
-function handleLogout() {
-    localStorage.removeItem("loggedInEmail");
-    location.reload();
-}
 
-function handleSearch() {
-    const query = document.querySelector(".search-bar input").value;
-    alert(`搜尋: ${query}`);
-}
 
-function updateUIAfterLogin(email) {
-    document.querySelector(".btn-login").style.display = "none";
-    document.querySelector(".btn-register").style.display = "none";
-    document.querySelector(".user-email-container").style.display = "flex";
-     
-    document.querySelector(".cart-container").style.display = "flex";
-    document.querySelector(".notifications-container").style.display = "flex";
-}
 
-document.addEventListener("click", function (event) {
-    const notificationsDropdown = document.querySelector(
-        ".notifications-dropdown"
-    );
-    const cartDropdown = document.querySelector(".cart-dropdown");
-    if (
-        !event.target.closest(".btn-notifications") &&
-        !event.target.closest(".notifications-dropdown")
-    ) {
-        notificationsDropdown.classList.remove("active");
+    // 自訂確認框
+    function customConfirm(message, callback) {
+        let modal = document.getElementById("custom-confirm");
+        let confirmMessage = document.getElementById("confirm-message");
+        let confirmYes = document.getElementById("confirm-yes");
+        let confirmNo = document.getElementById("confirm-no");
+
+        confirmMessage.innerText = message; // 設定訊息
+        modal.style.display = "flex"; // 顯示確認框
+
+        // 點擊確定
+        confirmYes.onclick = function () {
+            modal.style.display = "none";
+            callback(true);
+        };
+
+        // 點擊取消
+        confirmNo.onclick = function () {
+            modal.style.display = "none";
+            callback(false);
+        };
     }
-    if (
-        !event.target.closest(".btn-cart") &&
-        !event.target.closest(".cart-dropdown")
-    ) {
-        cartDropdown.classList.remove("active");
-    }
-});
+
 // 檢查用戶是否登入
 function isLoggedIn() {
-    return localStorage.getItem("isLoggedIn") === "true";
+    return localStorage.getItem("isLoggedIn") === "true";  // 檢查 localStorage 是否有登入標記
 }
 
-// 用戶未登入時，詢問是否要登入
-function promptLogin(event) {
-    event.preventDefault(); // 防止跳轉
+// 登入函數
+function loginUser() {
+    localStorage.setItem("isLoggedIn", "true");  // 設定登入狀態
+    console.log("用戶已登入，狀態已儲存");  // 輸出確認
+}
 
-    if (!isLoggedIn()) {
-        let confirmLogin = confirm("您尚未登入，是否要立即登入？");
-        if (confirmLogin) {
-            openLoginModal(); // 打開登入模態框（假設已經有這個函式）
-        }
+// 退出登入
+function logoutUser() {
+    localStorage.removeItem("isLoggedIn");  // 移除登入標記
+    console.log("用戶已登出");
+}
+
+// 在頁面加載時檢查登入狀態
+document.addEventListener("DOMContentLoaded", function () {
+    if (isLoggedIn()) {
+        console.log("用戶已登入");
     } else {
-        // 如果已登入，正常跳轉
-        window.location.href = event.target.href;
+        console.log("用戶未登入");
+    }
+});
+
+// 攔截未登入的使用者
+function promptLogin(event) {
+    event.preventDefault();  // 防止預設跳轉
+    if (!isLoggedIn()) {
+        customConfirm("您尚未登入，是否要立即登入？", function (confirmLogin) {
+            if (confirmLogin) {
+                openLoginModal();  // 顯示登入彈窗
+            }
+        });
+    } else {
+        window.location.href = event.target.href;  // 允許跳轉
     }
 }
 
-// 為「配對系統」和「賽事資訊」添加事件監聽器
+// 綁定按鈕
 document.getElementById("matchingLink").addEventListener("click", promptLogin);
 document.getElementById("eventsLink").addEventListener("click", promptLogin);
 
 
-document.addEventListener("DOMContentLoaded", function () {
-    const modal = document.getElementById("loginModal");
 
-    modal.addEventListener("click", function (e) {
-        if (e.target === modal) {
-            closeModal();
-        }
-    });
-});
 
 
 // Select the hamburger menu and nav links
@@ -454,4 +440,30 @@ hamburgerMenu.addEventListener('click', () => {
 function toggleHamburgerMenu() {
     const navLinks = document.querySelector('.nav-links');
     navLinks.classList.toggle('active');
+}
+
+function switchLogin(type) {
+    // 切換按鈕的 active 類別
+    const memberButton = document.getElementById("memberLoginBtn");
+    const vendorButton = document.getElementById("vendorLoginBtn");
+
+    if (type === 'member') {
+        memberButton.classList.add("active");
+        vendorButton.classList.remove("active");
+    } else {
+        memberButton.classList.remove("active");
+        vendorButton.classList.add("active");
+    }
+
+    // 顯示對應的登入表單
+    const memberForm = document.getElementById("memberLoginForm");
+    const vendorForm = document.getElementById("vendorLoginForm");
+
+    if (type === 'member') {
+        memberForm.style.display = "block";
+        vendorForm.style.display = "none";
+    } else {
+        memberForm.style.display = "none";
+        vendorForm.style.display = "block";
+    }
 }

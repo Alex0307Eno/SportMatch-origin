@@ -1,6 +1,14 @@
 ﻿
 
 <main role="main" class="pb-3 container-fluid">
+    <!-- 自訂的確認框 -->
+    <div id="custom-confirm" class="confirm-modal" style="display:none;">
+        <div class="confirm-content">
+            <p id="confirm-message">您尚未登入，是否要立即登入？</p>
+            <button id="confirm-yes">確定</button>
+            <button id="confirm-no">取消</button>
+        </div>
+    </div>
 
     <!-- 運動商城區塊 - 左側 -->
     <aside class="shop-section left-shop">
@@ -93,7 +101,7 @@
                                 <p class="event-location">
                                     <i class="fas fa-location-dot"></i> 台北體育館
                                 </p>
-                                <button class="btn-event">立即報名</button>
+                                <button class="btn-event" id="btn-event1">立即報名</button>
                             </div>
                         </div>
                         <div class="carousel-slide">
@@ -106,7 +114,7 @@
                                 <p class="event-location">
                                     <i class="fas fa-location-dot"></i> 新莊體育館
                                 </p>
-                                <button class="btn-event">立即報名</button>
+                                <button class="btn-event" id="btn-event2">立即報名</button>
                             </div>
                         </div>
                         <div class="carousel-slide">
@@ -119,7 +127,7 @@
                                 <p class="event-location">
                                     <i class="fas fa-location-dot"></i> 台中體育館
                                 </p>
-                                <button class="btn-event">立即報名</button>
+                                <button class="btn-event" id="btn-event3">立即報名</button>
                             </div>
                         </div>
                     </div>
@@ -145,7 +153,7 @@
                             <span><i class="fas fa-shower"></i> 淋浴間</span>
                             <span><i class="fas fa-wifi"></i> WiFi</span>
                         </div>
-                        <button class="btn-venue">預約場地</button>
+                        <button class="btn-venue"id="btn-venue1">預約場地</button>
                     </div>
 
                 </div>
@@ -159,7 +167,7 @@
                             <span><i class="fas fa-shower"></i> 淋浴間</span>
                             <span><i class="fas fa-wifi"></i> WiFi</span>
                         </div>
-                        <button class="btn-venue">預約場地</button>
+                        <button class="btn-venue" id="btn-venue2">預約場地</button>
                     </div>
 
                 </div>
@@ -173,7 +181,7 @@
                             <span><i class="fas fa-shower"></i> 淋浴間</span>
                             <span><i class="fas fa-wifi"></i> WiFi</span>
                         </div>
-                        <button class="btn-venue">預約場地</button>
+                        <button class="btn-venue" id="btn-venue3">預約場地</button>
                     </div>
 
                 </div>
@@ -181,6 +189,9 @@
             </div>
         </div>
     </section>
+
+
+
     
 </main>
     <!-- 頁尾 -->
@@ -642,7 +653,7 @@
     #darkModeToggle {
         position: fixed;
         top: 20px;
-        right: 20px;
+        left: 20px;
         background-color: black; /* 預設黑色 */
         color: white;
         border: none;

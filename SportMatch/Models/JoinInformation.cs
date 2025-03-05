@@ -15,11 +15,9 @@ public partial class JoinInformation
 
     public int TeamId { get; set; }
 
-    public string PayStatus { get; set; } = null!;
-
     public virtual Event Event { get; set; } = null!;
 
     public virtual Team Team { get; set; } = null!;
 
-    public virtual UserDatum User { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

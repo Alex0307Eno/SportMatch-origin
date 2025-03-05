@@ -1,0 +1,282 @@
+@* @model TModel *@
+@* 編輯資訊 *@
+<div class="modal fade" id="userDataModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-6" id="userDataModalLabel">基本資料-編輯</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="user-name" class="col-form-label">姓名</label>
+                        <input type="text" class="form-control" id="user-name">
+                    </div>
+                    <div class="mb-3">
+                        <label for="user-gender" class="col-form-label">性別</label>
+                        <select class="form-select" aria-label="請選擇性別" id="user-gender">
+                            <option value="1">男</option>
+                            <option value="2">女</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="user-birthday" class="col-form-label">生日</label>
+                        <input type="date" class="form-control" id="user-birthday">
+                    </div>
+                    <div class="mb-3">
+                        <label for="user-password" class="col-form-label">密碼</label>
+                        <input type="password" class="form-control" id="user-password">
+                    </div>
+                    <label for="user-phone" class="col-form-label">手機</label>
+                    <div class="input-group mb-3 p-0">
+                        <input type="text" class="form-control" placeholder="請輸入欲變更的手機號碼" aria-label=""
+                               aria-describedby="button-addon2" id="user-phone">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">傳送驗證碼</button>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">儲存變更</button>
+            </div>
+        </div>
+    </div>
+</div>
+@* 新增付款 *@
+<div class="modal fade" id="userPaymentModal" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="userPaymentModalLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-6" id="userPaymentModalLabel">付款資訊-新增</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="user-cardNumber" class="col-form-label">卡號</label>
+                        <input type="number" class="form-control" id="user-cardNumber">
+                    </div>
+                    <div class="mb-3">
+                        <label for="user-cardType" class="col-form-label">卡片類型</label>
+                        <select class="form-select" aria-label="請選擇卡片類型" id="user-cardType">
+                            <option value="1">Visa</option>
+                            <option value="2">MasterCard</option>
+                            <option value="3">JCB</option>
+                        </select>
+                    </div>
+                    <label for="validityPeriod" class="col-form-label">有效日期</label>
+                    <div class="input-group mb-3 p-0">
+                        <input type="text" class="form-control" id="validityPeriod" placeholder="MM"
+                               aria-label="validityPeriod">
+                        <span class="input-group-text bg-opacity-10 border-0">/</span>
+                        <input type="text" class="form-control" placeholder="YY" aria-label="validityPeriod">
+                    </div>
+                    <div class="form-check form-switch">
+                        <label class="form-check-label" for="setDefaultPayment">設為預設卡片</label>
+                        <input class="form-check-input" type="checkbox" id="setDefaultPayment" checked>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">新增</button>
+            </div>
+        </div>
+    </div>
+</div>
+@* 刪除確認 *@
+<div class="modal fade" id="noticeDeleteModal" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="noticeDeleteModalLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header border-bottom-0">
+                <h1 class="modal-title fs-6" id="noticeDeleteModalLabel"><i
+                        class="fa-solid fa-circle-exclamation me-2"></i>確認要刪除？</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>將刪除<strong>卡號：**** **** **** *284</strong></p>
+            </div>
+            <div class="modal-footer border-top-0">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-danger">確認刪除</button>
+            </div>
+        </div>
+    </div>
+</div>
+@* 新增收貨地址 *@
+<div class="modal fade" id="userReceiveAddressModal" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="userPaymentModalLabel"
+     tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-6" id="userReceiveAddressModalLabel">宅配資訊-新增</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="user-receiveAddress" class="col-form-label">收貨地址</label>
+                        <div class="input-group p-0">
+                            <select class="form-select border-0" id="inputGroupSelect02">
+                                <option selected>請選擇縣市</option>
+                                <option value="1">基隆市</option>
+                                <option value="2">臺北市</option>
+                                <option value="3">新北市</option>
+                            </select>
+                            <input type="text" class="form-control" id="user-receiveAddress">
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="receivedName" class="col-form-label">收件人</label>
+                        <input type="text" class="form-control" id="receivedName">
+                    </div>
+                    <div class="mb-3">
+                        <label for="receivedPhone" class="col-form-label">手機</label>
+                        <input type="number" class="form-control" id="receivedPhone">
+                    </div>
+                    <div class="form-check form-switch">
+                        <label class="form-check-label" for="setDefaultReceived">設為預設收貨資訊</label>
+                        <input class="form-check-input" type="checkbox" id="setDefaultReceived" checked>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">新增</button>
+            </div>
+        </div>
+    </div>
+</div>
+@* 創建隊伍 *@
+<div class="modal fade" id="createTeamModal" aria-hidden="true" data-bs-backdrop="static" aria-labelledby="createTeamModalLabel" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-6" id="createTeamModalLabel">創立隊伍</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="mb-3">
+                        <label for="teamName" class="col-form-label">隊伍名稱</label>
+                        <input type="text" class="form-control" id="teamName" required="required">
+                    </div>
+                    <div class="mb-3">
+                        <label for="team-sportType" class="col-form-label">運動類型</label>
+                        <select class="form-select" aria-label="請選擇運動類型" id="team-sportType" required="required">
+                            @*TODO: 帶sportID / 帶出相對應的位置數量和名稱，創立者要先選他自己的位置；剩餘的就是要招募隊員位置 *@
+                            <option value="1">籃球</option>
+                            <option value="2">排球</option>
+                            <option value="3">羽球</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <p class="col-form-label">推薦的人選</p>
+                        <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active d-flex align-items-center justify-content-between gap-2"
+                                     data-bs-interval="10000">
+                                    <div class="card mb-0 p-3" style="max-width: 540px;">
+                                        <div class="row g-1 align-items-center">
+                                            <div class="col-md-4">
+                                                <img src="https://cdn.pixabay.com/photo/2019/08/29/12/10/model-4438821_1280.jpg" class="img-fluid rounded-circle " alt="...">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">姓名姓</h5>
+                                                    <p class="card-text"><small class="text-muted">攻擊手</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>  <div class="card mb-0 p-3" style="max-width: 540px;">
+                                        <div class="row g-1 align-items-center">
+                                            <div class="col-md-4">
+                                                <img src="https://cdn.pixabay.com/photo/2019/08/29/12/10/model-4438821_1280.jpg" class="img-fluid rounded-circle " alt="...">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">姓名姓</h5>
+                                                    <p class="card-text"><small class="text-muted">攻擊手</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>  <div class="card mb-0 p-3" style="max-width: 540px;">
+                                        <div class="row g-1 align-items-center">
+                                            <div class="col-md-4">
+                                                <img src="https://cdn.pixabay.com/photo/2019/08/29/12/10/model-4438821_1280.jpg" class="img-fluid rounded-circle " alt="...">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">姓名姓</h5>
+                                                    <p class="card-text"><small class="text-muted">攻擊手</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="card mb-0 p-3" style="max-width: 540px;">
+                                        <div class="row g-1 align-items-center">
+                                            <div class="col-md-4">
+                                                <img
+                                                    src="https://cdn.pixabay.com/photo/2019/08/29/12/10/model-4438821_1280.jpg"
+                                                    class="img-fluid rounded-circle " alt="...">
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">姓名姓</h5>
+                                                    <p class="card-text"><small class="text-muted">攻擊手</small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="carousel-item" data-bs-interval="2000">
+                                    <img src="..." class="d-block w-100" alt="...">
+                                </div>
+                                <div class="carousel-item">
+                                    <img src="..." class="d-block w-100" alt="...">
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button"
+                                    data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button"
+                                    data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="form-check form-switch">
+                        <label class="form-check-label" for="setPublic_hire">公開招募</label>
+                        <input class="form-check-input" type="checkbox" id="setPublic_hire" checked>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary">新增</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    div:not(#loginModal) {
+        .modal-content {
+            width: 100%;
+            background: white;
+            border: none;
+            padding: 0;
+
+            .modal-header {
+
+                h1 {
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+</style>

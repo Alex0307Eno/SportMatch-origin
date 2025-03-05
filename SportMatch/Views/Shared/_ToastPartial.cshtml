@@ -1,0 +1,33 @@
+@* @model TModel *@
+
+<div aria-live="polite" aria-atomic="true" class="toast-polite position-fixed top-10 end-0">
+    <div class="toast-container top-0 end-0 p-3"></div>
+</div>
+
+<script>
+    function showToast(message, type = '') {
+        const toastContainer = document.querySelector('.toast-container');
+        const toast = document.createElement('div');
+        toast.classList.add('toast',`bg-${type}`, 'text-white');
+        toast.setAttribute('role', 'alert');
+        toast.setAttribute('aria-live', 'assertive');
+        toast.setAttribute('aria-atomic', 'true');
+        toast.setAttribute('data-bs-animation', 'true');
+
+        toast.innerHTML = `
+            <div class="toast-body position-relative">
+                <button type="button" class="btn-close position-absolute" style="left: unset; top: 50%; right: 16px; transform: translateY(-50%);" data-bs-dismiss="toast" aria-label="Close"></button>
+                <p>${message}</p>
+            </div>
+        `;
+
+        toastContainer.appendChild(toast);
+
+        const bsToast = new bootstrap.Toast(toast);
+        bsToast.show();
+
+        setTimeout(() => {
+            toast.remove();
+        }, 3000);
+    }
+</script>

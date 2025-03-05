@@ -1,0 +1,28 @@
+ul.nav-underline {
+    padding: 0 1rem;
+    margin: 0 0 1rem;
+    position: relative;
+
+    li {
+        a {
+            color: darkgray;
+            font-size: 0.875rem;
+
+            &:focus {
+                outline: none;
+            }
+
+            &:focus-visible {
+                outline: 2px solid blue; /* 只在鍵盤導航時顯示 */
+            }
+        }
+    }
+
+    button {
+        position: absolute;
+        left: unset;
+        right: 0;
+        top: 50%;
+        transform: translateY(-30%);
+    }
+}

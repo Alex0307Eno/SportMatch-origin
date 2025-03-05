@@ -1,0 +1,427 @@
+@model dynamic
+
+@{
+    Layout = "_MemberLayout";
+}
+<h1 class="greeting fs-5 fw-bold mb-3" xmlns="http://www.w3.org/1999/html">歡迎，會員名(jrijgefgjorg)</h1>
+<div class="dashboard-body">
+    <div class="card flex-grow-1 onComing-event bg-transparent shadow-none p-0" style="">
+        <div class="header align-items-center">
+            <h3>即將到來的賽事<span class="badge bg-secondary ms-2">6</span></h3>
+        </div>
+        <div class="card-content">
+            <table class="table upComing-eventList position-relative bg-transparent mb-0">
+                <thead class="position-sticky top-0">
+                <tr>
+                    <th class="shadow-sm">
+                        <div>日期</div>
+                    </th>
+                    <th class="shadow-sm">
+                        <div>名稱</div>
+                    </th>
+                    <th class="shadow-sm">
+                        <div>類型</div>
+                    </th>
+                    <th class="shadow-sm">
+                        <div>倒數</div>
+                    </th>
+                    <th class="shadow-sm">
+                        <div>地點</div>
+                    </th>
+                    @* <th class="shadow-sm"><div>報名狀態</div></th> *@
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>
+                        <div class="dateBlock shadow-sm flex-shrink-0">
+                            <span class="month fw-bold bg-secondary text-light w-100">05</span>
+                            <span class="date fw-bold">17</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div>中彰皇家排球聯賽-社會組</div>
+                    </td>
+                    <td>
+                        <div>排球</div>
+                    </td>
+                    <td>
+                        <div>14天</div>
+                    </td>
+                    <td class="text-center">台中體育館</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="dateBlock shadow-sm flex-shrink-0">
+                            <span class="month fw-bold bg-secondary text-light w-100">05</span>
+                            <span class="date fw-bold">17</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div>中彰皇家排球聯賽-社會組</div>
+                    </td>
+                    <td>
+                        <div>排球</div>
+                    </td>
+                    <td>
+                        <div>14天</div>
+                    </td>
+                    <td class="text-center">台中體育館</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="dateBlock shadow-sm flex-shrink-0">
+                            <span class="month fw-bold bg-secondary text-light w-100">05</span>
+                            <span class="date fw-bold">17</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div>中彰皇家排球聯賽-社會組</div>
+                    </td>
+                    <td>
+                        <div>排球</div>
+                    </td>
+                    <td>
+                        <div>14天</div>
+                    </td>
+                    <td class="text-center">台中體育館</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="dateBlock shadow-sm flex-shrink-0">
+                            <span class="month fw-bold bg-secondary text-light w-100">05</span>
+                            <span class="date fw-bold">17</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div>中彰皇家排球聯賽-社會組</div>
+                    </td>
+                    <td>
+                        <div>排球</div>
+                    </td>
+                    <td>
+                        <div>14天</div>
+                    </td>
+                    <td class="text-center">台中體育館</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="dateBlock shadow-sm flex-shrink-0">
+                            <span class="month fw-bold bg-secondary text-light w-100">05</span>
+                            <span class="date fw-bold">17</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div>中彰皇家排球聯賽-社會組</div>
+                    </td>
+                    <td>
+                        <div>排球</div>
+                    </td>
+                    <td>
+                        <div>14天</div>
+                    </td>
+                    <td class="text-center">台中體育館</td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="dateBlock shadow-sm flex-shrink-0">
+                            <span class="month fw-bold bg-secondary text-light w-100">05</span>
+                            <span class="date fw-bold">17</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div>中彰皇家排球聯賽-社會組</div>
+                    </td>
+                    <td>
+                        <div>排球</div>
+                    </td>
+                    <td>
+                        <div>14天</div>
+                    </td>
+                    <td class="text-center">台中體育館</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="group">
+        <div class="card team-invites  h-100 mb-4">
+            <div class="header">
+                <h3>組隊邀請<span class="badge bg-secondary ms-2">4</span></h3>
+            </div>
+            <div class="card-content">
+                <ul class="invited_fromTeam">
+                    <li class="d-flex align-items-center justify-content-between p-2">
+                        <div class="d-flex flex-column flex-shrink-0">
+                            <p class="teamName fw-bold txt-overflow">隊伍名隊伍名隊伍名</p>
+                            <span class="when text-secondary mt-2">10分鐘前</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-primary">加入</button>
+                            <button class="btn btn-sm ">婉拒</button>
+                        </div>
+                    </li>
+                    <li class="d-flex align-items-center justify-content-between p-2">
+                        <div class="d-flex flex-column flex-shrink-0">
+                            <p class="teamName fw-bold txt-overflow">隊伍名</p>
+                            <span class="when text-secondary mt-2">10分鐘前</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-primary">加入</button>
+                            <button class="btn btn-sm ">婉拒</button>
+                        </div>
+                    </li>
+                    <li class="d-flex align-items-center justify-content-between p-2">
+                        <div class="d-flex flex-column flex-shrink-0">
+                            <p class="teamName fw-bold txt-overflow">隊伍名</p>
+                            <span class="when text-secondary mt-2">10分鐘前</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-primary">加入</button>
+                            <button class="btn btn-sm ">婉拒</button>
+                        </div>
+                    </li>
+                    <li class="d-flex align-items-center  justify-content-between p-2">
+                        <div class="d-flex flex-column flex-shrink-0">
+                            <p class="teamName fw-bold txt-overflow">隊伍名</p>
+                            <span class="when text-secondary mt-2">10分鐘前</span>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <button class="btn btn-sm btn-primary">加入</button>
+                            <button class="btn btn-sm ">婉拒</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="card myTeams p-0 bg-transparent shadow-none h-100">
+            <div class="header">
+                <h3>我的隊伍</h3>
+            </div>
+            <div class="card-content">
+                <!--邏輯：一起參加比賽次數前4多的組＋輔助(邀請/操作次數最多的) -->
+                @* 活躍度 = (參與比賽次數 * 3) + (聊天/邀請次數 * 2) + (成員加入數 * 1) *@
+                <div class="bg-white rounded-3 shadow-sm d-flex flex-column justify-content-between">
+                    <p class="teamName fw-bold fs-6 txt-overflow">超羽球雙星</p>
+                    <div class="member">
+                        <span class="userImg shadow-sm"><i class="fa-solid fa-circle-user"></i></span>
+                        <span class="userImg shadow-sm"><i class="fa-solid fa-circle-user"></i></span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3 shadow-sm d-flex flex-column justify-content-between">
+                    <p class="teamName fw-bold fs-6 txt-overflow">超排</p>
+                    <div class="member">
+                        <span class="userImg shadow-sm"><i class="fa-solid fa-circle-user"></i></span>
+                        <span class="userImg shadow-sm"><i class="fa-solid fa-circle-user"></i></span>
+                        <span class="userImg shadow-sm"><i class="fa-solid fa-circle-user"></i></span>
+                        <span class="userImg shadow-sm moreUser">+3</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3 shadow-sm d-flex flex-column justify-content-between">
+                    <p class="teamName fw-bold fs-6 txt-overflow">籃球火</p>
+                    <div class="member">
+                        <span class="userImg shadow-sm"><i class="fa-solid fa-circle-user"></i></span>
+                        <span class="userImg shadow-sm"><i class="fa-solid fa-circle-user"></i></span>
+                        <span class="userImg shadow-sm"><i class="fa-solid fa-circle-user"></i></span>
+                        <span class="userImg shadow-sm moreUser">+2</span>
+                    </div>
+                </div>
+                <div class="bg-white rounded-3 shadow-sm d-flex flex-column justify-content-between">
+                    <p class="teamName fw-bold fs-6 txt-overflow">排隊6666</p>
+                    <div class="member">
+                        <span class="userImg shadow-sm"><i class="fa-solid fa-circle-user"></i></span>
+                        <span class="userImg shadow-sm"><i class="fa-solid fa-circle-user"></i></span>
+                        <span class="userImg shadow-sm"><i class="fa-solid fa-circle-user"></i></span>
+                        <span class="userImg shadow-sm moreUser">+1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="group">
+        <h3>互動成就</h3>
+        <div class="card my-activity h-100 mb-4" style="">
+            <div class="card-content">
+                <p>
+                    加入隊伍
+                </p>
+                <div>05</div>
+            </div>
+        </div>
+        <div class="card my-activity" style="">
+            <div class="card-content">
+                <p>
+                    發送邀請
+                </p>
+                <div>
+                    15
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="card evens-record">
+        <div class="header">
+            <h3>賽事紀錄-長條圖</h3>
+        </div>
+        <div class="card-content">
+            <canvas id="myEventsReview" style="width: 100%; height: 100%"></canvas>
+        </div>
+    </div>
+    <div class="card order-record">
+        <div class="header">
+            <h3>購買記錄</h3>
+        </div>
+        <div class="card-content">
+            <table class="table memCt">
+                <thead>
+                <tr>
+                    <th class="text-center">&nbsp;</th>
+                    <th>訂單編號</th>
+                    <th>訂單日期</th>
+                    <th>品項</th>
+                    <th>金額</th>
+                </tr>
+                </thead>
+            </table>
+            <table class="table memCt collapse-wrapper">
+                <tbody>
+                <tr class="wrapTrigger">
+                    <td class="text-center">-</td>
+                    <td>efj49344</td>
+                    <td>2025-03-04 23:21:14</td>
+                    <td>品項*1</td>
+                    <td>590</td>
+                </tr>
+                <tr class="wrapBody mt-0">
+                    <td colspan="5" class="p-3">
+                        <div class="statusText d-flex align-items-center justify-content-between">
+                            <p>23:21</p>
+                            <p>09:57</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                        </div>
+                        <div class="orderStatus d-flex align-items-lg-start justify-content-lg-between py-3 px-4">
+                            <div class="bar bg-primary" style="height: 5px; width: calc(100% / 3 );"></div>
+                            <div class="bar bg-secondary" style="height: 5px; width: calc(100% / 3 );"></div>
+                            <div class="bar bg-secondary" style="height: 5px; width: calc(100% / 3 );"></div>
+                        </div>
+                        <div class="statusText d-flex align-items-center justify-content-between">
+                            <p>訂單成立</p>
+                            <p>待出貨</p>
+                            <p>已送達-待取貨</p>
+                            <p>訂單完成</p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table memCt collapse-wrapper collapsed">
+                <tbody>
+                <tr class="wrapTrigger">
+                    <td class="text-center">-</td>
+                    <td>efj49344</td>
+                    <td>2025-03-04 23:21:14</td>
+                    <td>品項*1</td>
+                    <td>590</td>
+                </tr>
+                <tr class="wrapBody mt-0">
+                    <td colspan="5" class="p-3">
+                        <div class="statusText d-flex align-items-center justify-content-between">
+                            <p>23:21</p>
+                            <p>09:57</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                        </div>
+                        <div class="orderStatus d-flex align-items-lg-start justify-content-lg-between py-3 px-4">
+                            <div class="bar bg-primary" style="height: 5px; width: calc(100% / 3 );"></div>
+                            <div class="bar bg-secondary" style="height: 5px; width: calc(100% / 3 );"></div>
+                            <div class="bar bg-secondary" style="height: 5px; width: calc(100% / 3 );"></div>
+                        </div>
+                        <div class="statusText d-flex align-items-center justify-content-between">
+                            <p>訂單成立</p>
+                            <p>待出貨</p>
+                            <p>已送達-待取貨</p>
+                            <p>訂單完成</p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table memCt collapse-wrapper collapsed">
+                <tbody>
+                <tr class="wrapTrigger">
+                    <td class="text-center">-</td>
+                    <td>efj49344</td>
+                    <td>2025-03-04 23:21:14</td>
+                    <td>品項*1</td>
+                    <td>590</td>
+                </tr>
+                <tr class="wrapBody mt-0">
+                    <td colspan="5" class="p-3">
+                        <div class="statusText d-flex align-items-center justify-content-between">
+                            <p>23:21</p>
+                            <p>09:57</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                        </div>
+                        <div class="orderStatus d-flex align-items-lg-start justify-content-lg-between py-3 px-4">
+                            <div class="bar bg-primary" style="height: 5px; width: calc(100% / 3 );"></div>
+                            <div class="bar bg-secondary" style="height: 5px; width: calc(100% / 3 );"></div>
+                            <div class="bar bg-secondary" style="height: 5px; width: calc(100% / 3 );"></div>
+                        </div>
+                        <div class="statusText d-flex align-items-center justify-content-between">
+                            <p>訂單成立</p>
+                            <p>待出貨</p>
+                            <p>已送達-待取貨</p>
+                            <p>訂單完成</p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <table class="table memCt collapse-wrapper collapsed">
+                <tbody>
+                <tr class="wrapTrigger">
+                    <td class="text-center">-</td>
+                    <td>efj49344</td>
+                    <td>2025-03-04 23:21:14</td>
+                    <td>品項*1</td>
+                    <td>590</td>
+                </tr>
+                <tr class="wrapBody mt-0">
+                    <td colspan="5" class="p-3">
+                        <div class="statusText d-flex align-items-center justify-content-between">
+                            <p>23:21</p>
+                            <p>09:57</p>
+                            <p>&nbsp;</p>
+                            <p>&nbsp;</p>
+                        </div>
+                        <div class="orderStatus d-flex align-items-lg-start justify-content-lg-between py-3 px-4">
+                            <div class="bar bg-primary" style="height: 5px; width: calc(100% / 3 );"></div>
+                            <div class="bar bg-secondary" style="height: 5px; width: calc(100% / 3 );"></div>
+                            <div class="bar bg-secondary" style="height: 5px; width: calc(100% / 3 );"></div>
+                        </div>
+                        <div class="statusText d-flex align-items-center justify-content-between">
+                            <p>訂單成立</p>
+                            <p>待出貨</p>
+                            <p>已送達-待取貨</p>
+                            <p>訂單完成</p>
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    @* <div class="card reason-views"> *@
+    @*     <div class="header"> *@
+    @*         <h3>最近瀏覽</h3> *@
+    @*     </div> *@
+    @*     <div class="card-content"></div> *@
+    @* </div> *@
+</div>
+@section scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" asp-append-version="true"></script>
+    <script src="/Views/MemberCenter/Index.cshtml.js" asp-append-version="true"></script>
+}

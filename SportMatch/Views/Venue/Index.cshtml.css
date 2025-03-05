@@ -1,0 +1,116 @@
+/*左-篩選*/
+aside {
+    max-width: 266px;
+    height: fit-content;
+    flex-shrink: 0;
+    border-radius: 16px;
+    padding: 16px;
+    background-color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+    span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid darkgray;
+        font-size: 14px;
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+
+        &.selected {
+            background-color: darkgray;
+            font-weight: bold;
+            color: white;
+        }
+    }
+
+    .openTime {
+        font-size: 14px;
+    }
+}
+
+/*右-場地*/
+.venues-section {
+
+    .headerRow {
+
+        .result-count {
+        }
+    }
+
+    .venue-area {
+
+        .card {
+            overflow: hidden;
+            cursor: pointer;
+
+            &.removing {
+                opacity: 0;
+                transform: scale(0.8);
+                transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+            }
+
+            /*.img {*/
+            /*    min-width: 250px;*/
+            /*    overflow: hidden;*/
+            /*    */
+            /*    img {*/
+            /*        width: 100%;*/
+            /*        object-fit: cover;*/
+            /*        transition: all 3s;*/
+            /*    }*/
+            /*}*/
+
+            img {
+                min-width: 250px;
+                object-fit: cover;
+                transition: all 0.3s;
+            }
+
+            &:hover {
+                box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+
+                img {
+                    transform: scale(1.1);
+                }
+            }
+
+            .card-body {
+
+                p {
+                    i {
+                        width: 16px;
+                        height: 16px;
+                    }
+                }
+            }
+        }
+
+        &.grid {
+            display: grid;
+            grid-auto-columns: initial;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 16px;
+        }
+
+        &.list {
+            display: unset;
+
+            .card {
+                display: flex;
+                flex-direction: row;
+                margin: 0 0 16px;
+
+                &:last-of-type {
+                    margin: 0;
+                }
+
+                img {
+                    width: 21%;
+                }
+            }
+        }
+    }
+}

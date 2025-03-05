@@ -1,0 +1,183 @@
+@model List<SportMatch.Models.MenuItem>
+
+@{
+    var currentUrl = Context.Request.Path; // 取得當前 URL
+    var menuItems = Model ?? new List<MenuItem>(); // 避免 Model 為 null
+}
+
+<nav id="sideNav" class="SideNav">
+    <ul class="nav">
+        @foreach (var item in menuItems)
+        {
+            var isActive = currentUrl == item.Url ? "active" : ""; // 判斷是否為當前頁面
+            <li class="nav-child">
+                <a class="nav-link @isActive" href="@item.Url" data-bs-container="body" data-bs-toggle="popover" data-bs-trigger="manual"  data-bs-placement="right" data-bs-offset="0,10" data-bs-content="@item.Name">
+                    <i class="@item.Icon"></i> 
+                    <p>@item.Name</p>
+                    <i class="fa-solid fa-chevron-right"></i>
+                </a>
+            </li>
+        }
+    </ul>
+    <button id="toggleNav" class="btn mt-4 float-end"><i class="fa-solid fa-outdent"></i></button>
+</nav>
+
+<style>
+    /* 側邊列表 */
+    .SideNav {
+        width: 15%;
+        min-width: 247px;
+        height: fit-content;
+        border-radius: 0 16px 16px 0;
+        padding: 16px;
+        background-color: white;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        transition: all 0.3s;
+        
+        ul{
+            position: relative;
+            
+            &::before {
+                content: "";
+                width: 100%;
+                height: 1px;
+                background-color: lightgrey;
+                position: absolute;
+                bottom: -16px;
+            }
+            
+            li {
+                width: 100%;
+                list-style: none;
+                text-decoration: none;
+
+                &:not(:last-of-type) {
+                    margin-bottom: 0.5rem;
+                }
+
+                a {
+                    display: flex;
+                    width: inherit;
+                    color: black;
+                    font-weight: bold;
+                    text-decoration: none;
+                    padding: 1rem;
+                    border-radius: 0.25rem;
+                    transition: all 0.3s;
+                    position: relative;
+
+                    &:active,
+                    &.active,
+                    &:hover {
+                        background-color: lightgray;
+                    }
+
+                    &:hover {
+                        .fa-chevron-right {
+                            right: 0.85rem;
+                        }
+                    }
+
+                    i:first-of-type {
+                        margin-right: 1rem;
+                    }
+
+                    &:focus {
+                        outline: none;
+                    }
+
+                    &:focus-visible {
+                        outline: 2px solid blue; /* 只在鍵盤導航時顯示 */
+                    }
+
+                    .fa-chevron-right {
+                        font-size: 0.85rem;
+                        color: darkgray;
+                        position: absolute;
+                        top: 50%;
+                        left: unset;
+                        right: 1rem;
+                        transform: translateY(-50%);
+                        transition: all 0.3s;
+                    }
+                }
+            }
+        }
+
+        &.min {
+            min-width: unset;
+            width: 83px;
+            
+            ul {
+                li {
+                    a {
+                        align-items: center;
+                        justify-content: center;
+                        padding-left: 0;
+                        padding-right: 0;
+                        
+                        i {
+                            font-size: 23px;
+                            transition: unset;
+                            
+                            &:first-of-type {
+                                margin-right: 0;
+                            }
+                            
+                            &:last-of-type {
+                                visibility: hidden;
+                            }
+                        }
+                        
+                        p {
+                            display: none;
+                        }
+                    }
+                }
+            }
+            
+            button {
+                i {
+                    font-size: 23px;
+                }
+            }
+        }
+
+        .popover.bs-popover-right {
+            padding: 10px;
+            font-weight: bold;
+        }
+    }
+</style>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    let toggleSideNav_btn = document.getElementById("toggleNav");
+    let sideNav = document.getElementById('sideNav');
+    
+    toggleSideNav_btn.addEventListener("click", function () {
+        let icon = this.querySelector("i");
+        if ( sideNav.classList.contains('min')) {
+            icon.classList.remove('fa-indent');
+            icon.classList.add('fa-outdent');
+            sideNav.classList.remove('min')
+        } else {
+            icon.classList.remove('fa-outdent');
+            icon.classList.add('fa-indent');
+            sideNav.classList.add('min')
+        }
+    });
+
+    document.querySelectorAll('[data-bs-toggle="popover"]').forEach((popoverEl) => {
+        let bsPopover = new bootstrap.Popover(popoverEl, { trigger: 'manual' });
+
+        popoverEl.addEventListener('mouseenter', () => {
+            if (document.getElementById('sideNav').classList.contains('min')) {
+                bsPopover.show();
+            }
+        });
+
+        popoverEl.addEventListener('mouseleave', () => {
+            bsPopover.hide();
+        });
+    });
+</script>

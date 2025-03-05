@@ -1,0 +1,656 @@
+/*基本變數*/
+:root {
+    --font-family: "Arial", sans-serif;
+    --line-height: 1.6;
+}
+
+/*通用樣式重置*/
+body,
+h1,
+p,
+a,
+form,
+input,
+button {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Arial", sans-serif;
+}
+
+/*基本排版*/
+body {
+    font-family: var(--font-family);
+}
+
+/*導航欄樣式*/
+header {
+    background: white;
+    box-shadow: var(--shadow);
+    width: 100%;
+    z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-family: "Galada", serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 2rem;
+        }
+
+        .main-nav {
+            display: flex;
+            align-items: center;
+            flex: 1;
+            justify-content: center;
+
+            ul {
+                display: flex;
+                gap: 2rem;
+                list-style: none;
+                margin: 0;
+                padding: 0;
+            }
+        }
+    }
+}
+
+.container-fluid {
+    padding: 0;
+
+    main {
+
+        .main-wrap {
+            width: 100%;
+            min-height: 59vh;
+            margin-top: 66px;
+            padding: 16px 0;
+            display: flex;
+            background-color: var(--light-bg);
+
+            .main-content {
+                width: 100%;
+                margin: 0 16px;
+
+                /*文字限縮顯示*/
+                .txt-overflow {
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    white-space: nowrap;
+                }
+                
+                /*按鈕文字不換行*/
+                button {
+                    text-wrap: nowrap;
+
+                    p{
+                        text-wrap: nowrap;
+                    }
+                }
+                /*btn-點擊之外的匡線*/
+                button.btn {
+                    &:focus {
+                        border: none;
+                        box-shadow: none !important;
+                    }
+
+                    &:not(:focus ) {
+                        border: none !important;
+                        box-shadow: none !important;
+                    }
+                }
+
+                .data-container {
+                    min-height: 84vh;
+                    padding: 16px;
+                    background-color: white;
+                    border-radius: 16px;
+
+                    /*分頁tab*/
+                    ul.nav-underline {
+                        padding: 0 1rem;
+                        margin: 0 0 1rem;
+                        position: relative;
+
+                        li {
+                            a {
+                                color: darkgray;
+                                font-size: 0.875rem;
+
+                                &:focus {
+                                    outline: none;
+                                }
+
+                                &:focus-visible {
+                                    outline: 2px solid blue; /* 只在鍵盤導航時顯示 */
+                                }
+                            }
+                        }
+
+                        button {
+                            position: absolute;
+                            left: unset;
+                            right: 0;
+                            top: 50%;
+                            transform: translateY(-30%);
+                        }
+                    }
+
+                    /*通知中心-訊息清單*/
+                    ul.notification-list {
+                        display: flex;
+                        align-items: center;
+                        padding: 0 1rem;
+
+
+                        li {
+                            width: 100%;
+                            border-radius: 8px;
+                            background-color: lightgray;
+                            padding: 1rem;
+                            gap: 1rem;
+                            position: relative;
+
+                            .notifyIcon {
+                                width: 4rem;
+                                height: 4rem;
+                                background-color: #d8e5fb;
+                                display: flex;
+                                align-items: center;
+                                justify-content: center;
+                                border-radius: 50%;
+                                overflow: hidden;
+
+                                i {
+                                    font-size: 1.25rem;
+                                    color: white;
+                                }
+                            }
+
+                            &.unread {
+                                background-color: aliceblue;
+                            }
+
+                            .content {
+                                width: 71%;
+                                max-width: 71%;
+                                line-height: 1.25rem;
+                                flex-shrink: 0;
+
+                                strong {
+                                    font-weight: bold;
+                                }
+
+                                .time {
+                                    color: darkgray;
+                                }
+                            }
+
+                            .actions {
+                                position: absolute;
+                                left: unset;
+                                right: 1rem;
+                                top: 50%;
+                                transform: translateY(-50%);
+                            }
+                        }
+                    }
+
+                    /*tab內容容器*/
+                    .tab-wrapper {
+
+                        .tab-content {
+                            padding: 0 0 0 1rem;
+                            visibility: hidden;
+                            opacity: 0;
+                            height: 0;
+                            overflow: hidden;
+                            transition: opacity 0.3s ease-in-out;
+
+                            table {
+                                border: 1px solid lightgray;
+                                font-size: 14px;
+                                margin-bottom: 0;
+
+                                tr {
+                                    border-bottom: 1px solid lightgray;
+
+                                    &:last-of-type {
+                                        border-bottom: none;
+                                    }
+                                }
+
+                                th {
+                                    background-color: lightgray;
+                                }
+
+                                td {
+                                    .status {
+                                        text-wrap: nowrap;
+                                        border: 1px solid green;
+                                        padding: 2px 4px;
+
+                                        &.default {
+                                            border-color: lightgreen;
+                                            color: green;
+                                        }
+
+                                        &.cancel {
+                                            border-color: darkgray;
+                                            color: darkgray;
+                                        }
+
+                                        &.leader {
+                                            border-color: dodgerblue;
+                                            color: dodgerblue;
+                                        }
+                                    }
+                                    button {
+                                        font-size: 12px;
+                                    }
+
+                                    table {
+                                        border-radius: 8px;
+                                        overflow: hidden;
+
+                                        th,
+                                        td {
+                                            vertical-align: center;
+                                            padding: 0 0.85rem;
+
+                                            &:nth-of-type(1) {
+                                                text-align: left;
+                                            }
+                                        }
+
+                                        td {
+                                            padding: 0.85rem;
+                                        }
+                                    }
+                                }
+
+                                th,
+                                td {
+                                    vertical-align: middle;
+                                    position: relative;
+
+                                    &:after{
+                                        content: '';
+                                        width: 1px;
+                                        height: 30%;
+                                        background: lightgrey;
+                                        position: absolute;
+                                        left: unset;
+                                        right: 0;
+                                        top: 50%;
+                                        transform: translateY(-50%);
+                                    }
+
+                                    &:last-of-type {
+                                        &:after{
+                                            display: none;
+                                        }
+                                    }
+                                }
+                            }
+
+                            /*喜愛的運動*/
+                            &.favSport {
+                                display: grid;
+                                grid-template-columns: 1fr 1fr 1fr;
+                                gap: 1rem;
+                            }
+                            /*即將到來的賽事*/
+                            &.onComingEvent {
+
+                            }
+                        }
+                        .tab-content.active {
+                            visibility: visible;
+                            opacity: 1;
+                            height: auto;
+                        }
+                    }
+
+                    /*會員中心共用-table*/
+                    table.memCt {
+                        border: 1px solid lightgray;
+                        font-size: 14px;
+                        margin-bottom: 0;
+
+                        tr {
+                            border-bottom: 1px solid lightgray;
+                        }
+
+                        th {
+                            background-color: lightgray;
+                        }
+
+                        td {
+                            .status {
+                                border: 1px solid green;
+                                padding: 2px 4px;
+                                text-wrap: nowrap;
+
+                                &.default {
+                                    border-color: lightgreen;
+                                    color: green;
+                                }
+                            }
+                            button {
+                                font-size: 12px;
+                            }
+                        }
+
+                        th,
+                        td {
+                            vertical-align: middle;
+                            position: relative;
+
+                            &:after{
+                                content: '';
+                                width: 1px;
+                                height: 30%;
+                                background: lightgrey;
+                                position: absolute;
+                                left: unset;
+                                right: 0;
+                                top: 50%;
+                                transform: translateY(-50%);
+                            }
+
+                            &:last-of-type {
+                                &:after{
+                                    display: none;
+                                }
+                            }
+                        }
+                    }
+
+                    /*計數樣式*/
+                    .recordCount{
+                        font-size: 13px;
+                        padding: 4px 8px;
+                        border-radius: 16px;
+                    }
+
+                    
+
+                    /*加入我的最愛按鈕*/
+                    button.favBtn {
+
+                        &:focus {
+                            border: none;
+                            box-shadow: none;
+                        }
+
+                        &:not(:focus ) {
+                            border: none;
+                            box-shadow: none;
+                        }
+                        i {
+                            font-size: 20px;
+                            color: #ff5e62;
+
+                            &.fa-regular{
+                                color: black;
+                            }
+                        }
+                    }
+
+                    /*下拉選單樣式*/
+                    .accordion {
+                        .accordion-header {
+                            .accordion-button {
+                                .blockTitle {
+                                    font-size: 15px !important;
+                                }
+
+                                i {
+                                    transition: all 0.3s;
+                                }
+
+                                &::after {
+                                    display: none;
+                                }
+
+                                &:focus {
+                                    outline: none;
+                                    box-shadow: none;
+                                }
+
+                                &:not(.collapsed) {
+                                    background-color: unset;
+
+                                    i {
+                                        rotate: 180deg;
+                                    }
+                                }
+
+                                &.collapsed {
+
+                                    i {
+                                        rotate: 0deg;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    .blockTitle {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        font-weight: bold;
+                        border-bottom: 1px solid;
+                        padding: 0 0 10px;
+                        margin-top: 0.125rem;
+                    }
+
+                    /*移除特效*/
+                    .removing {
+                        opacity: 0;
+                        transform: scale(0.8);
+                        transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+                    }
+
+                    /*收合結構*/
+                    .collapse-wrapper {
+                        height: fit-content;
+                        margin-bottom: 16px;
+                        transition: all 0.3s ease-in-out;
+
+                        &:last-of-type {
+                            margin-bottom: 0;
+                        }
+
+                        .wrapHeader {
+                            width: 100%;
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            cursor: pointer;
+
+                            .blockTitle {
+                                justify-content: unset;
+                            }
+
+                            p {
+                                width: 100%;
+                                cursor: pointer;
+
+                                i {
+                                    rotate: 0deg;
+                                    transition: all 0.3s;
+                                }
+
+                            }
+                        }
+
+                        .wrapTrigger {
+                            cursor: pointer;
+                        }
+
+                        .wrapBody {
+                            height: fit-content;
+                            max-height: 500px;
+                            padding-top: 16px;
+                            transition: all 0.3s;
+
+                            /*我的最愛-場地*/
+                            .venue-part,
+                            .shop-part {
+                                display: flex;
+                                flex-wrap: wrap;
+                                gap: 1rem;
+
+                                .card {
+                                    width: calc((100% - 2rem) / 2);
+
+                                    &.product {
+                                        width: calc((100% - 2rem) / 3);
+                                    }
+
+                                    .row {
+
+                                        div {
+                                            position: relative;
+
+                                            img {
+                                                height: 100%;
+                                                object-fit: cover;
+                                            }
+
+                                            button.favBtn {
+                                                position: absolute;
+                                                left: 1px;
+                                                top: 1px;
+                                                z-index: 2;
+                                            }
+                                        }
+
+                                        .card-body {
+                                            p {
+                                                font-size: 14px;
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                            
+                            /*可收合表格*/
+                            tr {
+                                opacity: 1;
+                                transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+                            }
+                        }
+
+                        /*收起*/
+                        &.collapsed {
+
+                            .wrapHeader {
+                                /*margin-bottom: 0 !important;*/
+
+                                i {
+                                    rotate: 180deg;
+                                }
+                            }
+
+                            .wrapBody {
+                                max-height: 0;
+                                padding-top: 0;
+                                overflow: hidden;
+                            }
+                            
+                            tr.wrapBody {
+                                display: none;
+                                opacity: 0;
+                            }
+                        }
+                    }
+                    
+                    /*tab線條版*/
+                    ul.nav.nav-underline {
+                        margin-bottom: 2rem;
+                        
+                        li {
+                            cursor: pointer;
+                            
+                            a {
+                                font-size: 16px;
+                                position: relative;
+                                cursor: pointer;
+                                
+                                &:before {
+                                    content: '';
+                                    width: 0;
+                                    height: 4px;
+                                    background: var(--primary-color);
+                                    border-radius: 4px;
+                                    position: absolute;
+                                    top: unset;
+                                    bottom: -3px;
+                                    left: 0;
+                                    transition: width 0.4s ease-out, width 0.4s ease-out;
+                                }
+                                &:hover {
+                                    font-weight: bold;
+                                }
+
+                                &.active {
+                                    color: var(--primary-color);
+                                    font-weight: bold;
+
+                                    &:before {
+                                        width: 100%;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .data-container.dashboard {
+                    background-color: unset;
+                }
+
+                /*關於我們*/
+                &.ContactUsPage {
+                    margin: 0;
+
+                    .data-container {
+                        width: 100%;
+                        background-color: transparent;
+                    }
+                }
+
+                /*場地介紹*/
+                &.venusPage {
+                    margin: 0;
+                    position: relative;
+
+                    .data-container {
+                        width: 100%;
+                        display: flex;
+                        background-color: transparent;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+/*RWD-MemberCenter-Index*/

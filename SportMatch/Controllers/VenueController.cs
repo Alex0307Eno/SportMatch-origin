@@ -7,18 +7,18 @@ namespace SportMatch.Controllers;
 public class VenueController : Controller
 {
     
-    private readonly MyDbContext _context;
-    public VenueController(MyDbContext context, ILogger<VenueController> logger)
-    {
-        _context = context;
-    }
+    //private readonly MyDbContext _context;
+    //public VenueController(MyDbContext context, ILogger<VenueController> logger)
+    //{
+    //    _context = context;
+    //}
 
     // GET
     public async Task<IActionResult> Index()
     {
-        var venues = await _context.Venues.ToListAsync();
+        //var venues = await _context.Venues.ToListAsync();
         
-        return View(venues);
+        return View();
     }
 
 

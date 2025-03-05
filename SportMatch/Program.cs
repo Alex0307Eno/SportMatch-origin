@@ -68,6 +68,6 @@ app.UseEndpoints(endpoints =>
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=MemberCenter}/{action=Index}/{id?}");
 
 app.Run();

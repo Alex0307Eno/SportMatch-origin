@@ -41,7 +41,7 @@ public partial class Team
 
     public virtual Sport Sport { get; set; } = null!;
 
-    public virtual ICollection<TeamMemberMapping> TeamMemberMappingTeamIdLeaderNavigations { get; set; }
+    public virtual ICollection<TeamMemberMapping> TeamMemberMappingTeamIdLeaderNavigations { get; set; } = new List<TeamMemberMapping>();
 
     public virtual ICollection<TeamMemberMapping> TeamMemberMappingTeamIdMemberNavigations { get; set; } = new List<TeamMemberMapping>();
 

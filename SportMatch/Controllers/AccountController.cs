@@ -9,9 +9,11 @@ using System.Security.Cryptography;
 using System.Web;
 using System.Text.Json.Nodes;
 using System.Net.Http.Headers;
+using Microsoft.EntityFrameworkCore;
 
 namespace SportMatch.Controllers
 {
+
     public class AccountController : Controller
     {
         private readonly SportMatchContext _context;
@@ -41,57 +43,102 @@ namespace SportMatch.Controllers
             return View(); // 返回忘記密碼視圖
         }
 
-       
-
-        // 發送臨時密碼的 API
+        // 發送忘記密碼驗證碼
         [HttpPost]
-        [Route("ForgotPassword/SendTempPassword")]
-        public IActionResult SendTempPassword([FromBody] EmailModel model)
+        public IActionResult SendForgotPasswordVerificationCode([FromBody] EmailModel model)
         {
-            if (model == null || string.IsNullOrEmpty(model.Email))
+            if (string.IsNullOrEmpty(model.Email))
             {
                 return BadRequest(new { success = false, message = "電子郵件不可為空" });
             }
 
-            // 檢查電子郵件是否已註冊
-            var existingUser = _context.User.FirstOrDefault(u => u.Email == model.Email);
-            if (existingUser == null)
+            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+
+            if (user == null)
             {
-                return BadRequest(new { success = false, message = "找不到該電子郵件地址。" });
+                return BadRequest(new { success = false, message = "找不到該電子郵件地址" });
             }
 
-            // 生成一個臨時密碼
-            string tempPassword = GenerateTempPassword();
+            // 生成忘記密碼驗證碼
+            var verificationCode = GenerateVerificationCode();
 
-            // ✅ 加密臨時密碼並存入資料庫
-            existingUser.Password = BCrypt.Net.BCrypt.HashPassword(tempPassword);
+            // 儲存驗證碼和電子郵件
+            TempData["VerificationCode"] = verificationCode;
+            TempData["Email"] = model.Email;
+            TempData["LastSentTime"] = DateTime.Now;
+
+            // 發送電子郵件
+            bool isSent = SendEmail(model.Email, "您的忘記密碼驗證碼", $"您的驗證碼是：{verificationCode}，請在10分鐘內使用此驗證碼重設您的密碼。");
+
+            if (isSent)
+            {
+                return Ok(new { success = true, message = "驗證碼已發送" });
+            }
+            else
+            {
+                return BadRequest(new { success = false, message = "發送驗證碼失敗" });
+            }
+        }
+
+        // 驗證忘記密碼驗證碼
+        [HttpPost]
+        public IActionResult VerifyForgotPasswordVerificationCode([FromBody] VerificationModel model)
+        {
+            if (!VerifyVerificationCode(model.VerificationCode!))
+            {
+                return BadRequest(new { success = false, message = "驗證碼錯誤，請重新發送驗證碼" });
+            }
+
+            return Ok(new { success = true, message = "驗證碼正確" });
+        }
+        // 更新密碼
+        [HttpPost]
+        public IActionResult ResetPassword([FromBody] ResetPasswordModel model)
+        {
+            if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.NewPassword))
+            {
+                return BadRequest(new { success = false, message = "請提供有效的電子郵件地址和新密碼" });
+            }
+
+            // 檢查電子郵件是否存在
+            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+            if (user == null)
+            {
+                return BadRequest(new { success = false, message = "找不到該電子郵件地址" });
+            }
+
+            // 檢查驗證碼是否有效
+            var storedVerificationCode = TempData["VerificationCode"]?.ToString();
+            var lastSentTime = TempData["LastSentTime"] as DateTime?;
+
+            if (string.IsNullOrEmpty(storedVerificationCode) || lastSentTime == null)
+            {
+                return BadRequest(new { success = false, message = "驗證碼已過期，請重新發送" });
+            }
+
+            // 驗證新密碼的強度（這裡只是舉例，根據需求進行修改）
+            if (model.NewPassword.Length < 8 || !model.NewPassword.Any(char.IsUpper) || !model.NewPassword.Any(char.IsLower) || !model.NewPassword.Any(char.IsDigit))
+            {
+                return BadRequest(new { success = false, message = "新密碼必須包含至少8個字符，並且包括大小寫字母和數字" });
+            }
+            // 使用 bcrypt 進行密碼哈希
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
+
+            // 更新密碼
+            user.Password = hashedPassword;
             _context.SaveChanges();
 
-            
-            // 這裡可以選擇發送電子郵件
-            bool isSent = SendEmail(model.Email, "您的驗證碼", $"您的驗證碼是：{tempPassword},請盡快修改密碼");
+            // 清除驗證碼資料
+            TempData.Remove("VerificationCode");
+            TempData.Remove("Email");
+            TempData.Remove("LastSentTime");
 
-            if (!isSent)
-            {
-                return StatusCode(500, new { success = false, message = "電子郵件發送失敗，請稍後再試。" });
-            }
-
-            return Ok(new { success = true, tempPassword = tempPassword });
+            return Ok(new { success = true, message = "密碼已成功更新" });
         }
 
 
 
-        // 生成臨時密碼的邏輯
-        // 使用 RandomNumberGenerator 來生成臨時密碼
-        private string GenerateTempPassword()
-        {
-            using (var rng = RandomNumberGenerator.Create())
-            {
-                byte[] buffer = new byte[8]; // 8 bytes 產生一個16進制的隨機數字
-                rng.GetBytes(buffer);
-                return BitConverter.ToString(buffer).Replace("-", "").ToLower(); // 轉換為小寫字母
-            }
-        }
+
 
 
         // 登入接口
@@ -103,7 +150,7 @@ namespace SportMatch.Controllers
                 return BadRequest(new { success = false, message = "登入資料不正確" });
             }
 
-            var user = _context.User.FirstOrDefault(u => u.Email == model.Email);
+            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
             {
@@ -122,7 +169,7 @@ namespace SportMatch.Controllers
         // 驗證用戶帳號與密碼
         private bool ValidateUser(string email, string password)
         {
-            var user = _context.User.FirstOrDefault(u => u.Email == email);
+            var user = _context.Users.FirstOrDefault(u => u.Email == email);
 
             if (user == null)
             {
@@ -146,7 +193,7 @@ namespace SportMatch.Controllers
             }
 
             // 檢查電子郵件是否已註冊
-            var existingUser = _context.User.FirstOrDefault(u => u.Email == model.Email);
+            var existingUser = _context.Users.FirstOrDefault(u => u.Email == model.Email);
             if (existingUser != null)
             {
                 return BadRequest(new { success = false, message = "此電子郵件已註冊" });
@@ -172,6 +219,8 @@ namespace SportMatch.Controllers
                 return BadRequest(new { success = false, message = "發送驗證碼失敗" });
             }
         }
+      
+
 
         // 驗證註冊用戶的驗證碼
         [HttpPost]
@@ -194,7 +243,7 @@ namespace SportMatch.Controllers
             if (ModelState.IsValid)
             {
                 // 檢查郵箱是否已註冊
-                var existingUser = _context.User.FirstOrDefault(u => u.Email == model.Email);
+                var existingUser = _context.Users.FirstOrDefault(u => u.Email == model.Email);
                 if (existingUser != null)
                 {
                     return BadRequest(new { success = false, message = "該郵箱已被註冊" });
@@ -219,7 +268,7 @@ namespace SportMatch.Controllers
                     CreatedAt = DateTime.Now
                 };
 
-                _context.User.Add(user);
+                _context.Users.Add(user);
                 _context.SaveChanges();
 
                 return Ok(new { success = true, message = "註冊成功" });

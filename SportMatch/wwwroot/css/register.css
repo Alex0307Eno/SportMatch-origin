@@ -94,6 +94,34 @@ body {
     border-radius: 8px;
     font-size: 1rem;
 }
+/*密碼強度*/
+.password-strength {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 10px;
+}
+
+.strength-indicator {
+    width: 30%;
+    height: 10px;
+    background-color: #ccc;
+    border-radius: 5px;
+}
+
+.strength-weak {
+    background-color: red;
+}
+
+.strength-medium {
+    background-color: yellow;
+}
+
+.strength-strong {
+    background-color: green;
+}
+
 
 /* 發送驗證碼按鈕 */
 .btn-send-code {
@@ -218,3 +246,9 @@ body {
     .btn-login-home i {
         font-size: 18px;
     }
+button:disabled {
+    background-color: #d3d3d3; /* 灰色背景 */
+    border: 1px solid #ccc; /* 灰色邊框 */
+    color: #999; /* 灰色文字 */
+    cursor: not-allowed; /* 禁止點擊的指標 */
+}

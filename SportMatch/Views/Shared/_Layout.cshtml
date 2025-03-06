@@ -1,4 +1,25 @@
 ﻿@model SportMatch.Models.User
+<style>
+    .password-container {
+        display: flex;
+        align-items: center;
+        position: relative;
+    }
+
+        .password-container input {
+            flex: 1;
+            padding-right: 40px;
+        }
+
+    .toggle-password {
+        position: absolute;
+        right: 10px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+    }
+</style>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -155,11 +176,8 @@
                 <div class="input-group password-group">
                     <i class="fas fa-lock"></i>
                     <input type="password" id="password" placeholder="請輸入密碼" required />
-                    <button type="button" class="toggle-password">
-                        <span class="icon">
-                            <ion-icon name="lock-closed" id="Pwhide"></ion-icon>
-                            </span>
-                    </button>
+                        <button type="button" id="showPasswordBtn" class="toggle-password">👁</button>
+
                 </div>
                 <div class="remember-me">
                     <label class="checkbox-container">
@@ -193,11 +211,8 @@
                     <div class="input-group password-group">
                         <i class="fas fa-lock"></i>
                         <input type="password" id="password" placeholder="請輸入密碼" required />
-                        <button type="button" class="toggle-password">
-                            <span class="icon">
-                                <ion-icon name="lock-closed" id="Pwhide"></ion-icon>
-                            </span>
-                        </button>
+                        <button type="button" id="showPasswordBtn2" class="toggle-password">👁</button>
+
                     </div>
 
                     <div class="remember-me">
@@ -259,6 +274,44 @@
 <script src="/js/_Layout.js" type="text/javascript"></script>
 @await RenderSectionAsync("scripts", required: false)
 
+
+<script>
+    // 切換密碼顯示和隱藏的邏輯
+    document.addEventListener("DOMContentLoaded", function () {
+        const showPasswordBtn = document.getElementById("showPasswordBtn");
+        const passwordInput = document.getElementById("password");
+
+        // 當點擊顯示密碼按鈕時
+        showPasswordBtn.addEventListener("click", function () {
+            // 切換密碼顯示
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text"; // 顯示密碼
+                showPasswordBtn.textContent = "🙈"; // 改成閉眼圖示
+            } else {
+                passwordInput.type = "password"; // 隱藏密碼
+                showPasswordBtn.textContent = "👁"; // 改成睜眼圖示
+            }
+        });
+    });
+
+     // 切換密碼顯示和隱藏的邏輯
+    document.addEventListener("DOMContentLoaded", function () {
+        const showPasswordBtn = document.getElementById("showPasswordBtn2");
+        const passwordInput = document.getElementById("password");
+
+        // 當點擊顯示密碼按鈕時
+        showPasswordBtn.addEventListener("click", function () {
+            // 切換密碼顯示
+            if (passwordInput.type === "password") {
+                passwordInput.type = "text"; // 顯示密碼
+                showPasswordBtn.textContent = "🙈"; // 改成閉眼圖示
+            } else {
+                passwordInput.type = "password"; // 隱藏密碼
+                showPasswordBtn.textContent = "👁"; // 改成睜眼圖示
+            }
+        });
+    });
+</script>
 
 
 

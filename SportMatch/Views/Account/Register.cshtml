@@ -1,8 +1,4 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-
-@{
+﻿@{
     Layout = null;
 }
 @model SportMatch.Models.RegisterModel
@@ -24,9 +20,10 @@
                     {
                         <div class="error-message">@error.ErrorMessage</div>
                     }
-                    <label for="username">用戶名</label>
+                    <label for="username">使用者名稱</label>
                     <input type="text"
                            id="username"
+                           name="username"
                            placeholder="輸入用戶名"
                            required />
                 </div>
@@ -34,38 +31,46 @@
                     <label for="email">電子郵件</label>
                     <input type="email"
                            id="email"
+                           name="email"
                            placeholder="輸入電子郵件"
                            required />
-                    <!-- 發送驗證碼按鈕 -->
                     <button type="button" id="sendCodeBtn" class="btn-send-code">
                         發送驗證碼
                     </button>
-
-                    <!-- 這裡是顯示錯誤訊息的區域 -->
-                    <div id="error-message" style="color: red; display: none;"></div>
-
+                    <span id="countdown" style="display: none; color: red; margin-left: 10px;">60 秒</span>
                 </div>
                 <div class="form-group">
                     <label for="verification-code">驗證碼</label>
                     <input type="text"
                            id="verification-code"
+                           name="verificationCode"
                            placeholder="輸入驗證碼"
                            required />
                 </div>
                 <div class="form-group">
                     <label for="password">密碼</label>
-                    <input type="password"
-                           id="password"
-                           placeholder="輸入密碼"
-                           required />
+                    <div class="password-container">
+                        <input type="password"
+                               id="password"
+                               name="password"
+                               placeholder="輸入密碼"
+                               required />
+                        <button type="button" id="showPasswordBtn" class="toggle-password">👁</button>
+                    </div>
+                    <div id="passwordStrength" class="password-strength"></div>
                 </div>
                 <div class="form-group">
                     <label for="confirm-password">確認密碼</label>
-                    <input type="password"
-                           id="confirm-password"
-                           placeholder="再次輸入密碼"
-                           required />
+                    <div class="password-container">
+                        <input type="password"
+                               id="confirm-password"
+                               name="confirmPassword"
+                               placeholder="再次輸入密碼"
+                               required />
+                        <button type="button" id="showConfirmPasswordBtn" class="toggle-password">👁</button>
+                    </div>
                 </div>
+
                 <div class="form-group">
                     <button type="submit" class="btn-submit">註冊</button>
                 </div>
@@ -82,12 +87,156 @@
     </div>
     <script src="~/js/register.js" defer></script>
     <script>
-
-                function redirectToHome() {
-            localStorage.setItem("showLoginModal", "true"); // 設定標記
-            window.location.href = "/"; // 導向首頁
+        function redirectToHome() {
+            localStorage.setItem("showLoginModal", "true");
+            window.location.href = "/";
         }
 
+        // 切換密碼可見性
+        document.addEventListener("DOMContentLoaded", function () {
+            const showPasswordBtn = document.getElementById("showPasswordBtn");
+            const showConfirmPasswordBtn = document.getElementById("showConfirmPasswordBtn");
+
+            if (showPasswordBtn) {
+                showPasswordBtn.addEventListener("click", function () {
+                    togglePasswordVisibility("password", this);
+                });
+            }
+
+            if (showConfirmPasswordBtn) {
+                showConfirmPasswordBtn.addEventListener("click", function () {
+                    togglePasswordVisibility("confirm-password", this);
+                });
+            }
+
+            function togglePasswordVisibility(inputId, button) {
+                const input = document.getElementById(inputId);
+                if (input) {
+                    if (input.type === "password") {
+                        input.type = "text";
+                        button.textContent = "🙈"; // 變成隱藏圖示
+                    } else {
+                        input.type = "password";
+                        button.textContent = "👁"; // 變成顯示圖示
+                    }
+                }
+            }
+
+            // 密碼強度顯示
+            const passwordStrengthText = document.getElementById("passwordStrength");
+            const password = document.getElementById("password");
+
+            const createStrengthIndicators = () => {
+                passwordStrengthText.innerHTML = `
+                    <div class="strength-indicator" id="indicator-1"></div>
+                    <div class="strength-indicator" id="indicator-2"></div>
+                    <div class="strength-indicator" id="indicator-3"></div>
+                `;
+            };
+
+            const updateStrengthIndicators = (strength) => {
+                const indicators = [
+                    document.getElementById("indicator-1"),
+                    document.getElementById("indicator-2"),
+                    document.getElementById("indicator-3")
+                ];
+
+                // 重置顏色
+                indicators.forEach(indicator => indicator.classList.remove("strength-weak", "strength-medium", "strength-strong"));
+
+                if (strength === "弱") {
+                    indicators[0].classList.add("strength-weak");
+                } else if (strength === "中") {
+                    indicators[0].classList.add("strength-weak");
+                    indicators[1].classList.add("strength-medium");
+                } else if (strength === "強") {
+                    indicators[0].classList.add("strength-weak");
+                    indicators[1].classList.add("strength-medium");
+                    indicators[2].classList.add("strength-strong");
+                }
+            };
+
+            createStrengthIndicators();
+
+            password.addEventListener("input", function () {
+                const value = password.value;
+                let strength = "弱";
+
+                if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@@#$%^&*]).{8,}$/.test(value)) {
+                    strength = "強";
+                } else if (/^(?=.*[A-Za-z])(?=.*\d).{6,}$/.test(value)) {
+                    strength = "中";
+                }
+
+                updateStrengthIndicators(strength);
+            });
+        });
+
+        // 發送驗證碼倒數
+        let countdownInterval;
+        document.getElementById('sendCodeBtn').addEventListener('click', function () {
+            let countdownTime = 60;
+            const countdownElem = document.getElementById('countdown');
+            countdownElem.style.display = 'inline';
+            countdownInterval = setInterval(function () {
+                countdownElem.textContent = `${countdownTime} 秒`;
+                countdownTime--;
+
+                if (countdownTime < 0) {
+                    clearInterval(countdownInterval);
+                    countdownElem.style.display = 'none';
+                    alert('驗證碼發送完畢');
+                }
+            }, 1000);
+        });
     </script>
+    <style>
+        .password-container {
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .password-container input {
+            flex: 1;
+            padding-right: 40px;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 10px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .password-strength {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 300px;
+            margin-top: 10px;
+        }
+
+        .strength-indicator {
+            width: 30%;
+            height: 10px;
+            background-color: #ccc;
+            border-radius: 5px;
+        }
+
+        .strength-weak {
+            background-color: red;
+        }
+
+        .strength-medium {
+            background-color: yellow;
+        }
+
+        .strength-strong {
+            background-color: green;
+        }
+    </style>
 </body>
 </html>

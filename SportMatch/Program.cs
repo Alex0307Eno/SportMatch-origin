@@ -12,14 +12,14 @@ builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // ³]©w Session ¹L´Á®É¶¡
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // ï¿½]ï¿½w Session ï¿½Lï¿½ï¿½ï¿½É¶ï¿½
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options =>
 {
-    // ¦bProgram.cs³]©wJSON -> ¨C·í«Ø¸m®É¡A½s½X¶i¦æ²Î¤@³]©w	        
+    // ï¿½bProgram.csï¿½]ï¿½wJSON -> ï¿½Cï¿½ï¿½Ø¸mï¿½É¡Aï¿½sï¿½Xï¿½iï¿½ï¿½Î¤@ï¿½]ï¿½w	        
     options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(
                 UnicodeRanges.BasicLatin,
                 UnicodeRanges.CjkUnifiedIdeographs);
@@ -27,7 +27,7 @@ builder.Services.AddControllersWithViews()
 
 
 
-builder.Services.AddDbContext<SportMatchContext>(  // §ï¦¨ UserContext
+builder.Services.AddDbContext<SportMatchContext>(  // ï¿½ï¦¨ UserContext
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
@@ -38,16 +38,16 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Account/Login";  // ³]¸mµn¤J­¶­±¸ô®|
-        options.LogoutPath = "/Account/Logout"; // ³]¸mµn¥X¸ô®|
+        options.LoginPath = "/Account/Login";  // ï¿½]ï¿½mï¿½nï¿½Jï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½|
+        options.LogoutPath = "/Account/Logout"; // ï¿½]ï¿½mï¿½nï¿½Xï¿½ï¿½ï¿½|
     });
 
 //builder.Services.AddScoped<AuthenticationService>();
-// ³o¸Ì¥[¤J VerificationCodeService ©M HttpContextAccessor
+// ï¿½oï¿½Ì¥[ï¿½J VerificationCodeService ï¿½M HttpContextAccessor
 builder.Services.AddSingleton<VerificationCodeService>();
-builder.Services.AddHttpContextAccessor(); // Åý IHttpContextAccessor ¥i¥H³Qª`¤J
-builder.Services.AddControllersWithViews(); // ¨ä¥LªA°È°t¸m
-builder.Services.AddHttpClient(); // µù¥U IHttpClientFactory
+builder.Services.AddHttpContextAccessor(); // ï¿½ï¿½ IHttpContextAccessor ï¿½iï¿½Hï¿½Qï¿½`ï¿½J
+builder.Services.AddControllersWithViews(); // ï¿½ï¿½Lï¿½Aï¿½È°tï¿½m
+builder.Services.AddHttpClient(); // ï¿½ï¿½ï¿½U IHttpClientFactory
 
 var app = builder.Build();
 
@@ -73,11 +73,11 @@ app.UseRouting();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
-    _ = endpoints.MapControllers(); // ½T«O¯à°÷§ä¨ì±±¨î¾¹ªº¸ô¥Ñ
+    _ = endpoints.MapControllers(); // ï¿½Tï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ì±±ï¿½î¾¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 });
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Match}/{action=MatchPage}/{id?}");
+    pattern: "{controller=MemberCenter}/{action=Index}/{id?}");
 
 app.Run();

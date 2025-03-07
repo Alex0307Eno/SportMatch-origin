@@ -8,6 +8,8 @@ function updateApplyModalContent(playerName, playerPosition) {
     document.getElementById('modal-apply-name').innerText = playerName;
     document.getElementById('modal-apply-position').innerText = ("擅長位置：" + playerPosition);
 }
+
+// 加入最愛功能
 function addToMyFavorite() {
     var dom = document.getElementById('heartIcon');
     var toa = document.getElementById('toastMessage');
@@ -28,11 +30,6 @@ function addToMyFavorite() {
     }
     toast.show();
 }
-function toggleAccordion(sportId) {
-    let target = document.getElementById(sportId);
-    let bsCollapse = new bootstrap.Collapse(target);
-    bsCollapse.toggle();
-}
 
 // 初始化載入第一頁
 $(document).ready(function () {
@@ -40,7 +37,7 @@ $(document).ready(function () {
 });
 
 // 一頁顯示幾個Card
-const pageSize = 8;
+const pageSize = 6;
 
 // 動態載入卡片
 function loadCards(page) {
@@ -55,7 +52,7 @@ function loadCards(page) {
             response.cards.forEach(card => {
                 cardContainer.append(`
                  <div class="col-md-6 mb-3">
-                     <div class="card mb-3 bg-dark text-light border-warning" style="max-width: 540px;">
+                     <div class="card mb-3 " style="max-width: 540px;">
                          <div class="row g-0">
                              <div class="col-md-4">
 	                                <img src="${card.image}" class="img-fluid rounded-start" alt="...">
@@ -87,22 +84,45 @@ function loadCards(page) {
                  `);
             });
 
-            updatePagination(response.totalPages, page);
+            updatePagination(response.totalPages, page, response.totalItems);
         }
     });
 }
 
-function updatePagination(totalPages, activePage) {
+//function updatePagination(totalPages, activePage) {
+//    const pagination = $("#pagination");
+//    pagination.empty();
+
+//    for (let i = 1; i <= totalPages; i++) {
+//        let activeClass = i === activePage ? "active" : "";
+//        pagination.append(`
+//			<li class="page-item ${activeClass}">
+//				<a class="page-link bg-dark border-warning" href="#" onclick="loadCards(${i}); return false;">${i}</a>
+//			</li>
+//			`);
+//    }
+//}
+function updatePagination(totalPages, activePage, totalItems) {
+    $("#paginationInfo").text(`當前第 ${activePage} 頁 ，總共 ${totalItems} 筆資料`);
     const pagination = $("#pagination");
     pagination.empty();
 
-    for (let i = 1; i <= totalPages; i++) {
-        let activeClass = i === activePage ? "active" : "";
-        pagination.append(`
-			<li class="page-item ${activeClass}">
-				<a class="page-link bg-dark border-warning" href="#" onclick="loadCards(${i}); return false;">${i}</a>
-			</li>
-			`);
-    }
-}
+    let prevDisabled = activePage === 1 ? "disabled" : "";
+    let nextDisabled = activePage === totalPages ? "disabled" : "";
 
+    pagination.append(`
+        <li class="page-item ${prevDisabled}">
+            <a class="page-link bg-dark border-warning" href="#" onclick="loadCards(${activePage - 1}); return false;">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item active">
+            <span class="page-link bg-dark border-warning">${activePage} / ${totalPages}</span>
+        </li>
+        <li class="page-item ${nextDisabled}">
+            <a class="page-link bg-dark border-warning" href="#" onclick="loadCards(${activePage + 1}); return false;">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    `);
+}

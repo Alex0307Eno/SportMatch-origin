@@ -100,10 +100,11 @@ namespace SportMatch.Controllers
         [HttpGet]
         public JsonResult GetCards(int page, int pageSize)
         {
+            int totalItems = Player2.Count();
+            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
             var cards = Player2.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            int totalPages = (int)Math.Ceiling((double)Player2.Count / pageSize);
 
-            return Json(new { cards, totalPages });
+            return Json(new { cards, totalPages ,totalItems});
         }
 
         [HttpPost]

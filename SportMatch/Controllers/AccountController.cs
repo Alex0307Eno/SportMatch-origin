@@ -52,9 +52,9 @@ namespace SportMatch.Controllers
                 return BadRequest(new { success = false, message = "電子郵件不可為空" });
             }
 
-            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
-
-            if (user == null)
+            // 檢查電子郵件是否已註冊
+            var existingUser = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+            if (existingUser == null)
             {
                 return BadRequest(new { success = false, message = "找不到該電子郵件地址" });
             }

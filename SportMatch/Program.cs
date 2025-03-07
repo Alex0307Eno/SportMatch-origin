@@ -27,7 +27,7 @@ builder.Services.AddControllersWithViews()
 
 
 
-builder.Services.AddDbContext<SportMatchContext>(  // 改成 UserContext
+builder.Services.AddDbContext<SportMatchContext>(  // 改成 SportMatchContext
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 

@@ -86,3 +86,42 @@ function updateUIAfterLogin(email) {
     // 根據登入的用戶 email 更新 UI 顯示，例如顯示用戶的名字或電郵地址等
     console.log(`用戶 ${email} 已登入！`);
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    checkLoginStatus();
+});
+
+function checkLoginStatus() {
+    let isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+    let userEmail = localStorage.getItem("userEmail");
+
+    if (isLoggedIn) {
+        document.querySelector(".cart-container").style.display = "block";
+        document.querySelector(".notifications-container").style.display = "block";
+        document.querySelector(".user-email-container").style.display = "block";
+
+        if (userEmail) {
+            document.querySelector(".user-email").innerText = userEmail;
+        }
+    } else {
+        document.querySelector(".cart-container").style.display = "none";
+        document.querySelector(".notifications-container").style.display = "none";
+        document.querySelector(".user-email-container").style.display = "none";
+    }
+}
+
+// 處理登入
+function loginUser(email) {
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("userEmail", email);
+    checkLoginStatus();
+    console.log("用戶已登入：" + email);
+}
+
+// 處理登出
+function handleLogout() {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userEmail");
+    checkLoginStatus();
+    console.log("用戶已登出");
+}

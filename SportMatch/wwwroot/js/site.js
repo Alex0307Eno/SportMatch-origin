@@ -606,4 +606,5 @@ document.getElementById("btn-event3").addEventListener("click", promptLogin);
 document.getElementById("btn-venue1").addEventListener("click", promptLogin);
 document.getElementById("btn-venue2").addEventListener("click", promptLogin);
 document.getElementById("btn-venue3").addEventListener("click", promptLogin);
+document.getElementById("btn-match").addEventListener("click", promptLogin);
 

@@ -53,7 +53,7 @@ public partial class SportMatchContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-0HMBCNH\\SQLEXPRESS;Database=SportMatch;Trusted_Connection=True;TrustServerCertificate=True;");
+        => optionsBuilder.UseSqlServer("Server=LAPTOP-MAST92V2\\SQLEXPRESS;Database=SportMatch;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -177,11 +177,11 @@ public partial class SportMatchContext : DbContext
 
         modelBuilder.Entity<JoinInformation>(entity =>
         {
-            entity.HasKey(e => e.JoinId).HasName("PK__JoinInfo__AD6AA8BA5E70EF34");
+            entity.HasKey(e => e.JoinId).HasName("PK__JoinInfo__AD6AA8BAD6C415FB");
 
             entity.ToTable("JoinInformation");
 
-            entity.HasIndex(e => e.JoinId, "UQ__JoinInfo__AD6AA8BB81332E7B").IsUnique();
+            entity.HasIndex(e => e.JoinId, "UQ__JoinInfo__AD6AA8BBA6A92A0F").IsUnique();
 
             entity.Property(e => e.JoinId).HasColumnName("JoinID");
             entity.Property(e => e.EventId).HasColumnName("EventID");
@@ -260,11 +260,11 @@ public partial class SportMatchContext : DbContext
 
         modelBuilder.Entity<ProductCategoryMapping>(entity =>
         {
-            entity.HasKey(e => new { e.ProductId, e.CategoryId }).HasName("PK__ProductC__159C554F6D45BE1B");
+            entity.HasKey(e => new { e.ProductId, e.CategoryId }).HasName("PK__ProductC__159C554F22860D54");
 
             entity.ToTable("ProductCategoryMapping");
 
-            entity.HasIndex(e => e.ProductId, "UQ__ProductC__B40CC6ECC6768AD7").IsUnique();
+            entity.HasIndex(e => e.ProductId, "UQ__ProductC__B40CC6EC28396030").IsUnique();
 
             entity.Property(e => e.ProductId)
                 .ValueGeneratedOnAdd()
@@ -386,11 +386,11 @@ public partial class SportMatchContext : DbContext
 
         modelBuilder.Entity<TeamMemberMapping>(entity =>
         {
-            entity.HasKey(e => e.MappingId).HasName("PK__TeamMemb__8B5781BDEE3902F0");
+            entity.HasKey(e => e.MappingId).HasName("PK__TeamMemb__8B5781BDADB45DE9");
 
             entity.ToTable("TeamMemberMapping");
 
-            entity.HasIndex(e => e.MappingId, "UQ__TeamMemb__8B5781BC074AFB08").IsUnique();
+            entity.HasIndex(e => e.MappingId, "UQ__TeamMemb__8B5781BC0077D37A").IsUnique();
 
             entity.Property(e => e.MappingId).HasColumnName("MappingID");
             entity.Property(e => e.SportId).HasColumnName("SportID");

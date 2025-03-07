@@ -19,38 +19,7 @@
 
 
 <body>
-    <style>
-        /* 密碼與 email 顯示/隱藏按鈕 */
-        .toggle-email,
-        .toggle-password {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--primary-color);
-            font-size: 1rem;
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
-
-            /* 密碼顯示/隱藏 icon 旋轉效果 */
-            .toggle-password .fa-lock,
-            .toggle-password .fa-lock-open-outline {
-                transition: transform 0.3s ease;
-            }
-
-            .toggle-password .fa-eye-open-outline {
-                transform: rotate(180deg);
-            }
-
-            /* 當 hover 在按鈕上時，變化顏色 */
-            .toggle-email:hover,
-            .toggle-password:hover {
-                color: var(--secondary-color);
-            }
-    </style>
+   
     <div class="header-container">
 
         <div class="logo">
@@ -62,11 +31,11 @@
                 <i class="fas fa-bars"></i> <!-- Hamburger icon -->
             </div>
             <ul>
-                <li><a href="#home">首頁</a></li>
-                <li><a href="#matching">配對系統</a></li>
-                <li><a href="#events">賽事資訊</a></li>
-                <li><a href="#venues">場地資訊</a></li>
-                <li><a href="#shop">運動商城</a></li>
+                <li><a href="/">首頁</a></li>
+                <li><a href="/Match/MatchPage" id="matchingLink">配對系統</a></li>
+                <li><a href="/Event/EventPage" id="eventsLink">賽事資訊</a></li>
+                <li><a href="#Venue">場地資訊</a></li>
+                <li><a href="/Mart/Mart">運動商城</a></li>
             </ul>
             <div class="header-actions">
                 <div class="user-actions">
@@ -88,15 +57,16 @@
                             <div class="no-notifications">目前沒有任何通知</div>
                         </div>
                     </div>
-                  
+                    <button onclick="openLoginModal()" class="btn-login" id="loginButton">登入 </button>
+                    <a href="@Url.Action("Register", "Account")" class="btn-register" id="registerButton">註冊</a>
                     <div class="user-email-container" style="display: none">
                         <span class="user-email"></span>
                         <div class="dropdown-content">
-                            <a href="#profile">個人資料</a>
+                            <a href="/MemberCenter/Index">個人資料</a>
                             <a href="#matches">配對資訊</a>
 
-                            <a href="#cart">購物車清單</a>
-                            <a href="#favorites">收藏清單</a>
+                            <a href="/Mart/Checkout">購物車清單</a>
+                            <a href="/MemberCenter/MyFav">收藏清單</a>
                             <button class="btn-logout" onclick="handleLogout()">
                                 登出
                             </button>
@@ -109,121 +79,7 @@
 
 
 
-    <!-- 登入彈窗 -->
-
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <div class="login-header">
-                <h2>會員登入</h2>
-                <button class="close-modal" onclick="closeModal()">&times;</button>
-                <div class="sports-icons sports-icons-marquee">
-                    <i class="fas fa-basketball-ball"></i>
-                    <i class="fas fa-futbol"></i>
-                    <i class="fas fa-volleyball-ball"></i>
-                </div>
-            </div>
-            <!-- 新增登入切換區塊 -->
-            <div class="login-tabs">
-                <button id="memberLoginBtn" class="active" onclick="switchLogin('member')">會員登入</button>
-                <button id="vendorLoginBtn" onclick="switchLogin('vendor')">廠商登入</button>
-            </div>
-            <!-- 會員登入表單 -->
-
-            <form action="/Account/Login" method="post" class="login-form" id="loginForm">
-                <div id="memberLogin" class="login-form-container">
-
-                    <div class="input-group">
-                        <i class="fas fa-person"></i>
-                        <input type="email" id="email" placeholder="請輸入Email" required />
-                        <button type="button" class="toggle-email">
-                            <span class="icon">
-                                <ion-icon name="mail-outline"></ion-icon>
-                            </span>
-                        </button>
-                    </div>
-
-                    <div class="input-group password-group">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" placeholder="請輸入密碼" required />
-                        <button type="button" class="toggle-password">
-                            <span class="icon">
-                                <ion-icon name="lock-closed" id="Pwhide"></ion-icon>
-                            </span>
-                        </button>
-                    </div>
-                    <div class="remember-me">
-                        <label class="checkbox-container">
-                            <input type="checkbox" id="remember" />
-                            <span class="checkmark"></span>
-                            記住我的帳號
-                        </label>
-                    </div>
-                    <button type="submit" class="btn-submit" id="btn-submit">
-                        <i class="fas fa-running"></i> 會員登入
-                    </button>
-                    <div class="error-message" style="display:none;"></div>
-
-
-
-                </div>
-
-            </form>
-            <!-- 廠商登入表單（預設隱藏） -->
-            <div id="vendorLogin" class="login-form-container" style="display: none;">
-                <form action="/Vendor/Login" method="post" class="login-form">
-                    <div class="input-group">
-                        <i class="fas fa-store"></i>
-                        <input type="email" id="vendorEmail" placeholder="請輸入廠商Email" required />
-                        <button type="button" class="toggle-email">
-                            <span class="icon">
-                                <ion-icon name="mail-outline"></ion-icon>
-                            </span>
-                        </button>
-                    </div>
-                    <div class="input-group password-group">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" placeholder="請輸入密碼" required />
-                        <button type="button" class="toggle-password">
-                            <span class="icon">
-                                <ion-icon name="lock-closed" id="Pwhide"></ion-icon>
-                            </span>
-                        </button>
-                    </div>
-
-                    <div class="remember-me">
-                        <label class="checkbox-container">
-                            <input type="checkbox" id="remember" />
-                            <span class="checkmark"></span>
-                            記住我的帳號
-                        </label>
-                    </div>
-                    <button type="submit" class="btn-submit" id="btn-submit">
-                        <i class="fas fa-running"></i> 廠商登入
-                    </button>
-                </form>
-            </div>
-            <div class="form-footer">
-                <a href="@Url.Action("ForgotPassword", "Account")"><i class="fas fa-key"></i> 忘記密碼？</a>
-                <a href="@Url.Action("Register", "Account")"><i class="fas fa-user-plus"></i> 加入會員</a>
-            </div>
-            <div class="social-login">
-                <p>其他登入方式</p>
-                <div class="social-a">
-                    <button class="social-btn facebook">
-                        <i class="fab fa-facebook-f"></i>
-                    </button>
-                    <button class="social-btn google">
-                        <i class="fab fa-google"></i>
-                    </button>
-                    <button class="social-btn line">
-                        <i class="fab fa-line"></i>
-                    </button>
-
-
-                </div>
-            </div>
-        </div>
-    </div>
+  
 
     <script type="module"
             src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
@@ -244,7 +100,8 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/js/_Layout.js" type="text/javascript"></script>
+<script src="/js/_LayoutLogin.js" type="text/javascript"></script>
+<script src="/js/login.js" type="text/javascript"></script>
 
 
 @await RenderSectionAsync("scripts", required: false)
@@ -252,20 +109,5 @@
 
 
 
-<script>
-          function switchLogin(type) {
-        if (type === 'member') {
-            document.getElementById('memberLogin').style.display = 'block';
-            document.getElementById('vendorLogin').style.display = 'none';
-            document.getElementById('memberLoginBtn').classList.add('active');
-            document.getElementById('vendorLoginBtn').classList.remove('active');
-        } else {
-            document.getElementById('memberLogin').style.display = 'none';
-            document.getElementById('vendorLogin').style.display = 'block';
-            document.getElementById('memberLoginBtn').classList.remove('active');
-            document.getElementById('vendorLoginBtn').classList.add('active');
-        }
-    }
 
-</script>
 

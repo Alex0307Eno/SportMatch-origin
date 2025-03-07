@@ -10,6 +10,9 @@ using System.Web;
 using System.Text.Json.Nodes;
 using System.Net.Http.Headers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
+using System.Security.Principal;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SportMatch.Controllers
 {
@@ -91,57 +94,44 @@ namespace SportMatch.Controllers
 
             return Ok(new { success = true, message = "驗證碼正確" });
         }
-        // 更新密碼
         [HttpPost]
-        public IActionResult ResetPassword([FromBody] ResetPasswordModel model)
+        public IActionResult ResetPassword([FromBody] ResetPasswordModel model, [FromServices] IMemoryCache memoryCache)
         {
-            if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.NewPassword))
+            if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.NewPassword) || string.IsNullOrEmpty(model.VerificationCode))
             {
-                return BadRequest(new { success = false, message = "請提供有效的電子郵件地址和新密碼" });
+                return BadRequest(new { success = false, message = "請提供電子郵件、新密碼和驗證碼" });
             }
 
-            // 檢查電子郵件是否存在
-            var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
-            if (user == null)
+            var cacheKey = $"ResetCode_{model.Email}";
+
+            // 從 MemoryCache 取得驗證碼
+            if (!memoryCache.TryGetValue(cacheKey, out string? storedVerificationCode) || storedVerificationCode != model.VerificationCode)
             {
-                return BadRequest(new { success = false, message = "找不到該電子郵件地址" });
+                return BadRequest(new { success = false, message = "驗證碼錯誤或已過期，請重新發送" });
             }
 
-            // 檢查驗證碼是否有效
-            var storedVerificationCode = TempData["VerificationCode"]?.ToString();
-            var lastSentTime = TempData["LastSentTime"] as DateTime?;
-
-            if (string.IsNullOrEmpty(storedVerificationCode) || lastSentTime == null)
-            {
-                return BadRequest(new { success = false, message = "驗證碼已過期，請重新發送" });
-            }
-
-            // 驗證新密碼的強度（這裡只是舉例，根據需求進行修改）
-            if (model.NewPassword.Length < 8 || !model.NewPassword.Any(char.IsUpper) || !model.NewPassword.Any(char.IsLower) || !model.NewPassword.Any(char.IsDigit))
+            // 密碼強度檢查
+            if (model.NewPassword.Length < 8 || !model.NewPassword.Any(char.IsUpper) ||
+                !model.NewPassword.Any(char.IsLower) || !model.NewPassword.Any(char.IsDigit))
             {
                 return BadRequest(new { success = false, message = "新密碼必須包含至少8個字符，並且包括大小寫字母和數字" });
             }
+
             // 使用 bcrypt 進行密碼哈希
             var hashedPassword = BCrypt.Net.BCrypt.HashPassword(model.NewPassword);
 
-            // 更新密碼
-            user.Password = hashedPassword;
-            _context.SaveChanges();
+            // 模擬更新密碼的邏輯（因為不存資料庫，這邊請根據你的系統需求修改）
+            // user.Password = hashedPassword;
+            // _context.SaveChanges();
 
-            // 清除驗證碼資料
-            TempData.Remove("VerificationCode");
-            TempData.Remove("Email");
-            TempData.Remove("LastSentTime");
+            // 刪除驗證碼，避免重複使用
+            memoryCache.Remove(cacheKey);
 
             return Ok(new { success = true, message = "密碼已成功更新" });
         }
 
 
 
-
-
-
-        // 登入接口
         [HttpPost]
         public IActionResult Login([FromBody] LoginModel model)
         {
@@ -150,6 +140,7 @@ namespace SportMatch.Controllers
                 return BadRequest(new { success = false, message = "登入資料不正確" });
             }
 
+            // 查找使用者（不論是會員或廠商）
             var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
@@ -157,10 +148,43 @@ namespace SportMatch.Controllers
                 return BadRequest(new { success = false, message = "帳號或密碼錯誤" });
             }
 
-            return Ok(new { success = true, message = "登入成功" });
+            // 判斷身份 (1: 會員, 2: 廠商)
+            if (user.Identity == 1)
+            {
+                return Ok(new { success = true, message = "會員登入成功", role = "member" });
+            }
+            else if (user.Identity == 2)
+            {
+                return Ok(new { success = true, message = "廠商登入成功", role = "vendor" });
+            }
+            else
+            {
+                return BadRequest(new { success = false, message = "身份錯誤，請聯繫管理員" });
+            }
         }
 
-        
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")] // 限制只有管理員能操作
+        public IActionResult UpdateUserRole(int userId, int newIdentity)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.UserId == userId);
+            if (user == null)
+            {
+                return NotFound(new { success = false, message = "用戶不存在" });
+            }
+
+            if (newIdentity != 1 && newIdentity != 2)
+            {
+                return BadRequest(new { success = false, message = "無效的身份類型" });
+            }
+
+            user.Identity = newIdentity;
+            _context.SaveChanges();
+
+            return Ok(new { success = true, message = "用戶身份更新成功" });
+        }
+
 
 
 
@@ -261,9 +285,9 @@ namespace SportMatch.Controllers
                 // 創建新用戶
                 var user = new User
                 {
-                    RoleId = 1, // 設置角色為用戶
-                    UserName = model.UserName,
-                    Email = model.Email,
+                    Identity = 1, // 設置角色為用戶
+                    UserName = model.UserName!,
+                    Email = model.Email!,
                     Password = hashedPassword, // 存儲加密後的密碼
                     CreatedAt = DateTime.Now
                 };

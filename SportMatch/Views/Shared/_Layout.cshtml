@@ -1,25 +1,5 @@
 ﻿@model SportMatch.Models.User
-<style>
-    .password-container {
-        display: flex;
-        align-items: center;
-        position: relative;
-    }
 
-        .password-container input {
-            flex: 1;
-            padding-right: 40px;
-        }
-
-    .toggle-password {
-        position: absolute;
-        right: 10px;
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 18px;
-    }
-</style>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -36,44 +16,14 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 
     <title>SportMatch</title>
+
 	
   </head>
 
 
 <body>
     
-    <style>
-        /* 密碼與 email 顯示/隱藏按鈕 */
-        .toggle-email,
-        .toggle-password {
-            position: absolute;
-            right: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            background: none;
-            border: none;
-            cursor: pointer;
-            color: var(--primary-color);
-            font-size: 1rem;
-            transition: transform 0.3s ease, color 0.3s ease;
-        }
-
-            /* 密碼顯示/隱藏 icon 旋轉效果 */
-            .toggle-password .fa-lock,
-            .toggle-password .fa-lock-open-outline {
-                transition: transform 0.3s ease;
-            }
-
-            .toggle-password .fa-eye-open-outline {
-                transform: rotate(180deg);
-            }
-
-            /* 當 hover 在按鈕上時，變化顏色 */
-            .toggle-email:hover,
-            .toggle-password:hover {
-                color: var(--secondary-color);
-            }
-    </style>
+   
     <div class="header-container">
       
         <div class="logo">
@@ -85,14 +35,14 @@
                 <i class="fas fa-bars"></i> <!-- Hamburger icon -->
             </div>
             <ul>
-                <li><a href="#home">首頁</a></li>
-                <li><a href="#matching" id="matchingLink">配對系統</a></li>
-                <li><a href="#events" id="eventsLink">賽事資訊</a></li>
-                <li><a href="#venues">場地資訊</a></li>
-                <li><a href="#shop">運動商城</a></li>
+                <li><a href="/">首頁</a></li>
+                <li><a href="/Match/MatchPage" id="matchingLink">配對系統</a></li>
+                <li><a href="/Event/EventPage" id="eventsLink">賽事資訊</a></li>
+                <li><a href="#Venue">場地資訊</a></li>
+                <li><a href="/Mart/Mart">運動商城</a></li>
             </ul>
             <div class="header-actions">
-                <div class="user-actions">
+                <div class="user-actions" >
                     <div class="cart-container" style="display: none">
                         <button class="btn-cart" data-count="0" onclick="toggleCart()">
                             <i class="fas fa-shopping-cart"></i>
@@ -111,16 +61,16 @@
                             <div class="no-notifications">目前沒有任何通知</div>
                         </div>
                     </div>
-                    <button onclick="openLoginModal()" class="btn-login">登入</button>
-                    <a href="@Url.Action("Register", "Account")" class="btn-register">註冊</a>
+                    <button onclick="openLoginModal()" class="btn-login" id="loginButton">登入 </button>
+                    <a href="@Url.Action("Register", "Account")" class="btn-register" id="registerButton">註冊</a>
                     <div class="user-email-container" style="display: none">
                         <span class="user-email"></span>
                         <div class="dropdown-content">
-                            <a href="#profile">個人資料</a>
+                            <a href="/MemberCenter/Index">個人資料</a>
                             <a href="#matches">配對資訊</a>
 
-                            <a href="#cart">購物車清單</a>
-                            <a href="#favorites">收藏清單</a>
+                            <a href="/Mart/Checkout">購物車清單</a>
+                            <a href="/MemberCenter/MyFav">收藏清單</a>
                             <button class="btn-logout" onclick="handleLogout()">
                                 登出
                             </button>
@@ -153,11 +103,7 @@
                     <i class="fas fa-volleyball-ball"></i>
                 </div>
             </div>
-            <!-- 新增登入切換區塊 -->
-            <div class="login-tabs">
-                <button id="memberLoginBtn" class="active" onclick="switchLogin('member')">會員登入</button>
-                <button id="vendorLoginBtn" onclick="switchLogin('vendor')">廠商登入</button>
-            </div>
+
             <!-- 會員登入表單 -->
 
             <form action="/Account/Login" method="post" class="login-form" id="loginForm">
@@ -175,7 +121,7 @@
 
                 <div class="input-group password-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" id="password" placeholder="請輸入密碼" required />
+                        <input type="password" id="password" placeholder="至少8位，含大小寫及特殊符號" required />
                         <button type="button" id="showPasswordBtn" class="toggle-password">👁</button>
 
                 </div>
@@ -196,37 +142,7 @@
                 </div>
 
             </form>
-            <!-- 廠商登入表單（預設隱藏） -->
-            <div id="vendorLogin" class="login-form-container" style="display: none;">
-                <form action="/Vendor/Login" method="post" class="login-form">
-                    <div class="input-group">
-                        <i class="fas fa-store"></i>
-                        <input type="email" id="vendorEmail" placeholder="請輸入廠商Email" required />
-                        <button type="button" class="toggle-email">
-                            <span class="icon">
-                                <ion-icon name="mail-outline"></ion-icon>
-                            </span>
-                        </button>
-                    </div>
-                    <div class="input-group password-group">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" placeholder="請輸入密碼" required />
-                        <button type="button" id="showPasswordBtn2" class="toggle-password">👁</button>
-
-                    </div>
-
-                    <div class="remember-me">
-                        <label class="checkbox-container">
-                            <input type="checkbox" id="remember" />
-                            <span class="checkmark"></span>
-                            記住我的帳號
-                        </label>
-                    </div>
-                    <button type="submit" class="btn-submit" id="btn-submit">
-                        <i class="fas fa-running"></i> 廠商登入
-                    </button>
-                </form>
-            </div>
+           
             <div class="form-footer">
                 <a href="@Url.Action("ForgotPassword", "Account")"><i class="fas fa-key"></i> 忘記密碼？</a>
                 <a href="@Url.Action("Register", "Account")"><i class="fas fa-user-plus"></i> 加入會員</a>
@@ -294,7 +210,11 @@
         });
     });
 
-     // 切換密碼顯示和隱藏的邏輯
+     
+</script>
+
+<script>
+    // 切換密碼顯示和隱藏的邏輯
     document.addEventListener("DOMContentLoaded", function () {
         const showPasswordBtn = document.getElementById("showPasswordBtn2");
         const passwordInput = document.getElementById("password");
@@ -311,24 +231,11 @@
             }
         });
     });
+
+
 </script>
 
 
 
-  <script>
-          function switchLogin(type) {
-        if (type === 'member') {
-            document.getElementById('memberLogin').style.display = 'block';
-            document.getElementById('vendorLogin').style.display = 'none';
-            document.getElementById('memberLoginBtn').classList.add('active');
-            document.getElementById('vendorLoginBtn').classList.remove('active');
-        } else {
-            document.getElementById('memberLogin').style.display = 'none';
-            document.getElementById('vendorLogin').style.display = 'block';
-            document.getElementById('memberLoginBtn').classList.remove('active');
-            document.getElementById('vendorLoginBtn').classList.add('active');
-        }
-    }
-       
-</script>
 
+ 

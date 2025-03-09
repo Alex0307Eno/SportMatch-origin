@@ -35,6 +35,7 @@ namespace SportMatch.Controllers
 
         }
 
+
         // 註冊頁面
         [HttpGet]
         public IActionResult Register()
@@ -172,7 +173,8 @@ namespace SportMatch.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return Ok(new { success = true, message = "已成功登出" });
+            return RedirectToAction("Index", "Home");
+
         }
 
 

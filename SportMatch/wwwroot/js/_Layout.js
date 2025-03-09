@@ -178,6 +178,7 @@ function handleLogout() {
     document.querySelector(".login-btn").style.display = "block";
     document.querySelector(".logout-btn").style.display = "none";
     document.querySelector(".user-email-container").style.display = "none";
+    window.location.href = '/';  // 假設首頁是根目錄
 
     checkLoginStatus();
     console.log("用戶已登出");
@@ -247,12 +248,31 @@ function loginUser(email) {
 }
 
 // 處理登出
+// 處理登出
 function handleLogout() {
-    localStorage.removeItem("isLoggedIn");
-    localStorage.removeItem("userEmail");
-    checkLoginStatus();
-    console.log("用戶已登出");
+    // 發送登出請求到後端
+    fetch('/Account/Logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',  // 設置 Content-Type，根據需要可調整
+            // 可以在這裡傳遞其他需要的標頭，像是 Authorization token
+        },
+        // 若需要傳送資料，可以在這裡加上 body
+        // body: JSON.stringify({ userId: 'user123' }) 
+    })
+        .then(response => {
+            // 確保登出成功後，跳轉到首頁
+            if (response.ok) {
+                window.location.href = '/';  // 重定向到首頁
+            } else {
+                console.error('登出失敗，伺服器回應錯誤');
+            }
+        })
+        .catch(error => {
+            console.error('登出失敗:', error);
+        });
 }
+
 
 //下拉選單
 function toggleNotifications() {
@@ -280,13 +300,33 @@ function handleLogin(event) {
 }
 
 function handleLogout() {
+    // 移除 localStorage 中的登入 email
     localStorage.removeItem("loggedInEmail");
+
+    // 重置 UI 元素的顯示狀態
     document.querySelector(".btn-login").style.display = "block";
     document.querySelector(".btn-register").style.display = "block";
     document.querySelector(".user-email-container").style.display = "none";
     document.querySelector(".cart-container").style.display = "none";
     document.querySelector(".notifications-container").style.display = "none";
+
+    // 登出後強制跳轉到首頁
+    window.location.href = '/'; // 根據需要調整首頁的路徑
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    const loggedInEmail = localStorage.getItem("loggedInEmail");
+    if (loggedInEmail) {
+        // 若有登入，顯示相應的 UI 元素
+        document.querySelector(".btn-login").style.display = "none";
+        document.querySelector(".btn-register").style.display = "none";
+        document.querySelector(".user-email-container").style.display = "flex";
+        document.querySelector(".user-email").textContent = loggedInEmail;
+        document.querySelector(".cart-container").style.display = "flex";
+        document.querySelector(".notifications-container").style.display = "flex";
+    }
+});
+
 
 function openLoginModal() {
     document.getElementById("loginModal").style.display = "block";

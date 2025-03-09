@@ -13,6 +13,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Memory;
 using System.Security.Principal;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using System.Security.Claims;
 
 namespace SportMatch.Controllers
 {
@@ -133,7 +136,7 @@ namespace SportMatch.Controllers
 
 
         [HttpPost]
-        public IActionResult Login([FromBody] LoginModel model)
+        public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -149,19 +152,29 @@ namespace SportMatch.Controllers
             }
 
             // 判斷身份 (1: 會員, 2: 廠商)
-            if (user.Identity == 1)
-            {
-                return Ok(new { success = true, message = "會員登入成功", role = "member" });
-            }
-            else if (user.Identity == 2)
-            {
-                return Ok(new { success = true, message = "廠商登入成功", role = "vendor" });
-            }
-            else
-            {
-                return BadRequest(new { success = false, message = "身份錯誤，請聯繫管理員" });
-            }
+            var claims = new List<Claim>
+    {
+        new Claim(ClaimTypes.Name, user.Email),
+        new Claim(ClaimTypes.Role, user.Identity == 1 ? "member" : "vendor"),
+        // 根據需要可以添加更多的 claims，例如用戶 ID 等
+    };
+
+            var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+            var principal = new ClaimsPrincipal(identity);
+
+            // 設定認證 Cookie
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+            return Ok(new { success = true, message = "登入成功", role = user.Identity == 1 ? "member" : "vendor" });
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return Ok(new { success = true, message = "已成功登出" });
+        }
+
 
 
         [HttpPost]

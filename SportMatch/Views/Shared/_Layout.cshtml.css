@@ -114,6 +114,7 @@ body {
   color: var(--primary-color);
 }
 
+/* Header actions container */
 .header-actions {
   display: flex;
   align-items: center;
@@ -121,6 +122,7 @@ body {
   gap: 2rem; /* 增加間距 */
 }
 
+/* 搜尋欄的樣式 */
 .header-actions .search-bar {
   margin-right: 20px;
   flex-grow: 1;
@@ -142,6 +144,7 @@ body {
   cursor: pointer;
 }
 
+/* 使用者操作區域 */
 .header-actions .user-actions {
   display: flex;
   align-items: center;
@@ -149,6 +152,7 @@ body {
   margin-left: 30px;
 }
 
+/* 按鈕和連結樣式 */
 .header-actions .user-actions button,
 .header-actions .user-actions a {
   background: none;
@@ -160,11 +164,13 @@ body {
   padding: 0;
 }
 
+/* 按鈕和連結的 hover 效果 */
 .header-actions .user-actions button:hover,
 .header-actions .user-actions a:hover {
   color: var(--primary-color);
 }
 
+/* 購物車和通知按鈕的樣式 */
 .header-actions .user-actions .btn-cart,
 .header-actions .user-actions .btn-notifications {
   display: flex;
@@ -177,6 +183,7 @@ body {
   transition: background 0.3s ease, transform 0.3s ease;
 }
 
+/* 購物車和通知按鈕的 hover 效果 */
 .header-actions .user-actions .btn-cart:hover,
 .header-actions .user-actions .btn-notifications:hover {
   background: var(--primary-color);
@@ -184,6 +191,7 @@ body {
   transform: translateY(-2px);
 }
 
+/* 購物車和通知的數字標籤樣式 */
 .header-actions .user-actions .btn-cart::after,
 .header-actions .user-actions .btn-notifications::after {
   content: attr(data-count);

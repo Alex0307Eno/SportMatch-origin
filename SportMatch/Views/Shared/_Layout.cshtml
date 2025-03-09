@@ -176,7 +176,6 @@
     ></script>
     
 
-    <script src="~/js/login.js"></script>
 
     <div class="container-fluid">
       @RenderBody()
@@ -191,50 +190,8 @@
 @await RenderSectionAsync("scripts", required: false)
 
 
-<script>
-    // 切換密碼顯示和隱藏的邏輯
-    document.addEventListener("DOMContentLoaded", function () {
-        const showPasswordBtn = document.getElementById("showPasswordBtn");
-        const passwordInput = document.getElementById("password");
-
-        // 當點擊顯示密碼按鈕時
-        showPasswordBtn.addEventListener("click", function () {
-            // 切換密碼顯示
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text"; // 顯示密碼
-                showPasswordBtn.textContent = "🙈"; // 改成閉眼圖示
-            } else {
-                passwordInput.type = "password"; // 隱藏密碼
-                showPasswordBtn.textContent = "👁"; // 改成睜眼圖示
-            }
-        });
-    });
 
      
-</script>
-
-<script>
-    // 切換密碼顯示和隱藏的邏輯
-    document.addEventListener("DOMContentLoaded", function () {
-        const showPasswordBtn = document.getElementById("showPasswordBtn2");
-        const passwordInput = document.getElementById("password");
-
-        // 當點擊顯示密碼按鈕時
-        showPasswordBtn.addEventListener("click", function () {
-            // 切換密碼顯示
-            if (passwordInput.type === "password") {
-                passwordInput.type = "text"; // 顯示密碼
-                showPasswordBtn.textContent = "🙈"; // 改成閉眼圖示
-            } else {
-                passwordInput.type = "password"; // 隱藏密碼
-                showPasswordBtn.textContent = "👁"; // 改成睜眼圖示
-            }
-        });
-    });
-
-
-</script>
-
 
 
 

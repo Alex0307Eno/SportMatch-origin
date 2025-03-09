@@ -47,7 +47,7 @@
             <h1>找到你的運動夥伴</h1>
             <p>立即加入 SportMatch，連結熱愛運動的夥伴！</p>
             <div class="hero-buttons">
-                <button class="btn-primary" id="btn-match">開始配對</button>
+                <button class="btn-primary" id="btn-match" data-url="/Match/MatchPage">開始配對</button>
                 <button class="btn-secondary">快速入門</button>
             </div>
         </div>
@@ -101,7 +101,7 @@
                                 <p class="event-location">
                                     <i class="fas fa-location-dot"></i> 台北體育館
                                 </p>
-                                <button class="btn-event" id="btn-event1">立即報名</button>
+                                <button class="btn-event" id="btn-event1" data-url="/Event/EventPage">立即報名</button>
                             </div>
                         </div>
                         <div class="carousel-slide">
@@ -114,7 +114,7 @@
                                 <p class="event-location">
                                     <i class="fas fa-location-dot"></i> 新莊體育館
                                 </p>
-                                <button class="btn-event" id="btn-event2">立即報名</button>
+                                <button class="btn-event" id="btn-event2" data-url="/Event/EventPage">立即報名</button>
                             </div>
                         </div>
                         <div class="carousel-slide">
@@ -127,7 +127,7 @@
                                 <p class="event-location">
                                     <i class="fas fa-location-dot"></i> 台中體育館
                                 </p>
-                                <button class="btn-event" id="btn-event3">立即報名</button>
+                                <button class="btn-event" id="btn-event3" data-url="/Event/EventPage">立即報名</button>
                             </div>
                         </div>
                     </div>
@@ -153,7 +153,7 @@
                             <span><i class="fas fa-shower"></i> 淋浴間</span>
                             <span><i class="fas fa-wifi"></i> WiFi</span>
                         </div>
-                        <button class="btn-venue"id="btn-venue1">預約場地</button>
+                        <button class="btn-venue" id="btn-venue1" data-url="/Venue/Index">預約場地</button>
                     </div>
 
                 </div>
@@ -167,7 +167,7 @@
                             <span><i class="fas fa-shower"></i> 淋浴間</span>
                             <span><i class="fas fa-wifi"></i> WiFi</span>
                         </div>
-                        <button class="btn-venue" id="btn-venue2">預約場地</button>
+                        <button class="btn-venue" id="btn-venue2" data-url="/Venue/Index">預約場地</button>
                     </div>
 
                 </div>
@@ -181,7 +181,7 @@
                             <span><i class="fas fa-shower"></i> 淋浴間</span>
                             <span><i class="fas fa-wifi"></i> WiFi</span>
                         </div>
-                        <button class="btn-venue" id="btn-venue3">預約場地</button>
+                        <button class="btn-venue" id="btn-venue3" data-url="/Venue/Index">預約場地</button>
                     </div>
 
                 </div>
@@ -251,7 +251,15 @@
 <button id="darkModeToggle">
     <span id="toggleIcon">🌙</span>
 </button>
-
+<script>
+// 定義滾動回到頂部的函式
+function scrollToTop() {
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth" // 平滑滾動
+    });
+}
+</script>
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const darkModeToggle = document.getElementById("darkModeToggle");

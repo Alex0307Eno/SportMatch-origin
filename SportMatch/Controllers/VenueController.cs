@@ -17,7 +17,7 @@ public class VenueController : Controller
     public async Task<IActionResult> Index()
     {
         //var venues = await _context.Venues.ToListAsync();
-        
+
         return View();
     }
 

@@ -1,4 +1,316 @@
-﻿// 初始化時不顯示登入浮窗
+﻿// ✅ 自訂確認框
+function customConfirm(message, callback) {
+    let modal = document.getElementById("custom-confirm");
+    let confirmMessage = document.getElementById("confirm-message");
+    let confirmYes = document.getElementById("confirm-yes");
+    let confirmNo = document.getElementById("confirm-no");
+
+    confirmMessage.innerText = message; // 設定訊息
+    modal.style.display = "flex"; // 顯示確認框
+
+    confirmYes.onclick = function () {
+        modal.style.display = "none";
+        callback(true);
+    };
+
+    confirmNo.onclick = function () {
+        modal.style.display = "none";
+        callback(false);
+    };
+}
+
+// ✅ 檢查用戶是否登入
+function isLoggedIn() {
+    return localStorage.getItem("isLoggedIn") === "true";
+}
+
+// ✅ 設定 UI 狀態 (顯示/隱藏登入後功能)
+function updateUI() {
+    let userEmailContainer = document.querySelector(".user-email-container");
+    let cartContainer = document.querySelector(".cart-container");
+    let notificationsContainer = document.querySelector(".notifications-container");
+
+    if (isLoggedIn()) {
+        console.log("✅ 用戶已登入");
+        userEmailContainer.style.display = "block"; // 顯示個人資料
+        cartContainer.style.display = "block"; // 顯示購物車
+        notificationsContainer.style.display = "block"; // 顯示通知
+    } else {
+        console.log("❌ 用戶未登入");
+        userEmailContainer.style.display = "none"; // 隱藏個人資料
+        cartContainer.style.display = "none"; // 隱藏購物車
+        notificationsContainer.style.display = "none"; // 隱藏通知
+    }
+}
+
+// ✅ 登入函數
+function loginUser() {
+    updateUI(); // 更新 UI
+
+    localStorage.setItem("isLoggedIn", "true");  // 設定登入狀態
+    console.log("🎉 用戶已登入");
+}
+
+// ✅ 退出登入
+function logoutUser() {
+    localStorage.removeItem("isLoggedIn");  // 移除登入標記
+    console.log("👋 用戶已登出");
+    updateUI(); // 更新 UI
+}
+
+// ✅ 攔截未登入的使用者
+function promptLogin(event) {
+    event.preventDefault();  // 防止預設跳轉
+    if (!isLoggedIn()) {
+        customConfirm("您尚未登入，是否要立即登入？", function (confirmLogin) {
+            if (confirmLogin) {
+                openLoginModal();  // 顯示登入彈窗
+            }
+        });
+    } else {
+        window.location.href = event.target.href;  // 允許跳轉
+    }
+}
+
+// ✅ 綁定按鈕事件
+document.addEventListener("DOMContentLoaded", function () {
+    updateUI(); // 檢查並更新 UI
+
+    let matchingLink = document.getElementById("matchingLink");
+    let eventsLink = document.getElementById("eventsLink");
+    let logoutButton = document.querySelector(".btn-logout");
+
+    if (matchingLink) matchingLink.addEventListener("click", promptLogin);
+    if (eventsLink) eventsLink.addEventListener("click", promptLogin);
+    if (logoutButton) logoutButton.addEventListener("click", logoutUser);
+});
+
+
+// 監聽登入表單提交
+const loginForm = document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", async function (e) {
+    e.preventDefault(); // 防止表單提交
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const remember = document.getElementById("remember").checked;
+
+    const errorMessageElement = document.querySelector(".error-message");
+    errorMessageElement.style.display = "none"; // 清除之前的錯誤訊息
+
+    try {
+        const response = await fetch('/Account/Login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: email,
+                password: password,
+                remember: remember
+            }),
+        });
+
+        const result = await response.json();
+        if (response.ok && result.success) {
+            // 登入成功
+            if (remember) {
+                localStorage.setItem("savedEmail", email);
+                console.log("用戶已登入");
+
+            } else {
+                localStorage.removeItem("savedEmail");
+            }
+
+            // 儲存登入狀態
+            localStorage.setItem("loggedInEmail", email);
+            localStorage.setItem("isLoggedIn", "true");  // 設定登入狀態為 true
+
+            updateUIAfterLogin(email);  // 更新 UI 顯示
+
+            closeModal();
+            alert("登入成功！");
+        } else {
+            // 登入失敗
+            if (errorMessageElement) {
+                errorMessageElement.textContent = result.message || "帳號或密碼錯誤，請重新嘗試。";
+                errorMessageElement.style.display = "block";
+            }
+        }
+    } catch (error) {
+        console.error('登入過程中發生錯誤:', error);
+        const errorMessageElement = document.querySelector(".error-message");
+        if (errorMessageElement) {
+            errorMessageElement.textContent = "登入過程中發生錯誤，請稍後再試。";
+            errorMessageElement.style.display = "block";
+        }
+    }
+});
+
+function updateUIAfterLogin(email) {
+    console.log(`✅ 用戶 ${email} 已登入！`);
+
+    const loginBtn = document.querySelector(".btn-login");
+    const registerBtn = document.querySelector(".btn-register"); // 確保選取到註冊按鈕
+    const logoutBtn = document.querySelector(".logout-btn");
+    const userEmailContainer = document.querySelector(".user-email-container");
+    const userEmail = document.querySelector(".user-email");
+    const cartContainer = document.querySelector(".cart-container");
+    const notificationsContainer = document.querySelector(".notifications-container");
+
+    if (loginBtn) loginBtn.style.display = "none";
+    if (registerBtn) registerBtn.style.display = "none"; // ✅ 隱藏註冊按鈕
+    if (logoutBtn) logoutBtn.style.display = "block";
+    if (userEmailContainer) userEmailContainer.style.display = "block";
+    if (userEmail) userEmail.innerText = email;
+    if (cartContainer) cartContainer.style.display = "block";
+    if (notificationsContainer) notificationsContainer.style.display = "block";
+}
+
+
+// 登出功能
+function handleLogout() {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userEmail");
+
+    // 更新 UI，顯示登入按鈕，隱藏登出按鈕與使用者資訊
+    document.querySelector(".login-btn").style.display = "block";
+    document.querySelector(".logout-btn").style.display = "none";
+    document.querySelector(".user-email-container").style.display = "none";
+
+    checkLoginStatus();
+    console.log("用戶已登出");
+}
+
+
+// 在頁面加載時檢查登入狀態
+window.onload = function () {
+    const modal = document.getElementById("loginModal");
+    modal.style.display = "none";
+    modal.classList.remove("show");
+
+    // 檢查用戶是否已登入
+    if (getLoginStatus()) {
+        updateUIAfterLogin(localStorage.getItem("loggedInEmail")); // 用戶已登入，更新 UI
+    }
+};
+
+// 登入狀態檢查函式
+function getLoginStatus() {
+    return localStorage.getItem("isLoggedIn") === "true";  // 檢查 localStorage 中的登入狀態
+}
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    checkLoginStatus();
+});
+
+function checkLoginStatus() {
+    function checkLoginStatus() {
+        let isLoggedIn = localStorage.getItem("isLoggedIn") === "true";
+        let userEmail = localStorage.getItem("userEmail");
+
+        const loginBtn = document.querySelector(".login-btn");
+        const registerBtn = document.querySelector(".register-btn");
+        const logoutBtn = document.querySelector(".logout-btn");
+        const userEmailContainer = document.querySelector(".user-email-container");
+        const cartContainer = document.querySelector(".cart-container");
+        const notificationsContainer = document.querySelector(".notifications-container");
+
+        if (isLoggedIn) {
+            if (loginBtn) loginBtn.style.display = "none";
+            if (registerBtn) registerBtn.style.display = "none"; // ✅ 隱藏註冊按鈕
+            if (logoutBtn) logoutBtn.style.display = "block";
+            if (userEmailContainer) userEmailContainer.style.display = "block";
+            if (userEmail) document.querySelector(".user-email").innerText = userEmail;
+            if (cartContainer) cartContainer.style.display = "block";
+            if (notificationsContainer) notificationsContainer.style.display = "block";
+        } else {
+            if (loginBtn) loginBtn.style.display = "block";
+            if (registerBtn) registerBtn.style.display = "block"; // ✅ 確保註冊按鈕顯示
+            if (logoutBtn) logoutBtn.style.display = "none";
+            if (userEmailContainer) userEmailContainer.style.display = "none";
+            if (cartContainer) cartContainer.style.display = "none";
+            if (notificationsContainer) notificationsContainer.style.display = "none";
+        }
+    }
+
+}
+
+// 處理登入
+function loginUser(email) {
+    localStorage.setItem("isLoggedIn", "true");
+    localStorage.setItem("userEmail", email);
+
+}
+
+// 處理登出
+function handleLogout() {
+    localStorage.removeItem("isLoggedIn");
+    localStorage.removeItem("userEmail");
+    checkLoginStatus();
+    console.log("用戶已登出");
+}
+
+//下拉選單
+function toggleNotifications() {
+    const dropdown = document.querySelector(".notifications-dropdown");
+    dropdown.classList.toggle("active");
+}
+
+function toggleCart() {
+    const dropdown = document.querySelector(".cart-dropdown");
+    dropdown.classList.toggle("active");
+}
+
+function handleLogin(event) {
+    event.preventDefault();
+    const email = document.getElementById("email").value;
+    localStorage.setItem("loggedInEmail", email);
+    document.querySelector(".btn-login").style.display = "none";
+    document.querySelector(".btn-register").style.display = "none";
+    document.querySelector(".user-email-container").style.display = "flex";
+    document.querySelector(".user-email").textContent = email;
+    document.querySelector(".cart-container").style.display = "flex";
+    document.querySelector(".notifications-container").style.display = "flex";
+    closeModal();
+    document.body.style.overflow = "auto"; // 允許滾動
+}
+
+function handleLogout() {
+    localStorage.removeItem("loggedInEmail");
+    document.querySelector(".btn-login").style.display = "block";
+    document.querySelector(".btn-register").style.display = "block";
+    document.querySelector(".user-email-container").style.display = "none";
+    document.querySelector(".cart-container").style.display = "none";
+    document.querySelector(".notifications-container").style.display = "none";
+}
+
+function openLoginModal() {
+    document.getElementById("loginModal").style.display = "block";
+    document.body.style.overflow = "hidden"; // 禁止滾動
+}
+
+function closeModal() {
+    document.getElementById("loginModal").style.display = "none";
+    document.body.style.overflow = "auto"; // 允許滾動
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+    const loggedInEmail = localStorage.getItem("loggedInEmail");
+    if (loggedInEmail) {
+        document.querySelector(".btn-login").style.display = "none";
+        document.querySelector(".btn-register").style.display = "none";
+        document.querySelector(".user-email-container").style.display = "flex";
+        document.querySelector(".user-email").textContent = loggedInEmail;
+        document.querySelector(".cart-container").style.display = "flex";
+        document.querySelector(".notifications-container").style.display = "flex";
+    }
+});
+
+// 初始化時不顯示登入浮窗
 document.addEventListener("DOMContentLoaded", function () {
     // 初始化所有功能
     initializeAnimations();
@@ -357,91 +669,6 @@ function clearError(input) {
 
 
 
-// ✅ 自訂確認框
-function customConfirm(message, callback) {
-    let modal = document.getElementById("custom-confirm");
-    let confirmMessage = document.getElementById("confirm-message");
-    let confirmYes = document.getElementById("confirm-yes");
-    let confirmNo = document.getElementById("confirm-no");
-
-    confirmMessage.innerText = message; // 設定訊息
-    modal.style.display = "flex"; // 顯示確認框
-
-    confirmYes.onclick = function () {
-        modal.style.display = "none";
-        callback(true);
-    };
-
-    confirmNo.onclick = function () {
-        modal.style.display = "none";
-        callback(false);
-    };
-}
-
-// ✅ 檢查用戶是否登入
-function isLoggedIn() {
-    return localStorage.getItem("isLoggedIn") === "true";
-}
-
-// ✅ 設定 UI 狀態 (顯示/隱藏登入後功能)
-function updateUI() {
-    let userEmailContainer = document.querySelector(".user-email-container");
-    let cartContainer = document.querySelector(".cart-container");
-    let notificationsContainer = document.querySelector(".notifications-container");
-
-    if (isLoggedIn()) {
-        console.log("✅ 用戶已登入");
-        userEmailContainer.style.display = "block"; // 顯示個人資料
-        cartContainer.style.display = "block"; // 顯示購物車
-        notificationsContainer.style.display = "block"; // 顯示通知
-    } else {
-        console.log("❌ 用戶未登入");
-        userEmailContainer.style.display = "none"; // 隱藏個人資料
-        cartContainer.style.display = "none"; // 隱藏購物車
-        notificationsContainer.style.display = "none"; // 隱藏通知
-    }
-}
-
-// ✅ 登入函數
-function loginUser() {
-    localStorage.setItem("isLoggedIn", "true");  // 設定登入狀態
-    console.log("🎉 用戶已登入");
-    updateUI(); // 更新 UI
-}
-
-// ✅ 退出登入
-function logoutUser() {
-    localStorage.removeItem("isLoggedIn");  // 移除登入標記
-    console.log("👋 用戶已登出");
-    updateUI(); // 更新 UI
-}
-
-// ✅ 攔截未登入的使用者
-function promptLogin(event) {
-    event.preventDefault();  // 防止預設跳轉
-    if (!isLoggedIn()) {
-        customConfirm("您尚未登入，是否要立即登入？", function (confirmLogin) {
-            if (confirmLogin) {
-                openLoginModal();  // 顯示登入彈窗
-            }
-        });
-    } else {
-        window.location.href = event.target.href;  // 允許跳轉
-    }
-}
-
-// ✅ 綁定按鈕事件
-document.addEventListener("DOMContentLoaded", function () {
-    updateUI(); // 檢查並更新 UI
-
-    let matchingLink = document.getElementById("matchingLink");
-    let eventsLink = document.getElementById("eventsLink");
-    let logoutButton = document.querySelector(".btn-logout");
-
-    if (matchingLink) matchingLink.addEventListener("click", promptLogin);
-    if (eventsLink) eventsLink.addEventListener("click", promptLogin);
-    if (logoutButton) logoutButton.addEventListener("click", logoutUser);
-});
 
 
 
@@ -461,28 +688,4 @@ function toggleHamburgerMenu() {
     navLinks.classList.toggle('active');
 }
 
-function switchLogin(type) {
-    // 切換按鈕的 active 類別
-    const memberButton = document.getElementById("memberLoginBtn");
-    const vendorButton = document.getElementById("vendorLoginBtn");
 
-    if (type === 'member') {
-        memberButton.classList.add("active");
-        vendorButton.classList.remove("active");
-    } else {
-        memberButton.classList.remove("active");
-        vendorButton.classList.add("active");
-    }
-
-    // 顯示對應的登入表單
-    const memberForm = document.getElementById("memberLoginForm");
-    const vendorForm = document.getElementById("vendorLoginForm");
-
-    if (type === 'member') {
-        memberForm.style.display = "block";
-        vendorForm.style.display = "none";
-    } else {
-        memberForm.style.display = "none";
-        vendorForm.style.display = "block";
-    }
-}

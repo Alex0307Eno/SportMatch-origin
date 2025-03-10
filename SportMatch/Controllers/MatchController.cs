@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SportMatch.Models;
+using static SportMatch.Controllers.DoorController;
 
 namespace SportMatch.Controllers
 {
@@ -80,6 +81,12 @@ namespace SportMatch.Controllers
                     new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
                     new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
                 };
+        List<SportTestForMatch> Sports = new List<SportTestForMatch>
+        {
+            new SportTestForMatch{ ID=1,SportName="badminton",SportRole=new List<string>{"雙打"} },
+            new SportTestForMatch{ ID=2,SportName="basketball",SportRole=new List<string>{"中鋒","大前鋒","小前鋒","控球後衛","得分後衛"} },
+            new SportTestForMatch{ ID=3,SportName="valleyball",SportRole=new List<string>{ "大砲手", "攔中手", "舉球員", "輔舉員", "自由球員"} }
+        };
 
         public IActionResult MatchPage(int page = 1)
         {
@@ -105,7 +112,7 @@ namespace SportMatch.Controllers
             int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
             var cards = Player2.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
-            return Json(new { cards, totalPages ,totalItems});
+            return Json(new { cards, totalPages, totalItems });
         }
 
         [HttpPost]
@@ -119,6 +126,22 @@ namespace SportMatch.Controllers
             ViewBag.MatchGender = MatchGender;
 
             return View("MatchPage");
+        }
+
+        [HttpGet]
+        public JsonResult GetRole(string selectedSport)
+        {
+            // 根據 SelectSport 找到對應的 SportRole
+            var sport = Sports.FirstOrDefault(s => s.SportName!.ToLower() == selectedSport.ToLower());
+
+            if (sport != null)
+            {
+                return Json(sport.SportRole); // 回傳運動角色的 JSON 陣列
+            }
+            else
+            {
+                return Json(new { message = "未找到對應的運動" });
+            }
         }
     }
 }

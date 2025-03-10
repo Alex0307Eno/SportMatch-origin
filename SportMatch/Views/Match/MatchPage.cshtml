@@ -31,9 +31,9 @@
 <div id="background">
 	<div id="bg-overlay">
 		<h1>@ViewBag.MatchType	</h1>
-		<h1>@ViewBag.MatchCategory</h1>		
+		<h1>@ViewBag.MatchCategory</h1>
 		<h1>@ViewBag.MatchGender</h1>
-		@{			
+		@{
 			if (ViewBag.MatchEvent != null)
 			{
 				foreach (string item in ViewBag.MatchEvent)
@@ -58,7 +58,7 @@
 				}
 			}
 		}
-		<div class="container-xxl">
+		<div class="container-xxl" style="height: 90vh;">
 			<!-- 輪播圖區域 -->
 			<div class="row d-flex  mb-5">
 				<!-- 賽事廣告 -->
@@ -69,31 +69,21 @@
 					<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" style="width: 100%; height: 100%;">
 						<div class="carousel-inner" style="height: 100%;">
 							<div class="carousel-item active" data-bs-interval="3000">
-								<a id="imgshref" href="http://oakland.athletics.mlb.com/" target="_blank">
+								<a id="imgshref" href="/Event/EventPage" target="_self">
 									<img src="~/image/MatchPage/badminton.webp" class="d-block w-100 h-100" alt="...">
 								</a>
 							</div>
 							<div class="carousel-item" data-bs-interval="3000">
-								<a id="imgshref" href="http://oakland.athletics.mlb.com/" target="_blank">
+								<a id="imgshref" href="/Event/EventPage" target="_self">
 									<img src="~/image/MatchPage/basketball.webp" class="d-block w-100 h-100" alt="...">
 								</a>
 							</div>
 							<div class="carousel-item" data-bs-interval="3000">
-								<a id="imgshref" href="http://oakland.athletics.mlb.com/" target="_blank">
+								<a id="imgshref" href="/Event/EventPage" target="_self">
 									<img src="~/image/MatchPage/volleyball.webp" class="d-block w-100 h-100" alt="...">
 								</a>
 							</div>
 						</div>
-						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-								data-bs-slide="prev">
-							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-							<span class="visually-hidden">Previous</span>
-						</button>
-						<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-								data-bs-slide="next">
-							<span class="carousel-control-next-icon" aria-hidden="true"></span>
-							<span class="visually-hidden">Next</span>
-						</button>
 					</div>
 				</div>
 				<!-- 商品廣告 -->
@@ -104,31 +94,21 @@
 					<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" style="width: 100%; height: 100%;">
 						<div class="carousel-inner" style="height: 100%;">
 							<div class="carousel-item active" data-bs-interval="3000">
-								<a id="imgshref" href="http://oakland.athletics.mlb.com/" target="_blank">
+								<a id="imgshref" href="/Mart/Mart" target="_blank">
 									<img src="~/image/MatchPage/badminton-1.webp" class="d-block w-100 h-100" alt="...">
 								</a>
 							</div>
 							<div class="carousel-item" data-bs-interval="3000">
-								<a id="imgshref" href="http://oakland.athletics.mlb.com/" target="_blank">
+								<a id="imgshref" href="/Mart/Mart" target="_blank">
 									<img src="~/image/MatchPage/basketball-1.webp" class="d-block w-100 h-100" alt="...">
 								</a>
 							</div>
 							<div class="carousel-item" data-bs-interval="3000">
-								<a id="imgshref" href="http://oakland.athletics.mlb.com/" target="_blank">
+								<a id="imgshref" href="/Mart/Mart" target="_blank">
 									<img src="~/image/MatchPage/volleyball-1.webp" class="d-block w-100 h-100" alt="...">
 								</a>
 							</div>
-						</div>
-						<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying"
-								data-bs-slide="prev">
-							<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-							<span class="visually-hidden">Previous</span>
-						</button>
-						<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying"
-								data-bs-slide="next">
-							<span class="carousel-control-next-icon" aria-hidden="true"></span>
-							<span class="visually-hidden">Next</span>
-						</button>
+						</div>						
 					</div>
 				</div>
 			</div>
@@ -142,12 +122,12 @@
 							<div class="d-flex col-8 align-items-center justify-content-center">
 								<div class="">
 									<input type="radio" name="MatchType" class="" id="radioOption1" value="FindPlayer"><label for="radioOption1"
-																													style="color: white;">招募隊友</label>
+																													 style="color: white;">招募隊友</label>
 								</div>
 								<div>&nbsp&nbsp&nbsp</div>
 								<div class="">
 									<input type="radio" name="MatchType" class="" id="radioOption2" value="FindTeam"><label for="radioOption2"
-																												  style="color: white;">尋找隊伍</label>
+																												   style="color: white;">尋找隊伍</label>
 								</div>
 							</div>
 							<!-- 搜尋按鈕 -->
@@ -162,7 +142,7 @@
 								<div class="accordion-item">
 									<h2 class="accordion-header sportRadio">
 										<input type="radio" name="MatchCategory" id="badmintonRadio" class="ms-3 my-3 me-1 " data-bs-toggle="collapse" data-bs-target="#sport1"
-											   style="font-size:x-large;" aria-controls="sport1" value="badminton"><label for="badmintonRadio" style="color:white;font-size:x-large" class="my-3">羽球</label>
+											   style="font-size:x-large;" aria-controls="sport1" value="badminton" onselect="GetRole('badminton')"><label for="badmintonRadio" style="color:white;font-size:x-large" class="my-3">羽球</label>
 									</h2>
 									<div id="sport1" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
 										<div class="accordion-body row">
@@ -179,7 +159,7 @@
 								<div class="accordion-item">
 									<h2 class="accordion-header sportRadio">
 										<input type="radio" name="MatchCategory" id="basketballRadio" class="ms-3 my-3 me-1" data-bs-toggle="collapse" data-bs-target="#sport2"
-											   style="font-size:x-large;" aria-controls="sport1" value="basketball"><label for="basketballRadio" style="color:white;font-size:x-large" class="my-3">籃球</label>
+											   style="font-size:x-large;" aria-controls="sport1" value="basketball" onselect="GetRole('basketball')"><label for="basketballRadio" style="color:white;font-size:x-large" class="my-3">籃球</label>
 									</h2>
 									<div id="sport2" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
 										<div class="accordion-body row">
@@ -196,7 +176,7 @@
 								<div class="accordion-item">
 									<h2 class="accordion-header sportRadio">
 										<input type="radio" name="MatchCategory" id="valleyballRadio" class="ms-3 my-3 me-1" data-bs-toggle="collapse" data-bs-target="#sport3"
-											   style="font-size:x-large;" aria-controls="sport1" value="valleyball"><label for="valleyballRadio" style="color:white;font-size:x-large" class="my-3">排球</label>
+											   style="font-size:x-large;" aria-controls="sport1" value="valleyball" onselect="GetRole('valleyball')"><label for="valleyballRadio" style="color:white;font-size:x-large" class="my-3">排球</label>
 									</h2>
 									<div id="sport3" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
 										<div class="accordion-body row">
@@ -213,7 +193,7 @@
 								<div class="accordion-item">
 									<h2 class="accordion-header">
 										<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#Area"
-												style="font-size:x-large;" >
+												style="font-size:x-large;">
 											區域
 										</button>
 									</h2>
@@ -243,22 +223,7 @@
 										</button>
 									</h2>
 									<div id="Role" class="accordion-collapse collapse" data-bs-parent="#sportsRole">
-										<div class="accordion-body row">
-											<label class="col-6">
-												<input type="checkbox" id="checkbox13" name="MatchRole" value="C" class="MatchCheckBoxItem me-1"><label for="checkbox13">中鋒</label>
-											</label><br>
-											<label class="col-6">
-												<input type="checkbox" id="checkbox14" name="MatchRole" value="PF" class="MatchCheckBoxItem me-1"><label for="checkbox14">大前鋒</label>
-											</label><br>
-											<label class="col-6">
-												<input type="checkbox" id="checkbox15" name="MatchRole" value="SF" class="MatchCheckBoxItem me-1"><label for="checkbox15">小前鋒</label>
-											</label><br>
-											<label class="col-6">
-												<input type="checkbox" id="checkbox16" name="MatchRole" value="PG" class="MatchCheckBoxItem me-1"><label for="checkbox16">控球後衛</label>
-											</label><br>
-											<label class="col-6">
-												<input type="checkbox" id="checkbox17" name="MatchRole" value="SG" class="MatchCheckBoxItem me-1"><label for="checkbox17">得分後衛</label>
-											</label><br>
+										<div class="accordion-body row" id="RoleContainer">											
 										</div>
 									</div>
 								</div>
@@ -388,4 +353,5 @@
 			}
 		</div>
 	</div>
+	@await Html.PartialAsync("_PartialFooter")
 </div>

@@ -39,6 +39,29 @@ function addToMyFavorite() {
 // 初始化載入第一頁
 $(document).ready(function () {
     loadCards(1);
+
+    $("input[name='MatchCategory']").change(function () {
+        var selectedSport = $(this).val(); // 獲取選中的值
+        $.ajax({
+            url: "/Match/GetRole",  // 呼叫後端 Controller
+            type: "GET",
+            data: { selectedSport: selectedSport },
+            success: function (response) {
+                $("#RoleContainer").empty(); // 清空舊的角色列表
+                console.log(response); 
+                response.forEach(x => {
+                    $("#RoleContainer").append(`
+                    <label class="col-6">
+						<input type="checkbox" id="checkbox13" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1"><label for="checkbox13">${x}</label>
+					</label><br>
+                    `)
+                })
+            },
+            error: function () {
+                alert("請求失敗，請稍後再試");
+            }
+        });
+    });
 });
 
 // 一頁顯示幾個Card
@@ -109,7 +132,7 @@ function updatePagination(totalPages, activePage, totalItems) {
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
-        <li class="page-item active">
+        <li class="page-item active" style="z-index:0;">
             <span class="page-link" style="background-color: #212121;border: 1px solid #00ADB5;">${activePage} / ${totalPages}</span>
         </li>
         <li class="page-item ${nextDisabled}">

@@ -13,9 +13,17 @@
 	#personalInfo:hover {
 		transform: scale(1.2);
 	}
-	.card{
+
+	.card, .page-link,.modal-content {
 		background-color: #212121;
 		color: #F5F5F5;
+		border: 1px solid #00ADB5; /* 藍色邊框 */
+		box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
+	}
+
+	.pagination .disabled .page-link {
+		background-color: #212121;
+		color: #212121;
 		border: 1px solid #00ADB5; /* 藍色邊框 */
 		box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
 	}
@@ -252,14 +260,17 @@
 				</div>
 
 				<!-- 右邊主要回傳資料區域 -->
-				<div class="col-9">
+				<div class="col-9">					
 					<!-- 當前頁數文字 -->
 					<div class="row my-3">
 						<div class="col-6 d-flex align-items-center text-start" style="color:white">
-							<span id="paginationInfo"></span>
+							<span id="paginationInfo"></span>	
 						</div>
 						<!-- 上/下頁切換 -->
 						<div class="col-6">
+							<div>
+								<label style="color:white">歷史紀錄</label>
+							</div>
 							<nav class="d-flex justify-content-end align-items-center">
 								<ul id="pagination" class="pagination"></ul>
 							</nav>
@@ -277,7 +288,7 @@
 			<!-- 簡介模態視窗 -->
 			<div class="modal fade" id="playerModal" tabindex="-1" aria-labelledby="playerModalLabel" aria-hidden="true">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-					<div class="modal-content bg-dark text-light border-warning">
+					<div class="modal-content text-light ">
 						<div class="modal-header">
 							<p class="modal-title" id="playerModalLabel" style="font-size:x-large">個人簡介</p>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -320,7 +331,7 @@
 			<div class="modal fade" id="playerApply" tabindex="-1" aria-labelledby="playerModalLabel" aria-hidden="true"
 				 data-bs-backdrop="static">
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-					<div class="modal-content bg-dark text-light border-warning">
+					<div class="modal-content text-light ">
 						<div class="modal-header">
 							<h5 class="modal-title" id="playerModalLabel" style="font-size:x-large">招募確認</h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"

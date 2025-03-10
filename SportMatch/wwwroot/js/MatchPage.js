@@ -89,19 +89,7 @@ function loadCards(page) {
     });
 }
 
-//function updatePagination(totalPages, activePage) {
-//    const pagination = $("#pagination");
-//    pagination.empty();
-
-//    for (let i = 1; i <= totalPages; i++) {
-//        let activeClass = i === activePage ? "active" : "";
-//        pagination.append(`
-//			<li class="page-item ${activeClass}">
-//				<a class="page-link bg-dark border-warning" href="#" onclick="loadCards(${i}); return false;">${i}</a>
-//			</li>
-//			`);
-//    }
-//}
+// 分頁功能
 function updatePagination(totalPages, activePage, totalItems) {
     $("#paginationInfo").text(`當前第 ${activePage} 頁 ，總共 ${totalItems} 筆資料`);
     const pagination = $("#pagination");
@@ -112,15 +100,15 @@ function updatePagination(totalPages, activePage, totalItems) {
 
     pagination.append(`
         <li class="page-item ${prevDisabled}">
-            <a class="page-link bg-dark border-warning" href="#" onclick="loadCards(${activePage - 1}); return false;">
+            <a class="page-link " href="#" onclick="loadCards(${activePage - 1}); return false;">
                 <span aria-hidden="true">&laquo;</span>
             </a>
         </li>
         <li class="page-item active">
-            <span class="page-link bg-dark border-warning">${activePage} / ${totalPages}</span>
+            <span class="page-link" style="background-color: #212121;border: 1px solid #00ADB5;">${activePage} / ${totalPages}</span>
         </li>
         <li class="page-item ${nextDisabled}">
-            <a class="page-link bg-dark border-warning" href="#" onclick="loadCards(${activePage + 1}); return false;">
+            <a class="page-link" href="#" onclick="loadCards(${activePage + 1}); return false;">
                 <span aria-hidden="true">&raquo;</span>
             </a>
         </li>

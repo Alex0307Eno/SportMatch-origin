@@ -19,16 +19,14 @@
     background-color: rgba(0, 0, 0, 0.8);
     z-index: -50;
 }
-.accordion-collapse {
-    background-color: #424242;
-}
 
 .accordion-body {
     /*background-color: #121212;*/ /* 更深的黑色 */
     color: #F5F5F5; /* 亮白文字 */
 }
+
 .accordion-button {
-    background-color: #212121; /* 藍色背景 */
+    background-color: #212121 !important; /* 藍色背景 */
     color: white; /* 文字白色 */
     border: none;
 }
@@ -44,12 +42,13 @@
 }
 
 .accordion-item {
+    background-color: #121212;
     border: 1px solid #00ADB5; /* 藍色邊框 */
     box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
 }
 
 .accordion-button::after {
-    filter: invert(1); /* 讓箭頭變白 */
+    filter: invert(1); /*讓箭頭變白*/
 }
 
 #heartIcon:hover {

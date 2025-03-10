@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using SportMatch.Models;
 
 namespace SportMatch.Controllers
@@ -108,9 +109,11 @@ namespace SportMatch.Controllers
         }
 
         [HttpPost]
-        public IActionResult GetSelection(string MatchType, string MatchArea, string MatchRole, string MatchGender)
+        public IActionResult GetSelection(string MatchType, string MatchCategory, List<string> MatchEvent, List<string> MatchArea, List<string> MatchRole, string MatchGender)
         {
             ViewBag.MatchType = MatchType;
+            ViewBag.MatchCategory = MatchCategory;
+            ViewBag.MatchEvent = MatchEvent;
             ViewBag.MatchArea = MatchArea;
             ViewBag.MatchRole = MatchRole;
             ViewBag.MatchGender = MatchGender;

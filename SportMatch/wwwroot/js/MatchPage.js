@@ -1,4 +1,9 @@
-﻿// 更新模態視窗內容
+﻿// 選取另一個父分類時取消選擇底下子分類
+$("input[name='MatchCategory']").change(function () {
+    $(".MatchCheckBoxItem").prop("checked", false);
+});
+
+// 更新模態視窗內容
 function updateInfoModalContent(playerName, playerPosition, imgSrc) {
     document.getElementById('modal-player-name').innerText = playerName;
     document.getElementById('modal-player-position').innerText = ("擅長位置：" + playerPosition);

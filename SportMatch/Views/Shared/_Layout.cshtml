@@ -43,7 +43,8 @@
             </ul>
             <div class="header-actions">
                 <div class="user-actions">
-                    <div class="cart-container" style="display: none">
+                    <!-- 購物車 -->
+                    <div class="cart-container" style="display: none;">
                         <button class="btn-cart" data-count="0" onclick="toggleCart()">
                             <i class="fas fa-shopping-cart"></i>
                         </button>
@@ -52,7 +53,8 @@
                         </div>
                     </div>
 
-                    <div class="notifications-container" style="display: none">
+                    <!-- 通知 -->
+                    <div class="notifications-container" style="display: none;">
                         <button class="btn-notifications" data-count="0" onclick="toggleNotifications()">
                             <i class="fas fa-bell"></i>
                         </button>
@@ -66,24 +68,25 @@
                     <a href="@Url.Action("Register", "Account")" class="btn-register" id="registerButton">註冊</a>
 
                     <!-- 使用者登入後顯示 -->
-                    <div class="user-email-container" data-identity="@ViewBag.Identity" style="display: none">
+                    <div class="user-email-container" data-identity="@ViewBag.Role" style="display: none;">
                         <span class="user-email"></span>
-                        <div class="dropdown-content">
+                        <div class="dropdown-content" id="userDropdown" style="display:none;">
                             <a href="/MemberCenter/Index">個人資料</a>
                             <a href="#matches">配對資訊</a>
                             <a href="/Mart/Checkout">購物車清單</a>
                             <a href="/MemberCenter/MyFav">收藏清單</a>
+                            <button class="btn-logout" onclick="handleLogout()">登出</button>
+                        </div>
 
-                            <!-- 廠商和管理員才顯示 -->
-                            <a href="/MemberCenter/Index" style="display: none;">個人資料</a>
-
-                            <a href="/Back/Backstage" id="adminLink" style="display: none;">後臺管理</a>
-
+                        <div class="dropdown-content2" id="adminDropdown" style="display:none;">
+                            <a href="/MemberCenter/Index" class="memberLink">個人資料</a>
+                            <a href="/Back/Backstage" id="adminLink" class="adminLink">後臺管理</a>
                             <button class="btn-logout" onclick="handleLogout()">登出</button>
                         </div>
                     </div>
                 </div>
             </div>
+
 
         </nav>
     </div>
@@ -197,6 +200,119 @@
 @await RenderSectionAsync("scripts", required: false)
 
 
+<script>
+    // 假設角色是通過 ViewBag 傳遞到前端
+    const role = "@ViewBag.Role"; // 這是從 ASP.NET MVC 或 Razor 中傳遞的角色
+    console.log(role); // 輸出角色，應為 member, vendor 或 admin
+</script>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const userRole = localStorage.getItem("userRole"); // 從 localStorage 讀取角色
+        const dropdownContent = document.querySelector(".dropdown-content");
+        const dropdownContent2 = document.querySelector(".dropdown-content2");
+        const cartContainer = document.querySelector(".cart-container");
+        const notificationsContainer = document.querySelector(".notifications-container");
+
+        // 顯示購物車和通知
+        if (userRole !== null) {
+            cartContainer.style.display = "block";
+            notificationsContainer.style.display = "block";
+        }
+
+        // 根據角色顯示/隱藏選項
+        if (userRole === "admin" || userRole === "vendor") {
+            // 顯示管理員和廠商選項
+            if (dropdownContent2) {
+                dropdownContent2.style.display = "block";
+                dropdownContent2.style.opacity = "1";  // 顯示時顯示透明度
+            }
+            if (dropdownContent) {
+                dropdownContent.style.display = "none";
+            }
+        } else {
+            // 如果是普通會員，顯示個人資料
+            if (dropdownContent) {
+                dropdownContent.style.display = "block";
+                dropdownContent.style.opacity = "1";  // 顯示時顯示透明度
+            }
+            if (dropdownContent2) {
+                dropdownContent2.style.display = "none";
+            }
+        }
+
+        // 顯示使用者 email
+        const userEmailContainer = document.querySelector(".user-email-container");
+        const userEmail = document.querySelector(".user-email");
+
+        if (userEmailContainer) userEmailContainer.style.display = "block";
+        if (userEmail) userEmail.innerText = localStorage.getItem("savedEmail");
+
+        // 控制下拉選單顯示
+        document.querySelector(".user-email").addEventListener("click", function () {
+            const dropdown = (userRole === "admin" || userRole === "vendor") ? dropdownContent2 : dropdownContent;
+            dropdown.classList.toggle("show"); // 切換顯示狀態
+        });
+    });
+</script>
+
+<style>
+    /* 整體樣式設置 */
+    .dropdown-content, .dropdown-content2 {
+        display: none; /* 預設隱藏 */
+        position: absolute;
+        background-color: #f9f9f9;
+        min-width: 200px;
+        box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+        z-index: 1;
+        padding: 10px;
+        border-radius: 5px;
+        opacity: 0; /* 預設透明 */
+        transition: opacity 0.3s ease, transform 0.3s ease; /* 添加過渡效果 */
+        transform: translateY(-10px); /* 初始位置稍微向上移動 */
+    }
+
+    .user-email-container {
+        position: relative;
+        display: inline-block;
+    }
+
+    .user-email {
+        cursor: pointer;
+        font-size: 16px;
+        color: #007bff;
+        text-decoration: underline;
+        transition: color 0.3s ease;
+    }
+
+        /* 滑鼠懸停顯示 */
+        .user-email:hover {
+            color: #0056b3;
+        }
+
+    /* 下拉選單內部按鈕樣式 */
+    .dropdown-content a, .dropdown-content button, .dropdown-content2 a, .dropdown-content2 button {
+        color: black;
+        padding: 8px 16px;
+        text-decoration: none;
+        display: block;
+        font-size: 16px;
+        transition: background-color 0.3s ease;
+    }
+
+        .dropdown-content a:hover, .dropdown-content button:hover, .dropdown-content2 a:hover, .dropdown-content2 button:hover {
+            background-color: #ddd; /* 鼠標懸停時變色 */
+        }
+
+    /* 當下拉顯示時的樣式 */
+    .dropdown-content.show, .dropdown-content2.show {
+        display: block;
+        opacity: 1; /* 變得可見 */
+        transform: translateY(0); /* 回到正常位置 */
+    }
+</style>
 
      
 

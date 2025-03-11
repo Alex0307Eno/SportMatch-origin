@@ -176,9 +176,9 @@ namespace SportMatch.Controllers
             // 設定認證 Cookie
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
+            // 返回角色信息
             return Ok(new { success = true, message = "登入成功", role = role });
         }
-
         [HttpPost]
         public async Task<IActionResult> Logout()
         {

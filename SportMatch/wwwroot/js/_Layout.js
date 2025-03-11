@@ -143,6 +143,7 @@ loginForm.addEventListener("submit", async function (e) {
             // 儲存登入狀態
             localStorage.setItem("loggedInEmail", email);
             localStorage.setItem("isLoggedIn", "true");  // 設定登入狀態為 true
+            localStorage.setItem("userRole", result.role); // 儲存 role
 
             updateUIAfterLogin(email);  // 更新 UI 顯示
 
@@ -164,6 +165,8 @@ loginForm.addEventListener("submit", async function (e) {
         }
     }
 });
+
+
 
 function updateUIAfterLogin(email) {
     console.log(`✅ 用戶 ${email} 已登入！`);
@@ -305,44 +308,87 @@ function toggleCart() {
 function handleLogin(event) {
     event.preventDefault();
     const email = document.getElementById("email").value;
+    const role = document.querySelector('input[name="role"]:checked').value;  // 假設角色是透過選項選擇的，或者從後端獲取
+
+    // 儲存登入資訊與角色
     localStorage.setItem("loggedInEmail", email);
+    localStorage.setItem("userRole", role);
+
+    // 更新 UI 元素顯示
     document.querySelector(".btn-login").style.display = "none";
     document.querySelector(".btn-register").style.display = "none";
     document.querySelector(".user-email-container").style.display = "flex";
     document.querySelector(".user-email").textContent = email;
     document.querySelector(".cart-container").style.display = "flex";
     document.querySelector(".notifications-container").style.display = "flex";
+
+    // 顯示根據角色決定的下拉選單
+    handleRoleBasedUI(role);
+
     closeModal();
     document.body.style.overflow = "auto"; // 允許滾動
 }
 
-function handleLogout() {
-    // 移除 localStorage 中的登入 email
-    localStorage.removeItem("loggedInEmail");
+function handleRoleBasedUI(role) {
+    const userDropdown = document.getElementById("userDropdown");
+    const adminDropdown = document.getElementById("adminDropdown");
 
-    // 重置 UI 元素的顯示狀態
+    if (role === "admin" || role === "vendor") {
+        adminDropdown.style.display = "block";
+        userDropdown.style.display = "none";
+    } else {
+        userDropdown.style.display = "block";
+        adminDropdown.style.display = "none";
+    }
+}
+
+function handleLogout() {
+    // 清除登入資訊與角色
+    localStorage.removeItem("loggedInEmail");
+    localStorage.removeItem("userRole");
+
+    // 更新 UI 顯示
     document.querySelector(".btn-login").style.display = "block";
     document.querySelector(".btn-register").style.display = "block";
     document.querySelector(".user-email-container").style.display = "none";
     document.querySelector(".cart-container").style.display = "none";
     document.querySelector(".notifications-container").style.display = "none";
 
-    // 登出後強制跳轉到首頁
+    // 強制跳轉到首頁
     window.location.href = '/'; // 根據需要調整首頁的路徑
 }
 
+
 document.addEventListener("DOMContentLoaded", function () {
-    const loggedInEmail = localStorage.getItem("loggedInEmail");
-    if (loggedInEmail) {
-        // 若有登入，顯示相應的 UI 元素
-        document.querySelector(".btn-login").style.display = "none";
-        document.querySelector(".btn-register").style.display = "none";
-        document.querySelector(".user-email-container").style.display = "flex";
-        document.querySelector(".user-email").textContent = loggedInEmail;
-        document.querySelector(".cart-container").style.display = "flex";
-        document.querySelector(".notifications-container").style.display = "flex";
+    const email = localStorage.getItem("loggedInEmail");
+    const role = localStorage.getItem("userRole");
+    const cartContainer = document.querySelector(".cart-container");
+    const notificationsContainer = document.querySelector(".notifications-container");
+    const loginButton = document.querySelector(".btn-login");
+    const registerButton = document.querySelector(".btn-register");
+    const userEmailContainer = document.querySelector(".user-email-container");
+    const userEmail = document.querySelector(".user-email");
+
+    if (email && role) {
+        // 如果已登入，顯示用戶資料、購物車、鈴鐺和角色對應的下拉選單
+        cartContainer.style.display = "flex";
+        notificationsContainer.style.display = "flex";
+        loginButton.style.display = "none";
+        registerButton.style.display = "none";
+        userEmailContainer.style.display = "flex";
+        userEmail.textContent = email;
+
+        handleRoleBasedUI(role);  // 顯示根據角色的選單
+    } else {
+        // 如果未登入，顯示登入與註冊按鈕
+        cartContainer.style.display = "none";
+        notificationsContainer.style.display = "none";
+        loginButton.style.display = "block";
+        registerButton.style.display = "block";
+        userEmailContainer.style.display = "none";
     }
 });
+
 
 
 function openLoginModal() {

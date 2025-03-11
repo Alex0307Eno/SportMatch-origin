@@ -37,6 +37,8 @@ public partial class User
 
     public int Identity { get; set; }
 
+    public int? GuiCode { get; set; }
+
     public virtual ICollection<Apply> Applies { get; set; } = new List<Apply>();
 
     public virtual Area? Area { get; set; }

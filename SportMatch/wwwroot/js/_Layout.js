@@ -1,4 +1,21 @@
-﻿// ✅ 自訂確認框
+﻿document.addEventListener("DOMContentLoaded", function () {
+    const userContainer = document.querySelector(".user-email-container");
+    const identity = parseInt(userContainer.getAttribute("data-identity"), 10);
+
+    if (identity) {
+        document.getElementById("loginButton").style.display = "none";
+        document.getElementById("registerButton").style.display = "none";
+        userContainer.style.display = "block"; // 顯示使用者資訊
+
+        // 只有廠商 (2) 和管理員 (3) 才能看到 "後台管理"
+        if (identity === 2 || identity === 3) {
+            document.getElementById("adminLink").style.display = "block";
+        }
+    }
+});
+
+
+// ✅ 自訂確認框
 function customConfirm(message, callback) {
     let modal = document.getElementById("custom-confirm");
     let confirmMessage = document.getElementById("confirm-message");

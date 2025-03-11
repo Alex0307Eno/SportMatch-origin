@@ -15,6 +15,7 @@ namespace SportMatch.Controllers
 
         public IActionResult Index()
         {
+
             return View();
         }
 

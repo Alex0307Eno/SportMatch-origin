@@ -42,7 +42,7 @@
                 <li><a href="/Mart/Mart">運動商城</a></li>
             </ul>
             <div class="header-actions">
-                <div class="user-actions" >
+                <div class="user-actions">
                     <div class="cart-container" style="display: none">
                         <button class="btn-cart" data-count="0" onclick="toggleCart()">
                             <i class="fas fa-shopping-cart"></i>
@@ -51,33 +51,40 @@
                             <div class="no-cart-items">目前購物車是空的</div>
                         </div>
                     </div>
+
                     <div class="notifications-container" style="display: none">
-                        <button class="btn-notifications"
-                                data-count="0"
-                                onclick="toggleNotifications()">
+                        <button class="btn-notifications" data-count="0" onclick="toggleNotifications()">
                             <i class="fas fa-bell"></i>
                         </button>
                         <div class="notifications-dropdown">
                             <div class="no-notifications">目前沒有任何通知</div>
                         </div>
                     </div>
-                    <button onclick="openLoginModal()" class="btn-login" id="loginButton">登入 </button>
+
+                    <!-- 未登入時顯示 -->
+                    <button onclick="openLoginModal()" class="btn-login" id="loginButton">登入</button>
                     <a href="@Url.Action("Register", "Account")" class="btn-register" id="registerButton">註冊</a>
-                    <div class="user-email-container" style="display: none">
+
+                    <!-- 使用者登入後顯示 -->
+                    <div class="user-email-container" data-identity="@ViewBag.Identity" style="display: none">
                         <span class="user-email"></span>
                         <div class="dropdown-content">
                             <a href="/MemberCenter/Index">個人資料</a>
                             <a href="#matches">配對資訊</a>
-
                             <a href="/Mart/Checkout">購物車清單</a>
                             <a href="/MemberCenter/MyFav">收藏清單</a>
-                            <button class="btn-logout" onclick="handleLogout()">
-                                登出
-                            </button>
+
+                            <!-- 廠商和管理員才顯示 -->
+                            <a href="/MemberCenter/Index" style="display: none;">個人資料</a>
+
+                            <a href="/Back/Backstage" id="adminLink" style="display: none;">後臺管理</a>
+
+                            <button class="btn-logout" onclick="handleLogout()">登出</button>
                         </div>
                     </div>
                 </div>
             </div>
+
         </nav>
     </div>
    

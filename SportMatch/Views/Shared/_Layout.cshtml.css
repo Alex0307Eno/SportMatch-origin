@@ -657,6 +657,7 @@ h2 {
 }
 
 .checkbox-container {
+    margin-top: 0.5rem;
     display: flex;
     align-items: center;
 }

@@ -246,9 +246,9 @@ body {
     .btn-login-home i {
         font-size: 18px;
     }
-button:disabled {
-    background-color: #d3d3d3; /* 灰色背景 */
-    border: 1px solid #ccc; /* 灰色邊框 */
-    color: #999; /* 灰色文字 */
-    cursor: not-allowed; /* 禁止點擊的指標 */
+.disabled {
+    background-color: #ccc; /* 灰色背景 */
+    cursor: not-allowed; /* 顯示不可點擊的游標 */
+    pointer-events: none; /* 禁止點擊事件 */
 }
+

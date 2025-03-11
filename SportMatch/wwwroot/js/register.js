@@ -6,9 +6,28 @@
     const emailInput = document.getElementById("email");
     const verificationCodeInput = document.getElementById("verification-code");
     const usernameInput = document.getElementById("username");
+    const guiCode = document.getElementById("guiCode"); 
     const countdown = document.getElementById("countdown");
 
     let countdownTimer;
+
+    //document.getElementById("username").addEventListener("blur", async function () {
+    //    const username = this.value.trim();
+    //    if (!username) return;
+
+    //    try {
+    //        const response = await fetch(`/Account/CheckUsername?username=${username}`);
+    //        const result = await response.json();
+
+    //        if (!result.available) {
+    //            alert("使用者名稱已被使用，請換一個！");
+    //            this.value = "";
+    //        }
+    //    } catch (error) {
+    //        console.error("檢查使用者名稱時出錯:", error);
+    //    }
+    //});
+
 
     // 發送驗證碼按鈕事件
     sendCodeBtn.addEventListener("click", async function () {
@@ -22,6 +41,7 @@
         sendCodeBtn.classList.add("disabled");
         startCountdown();
 
+
         try {
             const response = await fetch("/Account/SendVerificationCode", {
                 method: "POST",
@@ -31,6 +51,7 @@
             const result = await response.json();
             if (response.ok && result.success) {
                 alert("驗證碼已發送到您的電子郵件！");
+
             } else {
                 alert(result.message || "發送失敗，請再試一次");
             }
@@ -39,6 +60,7 @@
             alert("發送錯誤，請稍後再試");
         }
     });
+
 
     // 倒數邏輯
     function startCountdown() {
@@ -57,6 +79,18 @@
             }
         }, 1000);
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const guiNumberInput = document.getElementById("guiNumber");
+
+        // 限制只允許輸入 8 位數字
+        guiNumberInput.addEventListener("input", function () {
+            // 只允許數字並限制為 8 位
+            this.value = this.value.replace(/[^0-9]/g, "").slice(0, 8);
+        });
+    });
+
+
 
     // 密碼顯示切換
     function togglePasswordVisibility(inputId, button) {
@@ -92,8 +126,10 @@
                 body: JSON.stringify({
                     username: usernameInput.value,
                     email: emailInput.value,
+
                     verificationCode: verificationCodeInput.value,
                     password: password.value,
+                    guiCode: guiCode.value  // 確保這裡傳送了 guiNumber 的值
                 })
             });
             const result = await response.json();
@@ -114,3 +150,28 @@
         emailInput.value = localStorage.getItem("savedEmail");
     }
 });
+
+// 註冊成功通知容器
+const successNotification = document.createElement("div");
+successNotification.id = "successNotification";
+successNotification.textContent = "註冊成功！歡迎加入！";
+successNotification.style.display = "none";
+document.body.appendChild(successNotification);
+
+// 隱藏通知並跳轉到首頁
+const hideNotification = () => {
+    successNotification.style.opacity = "0";
+    setTimeout(() => {
+        successNotification.style.display = "none";
+        window.location.href = "/"; // 跳轉到首頁
+    }, 300); // 與 CSS 過渡時間一致
+};
+
+// 顯示通知
+const showNotification = () => {
+    successNotification.style.display = "block";
+    setTimeout(() => {
+        successNotification.style.opacity = "1";
+    }, 10); // 確保過渡效果正常觸發
+    setTimeout(hideNotification, 3000); // 3秒後隱藏並跳轉
+};

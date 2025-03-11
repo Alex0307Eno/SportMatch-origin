@@ -1,6 +1,7 @@
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using SportMatch.Controllers;
@@ -45,6 +46,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Account/Login";  // 設定登入頁面路徑
         options.LogoutPath = "/Account/Logout";  // 設定登出頁面路徑
     });
+
+
+
+
 builder.Services.AddControllersWithViews();
 
 //builder.Services.AddScoped<AuthenticationService>();

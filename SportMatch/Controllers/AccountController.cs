@@ -16,6 +16,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using System.Security.Claims;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Identity;
 
 namespace SportMatch.Controllers
 {
@@ -24,14 +26,15 @@ namespace SportMatch.Controllers
     {
         private readonly SportMatchContext _context;
         private readonly IConfiguration _configuration;
-        
+
 
 
         public AccountController(SportMatchContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
-           
+
+
 
         }
 
@@ -144,7 +147,7 @@ namespace SportMatch.Controllers
                 return BadRequest(new { success = false, message = "登入資料不正確" });
             }
 
-            // 查找使用者（不論是會員或廠商）
+            // 查找使用者
             var user = _context.Users.FirstOrDefault(u => u.Email == model.Email);
 
             if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
@@ -152,12 +155,19 @@ namespace SportMatch.Controllers
                 return BadRequest(new { success = false, message = "帳號或密碼錯誤" });
             }
 
-            // 判斷身份 (1: 會員, 2: 廠商)
+            // 判斷身份
+            string role = user.Identity switch
+            {
+                1 => "member",
+                2 => "vendor",
+                3 => "admin",
+                _ => "member" // 預設為會員
+            };
+
             var claims = new List<Claim>
     {
         new Claim(ClaimTypes.Name, user.Email),
-        new Claim(ClaimTypes.Role, user.Identity == 1 ? "member" : "vendor"),
-        // 根據需要可以添加更多的 claims，例如用戶 ID 等
+        new Claim(ClaimTypes.Role, role),
     };
 
             var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -166,7 +176,7 @@ namespace SportMatch.Controllers
             // 設定認證 Cookie
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
-            return Ok(new { success = true, message = "登入成功", role = user.Identity == 1 ? "member" : "vendor" });
+            return Ok(new { success = true, message = "登入成功", role = role });
         }
 
         [HttpPost]
@@ -275,23 +285,54 @@ namespace SportMatch.Controllers
             return Ok(new { success = true, message = "驗證成功" });
         }
 
+        [HttpGet]
+        [Route("CheckUsername")]
+        public async Task<IActionResult> CheckUsername(string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                return BadRequest(new { available = false, message = "使用者名稱不能為空！" });
+            }
+
+            bool exists = await _context.Users.AnyAsync(u => u.UserName == username);
+            return Ok(new { available = !exists });
+        }
+
+
         // 註冊接口
         [HttpPost]
         public IActionResult Register([FromBody] RegisterModel model)
         {
             if (ModelState.IsValid)
             {
+                // 檢查 UserName 是否已經存在
+                var existingUser = _context.Users.FirstOrDefault(u => u.UserName == model.UserName);
+
+                if (existingUser != null)
+                {
+                    return BadRequest(new { success = false, message = "使用者名稱已被使用，請換一個！" });
+                }
                 // 檢查郵箱是否已註冊
-                var existingUser = _context.Users.FirstOrDefault(u => u.Email == model.Email);
+                var existingEmail = _context.Users.FirstOrDefault(u => u.Email == model.Email);
                 if (existingUser != null)
                 {
                     return BadRequest(new { success = false, message = "該郵箱已被註冊" });
                 }
 
+
                 // 檢查驗證碼是否正確
                 if (!VerifyVerificationCode(model.VerificationCode!))
                 {
                     return BadRequest(new { success = false, message = "驗證碼不正確，請重新發送驗證碼" });
+                }
+
+                // 設定角色
+                int userRole = 1; // 預設為用戶
+
+                // 如果有輸入統一編號且長度為 8 位數，則設定為廠商
+                if (model.GuiCode.HasValue && model.GuiCode.Value.ToString().Length == 8)
+                {
+                    userRole = 2; // 廠商
                 }
 
                 // 密碼加密
@@ -300,11 +341,13 @@ namespace SportMatch.Controllers
                 // 創建新用戶
                 var user = new User
                 {
-                    Identity = 1, // 設置角色為用戶
+                    Identity = userRole, // 設置角色為用戶
                     UserName = model.UserName!,
                     Email = model.Email!,
                     Password = hashedPassword, // 存儲加密後的密碼
-                    CreatedAt = DateTime.Now
+                    CreatedAt = DateTime.Now,
+                    GuiCode = model.GuiCode // 儲存統一編號
+
                 };
 
                 _context.Users.Add(user);
@@ -375,6 +418,8 @@ namespace SportMatch.Controllers
         public string? Email { get; set; }
         public string? Password { get; set; }
         public string? VerificationCode { get; set; } // 驗證碼
+
+        public int? GuiCode { get; set; } // 統一編號
     }
 
     // 定義登入模型
@@ -402,7 +447,10 @@ namespace SportMatch.Controllers
         public string? NewPassword { get; set; }  // 新密碼
         public string? ConfirmPassword { get; set; }  // 確認新密碼
     }
-    
+
+
+
+
 
 
 }

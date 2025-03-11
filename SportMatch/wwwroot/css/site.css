@@ -371,6 +371,9 @@ body {
     margin-bottom: 1.5rem;
 }
 
+#about {
+    margin-left: 10px;
+}
 .footer-section ul {
     list-style: none;
 }

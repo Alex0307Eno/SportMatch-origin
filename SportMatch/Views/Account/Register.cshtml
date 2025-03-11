@@ -48,6 +48,12 @@
                            required />
                 </div>
                 <div class="form-group">
+    <label for="guiNumber">統一編號</label>
+    <input type="text" class="form-control" name="guiCode" id="guiCode"  maxlength="8" placeholder="請輸入統一編號">
+</div>
+
+
+                <div class="form-group">
                     <label for="password">密碼</label>
                     <div class="password-container">
                         <input type="password"
@@ -86,11 +92,19 @@
         </div>
     </div>
     <script src="~/js/register.js" defer></script>
+
     <script>
+
         function redirectToHome() {
-            localStorage.setItem("showLoginModal", "true");
-            window.location.href = "/";
+            localStorage.setItem("openLoginModal", "true"); // 設定標記
+            window.location.href = "/"; // 導向首頁
         }
+
+    </script>
+
+
+    <script>
+    
 
         // 切換密碼可見性
         document.addEventListener("DOMContentLoaded", function () {

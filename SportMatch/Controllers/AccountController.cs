@@ -24,14 +24,14 @@ namespace SportMatch.Controllers
     {
         private readonly SportMatchContext _context;
         private readonly IConfiguration _configuration;
-        
+
 
 
         public AccountController(SportMatchContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
-           
+
 
         }
 
@@ -258,7 +258,7 @@ namespace SportMatch.Controllers
                 return BadRequest(new { success = false, message = "發送驗證碼失敗" });
             }
         }
-      
+
 
 
         // 驗證註冊用戶的驗證碼
@@ -393,7 +393,7 @@ namespace SportMatch.Controllers
     // 定義驗證碼模型
     public class VerificationModel
     {
-        public string?  VerificationCode { get; set; } // 驗證碼
+        public string? VerificationCode { get; set; } // 驗證碼
     }
     public class ResetPasswordModel
     {
@@ -402,7 +402,7 @@ namespace SportMatch.Controllers
         public string? NewPassword { get; set; }  // 新密碼
         public string? ConfirmPassword { get; set; }  // 確認新密碼
     }
-    
+
 
 
 }

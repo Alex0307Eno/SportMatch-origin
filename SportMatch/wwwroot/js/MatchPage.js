@@ -54,7 +54,7 @@ $(document).ready(function () {
                     tmp = tmp + 1;
                     $("#RoleContainer").append(`
                     <label class="col-6">
-						<input type="checkbox" id="checkbox${tmp + 12}" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1"><label for="checkbox${tmp + 12}">${x}</label>
+						<input type="checkbox" id="checkbox${tmp + 100}" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1" style="cursor:pointer"><label for="checkbox${tmp + 100}" style="cursor:pointer">${x}</label>
 					</label><br>
                     `)
                 })

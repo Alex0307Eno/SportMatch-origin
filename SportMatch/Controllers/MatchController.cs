@@ -1,12 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using NuGet.Protocol.Plugins;
 using SportMatch.Models;
 using static SportMatch.Controllers.DoorController;
 
 namespace SportMatch.Controllers
 {
+
     public class MatchController : Controller
     {
+        // 導入資料庫
+        private readonly SportMatchContext _context;
+
+        public MatchController(SportMatchContext context)
+        {
+            _context = context;
+        }
+
         List<TestForMatch> Player2 = new List<TestForMatch>
                 {
                     new TestForMatch { Name = "妙蛙種子", Role = "控球後衛", Image = "../image/MatchPage/001.png" },
@@ -81,15 +92,10 @@ namespace SportMatch.Controllers
                     new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
                     new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
                 };
-        List<SportTestForMatch> Sports = new List<SportTestForMatch>
-        {
-            new SportTestForMatch{ ID=1,SportName="badminton",SportRole=new List<string>{"雙打"} },
-            new SportTestForMatch{ ID=2,SportName="basketball",SportRole=new List<string>{"中鋒","大前鋒","小前鋒","控球後衛","得分後衛"} },
-            new SportTestForMatch{ ID=3,SportName="valleyball",SportRole=new List<string>{ "大砲手", "攔中手", "舉球員", "輔舉員", "自由球員"} }
-        };
 
-        public IActionResult MatchPage(int page = 1)
-        {         
+        public IActionResult MatchPage()
+        {
+            
             return View();
         }
 
@@ -116,15 +122,33 @@ namespace SportMatch.Controllers
             return View("MatchPage");
         }
 
+        // 篩選列功能
         [HttpGet]
         public JsonResult GetRole(string selectedSport)
         {
-            // 根據 SelectSport 找到對應的 SportRole
-            var sport = Sports.FirstOrDefault(s => s.SportName!.ToLower() == selectedSport.ToLower());
+            // 從資料庫調出運動與對應的位置
+            var result = (from r in _context.Roles
+                          join s in _context.Sports
+                          on r.SportId equals s.SportId into sportGroup
+                          from s in sportGroup.DefaultIfEmpty() // LEFT JOIN
+                          select new
+                          {
+                              RoleName = r.RoleName,
+                              SportName = s != null ? s.SportName : "N/A"
+                          }).ToList();
 
-            if (sport != null)
-            {
-                return Json(sport.SportRole); // 回傳運動角色的 JSON 陣列
+            // 篩選列球類點擊時，資料傳入controller判斷種類回傳對應位置
+            if (selectedSport != null)
+            {                           
+                List<string> tmpList = new List<string>();
+                foreach (var item in result)
+                {
+                    if (item.SportName.ToLower() == selectedSport.ToLower())
+                    {
+                        tmpList.Add(item.RoleName);
+                    }
+                }
+                return Json(tmpList);
             }
             else
             {

@@ -95,7 +95,7 @@ namespace SportMatch.Controllers
 
         public IActionResult MatchPage()
         {
-            
+
             return View();
         }
 
@@ -112,14 +112,22 @@ namespace SportMatch.Controllers
         [HttpPost]
         public IActionResult GetSelection(string MatchType, string MatchCategory, List<string> MatchEvent, List<string> MatchArea, List<string> MatchRole, string MatchGender)
         {
-            ViewBag.MatchType = MatchType;
-            ViewBag.MatchCategory = MatchCategory;
-            ViewBag.MatchEvent = MatchEvent;
-            ViewBag.MatchArea = MatchArea;
-            ViewBag.MatchRole = MatchRole;
-            ViewBag.MatchGender = MatchGender;
+            if (MatchType == null)
+            {
+                ViewBag.MatchType = null;
+                return View("MatchPage");
+            }
+            else
+            {
+                ViewBag.MatchType = MatchType;
+                ViewBag.MatchCategory = MatchCategory;
+                ViewBag.MatchEvent = MatchEvent;
+                ViewBag.MatchArea = MatchArea;
+                ViewBag.MatchRole = MatchRole;
+                ViewBag.MatchGender = MatchGender;
+                return View("MatchPage");
+            }
 
-            return View("MatchPage");
         }
 
         // 篩選列功能
@@ -139,7 +147,7 @@ namespace SportMatch.Controllers
 
             // 篩選列球類點擊時，資料傳入controller判斷種類回傳對應位置
             if (selectedSport != null)
-            {                           
+            {
                 List<string> tmpList = new List<string>();
                 foreach (var item in result)
                 {

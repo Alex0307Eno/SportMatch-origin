@@ -30,6 +30,12 @@
 </style>
 <div id="background">
 	<div id="bg-overlay">
+		@if (string.IsNullOrEmpty(ViewBag.MatchType))
+		{
+			<script>
+				alert("請選擇配對類型");
+			</script>
+		}
 		<h1>@ViewBag.MatchType	</h1>
 		<h1>@ViewBag.MatchCategory</h1>
 		<h1>@ViewBag.MatchGender</h1>
@@ -108,7 +114,7 @@
 									<img src="~/image/MatchPage/volleyball-1.webp" class="d-block w-100 h-100" alt="...">
 								</a>
 							</div>
-						</div>						
+						</div>
 					</div>
 				</div>
 			</div>
@@ -122,12 +128,12 @@
 							<div class="d-flex col-8 align-items-center justify-content-center">
 								<div class="">
 									<input type="radio" name="MatchType" class="" id="radioOption1" value="FindPlayer" style="cursor:pointer"><label for="radioOption1"
-																													 style="color: white;cursor:pointer">招募隊友</label>
+																																   style="color: white;cursor:pointer">招募隊友</label>
 								</div>
 								<div>&nbsp&nbsp&nbsp</div>
 								<div class="">
 									<input type="radio" name="MatchType" class="" id="radioOption2" value="FindTeam" style="cursor:pointer"><label for="radioOption2"
-																												   style="color: white;cursor:pointer">尋找隊伍</label>
+																																 style="color: white;cursor:pointer">尋找隊伍</label>
 								</div>
 							</div>
 							<!-- 搜尋按鈕 -->
@@ -223,8 +229,7 @@
 										</button>
 									</h2>
 									<div id="Role" class="accordion-collapse collapse" data-bs-parent="#sportsRole">
-										<div class="accordion-body row" id="RoleContainer">				
-											
+										<div class="accordion-body row" id="RoleContainer">
 										</div>
 									</div>
 								</div>

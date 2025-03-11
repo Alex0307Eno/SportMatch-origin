@@ -48,11 +48,13 @@ $(document).ready(function () {
             data: { selectedSport: selectedSport },
             success: function (response) {
                 $("#RoleContainer").empty(); // 清空舊的角色列表
-                console.log(response); 
+                console.log(response);
+                var tmp = 0;
                 response.forEach(x => {
+                    tmp = tmp + 1;
                     $("#RoleContainer").append(`
                     <label class="col-6">
-						<input type="checkbox" id="checkbox13" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1"><label for="checkbox13">${x}</label>
+						<input type="checkbox" id="checkbox${tmp + 12}" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1"><label for="checkbox${tmp + 12}">${x}</label>
 					</label><br>
                     `)
                 })

@@ -89,19 +89,7 @@ namespace SportMatch.Controllers
         };
 
         public IActionResult MatchPage(int page = 1)
-        {
-
-            //int itemsPerPage = 8; // 每頁顯示 8 個 Card
-            //int totalItems = Player2.Count();  // 總共有幾個 Card
-            //int totalPages = (int)Math.Ceiling((double)totalItems / itemsPerPage); // 換算有幾頁
-
-            //// 取得當前頁要顯示的 Card
-            //List<TestForMatch> paginatedCards = Player2.Skip((page - 1) * itemsPerPage).Take(itemsPerPage).ToList();
-
-            //ViewData["789"] = paginatedCards;
-            //ViewBag.CurrentPage = page;
-            //ViewBag.TotalPages = totalPages;
-
+        {         
             return View();
         }
 

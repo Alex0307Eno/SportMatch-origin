@@ -1,0 +1,448 @@
+﻿body {
+}
+
+.background {
+    background-image: url("/image/icon.jpg");
+    background-size: cover; /*圖片覆蓋整個畫面*/
+    background-repeat: repeat; /* 防圖片重複no-repeat */
+    background-position: center center; /* 置中 */
+    background-color: rgba(0, 0, 0, 0.5);
+    background-blend-mode: overlay; /* 背景圖片與顏色混合 */
+}
+/*右邊切換賽事連結區*/
+
+/*日曆區*/
+.calendar {
+    width: 350px;
+    background: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden;
+    padding: 10px;
+    z-index: 999;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #c69f65e9;
+    color: white;
+}
+
+    .calendar-header button {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+    }
+
+.calendar-weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    background: #ddd;
+    text-align: center;
+    padding: 5px 0;
+    font-weight: bold;
+}
+
+.calendar-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    grid-template-rows: repeat(6, 1fr); /* 固定6行 */
+    gap: 5px;
+    padding: 10px;
+}
+
+    .calendar-days div {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 40px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        .calendar-days div:hover {
+            background: #ddd;
+        }
+
+.today {
+    background: #efca6d;
+    color: white;
+    font-weight: bold;
+}
+
+.marked {
+    background: orange;
+    color: white;
+    font-weight: bold;
+    border-radius: 50%;
+}
+/*main*/
+h2 {
+    color: whitesmoke;
+}
+
+h5 {
+    color: navajowhite
+}
+
+.Eventcontainer {
+    display: grid;
+    grid-template-columns: 70% 30%;
+    height: 100vh;
+}
+
+.left {
+    padding: 20px;
+}
+/* 固定position: fixed;  */
+.right {
+    padding: 20px;
+}
+/*下拉選單*/
+.filter-section h2 {
+    margin-bottom: 20px;
+}
+
+.dropdowns {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+    .dropdowns select {
+        flex: 1;
+    }
+/*賽事box*/
+.events-section {
+    margin-bottom: 40px;
+}
+
+.event-card {
+    background-image: url('/image/EventPicture/basketball-ticket.png');
+    padding: 15px; /*距離邊框*/
+    width: auto;
+    height: 180px;
+    background-position: center center; /*置中*/
+    background-size: 100% 180px; /* 寬度拉伸到100%，高度固定px */
+    background-repeat: no-repeat; /* 圖片是否重複 */
+    margin-bottom: 15px;
+    border-radius: 5px;
+    display: flex; /*flex內部區塊*/
+    align-items: center; /* 垂直置中 */
+    justify-content: space-between; /* 左右分布 */
+}
+
+.event-heart {
+    min-width: 50px;
+}
+
+.event-info {
+    display: flex;
+    min-width: 280px; /* 固定左側區域寬度，讓倒數計時對齊 */
+    flex-shrink: 0; /* 防止區塊被壓縮 */
+    flex-direction: column;
+    justify-content: center; /* 讓內部文字靠近 */
+    margin-left: -260px;
+}
+
+.countdown {
+    font-size: 30px;
+    min-width: 200px; /* 固定倒數計時區塊，避免擠壓 */
+    text-align: left;
+    margin-left: -240px;
+}
+/*愛心特效*/
+.heartbox {
+    margin-left: -42px;
+}
+svg {
+    cursor: pointer;
+    overflow: visible;
+    width: 60px;
+    margin: 20px
+}
+svg #heart {
+    transform-origin: center;
+    animation: animateHeartOut .3s linear forwards
+}
+svg #main-circ {
+    transform-origin: 29.5px 29.5px
+}
+.checkbox {
+    display: none
+}
+.checkbox:checked + label svg #heart {
+    transform: scale(0.2);
+    fill: #E2264D;
+    animation: animateHeart .3s linear forwards .25s
+}
+.checkbox:checked + label svg #main-circ {
+    transition: all 2s;
+    animation: animateCircle .3s linear forwards;
+    opacity: 1
+}
+.checkbox:checked + label svg #heartgroup1 {
+    opacity: 1;
+    transition: .1s all .3s
+}
+.checkbox:checked + label svg #heartgroup1 #heart1 {
+    transform: scale(0) translate(0, -30px);
+    transform-origin: 0 0 0;
+    transition: .5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup1 #heart2 {
+    transform: scale(0) translate(10px, -50px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup2 {
+    opacity: 1;
+    transition: .1s all .3s
+}
+.checkbox:checked + label svg #heartgroup2 #heart1 {
+    transform: scale(0) translate(30px, -15px);
+    transform-origin: 0 0 0;
+    transition: .5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup2 #heart2 {
+    transform: scale(0) translate(60px, -15px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup3 {
+    opacity: 1;
+    transition: .1s all .3s
+}
+.checkbox:checked + label svg #heartgroup3 #heart1 {
+    transform: scale(0) translate(30px, 0px);
+    transform-origin: 0 0 0;
+    transition: .5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup3 #heart2 {
+    transform: scale(0) translate(60px, 10px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup4 {
+    opacity: 1;
+    transition: .1s all .3s
+}
+.checkbox:checked + label svg #heartgroup4 #heart1 {
+    transform: scale(0) translate(30px, 15px);
+    transform-origin: 0 0 0;
+    transition: .5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup4 #heart2 {
+    transform: scale(0) translate(40px, 50px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup5 {
+    opacity: 1;
+    transition: .1s all .3s
+}
+.checkbox:checked + label svg #heartgroup5 #heart1 {
+    transform: scale(0) translate(-10px, 20px);
+    transform-origin: 0 0 0;
+    transition: .5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup5 #heart2 {
+    transform: scale(0) translate(-60px, 30px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup6 {
+    opacity: 1;
+    transition: .1s all .3s
+}
+.checkbox:checked + label svg #heartgroup6 #heart1 {
+    transform: scale(0) translate(-30px, 0px);
+    transform-origin: 0 0 0;
+    transition: .5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup6 #heart2 {
+    transform: scale(0) translate(-60px, -5px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup7 {
+    opacity: 1;
+    transition: .1s all .3s
+}
+.checkbox:checked + label svg #heartgroup7 #heart1 {
+    transform: scale(0) translate(-30px, -15px);
+    transform-origin: 0 0 0;
+    transition: .5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup7 #heart2 {
+    transform: scale(0) translate(-55px, -30px);
+    transform-origin: 0 0 0;
+    transition: 1.5s transform .3s
+}
+.checkbox:checked + label svg #heartgroup2 {
+    opacity: 1;
+    transition: .1s opacity .3s
+}
+.checkbox:checked + label svg #heartgroup3 {
+    opacity: 1;
+    transition: .1s opacity .3s
+}
+.checkbox:checked + label svg #heartgroup4 {
+    opacity: 1;
+    transition: .1s opacity .3s
+}
+.checkbox:checked + label svg #heartgroup5 {
+    opacity: 1;
+    transition: .1s opacity .3s
+}
+.checkbox:checked + label svg #heartgroup6 {
+    opacity: 1;
+    transition: .1s opacity .3s
+}
+.checkbox:checked + label svg #heartgroup7 {
+    opacity: 1;
+    transition: .1s opacity .3s
+}
+@keyframes animateCircle {
+    40% {
+        transform: scale(10);
+        opacity: 1;
+        fill: #DD4688
+    }
+    55% {
+        transform: scale(11);
+        opacity: 1;
+        fill: #D46ABF
+    }
+    65% {
+        transform: scale(12);
+        opacity: 1;
+        fill: #CC8EF5
+    }
+    75% {
+        transform: scale(13);
+        opacity: 1;
+        fill: transparent;
+        stroke: #CC8EF5;
+        stroke-width: .5
+    }
+    85% {
+        transform: scale(17);
+        opacity: 1;
+        fill: transparent;
+        stroke: #CC8EF5;
+        stroke-width: .2
+    }
+    95% {
+        transform: scale(18);
+        opacity: 1;
+        fill: transparent;
+        stroke: #CC8EF5;
+        stroke-width: .1
+    }
+    100% {
+        transform: scale(19);
+        opacity: 1;
+        fill: transparent;
+        stroke: #CC8EF5;
+        stroke-width: 0
+    }
+}
+
+@keyframes animateHeart {
+    0% {
+        transform: scale(0.2)
+    }
+    40% {
+        transform: scale(1.2)
+    }
+    100% {
+        transform: scale(1)
+    }
+}
+@keyframes animateHeartOut {
+    0% {
+        transform: scale(1.4)
+    }
+    100% {
+        transform: scale(1)
+    }
+}
+/*控制頁底距離*/
+footer {
+    margin-top: 220px;
+}
+/* 輪播區域樣式 */
+.EventCarousel {
+    position: fixed;
+    bottom: 1%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    /* overflow: hidden; */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.EventCarousel-track {
+    display: flex;
+    transition: transform 0.7s ease-in-out;
+}
+
+.EventCarousel-item {
+    width: 12%;
+    flex-shrink: 0;
+}
+
+.toggle-button {
+    cursor: pointer;
+    font-size: 20px;
+    margin-left: 10px;
+}
+
+.EventCarousel-button {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    z-index: 1;
+    border-radius: 12%;
+}
+
+    .EventCarousel-button.prev {
+        left: 10px;
+    }
+
+    .EventCarousel-button.next {
+        right: 10px;
+    }
+
+.EventCarousel-indicators {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.EventIndicator {
+    width: 12px;
+    height: 5px;
+    background-color: #976464;
+    border: none;
+    border-radius: 12%;
+    margin: 0 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+    .EventIndicator.active {
+        background-color: #333;
+    }

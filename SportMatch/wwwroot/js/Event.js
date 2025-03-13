@@ -67,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderCalendar();
 });
+//日曆區跟隨滑鼠滾動
 
 //倒數計時器
 document.addEventListener("DOMContentLoaded", function () {

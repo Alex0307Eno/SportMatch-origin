@@ -66,6 +66,60 @@ header {
     }
 }
 
+/* 整體樣式設置 */
+.dropdown-content, .dropdown-content2 {
+    display: none; /* 預設隱藏 */
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 200px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+    padding: 10px;
+    border-radius: 5px;
+    opacity: 0; /* 預設透明 */
+    transition: opacity 0.3s ease, transform 0.3s ease; /* 添加過渡效果 */
+    transform: translateY(-10px); /* 初始位置稍微向上移動 */
+}
+
+.user-email-container {
+    position: relative;
+    display: inline-block;
+}
+
+.user-email {
+    cursor: pointer;
+    font-size: 16px;
+    color: #007bff;
+    text-decoration: underline;
+    transition: color 0.3s ease;
+}
+
+/* 滑鼠懸停顯示 */
+.user-email:hover {
+    color: #0056b3;
+}
+
+/* 下拉選單內部按鈕樣式 */
+.dropdown-content a, .dropdown-content button, .dropdown-content2 a, .dropdown-content2 button {
+    color: black;
+    padding: 8px 16px;
+    text-decoration: none;
+    display: block;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-content a:hover, .dropdown-content button:hover, .dropdown-content2 a:hover, .dropdown-content2 button:hover {
+    background-color: #ddd; /* 鼠標懸停時變色 */
+}
+
+/* 當下拉顯示時的樣式 */
+.dropdown-content.show, .dropdown-content2.show {
+    display: block;
+    opacity: 1; /* 變得可見 */
+    transform: translateY(0); /* 回到正常位置 */
+}
+
 .container-fluid {
     padding: 0;
 

@@ -14,17 +14,24 @@ namespace SportMatch.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly SportMatchContext _context;
+        // private readonly SportMatchContext _context;
         private readonly IConfiguration _configuration;
+        private readonly MyDbContext _context;
         
 
 
-        public AccountController(SportMatchContext context, IConfiguration configuration)
+        // public AccountController(SportMatchContext context, IConfiguration configuration)
+        // {
+        //     _context = context;
+        //     _configuration = configuration;
+        //    
+        //
+        // }
+        
+        public AccountController(MyDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
-           
-
         }
 
         // 註冊頁面
@@ -95,7 +102,7 @@ namespace SportMatch.Controllers
 
 
         // 登入接口
-        [HttpPost]
+        [HttpPost("Login")]
         public IActionResult Login([FromBody] LoginModel model)
         {
             if (!ModelState.IsValid)
@@ -105,18 +112,15 @@ namespace SportMatch.Controllers
 
             var user = _context.User.FirstOrDefault(u => u.Email == model.Email);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
-            {
-                return BadRequest(new { success = false, message = "帳號或密碼錯誤" });
-            }
+            // if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.Password))
+            // {
+            //     return BadRequest(new { success = false, message = "帳號或密碼錯誤" });
+            // }
+            
+            HttpContext.Session.SetString("LoggedInEmail", user.Email);
 
             return Ok(new { success = true, message = "登入成功" });
         }
-
-        
-
-
-
 
 
         // 驗證用戶帳號與密碼

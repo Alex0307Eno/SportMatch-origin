@@ -155,13 +155,12 @@ body {
 /* 按鈕和連結樣式 */
 .header-actions .user-actions button,
 .header-actions .user-actions a {
-  background: none;
+  
   border: none;
   cursor: pointer;
   font-size: 18px;
   color: #333;
   position: relative;
-  padding: 0;
 }
 
 /* 按鈕和連結的 hover 效果 */
@@ -406,17 +405,6 @@ body.dark-mode .btn-register:hover {
   color: #333;
 }
 
-.btn-logout {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 16px;
-  color: #333;
-}
-
-.btn-logout:hover {
-  color: var(--primary-color);
-}
 
 
 
@@ -789,5 +777,36 @@ h2 {
 body.no-scroll {
     overflow: hidden;
 }
+
+/* 按鈕的基礎樣式 */
+.btn-logout {
+    background-color: #f44336; /* 紅色背景 */
+    color: white; /* 白色文字 */
+    border: none; /* 去除邊框 */
+    padding: 5px 10px; /* 內邊距 */
+    font-size: 16px; /* 字體大小 */
+    cursor: pointer; /* 滑鼠懸停顯示指標 */
+    border-radius: 5px; /* 圓角邊框 */
+    display: inline-flex; /* 使用 flex 來對齊圖標和文字 */
+    align-items: center; /* 垂直居中 */
+    gap: 8px; /* 圖標與文字之間的間距 */
+    transition: background-color 0.3s ease; /* 背景顏色變化過渡 */
+}
+
+    /* 當鼠標懸停時的效果 */
+    .btn-logout:hover {
+        background-color: #d32f2f; /* 更深的紅色 */
+    }
+
+    /* 圖標大小調整 */
+    .btn-logout i {
+        font-size: 20px; /* 圖標的大小 */
+    }
+
+    /* 按鈕禁用時的樣式 */
+    .btn-logout:disabled {
+        background-color: #9e9e9e; /* 灰色背景 */
+        cursor: not-allowed; /* 禁用指標 */
+    }
 
 

@@ -41,6 +41,7 @@ $(document).ready(function () {
     loadCards(1);
     getRole();
     loadEvent();
+    checkEventOrNot();
 });
 
 // 載入獲得賽事資料
@@ -56,7 +57,7 @@ function loadEvent() {
             response.badmintonEventList.forEach(x => {
                 $("#badmintonEventList").append(`
                     <label class="col-6">
-	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1" style="cursor:pointer">
+	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer" onselect="checkEventOrNot()">
 	                    <label for="${x}" style="cursor:pointer">${x}</label>
                     </label>
                     <br>
@@ -65,7 +66,7 @@ function loadEvent() {
             response.basketballEventList.forEach(x => {
                 $("#basketballEventList").append(`
                     <label class="col-6">
-	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1" style="cursor:pointer">
+	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer">
 	                    <label for="${x}" style="cursor:pointer">${x}</label>
                     </label>
                     <br>
@@ -74,7 +75,7 @@ function loadEvent() {
             response.valleyballEventList.forEach(x => {
                 $("#valleyballEventList").append(`
                     <label class="col-6">
-	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1" style="cursor:pointer">
+	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer">
 	                    <label for="${x}" style="cursor:pointer">${x}</label>
                     </label>
                     <br>
@@ -84,6 +85,20 @@ function loadEvent() {
         error: function () {
             alert("請求失敗，請稍後再試");
         }
+    });
+}
+// 指定賽事調整篩選條件
+function checkEventOrNot() {
+    $(document).on('change', '.forCheckEvent', function () {
+        const anyChecked = $('.forCheckEvent:checked').length > 0; // 檢查是否有勾選
+
+        // 控制 `.forCheckArea` (D、E、F)
+        $('.forCheckArea').prop('disabled', anyChecked);
+        $('.forCheckArea').prop('checked', !anyChecked);
+
+        // 控制 `.forCheckGender` (G、H)
+        $('.forCheckGender').prop('disabled', anyChecked);
+        $('.forCheckGender').prop('checked', !anyChecked);
     });
 }
 
@@ -101,7 +116,7 @@ function getRole() {
                 response.roleList.forEach(x => {
                     $("#RoleContainer").append(`
                     <label class="col-6">
-						<input type="checkbox" id="${x}" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1" style="cursor:pointer">
+						<input type="checkbox" id="${x}" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1 mt-2" style="cursor:pointer">
                         <label for="${x}" style="cursor:pointer">${x}</label>
 					</label><br>
                     `)

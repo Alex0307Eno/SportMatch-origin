@@ -1,67 +1,4 @@
-﻿.parallelogram {
-    transform: skew(-20deg);
-/*    transform: scale(2);*/
-    padding: 30px 30px;
-    font-size: 1.5rem;
-    display: inline-block;
-    background: #007bff;
-    color: white;
-    border: none;
-    margin: 0px 20px;
-    border-radius: 10px;
-    position: relative;
-    cursor: pointer;
-    transition: box-shadow 0.3s ease;
-}
-
-    .parallelogram:hover {
-        padding: 65px 65px;
-        /* box-shadow: 0 0 15px rgba(255, 255, 255, 1); */
-        /* animation: rainbow-glow 3s infinite; */
-        transition: 0.25s;
-        animation: rainbow-glow 3s infinite ease-in-out;
-    }
-
-@keyframes rainbow-glow {
-    0% {
-        box-shadow: 0 0 10px red;
-    }
-
-    14% {
-        box-shadow: 0 0 15px orange;
-    }
-
-    28% {
-        box-shadow: 0 0 15px yellow;
-    }
-
-    42% {
-        box-shadow: 0 0 15px green;
-    }
-
-    57% {
-        box-shadow: 0 0 15px blue;
-    }
-
-    71% {
-        box-shadow: 0 0 15px indigo;
-    }
-
-    85% {
-        box-shadow: 0 0 15px violet;
-    }
-
-    100% {
-        box-shadow: 0 0 10px red;
-    }
-}
-
-.parallelogram span {
-    display: inline-block;
-    transform: skew(20deg);
-}
-
-@font-face {
+﻿@font-face {
     font-family: 'openhuninn';
     src: url('../image/MatchPage/jf-openhuninn-2.1.ttf');
 }
@@ -82,30 +19,39 @@
     background-color: rgba(0, 0, 0, 0.8);
     z-index: -50;
 }
-#ball1 {
-    background-image: url("../image/MatchPage/ball.png");
-    /* transform: skew(20deg); */
-    background-position: -230px -90px;
+
+.accordion-body {
+    /*background-color: #121212;*/ /* 更深的黑色 */
+    color: #F5F5F5; /* 亮白文字 */
 }
 
-#ball2 {
-    background-image: url("../image/MatchPage/ball.png");
-    /* transform: skew(20deg); */
-    background-position: -540px -90px;
+.sportRadio {
+    background-color: #212121 !important;
+}
+.accordion-button {
+    background-color: #212121 !important;
+    color: white; /* 文字白色 */
+    border: none;
 }
 
-#ball3 {
-    background-image: url("../image/MatchPage/ball.png");
-    /* transform: skew(20deg); */
-    background-position: -860px -70px;
+    .accordion-button:not(.collapsed) {
+        background-color: #0056b3; /* 按鈕展開時顏色 */
+        color: #ffffff;
+    }
+
+.accordion {
+    border-radius: 2px;
+    overflow: hidden;
 }
 
-#ballClass {
-    border-radius: 20px;
+.accordion-item {
+    background-color: #121212;
+    border: 1px solid #00ADB5; /* 藍色邊框 */
+    box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
 }
 
-.accordion-collapse {
-    background-color: antiquewhite;
+.accordion-button::after {
+    filter: invert(1); /*讓箭頭變白*/
 }
 
 #heartIcon:hover {

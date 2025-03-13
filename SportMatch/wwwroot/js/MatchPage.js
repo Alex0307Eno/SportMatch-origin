@@ -1,4 +1,9 @@
-﻿// 更新模態視窗內容
+﻿// 選取另一個父分類時取消選擇底下子分類
+$("input[name='MatchCategory']").change(function () {
+    $(".MatchCheckBoxItem").prop("checked", false);
+});
+
+// 更新模態視窗內容
 function updateInfoModalContent(playerName, playerPosition, imgSrc) {
     document.getElementById('modal-player-name').innerText = playerName;
     document.getElementById('modal-player-position').innerText = ("擅長位置：" + playerPosition);
@@ -8,6 +13,8 @@ function updateApplyModalContent(playerName, playerPosition) {
     document.getElementById('modal-apply-name').innerText = playerName;
     document.getElementById('modal-apply-position').innerText = ("擅長位置：" + playerPosition);
 }
+
+// 加入最愛功能
 function addToMyFavorite() {
     var dom = document.getElementById('heartIcon');
     var toa = document.getElementById('toastMessage');
@@ -28,19 +35,105 @@ function addToMyFavorite() {
     }
     toast.show();
 }
-function toggleAccordion(sportId) {
-    let target = document.getElementById(sportId);
-    let bsCollapse = new bootstrap.Collapse(target);
-    bsCollapse.toggle();
-}
 
 // 初始化載入第一頁
 $(document).ready(function () {
     loadCards(1);
+    getRole();
+    loadEvent();
+    checkEventOrNot();
 });
 
+// 載入獲得賽事資料
+function loadEvent() {
+    $.ajax({
+        url: "/Match/GetEvent",  // 呼叫後端 Controller
+        type: "GET",
+        success: function (response) {
+            $("#badmintonEventList").empty(); // 清空舊的賽事
+            $("#basketballEventList").empty(); // 清空舊的賽事
+            $("#valleyballEventList").empty(); // 清空舊的賽事
+            console.log(response);
+            response.badmintonEventList.forEach(x => {
+                $("#badmintonEventList").append(`
+                    <label class="col-6">
+	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer" onselect="checkEventOrNot()">
+	                    <label for="${x}" style="cursor:pointer">${x}</label>
+                    </label>
+                    <br>
+                    `)
+            })
+            response.basketballEventList.forEach(x => {
+                $("#basketballEventList").append(`
+                    <label class="col-6">
+	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer">
+	                    <label for="${x}" style="cursor:pointer">${x}</label>
+                    </label>
+                    <br>
+                    `)
+            })
+            response.valleyballEventList.forEach(x => {
+                $("#valleyballEventList").append(`
+                    <label class="col-6">
+	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer">
+	                    <label for="${x}" style="cursor:pointer">${x}</label>
+                    </label>
+                    <br>
+                    `)
+            })
+        },
+        error: function () {
+            alert("請求失敗，請稍後再試");
+        }
+    });
+}
+// 指定賽事調整篩選條件
+function checkEventOrNot() {
+    $(document).on('change', '.forCheckEvent', function () {
+        const anyChecked = $('.forCheckEvent:checked').length > 0; // 檢查是否有勾選
+
+        // 控制 `.forCheckArea` (D、E、F)
+        $('.forCheckArea').prop('disabled', anyChecked);
+        $('.forCheckArea').prop('checked', !anyChecked);
+
+        // 控制 `.forCheckGender` (G、H)
+        $('.forCheckGender').prop('disabled', anyChecked);
+        $('.forCheckGender').prop('checked', !anyChecked);
+    });
+}
+
+// 動態切換運動位置
+function getRole() {
+    $("input[name='MatchCategory']").change(function () {
+        var selectedSport = $(this).val(); // 獲取選中的值
+        $.ajax({
+            url: "/Match/GetRole",  // 呼叫後端 Controller
+            type: "GET",
+            data: { selectedSport: selectedSport },
+            success: function (response) {
+                $("#RoleContainer").empty(); // 清空舊的角色列表
+                console.log(response);
+                response.roleList.forEach(x => {
+                    $("#RoleContainer").append(`
+                    <label class="col-6">
+						<input type="checkbox" id="${x}" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1 mt-2" style="cursor:pointer">
+                        <label for="${x}" style="cursor:pointer">${x}</label>
+					</label><br>
+                    `)
+                })
+            },
+            error: function () {
+                alert("請求失敗，請稍後再試");
+            }
+        });
+    });
+}
+
+
+
+
 // 一頁顯示幾個Card
-const pageSize = 8;
+const pageSize = 6;
 
 // 動態載入卡片
 function loadCards(page) {
@@ -55,7 +148,7 @@ function loadCards(page) {
             response.cards.forEach(card => {
                 cardContainer.append(`
                  <div class="col-md-6 mb-3">
-                     <div class="card mb-3 bg-dark text-light border-warning" style="max-width: 540px;">
+                     <div class="card mb-3 " style="max-width: 540px;">
                          <div class="row g-0">
                              <div class="col-md-4">
 	                                <img src="${card.image}" class="img-fluid rounded-start" alt="...">
@@ -87,22 +180,33 @@ function loadCards(page) {
                  `);
             });
 
-            updatePagination(response.totalPages, page);
+            updatePagination(response.totalPages, page, response.totalItems);
         }
     });
 }
 
-function updatePagination(totalPages, activePage) {
+// 分頁功能
+function updatePagination(totalPages, activePage, totalItems) {
+    $("#paginationInfo").text(`當前第 ${activePage} 頁 ，總共 ${totalItems} 筆資料`);
     const pagination = $("#pagination");
     pagination.empty();
 
-    for (let i = 1; i <= totalPages; i++) {
-        let activeClass = i === activePage ? "active" : "";
-        pagination.append(`
-			<li class="page-item ${activeClass}">
-				<a class="page-link bg-dark border-warning" href="#" onclick="loadCards(${i}); return false;">${i}</a>
-			</li>
-			`);
-    }
-}
+    let prevDisabled = activePage === 1 ? "disabled" : "";
+    let nextDisabled = activePage === totalPages ? "disabled" : "";
 
+    pagination.append(`
+        <li class="page-item ${prevDisabled}">
+            <a class="page-link " href="#" onclick="loadCards(${activePage - 1}); return false;">
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item active" style="z-index:0;">
+            <span class="page-link" style="background-color: #212121;border: 1px solid #00ADB5;">${activePage} / ${totalPages}</span>
+        </li>
+        <li class="page-item ${nextDisabled}">
+            <a class="page-link" href="#" onclick="loadCards(${activePage + 1}); return false;">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    `);
+}

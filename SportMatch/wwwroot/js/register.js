@@ -119,18 +119,25 @@
             alert("密碼不一致！");
             return;
         }
+
+
+        // 構建請求的資料
+        const requestData = {
+            username: usernameInput.value,
+            email: emailInput.value,
+            verificationCode: verificationCodeInput.value,
+            password: password.value
+        };
+
+        // 如果 guiCode 有值，則將其添加到資料中
+        if (guiCode.value) {
+            requestData.guiCode = guiCode.value;
+        }
         try {
             const response = await fetch("/Account/Register", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    username: usernameInput.value,
-                    email: emailInput.value,
-
-                    verificationCode: verificationCodeInput.value,
-                    password: password.value,
-                    guiCode: guiCode.value  // 確保這裡傳送了 guiNumber 的值
-                })
+                body: JSON.stringify(requestData)
             });
             const result = await response.json();
             if (response.ok && result.success) {

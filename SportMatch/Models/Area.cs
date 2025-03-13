@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SportMatch.Models;
 
 public partial class Area
 {
+    [Key]
     public int AreaId { get; set; }
 
     public string AreaName { get; set; } = null!;

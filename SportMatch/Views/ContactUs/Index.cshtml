@@ -3,8 +3,8 @@
 @{
     Layout = "_MemberLayout";
 }
-
-<h2 class="mx-auto fw-bold fs-3 my-4">聯絡我們</h2>
+<div class="contactUs_Page">
+<h2 class="mx-auto fw-bold fs-3 my-4 text-center">聯絡我們</h2>
 <div class="container-fluid content-wrap d-flex justify-content-center mt-5">
     <div class="info w-75 me-5">
         <h3 class="fs-5 fw-bold mb-3 text-secondary">關於我們</h3>
@@ -104,61 +104,8 @@
                       style="height: 100px"></textarea>
         </div>
         <div class="d-flex align-items-center pt-1"><input type="checkbox" aria-required="true" required="required"><a
-                class="agreePrivatePolicy text-decoration-underline ps-2">同意隱私政策</a></div>
+                                                                                                                        class="agreePrivatePolicy text-decoration-underline ps-2">同意隱私政策</a></div>
         <input type="submit" class="btn btn-outline-secondary w-75 mt-4 mx-auto" value="送出"/>
     </form>
 </div>
-<style>
-    .info {
-        max-width: 800px;
-
-        p {
-            line-height: 23px;
-        }
-
-        .accordion {
-            .accordion-header {
-                .accordion-button {
-                    font-weight: bold;
-
-                    i {
-                        transition: all 0.3s;
-                    }
-
-                    &::after {
-                        display: unset !important;
-                    }
-
-                    &:focus {
-                        outline: none;
-                        box-shadow: none;
-                    }
-
-                    &:not(.collapsed) {
-                        background-color: unset;
-
-                        i {
-                            rotate: 180deg;
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    .contactUs {
-        min-width: 400px;
-
-        & > div {
-            &:has([aria-required]) {
-                label {
-                    &::before {
-                        content: "*";
-                        color: red;
-                        font-weight: bold;
-                    }
-                }
-            }
-        }
-    }
-</style>
+</div>

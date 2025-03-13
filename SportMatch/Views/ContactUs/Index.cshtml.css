@@ -1,0 +1,54 @@
+.contactUs_Page {
+    .info {
+        max-width: 800px;
+
+        p {
+            line-height: 23px;
+        }
+
+        .accordion {
+            .accordion-header {
+                .accordion-button {
+                    font-weight: bold;
+
+                    i {
+                        transition: all 0.3s;
+                    }
+
+                    &::after {
+                        display: unset !important;
+                    }
+
+                    &:focus {
+                        outline: none;
+                        box-shadow: none;
+                    }
+
+                    &:not(.collapsed) {
+                        background-color: unset;
+
+                        i {
+                            rotate: 180deg;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .contactUs {
+        min-width: 400px;
+
+        & > div {
+            &:has([aria-required]) {
+                label {
+                    &::before {
+                        content: "*";
+                        color: red;
+                        font-weight: bold;
+                    }
+                }
+            }
+        }
+    }
+}

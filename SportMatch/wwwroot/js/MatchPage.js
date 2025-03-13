@@ -39,7 +39,56 @@ function addToMyFavorite() {
 // 初始化載入第一頁
 $(document).ready(function () {
     loadCards(1);
+    getRole();
+    loadEvent();
+});
 
+// 載入獲得賽事資料
+function loadEvent() {
+    $.ajax({
+        url: "/Match/GetEvent",  // 呼叫後端 Controller
+        type: "GET",
+        success: function (response) {
+            $("#badmintonEventList").empty(); // 清空舊的賽事
+            $("#basketballEventList").empty(); // 清空舊的賽事
+            $("#valleyballEventList").empty(); // 清空舊的賽事
+            console.log(response);
+            response.badmintonEventList.forEach(x => {
+                $("#badmintonEventList").append(`
+                    <label class="col-6">
+	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1" style="cursor:pointer">
+	                    <label for="${x}" style="cursor:pointer">${x}</label>
+                    </label>
+                    <br>
+                    `)
+            })
+            response.basketballEventList.forEach(x => {
+                $("#basketballEventList").append(`
+                    <label class="col-6">
+	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1" style="cursor:pointer">
+	                    <label for="${x}" style="cursor:pointer">${x}</label>
+                    </label>
+                    <br>
+                    `)
+            })
+            response.valleyballEventList.forEach(x => {
+                $("#valleyballEventList").append(`
+                    <label class="col-6">
+	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1" style="cursor:pointer">
+	                    <label for="${x}" style="cursor:pointer">${x}</label>
+                    </label>
+                    <br>
+                    `)
+            })
+        },
+        error: function () {
+            alert("請求失敗，請稍後再試");
+        }
+    });
+}
+
+// 動態切換運動位置
+function getRole() {
     $("input[name='MatchCategory']").change(function () {
         var selectedSport = $(this).val(); // 獲取選中的值
         $.ajax({
@@ -49,12 +98,11 @@ $(document).ready(function () {
             success: function (response) {
                 $("#RoleContainer").empty(); // 清空舊的角色列表
                 console.log(response);
-                var tmp = 0;
-                response.forEach(x => {
-                    tmp = tmp + 1;
+                response.roleList.forEach(x => {
                     $("#RoleContainer").append(`
                     <label class="col-6">
-						<input type="checkbox" id="checkbox${tmp + 100}" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1" style="cursor:pointer"><label for="checkbox${tmp + 100}" style="cursor:pointer">${x}</label>
+						<input type="checkbox" id="${x}" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1" style="cursor:pointer">
+                        <label for="${x}" style="cursor:pointer">${x}</label>
 					</label><br>
                     `)
                 })
@@ -64,7 +112,10 @@ $(document).ready(function () {
             }
         });
     });
-});
+}
+
+
+
 
 // 一頁顯示幾個Card
 const pageSize = 6;

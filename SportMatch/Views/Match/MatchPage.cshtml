@@ -1,10 +1,6 @@
-﻿
-@*
+﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@{
-	var PlayerCard = ViewData["789"] as List<TestForMatch>;
-}
 @{
 	Layout = "_Layout";
 }
@@ -30,12 +26,7 @@
 </style>
 <div id="background">
 	<div id="bg-overlay">
-		@if (string.IsNullOrEmpty(ViewBag.MatchType))
-		{
-			<script>
-				alert("請選擇配對類型");
-			</script>
-		}
+		<h1>@ViewBag.Event</h1>
 		<h1>@ViewBag.MatchType	</h1>
 		<h1>@ViewBag.MatchCategory</h1>
 		<h1>@ViewBag.MatchGender</h1>
@@ -151,13 +142,8 @@
 											   style="font-size:x-large;cursor:pointer" aria-controls="sport1" value="badminton" onselect="GetRole('badminton')"><label for="badmintonRadio" style="color:white;font-size:x-large;cursor:pointer" class="my-3">羽球</label>
 									</h2>
 									<div id="sport1" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
-										<div class="accordion-body row">
-											<label class="col-6">
-												<input type="checkbox" id="checkbox1" name="MatchEvent" value="資展盃" class="MatchCheckBoxItem me-1" style="cursor:pointer"><label for="checkbox1" style="cursor:pointer">資展盃</label>
-											</label><br>
-											<label class="col-6">
-												<input type="checkbox" id="checkbox2" name="MatchEvent" value="公益盃" class="MatchCheckBoxItem me-1" style="cursor:pointer"><label for="checkbox2" style="cursor:pointer">公益盃</label>
-											</label><br>
+										<div class="accordion-body row" id="badmintonEventList">
+											
 										</div>
 									</div>
 								</div>
@@ -168,13 +154,8 @@
 											   style="font-size:x-large;cursor:pointer" aria-controls="sport1" value="basketball" onselect="GetRole('basketball')"><label for="basketballRadio" style="color:white;font-size:x-large;cursor:pointer" class="my-3">籃球</label>
 									</h2>
 									<div id="sport2" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
-										<div class="accordion-body row">
-											<label class="col-6">
-												<input type="checkbox" name="MatchEvent" id="checkbox3" value="P-Legend" class="MatchCheckBoxItem me-1" style="cursor:pointer"><label for="checkbox3" style="cursor:pointer">P-Legend</label>
-											</label><br>
-											<label class="col-6">
-												<input type="checkbox" name="MatchEvent" id="checkbox4" value="NBA" class="MatchCheckBoxItem me-1" style="cursor:pointer"><label for="checkbox4" style="cursor:pointer">NBA</label>
-											</label><br>
+										<div class="accordion-body row" id="basketballEventList">
+											
 										</div>
 									</div>
 								</div>
@@ -185,13 +166,8 @@
 											   style="font-size:x-large;cursor:pointer" aria-controls="sport1" value="valleyball" onselect="GetRole('valleyball')"><label for="valleyballRadio" style="color:white;font-size:x-large;cursor:pointer" class="my-3">排球</label>
 									</h2>
 									<div id="sport3" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
-										<div class="accordion-body row">
-											<label class="col-6">
-												<input type="checkbox" name="MatchEvent" id="checkbox5" value="公所盃" class="MatchCheckBoxItem me-1" style="cursor:pointer"><label for="checkbox5" style="cursor:pointer">公所盃</label>
-											</label><br>
-											<label class="col-6">
-												<input type="checkbox" name="MatchEvent" id="checkbox6" value="台灣聯賽" class="MatchCheckBoxItem me-1" style="cursor:pointer"><label for="checkbox6" style="cursor:pointer">台灣聯賽</label>
-											</label><br>
+										<div class="accordion-body row" id="valleyballEventList">
+											
 										</div>
 									</div>
 								</div>

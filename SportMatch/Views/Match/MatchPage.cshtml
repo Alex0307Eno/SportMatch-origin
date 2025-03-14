@@ -123,7 +123,7 @@
 								</div>
 								<div>&nbsp&nbsp&nbsp</div>
 								<div class="">
-									<input type="radio" name="MatchType" class="" id="radioOption2" value="FindTeam" style="cursor:pointer"><label for="radioOption2"
+									<input type="radio" name="MatchType" class="" id="radioOption2" value="FindTeam" style="cursor:pointer" checked="checked"><label for="radioOption2"
 																																 style="color: white;cursor:pointer">尋找隊伍</label>
 								</div>
 							</div>
@@ -249,7 +249,8 @@
 					</div>
 					<!-- 球員/球隊區域 -->
 					<div style="height:90%">
-						<div class="row" id="CardContainer">
+						<div class="row d-flex justify-content-center align-items-center" id="CardContainer">
+							<img src="~/image/MatchPage/loading.gif" alt="GIF Image" style="width:50%">
 						</div>
 
 					</div>
@@ -261,7 +262,7 @@
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 					<div class="modal-content text-light ">
 						<div class="modal-header">
-							<p class="modal-title" id="playerModalLabel" style="font-size:x-large">個人簡介</p>
+							<p class="modal-title" id="playerModalLabel" style="font-size:x-large"></p>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
@@ -279,7 +280,7 @@
 									<br />
 									<p id="modal-player-position"></p>
 									<hr />
-									<label for="">**這裡放入個人簡介內容**</label>
+									<label id="userMemo" for="">**這裡放入個人簡介內容**</label>
 								</div>
 							</div>
 						</div>
@@ -304,7 +305,7 @@
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 					<div class="modal-content text-light ">
 						<div class="modal-header">
-							<h5 class="modal-title" id="playerModalLabel" style="font-size:x-large">招募確認</h5>
+							<h5 class="modal-title" id="applyModalLabel" style="font-size:x-large"></h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
 									style="filter: invert(1);"></button>
 						</div>

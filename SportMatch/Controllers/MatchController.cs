@@ -12,86 +12,10 @@ namespace SportMatch.Controllers
     {
         // 導入資料庫
         private readonly SportMatchContext _context;
-
         public MatchController(SportMatchContext context)
         {
             _context = context;
         }
-
-        List<TestForMatch> Player2 = new List<TestForMatch>
-                {
-                    new TestForMatch { Name = "妙蛙種子", Role = "控球後衛", Image = "../image/MatchPage/001.png" },
-                    new TestForMatch { Name = "妙蛙草", Role = "大前鋒", Image = "../image/MatchPage/002.png" },
-                    new TestForMatch { Name = "妙蛙花", Role = "中鋒", Image = "../image/MatchPage/003.png" },
-                    new TestForMatch { Name = "小火龍", Role = "小前鋒", Image = "../image/MatchPage/004.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "妙蛙花", Role = "中鋒", Image = "../image/MatchPage/003.png" },
-                    new TestForMatch { Name = "小火龍", Role = "小前鋒", Image = "../image/MatchPage/004.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "妙蛙種子", Role = "控球後衛", Image = "../image/MatchPage/001.png" },
-                    new TestForMatch { Name = "妙蛙草", Role = "大前鋒", Image = "../image/MatchPage/002.png" },
-                    new TestForMatch { Name = "妙蛙花", Role = "中鋒", Image = "../image/MatchPage/003.png" },
-                    new TestForMatch { Name = "小火龍", Role = "小前鋒", Image = "../image/MatchPage/004.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "妙蛙花", Role = "中鋒", Image = "../image/MatchPage/003.png" },
-                    new TestForMatch { Name = "小火龍", Role = "小前鋒", Image = "../image/MatchPage/004.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "妙蛙種子", Role = "控球後衛", Image = "../image/MatchPage/001.png" },
-                    new TestForMatch { Name = "妙蛙草", Role = "大前鋒", Image = "../image/MatchPage/002.png" },
-                    new TestForMatch { Name = "妙蛙花", Role = "中鋒", Image = "../image/MatchPage/003.png" },
-                    new TestForMatch { Name = "小火龍", Role = "小前鋒", Image = "../image/MatchPage/004.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                };
 
         public IActionResult MatchPage()
         {
@@ -99,19 +23,47 @@ namespace SportMatch.Controllers
             return View();
         }
 
+        // 接收Localstorage的資料
+        [HttpPost]
+        public IActionResult ReceiveLocalStorage([FromBody] string userInfo)
+        {
+            if (userInfo != null && !string.IsNullOrEmpty(userInfo))
+            {
+                HttpContext.Session.SetString("UserInfo", userInfo); // 把接收到的信箱存入 Session
+                //UserInfo = userInfo; // 把接收到的信箱存起來
+                return Json(new { success = true, message = "資料已接收", receivedValue = userInfo });
+            }
+            return Json(new { success = false, message = "未接收到有效資料" });
+        }
+
+        // 取得卡片資料
         [HttpGet]
         public JsonResult GetCards(int page, int pageSize)
         {
-            int totalItems = Player2.Count();
+            string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
+            var UserInfoFromSQL = (from u in _context.Users
+                                   join r in _context.Roles
+                                   on u.RoleId equals r.RoleId
+                                   //where u.Email.ToString().ToLower() == UserInfo.ToLower()
+                                   select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+            var TeamInfoFromSQL = (from t in _context.Teams
+                                   join r in _context.Roles
+                                   on t.RoleId equals r.RoleId
+                                   //where u.Email.ToString().ToLower() == UserInfo.ToLower()
+                                   select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+
+            int totalItems = TeamInfoFromSQL.Count();
             int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-            var cards = Player2.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var cards = TeamInfoFromSQL.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             return Json(new { cards, totalPages, totalItems });
         }
 
+        // 取得賽事資料
         [HttpGet]
         public JsonResult GetEvent()
         {
+            // 從資料庫帶出查詢結果
             var Event = from e in _context.Events
                         join g in _context.Genders
                         on e.GenderId equals g.GenderId
@@ -121,9 +73,12 @@ namespace SportMatch.Controllers
                         on e.AreaId equals a.AreaId
                         select new { Name = e.EventName, Gender = g.GenderType, Sport = s.SportName, Area = a.AreaName };
 
+            // 宣告三個空的字串清單準備存資料
             List<string> BasketballEventList = new List<string>();
             List<string> ValleyballEventList = new List<string>();
             List<string> BadmintonEventList = new List<string>();
+
+            // 把對應的運動種類內的賽事放入對應的清單
             foreach (var item in Event)
             {
                 if (item.Sport == "BasketBall")
@@ -142,9 +97,10 @@ namespace SportMatch.Controllers
                 }
             }
 
-            return Json(new { BasketballEventList, ValleyballEventList, BadmintonEventList,Event });
+            return Json(new { BasketballEventList, ValleyballEventList, BadmintonEventList });
         }
 
+        //
         [HttpPost]
         public IActionResult GetSelection(string MatchType, string MatchCategory, List<string> MatchEvent, List<string> MatchArea, List<string> MatchRole, string MatchGender)
         {

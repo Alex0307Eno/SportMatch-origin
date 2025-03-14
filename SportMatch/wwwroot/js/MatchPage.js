@@ -164,13 +164,13 @@ function loadCards(page) {
             console.log(response);
             const cardContainer = $("#CardContainer");
             const playerModalLabel = $("#playerModalLabel");
-            const applyModalLabel = $("#applyModalLabel");
+            const applyModalLabel = $("#applyModalLabel");            
             cardContainer.empty();
             let type;
             // 判斷回傳的是User還是Team
             if (response.cards.some(item => item.hasOwnProperty("userID"))) {
                 playerModalLabel.text("個人簡介");
-                applyModalLabel.text("招募確認");
+                applyModalLabel.text("招募確認");                
                 type = "user";
                 response.cards.forEach(card => {
                     cardContainer.append(`
@@ -245,6 +245,9 @@ function loadCards(page) {
                  </div>
                  `);
                 });
+            }
+            else {
+                console.log("error");
             }
             updatePagination(response.totalPages, page, response.totalItems);
         }

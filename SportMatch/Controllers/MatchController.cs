@@ -40,16 +40,30 @@ namespace SportMatch.Controllers
         [HttpGet]
         public JsonResult GetCards(int page, int pageSize)
         {
-            string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
             var UserInfoFromSQL = (from u in _context.Users
                                    join r in _context.Roles
                                    on u.RoleId equals r.RoleId
-                                   //where u.Email.ToString().ToLower() == UserInfo.ToLower()
                                    select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+
+
+            string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
+            var UserInfoForSuggest = (from u in _context.Users
+                                          //join r in _context.Roles
+                                          //on u.RoleId equals r.RoleId
+                                          //join a in _context.Areas
+                                          //on u.AreaId equals a.AreaId
+                                          //join s in _context.Sports
+                                          //on u.SportId equals s.SportId
+                                          //join g in _context.Genders
+                                          //on u.GenderId equals g.GenderId
+                                      where u.Email.ToString().ToLower() == UserInfo.ToLower()
+                                      select u).ToList();
+
+
             var TeamInfoFromSQL = (from t in _context.Teams
                                    join r in _context.Roles
                                    on t.RoleId equals r.RoleId
-                                   //where u.Email.ToString().ToLower() == UserInfo.ToLower()
+                                   where t.RoleId == UserInfoForSuggest[0].RoleId && t.GenderId == UserInfoForSuggest[0].GenderId
                                    select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
 
             int totalItems = TeamInfoFromSQL.Count();

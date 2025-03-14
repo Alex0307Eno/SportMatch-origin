@@ -3,6 +3,11 @@ using Microsoft.AspNetCore.Mvc;
 using static SportMatch.Controllers.DoorController;
 using Azure;
 using static SportMatch.Controllers.MartController;
+using SportMatch.Models;
+using Microsoft.EntityFrameworkCore;
+using Humanizer;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace SportMatch.Controllers
 {
@@ -10,48 +15,72 @@ namespace SportMatch.Controllers
     {
         public class Product
         {
-            public int ProductID { get; set; }
             public string Name { get; set; }
             public int Price { get; set; }
             public int Discount { get; set; }
-            public int Stock { get; set; }
             public string Image { get; set; }
-            public bool MyHeart { get; set; }
-
         }
 
-        public class Category
+        private readonly SportMatchContext MartDb;
+        public MartController(SportMatchContext context)
         {
-            public int CategoryID { get; set; }
-            public string ParentCategory { get; set; }
-            public string ChildCategory1 { get; set; }
-            public string ChildCategory2 { get; set; }
-            public string ChildCategoryID1 { get; set; }
-            public string ChildCategoryID2 { get; set; }
+            MartDb = context;
         }
 
         public IActionResult Mart()
         {
-            //var _Products = new List<Product>
-            //{
-            //    new Product {ProductID =0, Name = "商品 1", Price = 199, Discount = -20, Stock = 8, Image = "/image/icon.jpg", MyHeart = false},
-            //    new Product {ProductID =1, Name = "商品 2", Price = 299, Discount = -10, Stock = 1, Image = "/image/icon.jpg", MyHeart = false},
-            //    new Product {ProductID =2, Name = "商品 3", Price = 399, Discount =  -5, Stock = 0, Image = "/image/icon.jpg", MyHeart = false},
-            //    new Product {ProductID =3, Name = "商品 4", Price = 499, Discount =   0, Stock = 6, Image = "/image/icon.jpg", MyHeart = false},
-            //    new Product {ProductID =4, Name = "商品 5", Price = 199, Discount = -20, Stock = 0, Image = "/image/icon.jpg", MyHeart = true},
-            //    new Product {ProductID =5, Name = "商品 6", Price = 299, Discount = -10, Stock = 8, Image = "/image/icon.jpg", MyHeart = false},
-            //    new Product {ProductID =6, Name = "商品 7", Price = 399, Discount =  -5, Stock = 4, Image = "/image/icon.jpg", MyHeart = false},
-            //    new Product {ProductID =7, Name = "商品 8", Price = 499, Discount =   0, Stock = 0, Image = "/image/icon.jpg", MyHeart = false}
-            //};
-            //ViewBag.ForProducts = _Products;
+            var CategoryLinq = (
+                         from PM in MartDb.ProductCategoryMapping
+                         join PC in MartDb.ProductCategory on PM.CategoryID equals PC.CategoryID
+                         join PSC in MartDb.ProductSubCategory on PM.SubCategoryID equals PSC.SubCategoryID
+                         group new { PC.CategoryName, PC.CategoryID, PSC.SubCategoryName, PSC.SubCategoryID } by new { PC.CategoryName, PC.CategoryID } into g
+                         orderby g.Key.CategoryID
+                         select new
+                         {
+                             SubCategoryCount = g.Select(ps => ps.SubCategoryID).Distinct().Count(),
+                             CategoryName = g.Key.CategoryName,
+                             CategoryID = g.Key.CategoryID,
+                             SubCategoryNames = g.ToList(),
+                             SubCategoryIDs = g.ToList()
+                         }
+                         ).ToList();
 
-            List<Category> _Category = new List<Category>
+            var CategoryAdd = new List<object>();
+
+            foreach (var item in CategoryLinq)
             {
-                new Category { CategoryID = 1, ParentCategory = "羽毛球", ChildCategoryID1 = "ChildCategory1", ChildCategoryID2 = "ChildCategory2", ChildCategory1 = "球具", ChildCategory2 = "護具" },
-                new Category { CategoryID = 2, ParentCategory = "籃球", ChildCategoryID1 = "ChildCategory3", ChildCategoryID2 = "ChildCategory4", ChildCategory1 = "球具", ChildCategory2 = "護具" },
-                new Category { CategoryID = 3, ParentCategory = "排球", ChildCategoryID1 = "ChildCategory5", ChildCategoryID2 = "ChildCategory6", ChildCategory1 = "球具", ChildCategory2 = "護具" }
-            };
-            ViewBag.ForCategory = _Category;
+                var _subCategorys = new Dictionary<string, string>();
+                int SubCategoryCount = item.SubCategoryCount;
+
+                for (int i = 1; i <= SubCategoryCount; i++)
+                {
+                    var _iName = item.SubCategoryNames
+                    .Where(ps => ps.SubCategoryID == i)
+                    .Select(ps => ps.SubCategoryName)
+                    .FirstOrDefault();
+
+                    if (_iName == null)
+                    {
+                        SubCategoryCount++;
+                    }
+                    else
+                    {
+                        int _iID = item.SubCategoryIDs
+                        .Where(ps => ps.SubCategoryID == i)
+                        .Select(ps => ps.SubCategoryID)
+                        .FirstOrDefault();
+                        _subCategorys[$"{_iID}"] = _iName;
+                    }
+                }
+
+                CategoryAdd.Add(new
+                {
+                    CategoryName = item.CategoryName,
+                    CategoryID = item.CategoryID,
+                    SubCategorys = _subCategorys,
+                });
+            }
+            ViewBag.ForCategory = CategoryAdd;
             return View();
         }
 
@@ -69,7 +98,7 @@ namespace SportMatch.Controllers
                 new Product { Name = "商品 3", Price = 399, Discount = -5, Image = "/image/icon.jpg" },
                 new Product { Name = "商品 4", Price = 499, Discount = 0, Image = "/image/icon.jpg" },
             };
-            ViewBag.ForProducts = _Products;
+            ViewBag.ForProducts = MartDb.Product;
 
             return View();
         }

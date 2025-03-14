@@ -92,13 +92,19 @@ function checkEventOrNot() {
     $(document).on('change', '.forCheckEvent', function () {
         const anyChecked = $('.forCheckEvent:checked').length > 0; // 檢查是否有勾選
 
-        // 控制 `.forCheckArea` (D、E、F)
+        // 控制區域按鈕
         $('.forCheckArea').prop('disabled', anyChecked);
-        $('.forCheckArea').prop('checked', !anyChecked);
-
-        // 控制 `.forCheckGender` (G、H)
+        // 控制姓別按鈕
         $('.forCheckGender').prop('disabled', anyChecked);
-        $('.forCheckGender').prop('checked', !anyChecked);
+
+        if (anyChecked) {
+            $('.forCheckArea').prop('checked', !anyChecked);
+            $('.forCheckGender').prop('checked', !anyChecked);
+        }
+        else {
+            $('.forCheckArea').prop('checked', anyChecked);
+            $('.forCheckGender').prop('checked', anyChecked);
+        }
     });
 }
 

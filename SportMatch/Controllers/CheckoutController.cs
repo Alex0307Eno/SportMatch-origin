@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using SportMatch.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using static SportMatch.Controllers.CheckoutController;
 using static SportMatch.Controllers.MartController;
 
 namespace SportMatch.Controllers
@@ -21,6 +22,8 @@ namespace SportMatch.Controllers
         {
             public int id { get; set; }
             public int quantity { get; set; }
+
+            public string billNumber { get; set; }
         }
 
         [HttpPost]
@@ -50,7 +53,7 @@ namespace SportMatch.Controllers
                     await MartDb.SaveChangesAsync();
                     await transaction.CommitAsync();
 
-                    return Ok("庫存更新成功");
+                    return Ok(products);
                 }
             } 
             catch (Exception ex)

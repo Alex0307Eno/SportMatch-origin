@@ -221,38 +221,8 @@ function removeItem(ItemID) {
 // 頁面載入時顯示購物車
 document.addEventListener('DOMContentLoaded', LoadCart);
 
-// 結帳
-let checkoutNow = document.getElementById('checkoutNow');
-checkoutNow.addEventListener('click', function () {    
-    const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
-    let _billNumber = generateRandomString(10);
-    const cartCheckoutData = Cart.map(Item => ({
-        id: Item.ID,
-        quantity: Item.Quantity,
-        billNumber: _billNumber
-    }));
 
-    // 發送交易用資訊到API
-    setTimeout(function () {
-        fetchCheckout(cartCheckoutData);
-    }, 0);
 
-    // 發送訂單訊息到訂單頁
-    setTimeout(function () {
-        sessionStorage.setItem('cartCheckoutData', JSON.stringify(cartCheckoutData));
-        window.location.href = '/Mart/Bill';
-    }, 0);
-});
-function fetchCheckout(cartCheckoutData) {    
-    fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(cartCheckoutData)
-    })
-        .then(response => response.json())
-}
 
 // 生成訂單編號
 function generateRandomString(length) {
@@ -264,3 +234,32 @@ function generateRandomString(length) {
     }
     return result;
 }
+// 結帳
+let checkoutNow = document.getElementById('checkoutNow');
+checkoutNow.addEventListener('click', function () {    
+    const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+    let _billNumber = generateRandomString(10);
+    const cartCheckoutData = Cart.map(Item => ({
+        id: Item.ID,
+        quantity: Item.Quantity,
+        billNumber: _billNumber
+    }));
+
+    fetchCheckout(cartCheckoutData);
+});
+// 發送資訊到交易用API
+function fetchCheckout(cartCheckoutData) {
+    fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cartCheckoutData)
+    })
+        .then(response => response.json())
+        .then(data => {
+            // 成功獲取到回應後，處理返回的資料
+            console.log('結帳成功，返回資料：', data);
+        })
+}
+

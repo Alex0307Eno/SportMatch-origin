@@ -19,8 +19,6 @@
         HomeDeliveryAddress: document.getElementById('HomeDeliveryAddress')
     };
 
-
-
     // 重置所有事件
     Elements.SevenElevenPickup.disabled =
         Elements.FamilyMartPickup.disabled =
@@ -70,10 +68,11 @@
 
 
 // 購物車localstorage接收資料用
-function LoadCart() {
-
+function LoadCart() {   
     const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
     const CartContainer = document.getElementById("CartItem");
+    const TotalPrice = document.getElementById('TotalPrice');
+    const NoDiscountPrice = document.getElementById('NoDiscountPrice');
     console.log(Cart);
 
     // 如果購物車是空的
@@ -83,6 +82,10 @@ function LoadCart() {
     }
     else {
         CartContainer.innerHTML = "";
+        TotalPrice.innerHTML = "";
+        NoDiscountPrice.innerHTML = "";
+        let total = 0;
+        let NoDiscount = 0;
         Cart.forEach(Item => {
             const ItemElement = document.createElement('div');
             ItemElement.className = 'card bg-dark';
@@ -161,7 +164,22 @@ function LoadCart() {
             ItemElement.appendChild(rowDiv);
 
             CartContainer.appendChild(ItemElement);
+
+
+            const price = parseFloat(Item.Price);
+            const discount = parseFloat(Item.Discount);
+            // 無折扣
+            NoDiscount += price;
+
+            // 計算折扣
+            const discountedPrice = price * ((100 - discount) / 100);            
+            total += discountedPrice;
+
         });
+        // 顯示總價格
+        NoDiscountPrice.textContent = `${NoDiscount.toFixed(0)}元`
+        TotalPrice.textContent = `${total.toFixed(0)}元`;
+
         function existingElement() {
             for (let sheet of document.styleSheets) {
                 for (let rule of sheet.cssRules) {
@@ -203,3 +221,19 @@ function removeItem(ItemID) {
 // 頁面載入時顯示購物車
 document.addEventListener('DOMContentLoaded', LoadCart);
 
+
+
+// 後端API函數取得資料 > 使用資料進行LINQ > update
+let checkoutNow = document.getElementById('checkoutNow');
+checkoutNow.addEventListener('click', function () {    
+    const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+    Cart.forEach(Item => {
+        fetchCheckout(Item.ID, Item.Quantity);
+    });
+});
+
+// 定義 fetchCheckout 函數
+function fetchCheckout(productID, productQuantity) {
+    // 發送 GET 請求到 API
+    fetch(`/api/checkout?productID=${productID}&productQuantity=${productQuantity}`);
+}

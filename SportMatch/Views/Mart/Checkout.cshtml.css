@@ -75,6 +75,10 @@
     color: #ffffff;
 }
 
+#NoDiscountPrice {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
 
 /* 滾動條 */
 ::-webkit-scrollbar {

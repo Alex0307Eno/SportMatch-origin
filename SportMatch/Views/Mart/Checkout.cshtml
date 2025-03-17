@@ -78,14 +78,16 @@
                     </div>
                 </div>
                 <!-- 總計和按鈕 -->
-                <div class="Logistics">
+                <div class="Logistics">                    
                     <div class="d-flex justify-content-between">
-                        <strong>總計:</strong>
-                        <span>NT$ 5000</span>
+                      <strong>總計:</strong><span id="NoDiscountPrice"><!--折扣前價格--></span>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                      <div></div><span id="TotalPrice"><!--折扣後價格--></span>
                     </div>
                     <div class="d-flex justify-content-between mt-3">
                         <button class="btn btn-secondary w-100">繼續選購</button>
-                        <button class="btn w-100 OrangeBtnClass">結帳</button>
+                        <button class="btn w-100 OrangeBtnClass" id="checkoutNow">結帳</button>
                     </div>
                 </div>
             </div>

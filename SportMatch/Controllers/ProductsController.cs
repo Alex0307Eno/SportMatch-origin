@@ -19,7 +19,7 @@ public class ProductsController : ControllerBase
     public IActionResult GetProducts(int page, int itemsPerPage, string orderByDesc, string _categoryName, string _subCategoryName)
     {
         List<string> subCategoryNames = _subCategoryName.Split(',').ToList() ?? new List<string>();
-        Console.WriteLine("\n\n\n\n\n" + _categoryName + " " + string.Join(", ", subCategoryNames) + "\n\n\n\n\n");
+        //Console.WriteLine("\n\n\n\n\n" + _categoryName + " " + string.Join(", ", subCategoryNames) + "\n\n\n\n\n");
         var productsQuery =
             from P in MartDb.Product
             join PM in MartDb.ProductCategoryMapping on P.ProductID equals PM.ProductID

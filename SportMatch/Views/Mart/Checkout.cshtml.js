@@ -223,7 +223,7 @@ document.addEventListener('DOMContentLoaded', LoadCart);
 
 
 
-// 後端API函數取得資料 > 使用資料進行LINQ > update
+// 使用資料進行LINQ > update
 let checkoutNow = document.getElementById('checkoutNow');
 checkoutNow.addEventListener('click', function () {    
     const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
@@ -231,7 +231,6 @@ checkoutNow.addEventListener('click', function () {
         fetchCheckout(Item.ID, Item.Quantity);
     });
 });
-
 // 定義 fetchCheckout 函數
 function fetchCheckout(productID, productQuantity) {
     // 發送 GET 請求到 API

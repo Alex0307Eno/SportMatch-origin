@@ -1,7 +1,8 @@
 ﻿// 初始化載入第一頁
 $(document).ready(function () {
     getRole();
-    loadEvent();
+    loadEvent()
+    matchTypeChangeOrNot();
     checkEventOrNot();
     getUserInfoFromlocalStorage()
 
@@ -72,6 +73,30 @@ function loadEvent() {
     });
 }
 
+// 切換配對類型更新篩選列
+function matchTypeChangeOrNot() {
+    $("input[name='MatchType']").on('change', function () {
+        $("input[name='MatchCategory']").prop("checked", false);
+        $("input[name='MatchArea']").prop("checked", false);
+        $(".accordion .collapse").collapse('hide');
+
+        // 當 radioOption1 被選中時，清空賽事列表
+        if ($("#radioOption1").is(":checked")) {
+            $(".forCheckCategory").removeAttr("data-bs-toggle");
+            //$(".MatchCheckBoxItem").prop("checked", false);
+            $('.forCheckArea').prop('disabled', false);
+            $("#RoleContainer").empty();
+            $("#badmintonEventList").empty();
+            $("#basketballEventList").empty();
+            $("#valleyballEventList").empty();
+        } else if ($("#radioOption2").is(":checked")) {
+            $(".forCheckCategory").attr("data-bs-toggle", "collapse");
+            // 當 radioOption2 被選中時，執行 loadEvent()
+            loadEvent();
+        }
+    });
+}
+
 // 選取運動分類時取消選擇底下賽事選項
 $("input[name='MatchCategory']").on('change', function () {
     $(".MatchCheckBoxItem").prop("checked", false);
@@ -84,16 +109,12 @@ function checkEventOrNot() {
 
         // 控制區域按鈕
         $('.forCheckArea').prop('disabled', anyChecked);
-        // 控制姓別按鈕
-        $('.forCheckGender').prop('disabled', anyChecked);
 
         if (anyChecked) {
             $('.forCheckArea').prop('checked', !anyChecked);
-            $('.forCheckGender').prop('checked', !anyChecked);
         }
         else {
             $('.forCheckArea').prop('checked', anyChecked);
-            $('.forCheckGender').prop('checked', anyChecked);
         }
     });
 }
@@ -112,7 +133,7 @@ function getRole() {
                 response.roleList.forEach(x => {
                     $("#RoleContainer").append(`
                     <label class="col-6">
-						<input type="checkbox" id="${x}" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1 mt-2" style="cursor:pointer">
+						<input type="checkbox" id="${x}" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckRole" style="cursor:pointer">
                         <label for="${x}" style="cursor:pointer">${x}</label>
 					</label><br>
                     `)
@@ -164,13 +185,13 @@ function loadCards(page) {
             console.log(response);
             const cardContainer = $("#CardContainer");
             const playerModalLabel = $("#playerModalLabel");
-            const applyModalLabel = $("#applyModalLabel");            
+            const applyModalLabel = $("#applyModalLabel");
             cardContainer.empty();
             let type;
             // 判斷回傳的是User還是Team
             if (response.cards.some(item => item.hasOwnProperty("userID"))) {
                 playerModalLabel.text("個人簡介");
-                applyModalLabel.text("招募確認");                
+                applyModalLabel.text("招募確認");
                 type = "user";
                 response.cards.forEach(card => {
                     cardContainer.append(`

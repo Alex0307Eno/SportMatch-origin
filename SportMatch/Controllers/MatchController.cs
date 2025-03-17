@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using NuGet.Protocol.Plugins;
 using SportMatch.Models;
 using static SportMatch.Controllers.DoorController;
@@ -46,25 +47,28 @@ namespace SportMatch.Controllers
                                    select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
 
 
+            // 從Session取得使用者資訊到資料庫查詢符合的詳細資料
             string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
             var UserInfoForSuggest = (from u in _context.Users
-                                          //join r in _context.Roles
-                                          //on u.RoleId equals r.RoleId
-                                          //join a in _context.Areas
-                                          //on u.AreaId equals a.AreaId
-                                          //join s in _context.Sports
-                                          //on u.SportId equals s.SportId
-                                          //join g in _context.Genders
-                                          //on u.GenderId equals g.GenderId
                                       where u.Email.ToString().ToLower() == UserInfo.ToLower()
                                       select u).ToList();
 
-
+            // 推薦與使用者擅長位置以及招募性別相同的隊伍
             var TeamInfoFromSQL = (from t in _context.Teams
                                    join r in _context.Roles
                                    on t.RoleId equals r.RoleId
                                    where t.RoleId == UserInfoForSuggest[0].RoleId && t.GenderId == UserInfoForSuggest[0].GenderId
                                    select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+
+            // 符合條件小於6筆則取招募性別與使用者相同的隊伍
+            if (TeamInfoFromSQL.Count() < 6)
+            {
+                TeamInfoFromSQL = (from t in _context.Teams
+                                   join r in _context.Roles
+                                   on t.RoleId equals r.RoleId
+                                   where t.GenderId == UserInfoForSuggest[0].GenderId && t.SportId == UserInfoForSuggest[0].SportId
+                                   select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+            }
 
             int totalItems = TeamInfoFromSQL.Count();
             int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
@@ -114,10 +118,57 @@ namespace SportMatch.Controllers
             return Json(new { BasketballEventList, ValleyballEventList, BadmintonEventList });
         }
 
-        //
+        // 篩選功能
         [HttpPost]
-        public IActionResult GetSelection(string MatchType, string MatchCategory, List<string> MatchEvent, List<string> MatchArea, List<string> MatchRole, string MatchGender)
+        public IActionResult GetSelection(string MatchType, string MatchCategory, List<string> MatchEvent, List<string> MatchArea, List<string> MatchRole)
         {
+            int SportType = 0;
+            switch (MatchCategory)
+            {
+                case "badminton":
+                    SportType = 3;
+                    break;
+                case "valleyball":
+                    SportType = 2;
+                    break;
+                default:
+                    SportType = 1;
+                    break;
+            }
+            if (MatchType == "FindPlayer")
+            {
+                var filterPlayer = (from u in _context.Users
+                                    join r in _context.Roles
+                                    on u.RoleId equals r.RoleId
+                                    where r.SportId == SportType
+                                    select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+
+                if (MatchEvent.Count() > 0)
+                {
+                    filterPlayer = (from u in _context.Users
+                                    join r in _context.Roles
+                                    on u.RoleId equals r.RoleId
+                                    where r.SportId == SportType
+                                    select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+                    if (MatchRole.Count() > 0)
+                    {
+                        filterPlayer = (from u in _context.Users
+                                        join r in _context.Roles
+                                        on u.RoleId equals r.RoleId
+                                        where MatchRole.Contains(r.RoleName)
+                                        select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+                    }
+                }
+
+
+
+            }
+            else if (MatchType == "FindTeam")
+            {
+
+            }
+
+
             if (MatchType == null)
             {
                 ViewBag.MatchType = null;
@@ -130,7 +181,6 @@ namespace SportMatch.Controllers
                 ViewBag.MatchEvent = MatchEvent;
                 ViewBag.MatchArea = MatchArea;
                 ViewBag.MatchRole = MatchRole;
-                ViewBag.MatchGender = MatchGender;
                 return View("MatchPage");
             }
         }

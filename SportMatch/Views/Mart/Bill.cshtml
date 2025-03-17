@@ -3,14 +3,17 @@
 *@
 @{
 }
-
+@section Scripts {
+    <script src="~/Views/Mart/Bill.cshtml.js" asp-append-version="true"></script>
+}
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <div class="container mt-4">
     <div class="OrderFrame">
+        @*
         <!-- 訂單編號 -->
         <div class="OrderSection">
-            <h5>訂單編號: #123456</h5>
+            <h5>訂單編號: #@(ViewBag.ForProducts.billNumber)</h5>
         </div>
 
         <!-- 商品清單 -->
@@ -21,17 +24,17 @@
                 @foreach (var item in ViewBag.ForProducts)
                 {
                     <div class="OrderItem">
-                        <h6>@item.Name</h6>
+                        <h6>@item.id</h6>
                         <div class="d-flex justify-content-between">
-                            <span>數量: 2</span>
-                            <span>價格: @item.Price</span>
+                            <span>數量: @item.quantity</span>
+                            <span>價格: 123</span>
                         </div>
                     </div>
                 }
                 <!-- 後續用迴圈加商品 -->
             </div>
         </div>
-
+        *@
         <!-- 總價格 -->
         <div class="OrderSection">
             <h6>總價格: NT$ 8000</h6>

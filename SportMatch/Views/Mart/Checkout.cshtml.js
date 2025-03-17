@@ -221,18 +221,46 @@ function removeItem(ItemID) {
 // 頁面載入時顯示購物車
 document.addEventListener('DOMContentLoaded', LoadCart);
 
-
-
-// 使用資料進行LINQ > update
+// 結帳
 let checkoutNow = document.getElementById('checkoutNow');
 checkoutNow.addEventListener('click', function () {    
     const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
-    Cart.forEach(Item => {
-        fetchCheckout(Item.ID, Item.Quantity);
-    });
+    let _billNumber = generateRandomString(10);
+    const cartCheckoutData = Cart.map(Item => ({
+        id: Item.ID,
+        quantity: Item.Quantity,
+        billNumber: _billNumber
+    }));
+
+    // 發送交易用資訊到API
+    setTimeout(function () {
+        fetchCheckout(cartCheckoutData);
+    }, 0);
+
+    // 發送訂單訊息到訂單頁
+    setTimeout(function () {
+        sessionStorage.setItem('cartCheckoutData', JSON.stringify(cartCheckoutData));
+        window.location.href = '/Mart/Bill';
+    }, 0);
 });
-// 定義 fetchCheckout 函數
-function fetchCheckout(productID, productQuantity) {
-    // 發送 GET 請求到 API
-    fetch(`/api/checkout?productID=${productID}&productQuantity=${productQuantity}`);
+function fetchCheckout(cartCheckoutData) {    
+    fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(cartCheckoutData)
+    })
+        .then(response => response.json())
+}
+
+// 生成訂單編號
+function generateRandomString(length) {
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let result = '';
+    const charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
 }

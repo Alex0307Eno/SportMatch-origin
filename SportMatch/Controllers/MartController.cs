@@ -8,23 +8,24 @@ using Microsoft.EntityFrameworkCore;
 using Humanizer;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Newtonsoft.Json;
+using System.Net.Http;
+using static SportMatch.Controllers.BillController;
+using System.Text;
 
 namespace SportMatch.Controllers
 {
     public class MartController : Controller
     {
-        public class Product
-        {
-            public string Name { get; set; }
-            public int Price { get; set; }
-            public int Discount { get; set; }
-            public string Image { get; set; }
-        }
-
         private readonly SportMatchContext MartDb;
-        public MartController(SportMatchContext context)
+        //private readonly IHttpClientFactory httpClientFactory;
+        //private readonly IHttpContextAccessor httpContextAccessor;
+
+        public MartController(SportMatchContext context/*, IHttpClientFactory _httpClientFactory, IHttpContextAccessor _httpContextAccessor*/)
         {
             MartDb = context;
+            //httpClientFactory = _httpClientFactory;
+            //httpContextAccessor = _httpContextAccessor;
         }
 
         public IActionResult Mart()
@@ -89,18 +90,38 @@ namespace SportMatch.Controllers
             return View();
         }
 
-        public IActionResult Bill()
+        public async Task<IActionResult> Bill()
         {
-            List<Product> _Products = new List<Product>
-            {
-                new Product { Name = "商品 1", Price = 199, Discount = -20, Image = "/image/icon.jpg" },
-                new Product { Name = "商品 2", Price = 299, Discount = -10, Image = "/image/icon.jpg" },
-                new Product { Name = "商品 3", Price = 399, Discount = -5, Image = "/image/icon.jpg" },
-                new Product { Name = "商品 4", Price = 499, Discount = 0, Image = "/image/icon.jpg" },
-            };
-            ViewBag.ForProducts = MartDb.Product;
+            //var scheme = httpContextAccessor.HttpContext.Request.Scheme;  // http 或 https
+            //var host = httpContextAccessor.HttpContext.Request.Host.Value;  // localhost:端口號
+            //var url     = $"{scheme}://{host}/api/bill";
+            //Console.WriteLine(url);
 
-            return View();
+            //var client = httpClientFactory.CreateClient();
+
+            //// 序列化資料為 JSON
+            //var jsonContent = JsonConvert.SerializeObject(checkoutData);
+            //var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+
+            //// 發送 POST 請求
+            //var response = await client.PostAsync(url, content);
+
+            //// 確認回應成功
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    // 解析回應的 JSON 資料
+            //    var jsonResponse = await response.Content.ReadAsStringAsync();
+            //    var data = JsonConvert.DeserializeObject<List<CheckoutData>>(jsonResponse);
+
+            //    // 把資料傳遞給視圖
+            //    return View(data);
+            //}
+            //else
+            //{
+            //    // 如果回應失敗，顯示錯誤訊息
+            //    ViewBag.ErrorMessage = "無法從 API 取得資料";
+                return View();
+            //}
         }
     }
 }

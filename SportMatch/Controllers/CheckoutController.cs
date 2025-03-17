@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 using SportMatch.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -16,38 +17,45 @@ namespace SportMatch.Controllers
         {
             MartDb = context;
         }
+        public class ProductInfo
+        {
+            public int id { get; set; }
+            public int quantity { get; set; }
+        }
 
-        [HttpGet]
-        public async Task<IActionResult> GetCartInfo(int productID, int productQuantity)
+        [HttpPost]
+        public async Task<IActionResult> CartInfo([FromBody] List<ProductInfo> products)
         {
             try
-            {
-                Console.WriteLine($"ID: {productID}, 數量: {productQuantity}");
-
-                // 查詢產品是否存在
-                var product = await MartDb.Product
-                    .FirstOrDefaultAsync(p => p.ProductID == productID);
-
-                if (product == null)
+            {                
+                using (var transaction = await MartDb.Database.BeginTransactionAsync())
                 {
-                    return NotFound("產品不存在");
+                    foreach (var productInfo in products)
+                    {
+
+                        var product = await MartDb.Product
+                            .FirstOrDefaultAsync(p => p.ProductID == productInfo.id);
+
+                        if (product.Stock < productInfo.quantity)
+                        {
+                            Console.WriteLine($"產品ID {productInfo.id} 庫存不足");
+                            return BadRequest($"產品ID {productInfo.id} 庫存不足");
+                        }
+
+                        // 更新庫存
+                        product.Stock -= productInfo.quantity;
+                    }
+
+                    // 提交交易
+                    await MartDb.SaveChangesAsync();
+                    await transaction.CommitAsync();
+
+                    return Ok("庫存更新成功");
                 }
-
-                // 檢查庫存是否足夠
-                if (product.Stock < productQuantity)
-                {
-                    return BadRequest("庫存不足");
-                }
-
-                // 更新庫存
-                product.Stock -= productQuantity;
-                await MartDb.SaveChangesAsync();
-
-                return Ok(new { message = "庫存更新成功", productID = product.ProductID, newStock = product.Stock });
-            }
+            } 
             catch (Exception ex)
             {
-                // 如果發生錯誤，返回 500 錯誤
+                // 發生錯誤，回滾交易
                 return StatusCode(500, $"錯誤發生: {ex.Message}");
             }
         }

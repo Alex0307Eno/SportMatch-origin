@@ -2,33 +2,32 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    Layout = "_Layout";
 }
 @section Scripts {
-                <script src="~/Views/Mart/Checkout.cshtml.js" asp-append-version="true"></script>
+    <script src="~/Views/Mart/Checkout.cshtml.js" asp-append-version="true"></script>
 }
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
+<body>
+    <!-- 主頁面 -->
+    <div class="container-fluid">
+        <div class="d-flex CheckoutContainer">
+            <!-- 左購物車 -->
+            <div class="CartBody d-flex ">
+                <div class="my-3 CartScrollable">
+                    <div class="card" id="CartItem">
 
-<!-- 主頁面 -->
-<div class="container-fluid">
-    <div class="CheckoutContainer">
-        <!-- 左購物車 -->
-        <div class="CartBody d-flex flex-column">
-            <div class="my-3 CartScrollable">
-                <div class="card CartItem bg-dark" id="CartItem" >
+                        <!-- 在這裡用JS捕捉Localstorage加商品 -->
 
-            <!-- 在這裡用JS捕捉Localstorage加商品 -->
-
-                </div>            
+                    </div>
+                </div>
             </div>
-        </div>
 
-        <!-- 右側結帳欄 -->
+            <!-- 右側結帳欄 -->
             <div class="d-flex flex-column CheckoutLogistics">
                 <div class="Logistics">
                     <!-- 結帳方式 -->
-                    <h4><i class="bi bi-bag" style="color:#ffffff;font-size: 40px;margin-right:5px"></i>選擇結帳方式</h4>
+                    <h4><i class="bi bi-bag"></i>選擇結帳方式</h4>
                     <div class="d-flex flex-column mx-5 my-3">
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="PaymentMethod" id="Seveneleven" onclick="TogglePaymentMethod();" />
@@ -51,20 +50,20 @@
 
                 <!-- 取貨方式 -->
                 <div class="Logistics">
-                     <h4><i class="bi bi-truck" style="color:#ffffff;font-size: 45px;"></i>&nbsp選擇取貨方式</h4>
+                    <h4><i class="bi bi-truck"></i>&nbsp選擇取貨方式</h4>
                     <div class="d-flex flex-column mx-5 my-3">
                         <div class="d-flex align-items-center mb-3">
-                            <input type="radio" name="ShippingMethod" id="SevenelevenPickup" onclick="TogglePaymentMethod();" disabled/>
+                            <input type="radio" name="ShippingMethod" id="SevenelevenPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="SevenelevenPickup" class="ms-2 Pickuptext">7-11取貨</label>
                             <button class="btn btn-outline ms-2 PickupBtn" id="SevenelevenPickupStore" for="FamilymartPickup" disabled>選擇取貨店家</button>
                         </div>
                         <div class="d-flex align-items-center mb-3">
-                            <input type="radio" name="ShippingMethod" id="FamilymartPickup" onclick="TogglePaymentMethod();" disabled/>
+                            <input type="radio" name="ShippingMethod" id="FamilymartPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="FamilymartPickup" class="ms-2 Pickuptext">全家取貨</label>
                             <button class="btn btn-outline ms-2 PickupBtn" id="FamilymartPickupStore" for="FamilymartPickup" disabled>選擇取貨店家</button>
                         </div>
                         <div class="d-flex align-items-center mb-3">
-                            <input type="radio" name="ShippingMethod" id="HomeDeliveryPickup" onclick="TogglePaymentMethod();" disabled/>
+                            <input type="radio" name="ShippingMethod" id="HomeDeliveryPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="HomeDeliveryPickup" class="ms-2 Pickuptext">宅配到府</label>
                             <div class="ms-2 w-25">
                                 <input type="text" class="form-control" id="HomeDeliveryName" placeholder="姓名" for="HomeDeliveryPickup" disabled />
@@ -79,7 +78,7 @@
                     </div>
                 </div>
                 <!-- 總計和按鈕 -->
-                <div class="Logistics">                    
+                <div class="Logistics">
                     <div class="d-flex justify-content-between">
                         <strong>總計:</strong>
                         <span>NT$ 5000</span>
@@ -91,6 +90,7 @@
                 </div>
             </div>
 
+        </div>
     </div>
-</div>
 
+</body>

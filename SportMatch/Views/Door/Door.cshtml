@@ -4,19 +4,19 @@
 @{
 }
 @section Scripts {
-            <script src="~/Views/Door/Door.cshtml.js" asp-append-version="true"></script>
+    <script src="~/Views/Door/Door.cshtml.js" asp-append-version="true"></script>
 }
 <div class="DoorContainer">
     <div class="Image">
         <img class="TopMask" src="/image/DoorImage/TopMask.png">
         <img class="BottomMask" src="/image/DoorImage/BottomMask.png">
-        <img class="DoorBackground" src="/image/DoorImage/DoorBackground.jpg">   
+        <img class="DoorBackground" src="/image/DoorImage/DoorBackground.jpg">
         @foreach (var item in ViewBag.ForSport)
         {
-                    <a href="javascript:void(0);" onclick="HomeLinkDelay('@Url.Action("Mart", "Mart", new { Sport = item.Ball })')">
-                        <img class=@($"{item.Ball}Logo") id=@($"{item.Ball}Logo") src = "@Url.Content($"/image/DoorImage/{item.Ball}Logo01.png")"/>
-                    </a>
-        }        
+            <a href="javascript:void(0);" onclick="HomeLinkDelay('@Url.Action("Mart", "Mart", new { Sport = item.Ball })')">
+                <img class=@($"{item.Ball}Logo") id=@($"{item.Ball}Logo") src="@Url.Content($"/image/DoorImage/{item.Ball}Logo01.png")" />
+            </a>
+        }
         <img class="BadmintonLogoBackground" src="/image/DoorImage/BadmintonLogo03.png">
         <img class="BasketballLogoBackground" src="/image/DoorImage/BasketballLogo03.png">
         <img class="VolleyballLogoBackground" src="/image/DoorImage/VolleyballLogo03.png">

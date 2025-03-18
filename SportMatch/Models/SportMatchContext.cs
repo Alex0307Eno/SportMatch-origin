@@ -31,11 +31,20 @@ public partial class SportMatchContext : DbContext
 
     public virtual DbSet<Order> Orders { get; set; }
 
-    public virtual DbSet<ProducCategory> ProducCategories { get; set; }
 
-    public virtual DbSet<Product> Products { get; set; }
+    //public virtual DbSet<ProducCategory> ProducCategories { get; set; }
+    //public virtual DbSet<Product> Products { get; set; }
+    //public virtual DbSet<ProductCategoryMapping> ProductCategoryMappings { get; set; }
+    //250314註解 改成下面四個↓
 
-    public virtual DbSet<ProductCategoryMapping> ProductCategoryMappings { get; set; }
+    public virtual DbSet<Product> Product { get; set; }
+
+    public virtual DbSet<ProductCategory> ProductCategory { get; set; }
+
+    public virtual DbSet<ProductCategoryMapping> ProductCategoryMapping { get; set; }
+
+    public virtual DbSet<ProductSubCategory> ProductSubCategory { get; set; }
+
 
     public virtual DbSet<Role> Roles { get; set; }
 
@@ -52,7 +61,8 @@ public partial class SportMatchContext : DbContext
     public virtual DbSet<VenueImage> VenueImages { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        //#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
+        // 250314註解
         => optionsBuilder.UseSqlServer("Server=.\\SQLEXPRESS;Database=SportMatch;Trusted_Connection=True;TrustServerCertificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -227,59 +237,63 @@ public partial class SportMatchContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Order__UserID__17F790F9");
         });
-
-        modelBuilder.Entity<ProducCategory>(entity =>
+                    //250314ProducCategory改為ProductCategory
+        modelBuilder.Entity<ProductCategory>(entity =>
         {
-            entity.HasKey(e => e.CategoryId).HasName("PK__ProducCa__19093A2BBD40185B");
+            entity.HasKey(e => e.CategoryID).HasName("PK__ProducCa__19093A2BBD40185B");
 
-            entity.ToTable("ProducCategory");
+                    //250314ProducCategory改為ProductCategory
+            entity.ToTable("ProductCategory"); 
 
-            entity.HasIndex(e => e.CategoryId, "UQ__ProducCa__19093A2A52CAE684").IsUnique();
+            entity.HasIndex(e => e.CategoryID, "UQ__ProducCa__19093A2A52CAE684").IsUnique();
 
-            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+            entity.Property(e => e.CategoryID).HasColumnName("CategoryID");
             entity.Property(e => e.CategoryName).HasMaxLength(50);
-            entity.Property(e => e.ParentId).HasColumnName("ParentID");
-            entity.Property(e => e.SubCategoryName).HasMaxLength(50);
+            //entity.Property(e => e.ParentId).HasColumnName("ParentID");
+            //entity.Property(e => e.SubCategoryName).HasMaxLength(50);
+            //250314註解掉
         });
 
         modelBuilder.Entity<Product>(entity =>
         {
-            entity.HasKey(e => e.ProductId).HasName("PK__Product__B40CC6EDF9915AAF");
+            entity.HasKey(e => e.ProductID).HasName("PK__Product__B40CC6EDF9915AAF");
 
             entity.ToTable("Product");
 
-            entity.HasIndex(e => e.ProductId, "UQ__Product__B40CC6EC304CC451").IsUnique();
+            entity.HasIndex(e => e.ProductID, "UQ__Product__B40CC6EC304CC451").IsUnique();
 
-            entity.Property(e => e.ProductId).HasColumnName("ProductID");
-            entity.Property(e => e.OrderState).HasMaxLength(3);
-            entity.Property(e => e.ParentProductId).HasColumnName("ParentProductID");
+            entity.Property(e => e.ProductID).HasColumnName("ProductID");
+            //entity.Property(e => e.OrderState).HasMaxLength(3);
+            //entity.Property(e => e.ParentProductID).HasColumnName("ParentProductID");
+            //250314註解掉
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.ProductDetails).HasColumnType("text");
-            entity.Property(e => e.ProductName).HasMaxLength(255);
-        });
+            entity.Property(e => e.Name).HasMaxLength(255);
+        });                //250314ProductName改為Name
 
         modelBuilder.Entity<ProductCategoryMapping>(entity =>
         {
-            entity.HasKey(e => new { e.ProductId, e.CategoryId }).HasName("PK__ProductC__159C554F8AD469C6");
+            entity.HasKey(e => new { e.ProductID, e.CategoryID }).HasName("PK__ProductC__159C554F8AD469C6");
 
             entity.ToTable("ProductCategoryMapping");
 
-            entity.HasIndex(e => e.ProductId, "UQ__ProductC__B40CC6EC14175B09").IsUnique();
+            entity.HasIndex(e => e.ProductID, "UQ__ProductC__B40CC6EC14175B09").IsUnique();
 
-            entity.Property(e => e.ProductId)
+            entity.Property(e => e.ProductID)
                 .ValueGeneratedOnAdd()
                 .HasColumnName("ProductID");
-            entity.Property(e => e.CategoryId).HasColumnName("CategoryID");
+            entity.Property(e => e.CategoryID).HasColumnName("CategoryID");
 
-            entity.HasOne(d => d.Category).WithMany(p => p.ProductCategoryMappings)
-                .HasForeignKey(d => d.CategoryId)
+            /*entity.HasOne(d => d.ProductCategory).WithMany(p => p.ProductCategoryMappings)
+                .HasForeignKey(d => d.CategoryID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__ProductCa__Categ__160F4887");
 
             entity.HasOne(d => d.Product).WithOne(p => p.ProductCategoryMapping)
-                .HasForeignKey<ProductCategoryMapping>(d => d.ProductId)
+                .HasForeignKey<ProductCategoryMapping>(d => d.ProductID)
                 .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__ProductCa__Produ__151B244E");
+                .HasConstraintName("FK__ProductCa__Produ__151B244E");*/
+            //250314註解掉
         });
 
         modelBuilder.Entity<Role>(entity =>

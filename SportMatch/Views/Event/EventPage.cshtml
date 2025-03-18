@@ -3,6 +3,7 @@
 *@
  @model List<SportMatch.Models.EventPageModel>
 @{
+    Layout = "_Layout";
     @using System.Text.Json;
     var countdowns = ViewBag.Countdowns as List<object>;
 }
@@ -14,120 +15,172 @@
 <link rel="stylesheet" href="~/css/EventPage.css" asp-append-version="true" />
 
 <body>
-    <!-- 頂部區域：圖片可點擊 link 到其他分頁 -->
-    <header>
-        <div class="image-links">
-            <a href="https://localhost:5000/Event/EventPage" class="image-link">
-                <img src="~/image/MatchPage/ball.png" alt="羽球">
-                <span>羽球</span>
-            </a>
-            <a href="https://localhost:5000/Event/EventPage" class="image-link">
-                <img src="~/image/MatchPage/ball.png" alt="籃球">
-                <span>籃球</span>
-            </a>
-            <a href="https://localhost:5000/Event/EventPage" class="image-link">
-                <img src="~/image/MatchPage/ball.png" alt="排球">
-                <span>排球</span>
-            </a>
-        </div>
-    </header>
-    <div class="Eventcontainer">
-        <div class="left">
-            <!--篩選賽事+下拉式選單 -->
-            <div class="filter-section">
-                <h2>篩選賽事:</h2>
-                <div class="dropdowns">
-                    <select class="form-control">
-                        <option>比賽日期</option>
-                        <option>一周內開始</option>
-                        <option>一個月內</option>
-                        <option>三個月內</option>
-                        <option>三個月以上</option>
-                    </select>
-                    <select class="form-control">
-                        <option>比賽類型</option>
-                        <option>兒童組</option>
-                        <option>青少年組</option>
-                        <option>社會組</option>
-                        <option>長青組</option>
-                    </select>
-                    <select class="form-control">
-                        <option>性別類組</option>
-                        <option>男子組</option>
-                        <option>女子組</option>
-                        <option>混合組</option>
-                    </select>
-                    <select class="form-control">
-                        <option>賽事地點</option>
-                        <option>北部</option>
-                        <option>中部</option>
-                        <option>南部</option>
-                        <option>東部</option>
-                    </select>
-                    <input type="submit" value="搜尋" class="btn btn-success ms-2 w-auto">
-                </div>
-            </div>
 
-            <!--賽事資訊區域 + 報名按鈕 -->
-            <div class="events-section">
-                @foreach (var item in countdowns!)
-                {
-                    var countdownData = item as dynamic;
-                    long targetTimestamp = ((DateTimeOffset)countdownData.TargetTime).ToUnixTimeMilliseconds();
-                    <div class="event-card">
-                        <h3>@countdownData.Id</h3>
-                        <p>比賽日期:@countdownData.EventDate</p>
-                        <div class="countdown" data-target-time="@targetTimestamp"></div>
-                        <button class="btn btn-primary">報名</button>
+    <div class="background">
+        <div class="Eventcontainer">
+            <div class="left">
+                <!--篩選賽事+下拉式選單  -->
+                <div class="filter-section">
+                    <h2>篩選賽事:</h2>
+                    <div class="dropdowns">
+                        <select class="form-control">
+                            <option>籃球</option>
+                            <option>羽球</option>
+                            <option>排球</option>
+                        </select>
+                        <select class="form-control">
+                            <option>比賽日期</option>
+                            <option>一周內開始</option>
+                            <option>一個月內</option>
+                            <option>三個月內</option>
+                            <option>三個月以上</option>
+                        </select>
+                        <select class="form-control">
+                            <option>比賽類型</option>
+                            <option>兒童組</option>
+                            <option>青少年組</option>
+                            <option>社會組</option>
+                            <option>長青組</option>
+                        </select>
+                        <select class="form-control">
+                            <option>性別類組</option>
+                            <option>男子組</option>
+                            <option>女子組</option>
+                        </select>
+                        <select class="form-control">
+                            <option>賽事地點</option>
+                            <option>北部</option>
+                            <option>中部</option>
+                            <option>南部</option>
+                            <option>東部</option>
+                        </select>
+                        <input type="submit" value="搜尋" class="btn btn-success ms-2 w-auto">
                     </div>
-                }
-            </div>
-        </div>
-   
-        <div class="right">
-            <!--日曆區 -->
-            <div class="calendar">
-                <div class="calendar-header">
-                    <button id="prevMonth">&lt;</button>
-                    <h2 id="monthYear"></h2>
-                    <button id="nextMonth">&gt;</button>
                 </div>
-                <div class="calendar-weekdays">
-                    <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
-                </div>
-                <div class="calendar-days"></div>
-            </div>
-        </div>
-    </div>
 
-    <!--輪播圖片 -->
-    <span ></span>
-    <div class="EventCarousel">
-        <h5 class="toggle-button">焦點新聞▼</h5>
-        <div class="EventCarousel-track">
-            <img src="~/image/EventPicture/second_01.jpg" alt="圖片1" class="EventCarousel-item">
-            <img src="~/image/EventPicture/second_02.jpg" alt="圖片2" class="EventCarousel-item">
-            <img src="~/image/EventPicture/second_03.jpg" alt="圖片3" class="EventCarousel-item">
-            <img src="~/image/EventPicture/second_03.jpg" alt="圖片4" class="EventCarousel-item">
-            <img src="~/image/EventPicture/second_04.jpg" alt="圖片5" class="EventCarousel-item">
-            <img src="~/image/EventPicture/second_05.jpg" alt="圖片6" class="EventCarousel-item">
-            <img src="~/image/EventPicture/second_06.jpg" alt="圖片7" class="EventCarousel-item">
+                <!--賽事資訊區域 + 報名按鈕 -->
+                <div class="events-section">
+                    @foreach (var item in countdowns!)
+                    {
+                        var countdownData = item as dynamic;
+                        long targetTimestamp = ((DateTimeOffset)countdownData.TargetTime).ToUnixTimeMilliseconds();
+                        <div class="event-card">
+                            <div class="event-heart">
+                                <div class="heartbox">
+                                    <input type="checkbox" class="checkbox" id="checkbox_@countdownData.Id" />
+                                    <label for="checkbox_@countdownData.Id">
+                                        <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
+                                            <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
+                                                <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2" />
+                                                <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5" />
+                                                <g id="heartgroup7" opacity="0" transform="translate(7 6)">
+                                                    <circle id="heart1" fill="#9CD8C3" cx="2" cy="6" r="2" />
+                                                    <circle id="heart2" fill="#8CE8C3" cx="5" cy="2" r="2" />
+                                                </g>
+                                                <g id="heartgroup6" opacity="0" transform="translate(0 28)">
+                                                    <circle id="heart1" fill="#CC8EF5" cx="2" cy="7" r="2" />
+                                                    <circle id="heart2" fill="#91D2FA" cx="3" cy="2" r="2" />
+                                                </g>
+                                                <g id="heartgroup3" opacity="0" transform="translate(52 28)">
+                                                    <circle id="heart2" fill="#9CD8C3" cx="2" cy="7" r="2" />
+                                                    <circle id="heart1" fill="#8CE8C3" cx="4" cy="2" r="2" />
+                                                </g>
+                                                <g id="heartgroup2" opacity="0" transform="translate(44 6)">
+                                                    <circle id="heart2" fill="#CC8EF5" cx="5" cy="6" r="2" />
+                                                    <circle id="heart1" fill="#CC8EF5" cx="2" cy="2" r="2" />
+                                                </g>
+                                                <g id="heartgroup5" opacity="0" transform="translate(14 50)">
+                                                    <circle id="heart1" fill="#91D2FA" cx="6" cy="5" r="2" />
+                                                    <circle id="heart2" fill="#91D2FA" cx="2" cy="2" r="2" />
+                                                </g>
+                                                <g id="heartgroup4" opacity="0" transform="translate(35 50)">
+                                                    <circle id="heart1" fill="#F48EA7" cx="6" cy="5" r="2" />
+                                                    <circle id="heart2" fill="#F48EA7" cx="2" cy="2" r="2" />
+                                                </g>
+                                                <g id="heartgroup1" opacity="0" transform="translate(24)">
+                                                    <circle id="heart1" fill="#9FC7FA" cx="2.5" cy="3" r="2" />
+                                                    <circle id="heart2" fill="#9FC7FA" cx="7.5" cy="2" r="2" />
+                                                </g>
+                                            </g>
+                                        </svg>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="event-info">
+                                <h1>@countdownData.Id</h1>
+                                <p>比賽日期:@countdownData.EventDate</p>
+                            </div>
+                            <h1 class="countdown" data-target-time="@targetTimestamp"></h1>
+                            <button class="btn-close-white">報名</button>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <div class="right">
+                <!--日曆區 -->
+                <div class="calendar">
+                    <div class="calendar-header">
+                        <button id="prevMonth">&lt;</button>
+                        <h2 id="monthYear"></h2>
+                        <button id="nextMonth">&gt;</button>
+                    </div>
+                    <div class="calendar-weekdays">
+                        <div>日</div><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div>
+                    </div>
+                    <div class="calendar-days"></div>
+                </div>
+            </div>
         </div>
-        <button class="EventCarousel-button prev">❮</button>
-        <button class="EventCarousel-button next">❯</button>
-        <div class="EventCarousel-indicators">
-            <button class="EventIndicator" data-index="0"></button>
-            <button class="EventIndicator" data-index="1"></button>
-            <button class="EventIndicator" data-index="2"></button>
-            <button class="EventIndicator" data-index="3"></button>
-            <button class="EventIndicator" data-index="4"></button>
-            <button class="EventIndicator" data-index="5"></button>
-            <button class="EventIndicator" data-index="6"></button><br>
+
+        <!--輪播圖片 -->
+        <span></span>
+        <div class="EventCarousel">
+            <h5 class="toggle-button">焦點新聞▼</h5>
+            <div class="EventCarousel-track">
+                <img src="~/image/EventPicture/second_01.jpg" alt="圖片1" class="EventCarousel-item">
+                <img src="~/image/EventPicture/second_02.jpg" alt="圖片2" class="EventCarousel-item">
+                <img src="~/image/EventPicture/second_03.jpg" alt="圖片3" class="EventCarousel-item">
+                <img src="~/image/EventPicture/second_03.jpg" alt="圖片4" class="EventCarousel-item">
+                <img src="~/image/EventPicture/second_04.jpg" alt="圖片5" class="EventCarousel-item">
+                <img src="~/image/EventPicture/second_05.jpg" alt="圖片6" class="EventCarousel-item">
+                <img src="~/image/EventPicture/second_06.jpg" alt="圖片7" class="EventCarousel-item">
+            </div>
+            <button class="EventCarousel-button prev">❮</button>
+            <button class="EventCarousel-button next">❯</button>
+            <div class="EventCarousel-indicators">
+                <button class="EventIndicator" data-index="0"></button>
+                <button class="EventIndicator" data-index="1"></button>
+                <button class="EventIndicator" data-index="2"></button>
+                <button class="EventIndicator" data-index="3"></button>
+                <button class="EventIndicator" data-index="4"></button>
+                <button class="EventIndicator" data-index="5"></button>
+                <button class="EventIndicator" data-index="6"></button><br>
+            </div>
         </div>
     </div>
 </body>
 <script defer>
     var markedDates = @Html.Raw(JsonSerializer.Serialize(Model?.Select(e => e.EventDate.ToString("yyyy-MM-dd")) ?? new List<string>()))
+    //日曆區滑鼠滾動
+    let targetY = 0; // 目標 Y 軸位置
+    let currentY = 0; // 當前 Y 軸位置
+    const easing = 0.1; // 緩動係數（越小越慢）
+    const calendar = document.querySelector('.calendar');
+
+    window.addEventListener('scroll', () => {
+        targetY = window.pageYOffset; // 設定目標位置
+    });
+
+    // 動畫函數
+    function smoothScroll() {
+        currentY += (targetY - currentY) * easing; // 讓 currentY 慢慢接近 targetY
+        calendar.style.transform = `translateY(${currentY}px)`;
+        requestAnimationFrame(smoothScroll); // 持續更新動畫
+    }
+
+    // 啟動動畫
+    smoothScroll();
 </script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/Event.js" defer></script>
@@ -150,8 +203,7 @@
             $(this).text(arrow);
         });
     });
-
-
 </script>
+
   
  

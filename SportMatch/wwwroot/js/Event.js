@@ -103,44 +103,97 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(updateCountdown, 1000);
     updateCountdown();
 });
-//輪播圖
-const track = document.querySelector('.EventCarousel-track');
-const prevButton = document.querySelector('.EventCarousel-button.prev');
-const nextButton = document.querySelector('.EventCarousel-button.next');
-const items = document.querySelectorAll('.EventCarousel-item');
-const indicators = document.querySelectorAll('.EventIndicator');
 
-let currentIndex = 0;
+//資料換頁功能
+document.addEventListener("DOMContentLoaded", function () {
+    console.log("Event.js 成功載入！");
 
-// 更新畫廊顯示和指示器樣式
-function updateCarousel() {
-    const itemWidth = items[0].clientWidth;
-    track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+    const itemsPerPage = 5; // 每頁顯示的賽事數量
+    let currentPage = 1;
+    const eventsContainer = document.getElementById("events-container");
+    const paginationContainer = document.getElementById("MyPagination");
+    const eventItems = Array.from(document.querySelectorAll(".event-item"));
+    const totalPages = Math.ceil(eventItems.length / itemsPerPage);
 
-    indicators.forEach((indicator, index) => {
-        indicator.classList.toggle('active', index === currentIndex);
-    });
-}
-// 下一張圖片
-nextButton.addEventListener('click', () => {
-    currentIndex = (currentIndex + 1) % items.length;
-    updateCarousel();
+    function renderPagination() {
+        paginationContainer.innerHTML = ""; // 先清空按鈕
+
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement("button");
+            btn.innerText = i;
+            btn.classList.add("page-btn");
+            if (i === currentPage) btn.classList.add("active");
+
+            btn.addEventListener("click", function () {
+                console.log("按下按鈕：" + i);
+                currentPage = i;
+                updatePagination();
+            });
+
+            paginationContainer.appendChild(btn);
+        }
+
+        paginationContainer.style.display = "flex"; // 確保按鈕區塊顯示
+    }
+    function updatePagination() {
+        console.log("執行 updatePagination，當前頁面：" + currentPage);
+        eventItems.forEach((item, index) => {
+            let shouldShow = index >= (currentPage - 1) * itemsPerPage && index < currentPage * itemsPerPage;
+            console.log("項目 " + index + " 是否顯示：" + shouldShow);
+
+            if (shouldShow) {
+                item.style.display = "flex"; // 確保 `event-item` 顯示時保持 `flex`
+            } else {
+                item.style.display = "none"; // 隱藏其他項目
+            }
+        });
+
+        renderPagination();
+    }
+
+    window.updatePagination = updatePagination; // 確保全域可存取
+
+    updatePagination(); // 頁面載入時執行
 });
-// 上一張圖片
-prevButton.addEventListener('click', () => {
-    currentIndex = (currentIndex - 1 + items.length) % items.length;
-    updateCarousel();
-});
-// 點擊指示器跳轉到對應圖片
-indicators.forEach((indicator) => {
-    indicator.addEventListener('click', () => {
-        currentIndex = parseInt(indicator.getAttribute('data-index'));
+
+    //輪播圖
+    const track = document.querySelector('.EventCarousel-track');
+    const prevButton = document.querySelector('.EventCarousel-button.prev');
+    const nextButton = document.querySelector('.EventCarousel-button.next');
+    const items = document.querySelectorAll('.EventCarousel-item');
+    const indicators = document.querySelectorAll('.EventIndicator');
+
+    let currentIndex = 0;
+
+    // 更新畫廊顯示和指示器樣式
+    function updateCarousel() {
+        const itemWidth = items[0].clientWidth;
+        track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+
+        indicators.forEach((indicator, index) => {
+            indicator.classList.toggle('active', index === currentIndex);
+        });
+    }
+    // 下一張圖片
+    nextButton.addEventListener('click', () => {
+        currentIndex = (currentIndex + 1) % items.length;
         updateCarousel();
     });
-});
-//輪播秒數設定
-setInterval(() => {
-    nextButton.click();
-}, 8000);
-updateCarousel();
-//收疊功能
+    // 上一張圖片
+    prevButton.addEventListener('click', () => {
+        currentIndex = (currentIndex - 1 + items.length) % items.length;
+        updateCarousel();
+    });
+    // 點擊指示器跳轉到對應圖片
+    indicators.forEach((indicator) => {
+        indicator.addEventListener('click', () => {
+            currentIndex = parseInt(indicator.getAttribute('data-index'));
+            updateCarousel();
+        });
+    });
+    //輪播秒數設定
+    setInterval(() => {
+        nextButton.click();
+    }, 8000);
+    updateCarousel();
+

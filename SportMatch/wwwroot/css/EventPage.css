@@ -31,13 +31,13 @@
     color: white;
 }
 
-    .calendar-header button {
-        background: none;
-        border: none;
-        color: white;
-        font-size: 20px;
-        cursor: pointer;
-    }
+.calendar-header button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
 
 .calendar-weekdays {
     display: grid;
@@ -117,6 +117,14 @@ h5 {
     .dropdowns select {
         flex: 1;
     }
+/*換頁按鈕*/
+#MyPagination {
+    display: flex;
+    justify-content: left; /* 按鈕靠左 */
+    margin-bottom: 20px; /* 增加與底下內容的間距 */
+    margin-top: 20px; /* 增加與篩選區塊的間距 */
+}
+
 /*賽事box*/
 .events-section {
     margin-bottom: 40px;
@@ -147,14 +155,14 @@ h5 {
     flex-shrink: 0; /* 防止區塊被壓縮 */
     flex-direction: column;
     justify-content: center; /* 讓內部文字靠近 */
-    margin-left: -260px;
+    margin-left: -150px;
 }
 
 .countdown {
     font-size: 30px;
     min-width: 200px; /* 固定倒數計時區塊，避免擠壓 */
     text-align: left;
-    margin-left: -240px;
+    margin-left: -100px;
 }
 /*愛心特效*/
 .heartbox {
@@ -373,6 +381,17 @@ svg #main-circ {
         transform: scale(1)
     }
 }
+/*報名按鈕樣式*/
+.join-btn {
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 40px;
+    margin-right: 48px;
+}
+    .join-btn :hover {
+
+    }
 /*控制頁底距離*/
 footer {
     margin-top: 220px;
@@ -442,7 +461,6 @@ footer {
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
-
-    .EventIndicator.active {
-        background-color: #333;
-    }
+.EventIndicator.active {
+    background-color: #333;
+}

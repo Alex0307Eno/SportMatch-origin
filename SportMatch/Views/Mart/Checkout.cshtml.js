@@ -266,7 +266,7 @@ function fetchCheckout(cartCheckoutData) {
         })
 }
 
-
+// 訂單頁
 function billPage(data) {     
     const CheckoutContainer = document.getElementById("CheckoutContainer");
     const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
@@ -295,17 +295,12 @@ function billPage(data) {
     const scrollableList = document.createElement('div');
     scrollableList.classList.add('ScrollableList');
 
-    const products = [
-        { Name: '商品 1', Price: 'NT$ 1000' },
-        { Name: '商品 2', Price: 'NT$ 2000' }
-    ];
-
-    products.forEach(item => {
+    data.forEach(item => {
         const orderItem = document.createElement('div');
         orderItem.classList.add('OrderItem');
 
         const itemHeading = document.createElement('h6');
-        itemHeading.textContent = item.Name;
+        itemHeading.textContent = item.name;
         orderItem.appendChild(itemHeading);
 
         const itemDetails = document.createElement('div');
@@ -316,7 +311,7 @@ function billPage(data) {
         itemDetails.appendChild(quantity);
 
         const price = document.createElement('span');
-        price.textContent = `價格: ${item.Price}`;
+        price.textContent = `價格: ${item.price}`;
         itemDetails.appendChild(price);
 
         orderItem.appendChild(itemDetails);

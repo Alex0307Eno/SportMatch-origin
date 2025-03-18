@@ -241,13 +241,15 @@ checkoutNow.addEventListener('click', function () {
     let _billNumber = generateRandomString(10);
     const cartCheckoutData = Cart.map(Item => ({
         id: Item.ID,
-        quantity: Item.Quantity,
+        quantity: Item.Quantity,        
         billNumber: _billNumber
     }));
 
     fetchCheckout(cartCheckoutData);
 });
+
 // 發送資訊到交易用API
+let regex = /^產品ID \d+ 庫存不足$/
 function fetchCheckout(cartCheckoutData) {
     fetch('/api/checkout', {
         method: 'POST',
@@ -259,19 +261,22 @@ function fetchCheckout(cartCheckoutData) {
         .then(response => response.json())
         .then(data => {
             // 成功獲取到回應後，處理返回的資料
-            console.log('結帳成功，返回資料：', data);
-            if (data) {
+            if (!regex.test(data.message)) {
+                console.log('結帳成功，返回資料：', data);
                 billPage(data);
+            }
+            else {
+                console.log('結帳失敗：', data);
             }
         })
 }
 
 // 訂單頁
 function billPage(data) {     
-    const CheckoutContainer = document.getElementById("CheckoutContainer");
+    const CheckoutTopContainer = document.getElementById("CheckoutTopContainer");
     const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
     
-    CheckoutContainer.innerHTML = "";
+    CheckoutTopContainer.innerHTML = "";
     localStorage.removeItem('Cart');
 
     const container = document.createElement('div');
@@ -282,20 +287,23 @@ function billPage(data) {
     
     const orderNumberSection = document.createElement('div');
     orderNumberSection.classList.add('OrderSection');
-    const orderNumberHeading = document.createElement('h5');
+    const orderNumberHeading = document.createElement('h4');
     orderNumberHeading.textContent = `訂單編號: #${data[0].billNumber}`;
     orderNumberSection.appendChild(orderNumberHeading);
     
     const productListSection = document.createElement('div');
     productListSection.classList.add('OrderSection');
-    const productListHeading = document.createElement('h6');
+    const productListHeading = document.createElement('h4');
     productListHeading.textContent = '商品清單';
     productListSection.appendChild(productListHeading);
 
     const scrollableList = document.createElement('div');
     scrollableList.classList.add('ScrollableList');
 
+    let totalPrice = 0;
     data.forEach(item => {
+        totalPrice += (item.price * ((100 - item.discount) / 100));
+
         const orderItem = document.createElement('div');
         orderItem.classList.add('OrderItem');
 
@@ -307,7 +315,7 @@ function billPage(data) {
         itemDetails.classList.add('d-flex', 'justify-content-between');
 
         const quantity = document.createElement('span');
-        quantity.textContent = '數量: 2';
+        quantity.textContent = `數量: ${item.quantity}`;
         itemDetails.appendChild(quantity);
 
         const price = document.createElement('span');
@@ -323,31 +331,25 @@ function billPage(data) {
 
     const totalPriceSection = document.createElement('div');
     totalPriceSection.classList.add('OrderSection');
-    const totalPriceHeading = document.createElement('h6');
-    totalPriceHeading.textContent = '總價格: NT$ 8000';
+    const totalPriceHeading = document.createElement('h4');
+    totalPriceHeading.textContent = `總價格: ${totalPrice}`;
     totalPriceSection.appendChild(totalPriceHeading);
-
-    const shippingMethodSection = document.createElement('div');
-    shippingMethodSection.classList.add('OrderSection');
-    const shippingMethodHeading = document.createElement('h6');
-    shippingMethodHeading.textContent = '貨運方式: 7-11取貨';
-    shippingMethodSection.appendChild(shippingMethodHeading);
-
-    const shippingButton = document.createElement('a');
-    shippingButton.href = '#';
-    shippingButton.classList.add('btn', 'btn-primary', 'OrderButton');
-    shippingButton.textContent = '貨運查詢';
-    shippingMethodSection.appendChild(shippingButton);
 
     const paymentMethodSection = document.createElement('div');
     paymentMethodSection.classList.add('OrderSection');
-    const paymentMethodHeading = document.createElement('h6');
-    paymentMethodHeading.textContent = '付款方式: ATM轉帳';
-    paymentMethodSection.appendChild(paymentMethodHeading);
+    const shippingHeading = document.createElement('h4');    
+    shippingHeading.textContent = `貨運資訊`;
+    paymentMethodSection.appendChild(shippingHeading);
+    const shippingMethod = document.createElement('p');
+    shippingMethod.textContent = '貨運方式: 7-11取貨';
+    paymentMethodSection.appendChild(shippingMethod);
+    const paymentMethod = document.createElement('p');
+    paymentMethod.textContent = '付款方式: ATM轉帳';
+    paymentMethodSection.appendChild(paymentMethod);
 
     const buyerInfoSection = document.createElement('div');
     buyerInfoSection.classList.add('OrderSection');
-    const buyerInfoHeading = document.createElement('h6');
+    const buyerInfoHeading = document.createElement('h4');
     buyerInfoHeading.textContent = '訂購人資訊';
     buyerInfoSection.appendChild(buyerInfoHeading);
 
@@ -365,22 +367,21 @@ function billPage(data) {
 
     const orderPageButtonSection = document.createElement('div');
     orderPageButtonSection.classList.add('OrderSection', 'd-flex', 'justify-content-end');
-    const orderPageButton = document.createElement('button');
-    orderPageButton.classList.add('btn', 'btn-primary', 'OrderButton');
+    const orderPageButton = document.createElement('div');
+    orderPageButton.classList.add('OrderButton');
     orderPageButton.textContent = '前往訂單頁面';
     orderPageButtonSection.appendChild(orderPageButton);
 
     orderFrame.appendChild(orderNumberSection);
     orderFrame.appendChild(productListSection);
     orderFrame.appendChild(totalPriceSection);
-    orderFrame.appendChild(shippingMethodSection);
     orderFrame.appendChild(paymentMethodSection);
     orderFrame.appendChild(buyerInfoSection);
     orderFrame.appendChild(orderPageButtonSection);
 
     container.appendChild(orderFrame);
 
-    CheckoutContainer.appendChild(container);
+    CheckoutTopContainer.appendChild(container);
 
     addCssIsolationElement();
 }

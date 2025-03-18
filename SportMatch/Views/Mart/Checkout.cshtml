@@ -10,8 +10,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 <body>
     <!-- 主頁面 -->
-    <div class="container-fluid">
-        <div class="d-flex CheckoutContainer" id="CheckoutContainer">
+    <div class="container-fluid" id="CheckoutTopContainer">
+        <div class="d-flex CheckoutContainer">
             <!-- 左購物車 -->
             <div class="CartBody d-flex ">
                 <div class="my-3 CartScrollable">
@@ -86,7 +86,7 @@
                       <div></div><span id="TotalPrice"><!--折扣後價格--></span>
                     </div>
                     <div class="d-flex justify-content-between mt-3">
-                        <button class="btn btn-secondary w-100">繼續選購</button>
+                        <div class="w-100 backBtnClass" onclick="window.location.href='Mart'">繼續選購</div>
                         <button class="btn w-100 OrangeBtnClass" id="checkoutNow">結帳</button>
                     </div>
                 </div>

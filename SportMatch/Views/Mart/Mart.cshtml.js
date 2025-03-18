@@ -25,7 +25,7 @@ function HeartIconChange(button) {
     Modal.show();
     setTimeout(function () {
         Modal.hide();
-    }, 1000);
+    }, 450);
 }
 
 //加入購物車
@@ -42,7 +42,7 @@ function GetCartModalSuccess(CartExist) {
     GetCartModal.show();
     setTimeout(function () {
         GetCartModal.hide();
-    }, 1000);
+    }, 450);
 }
 
 // 購物車localstorage傳送資料用
@@ -84,8 +84,10 @@ let itemsPerPage;
 let orderByDesc;
 
 let priceSort = document.getElementById('PriceSort');
+
+
 // 分頁
-function fetchProducts(page = 1, itemsPerPage = window.innerWidth < 1700 ? 4 : 5, orderByDesc = priceSort.value, categoryName = "全部", subCategoryName = ['無']) {
+function fetchProducts(page = 1, itemsPerPage = 10, orderByDesc = priceSort.value, categoryName = "全部", subCategoryName = ['無']) {
     let subCategoryNamesStr = subCategoryName.join(',') || '';
     console.log(page, itemsPerPage, orderByDesc, categoryName, subCategoryName)
     //console.log(subCategoryNamesStr)
@@ -149,10 +151,23 @@ priceSort.addEventListener('change', function () {
     fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText);
 });
 
+
+let windowWidth;
 // 視窗大小事件
-let windowWidth = window.innerWidth;
-window.addEventListener('resize', function () {
-    fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText);
+window.addEventListener('resize', function () {   
+    if (window.innerWidth < 1200) {
+        windowWidth = 4
+    }
+    else if (window.innerWidth < 1350) {
+        windowWidth = 6
+    }
+    else if (window.innerWidth < 1700) {
+        windowWidth = 8
+    }
+    else {
+        windowWidth = 10;
+    }
+    fetchProductsNowPageCheck(undefined, windowWidth, undefined, parentLabelText, subLabelText);
 });
 
 // 捕捉CSS隔離標籤
@@ -272,9 +287,9 @@ function renderProducts(products) {
         /*----以下modal----*/
 
 
-        // 創建模態框 (商品詳情)
+        // 創建模態框
         const modalDiv = document.createElement('div');
-        modalDiv.className = 'modal fade';
+        modalDiv.className = 'modal fade';        
         modalDiv.id = `ProductModal_${item.productID}`;
         modalDiv.tabIndex = '-1';
 
@@ -283,7 +298,7 @@ function renderProducts(products) {
 
         const modalContent = document.createElement('div');
         modalContent.className = 'modal-content';
-        modalContent.classList.add('ModalContent');
+        modalContent.classList.add('ModalContent');        
 
         // Modal Header
         const modalHeader = document.createElement('div');
@@ -434,6 +449,13 @@ function renderProducts(products) {
             document.getElementById(`FooterImgRight_${item.productID}`).addEventListener('click', function () {
                 document.getElementById(`ModelBodyProductImage_${item.productID}`).src = item.image03
             });
+        });
+
+        const modals = document.getElementById(`ProductModal_${item.productID}`);
+        var modal = new bootstrap.Modal(modals);
+        // 視窗變動關閉modal
+        window.addEventListener('resize', function () {
+            modal.hide();           
         });
     });
     addCssIsolationElement();

@@ -24,11 +24,12 @@ namespace SportMatch.Controllers
         {
             public int id { get; set; }
             public int quantity { get; set; }
-            public string billNumber { get; set; }
+            public string billNumber { get; set; }           
         }
 
         public class ExtendedProductInfo : ProductInfo
         {
+            public int discount { get; set; }
             public string name { get; set; }
             public decimal price { get; set; }
         }
@@ -45,7 +46,7 @@ namespace SportMatch.Controllers
                     
                     var productsLinqResult = await MartDb.Product
                         .Where(p => productIds.Contains(p.ProductID))
-                        .Select(p => new { p.ProductID, p.Name, p.Price })
+                        .Select(p => new { p.ProductID, p.Name, p.Price, p.Discount })
                         .ToListAsync();
 
                     List<ExtendedProductInfo> extendedProducts = new List<ExtendedProductInfo>();
@@ -70,8 +71,10 @@ namespace SportMatch.Controllers
                         ExtendedProductInfo extendedProductInfos = new ExtendedProductInfo
                         {
                             id = productInfo.id,
-                            quantity = productInfo.quantity,
+                            quantity = productInfo.quantity,                            
                             billNumber = productInfo.billNumber,
+
+                            discount = productDetails.Discount,
                             name = productDetails.Name,
                             price = productDetails.Price
                         };

@@ -104,6 +104,8 @@ select:focus {
     display: flex;
     flex-direction: column;
     width: 100rem;
+    padding: 10px;
+    margin: 0 0 10px 0;
 }
 
 .BodyLiftFieldImage {
@@ -114,11 +116,6 @@ select:focus {
     margin: 0 0 0 13px;
     width: 800rem;
 }
-/* 區塊背景 */
-.BodyLiftField {
-    padding: 10px;
-    margin: 0 0 10px 0;
-}
 
 .PaginationBackground {
     padding: 16px 12px 0 12px;
@@ -128,6 +125,7 @@ select:focus {
 .ProductsList {
     padding: 0 0 30px 0;
     margin: 0 1px 0 1px;
+    min-height:40%;
 }
 
 .BodyLiftField,
@@ -158,9 +156,9 @@ select:focus {
     margin: 0 0 0 0.5rem;
 }
 
-.ProductsCardDiv {
-    max-width: 20%;
-    max-height: auto;
+.ProductsCardDiv {    
+    width: 20rem;
+    height: 25.35rem;
 }
 
 .ProductsCard {
@@ -212,4 +210,51 @@ select:focus {
     width: 7vw;
     margin-right: 10px;
     object-fit: cover;
+}
+
+@media screen and (max-width: 1700px) {
+    .MartContainer {
+        width: 96.5rem;
+    }
+    .BodyRightField {
+        width: 560rem;
+    }
+    .BodyLiftField {
+        width: 85rem
+    }
+}
+
+
+@media screen and (max-width: 1350px) {
+    .MartContainer {
+        width: 76.5rem;
+    }
+    .BodyRightField {
+        width: 250rem;
+    }
+    .BodyLiftField {
+        width: 45rem
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    body {
+        overflow-x:auto;
+    }
+    .MartContainer {
+        width: 60.5rem;
+    }
+    .BodyRightField {
+        width: 75rem;
+    }
+    .BodyLiftField {
+        width: 20rem;
+        overflow-x:auto;
+    }
+
+    .ProductsCardDiv {
+        width: 20rem;
+        height: 26.655rem;
+    }
+
 }

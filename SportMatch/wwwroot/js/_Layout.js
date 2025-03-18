@@ -351,9 +351,10 @@ function toggleNotifications() {
 
 function toggleCart() {
 
-
-    const dropdown = document.querySelector(".cart-dropdown");
-    dropdown.classList.toggle("active");
+    window.location.href = "/Mart/Checkout";
+    //250318註解
+    //const dropdown = document.querySelector(".cart-dropdown");
+    //dropdown.classList.toggle("active");
 }
 
 function handleLogin(event) {

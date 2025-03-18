@@ -39,7 +39,7 @@
                 <li><a href="/Match/MatchPage" id="matchingLink">配對系統</a></li>
                 <li><a href="/Event/EventPage" id="eventsLink">賽事資訊</a></li>
                 <li><a href="#Venue">場地資訊</a></li>
-                <li><a href="/Mart/Mart">運動商城</a></li>
+                <li><a href="/Mart/Mart" id="martLink">運動商城</a></li>
             </ul>
             <div class="header-actions">
                 <div class="user-actions">
@@ -80,7 +80,9 @@
 
                         <div class="dropdown-content2" id="adminDropdown" style="display:none;">
                             <a href="/MemberCenter/Index" class="memberLink">個人資料</a>
-                            <a href="/Back/Backstage" id="adminLink" class="adminLink">後臺管理</a>
+                            <a href="/Back/RedirectToBackstage" id="adminLink" class="adminLink">後臺管理</a>
+
+
                         </div>
 
                         <button class="btn-logout" onclick="handleLogout()">
@@ -200,7 +202,7 @@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="/js/_Layout.js" type="text/javascript" asp-append-version="true"></script>
-@await RenderSectionAsync("scripts", required: false)
+
 
 
 <script>
@@ -319,7 +321,7 @@
     }
 
 </style>
-
+@await RenderSectionAsync("scripts", required: false)
      
 
 

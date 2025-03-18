@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Drawing.Printing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -36,6 +37,7 @@ namespace SportMatch.Controllers
             }
             return Json(new { success = false, message = "未接收到有效資料" });
         }
+
 
         // 取得卡片資料
         [HttpGet]
@@ -120,8 +122,15 @@ namespace SportMatch.Controllers
 
         // 篩選功能
         [HttpPost]
-        public IActionResult GetSelection(string MatchType, string MatchCategory, List<string> MatchEvent, List<string> MatchArea, List<string> MatchRole)
+        public IActionResult GetSelection(string MatchType, string MatchCategory, List<string> MatchEvent, List<string> MatchArea, List<string> MatchRole, int page, int pageSize = 6)
         {
+            // 取得使用者資料
+            string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
+            var UserInfoForSuggest = (from u in _context.Users
+                                      where u.Email.ToString().ToLower() == UserInfo.ToLower()
+                                      select u).ToList();
+
+            // 確認運動種類
             int SportType = 0;
             switch (MatchCategory)
             {
@@ -132,56 +141,151 @@ namespace SportMatch.Controllers
                     SportType = 2;
                     break;
                 default:
-                    SportType = 1;
+                    SportType = 1; // 什麼都沒選預設為羽球
                     break;
             }
+
+            // 選擇招募隊員
             if (MatchType == "FindPlayer")
             {
+
                 var filterPlayer = (from u in _context.Users
                                     join r in _context.Roles
                                     on u.RoleId equals r.RoleId
-                                    where r.SportId == SportType
+                                    where r.SportId == SportType && u.GenderId == UserInfoForSuggest[0].GenderId
                                     select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
 
-                if (MatchEvent.Count() > 0)
+                int totalItems = filterPlayer.Count();
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                var cards = filterPlayer.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                if (MatchRole.Count() > 0 && MatchArea.Count() > 0)
                 {
                     filterPlayer = (from u in _context.Users
                                     join r in _context.Roles
                                     on u.RoleId equals r.RoleId
-                                    where r.SportId == SportType
+                                    join a in _context.Areas
+                                    on u.AreaId equals a.AreaId
+                                    where r.SportId == SportType && u.GenderId == UserInfoForSuggest[0].GenderId && MatchArea.Contains(a.AreaName) && MatchRole.Contains(r.RoleName)
                                     select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
-                    if (MatchRole.Count() > 0)
-                    {
-                        filterPlayer = (from u in _context.Users
-                                        join r in _context.Roles
-                                        on u.RoleId equals r.RoleId
-                                        where MatchRole.Contains(r.RoleName)
-                                        select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
-                    }
+                    totalItems = filterPlayer.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterPlayer.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    return Json(new { cards, totalPages, totalItems });
                 }
 
+                else if (MatchArea.Count() > 0)
+                {
+                    filterPlayer = (from u in _context.Users
+                                    join r in _context.Roles
+                                    on u.RoleId equals r.RoleId
+                                    join a in _context.Areas
+                                    on u.AreaId equals a.AreaId
+                                    where r.SportId == SportType && u.GenderId == UserInfoForSuggest[0].GenderId && MatchArea.Contains(a.AreaName)
+                                    select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
 
+                    totalItems = filterPlayer.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterPlayer.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    return Json(new { cards, totalPages, totalItems });
+                }
+
+                else if (MatchRole.Count() > 0)
+                {
+                    filterPlayer = (from u in _context.Users
+                                    join r in _context.Roles
+                                    on u.RoleId equals r.RoleId
+                                    where MatchRole.Contains(r.RoleName)
+                                    select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+                    totalItems = filterPlayer.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterPlayer.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    return Json(new { cards, totalPages, totalItems });
+                }
+
+                return Json(new { cards, totalPages, totalItems });
 
             }
-            else if (MatchType == "FindTeam")
-            {
 
-            }
-
-
-            if (MatchType == null)
-            {
-                ViewBag.MatchType = null;
-                return View("MatchPage");
-            }
+            // 選擇加入隊伍
             else
             {
-                ViewBag.MatchType = MatchType;
-                ViewBag.MatchCategory = MatchCategory;
-                ViewBag.MatchEvent = MatchEvent;
-                ViewBag.MatchArea = MatchArea;
-                ViewBag.MatchRole = MatchRole;
-                return View("MatchPage");
+                // 什麼都不選預設帶出羽球隊伍資料
+                var filterTeam = (from t in _context.Teams
+                                  join r in _context.Roles
+                                  on t.RoleId equals r.RoleId
+                                  where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId
+                                  select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+
+                int totalItems = filterTeam.Count();
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                var cards = filterTeam.Skip((page - 1) * pageSize).Take(pageSize).ToList();                
+
+                // 選擇賽事且選擇招募位置時
+                if (MatchEvent.Count() > 0 && MatchRole.Count() > 0)
+                {
+                    filterTeam = (from t in _context.Teams
+                                  join r in _context.Roles
+                                  on t.RoleId equals r.RoleId
+                                  join e in _context.Events
+                                  on t.EventId equals e.EventId
+                                  where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && MatchEvent.Contains(e.EventName) && MatchRole.Contains(r.RoleName)
+                                  select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                    totalItems = filterTeam.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterTeam.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    return Json(new { cards, totalPages, totalItems });
+                }
+
+                // 選擇位置與區域
+                else if (MatchRole.Count() > 0 && MatchArea.Count() > 0)
+                {
+                    filterTeam = (from t in _context.Teams
+                                  join r in _context.Roles
+                                  on t.RoleId equals r.RoleId
+                                  join e in _context.Events
+                                  on t.EventId equals e.EventId
+                                  join a in _context.Areas
+                                  on t.AreaId equals a.AreaId
+                                  where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && MatchRole.Contains(r.RoleName) && MatchArea.Contains(a.AreaName)
+                                  select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                    totalItems = filterTeam.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterTeam.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    return Json(new { cards, totalPages, totalItems });
+                }
+
+                // 只選擇位置時
+                else if (MatchRole.Count() > 0)
+                {
+                    filterTeam = (from t in _context.Teams
+                                  join r in _context.Roles
+                                  on t.RoleId equals r.RoleId
+                                  join e in _context.Events
+                                  on t.EventId equals e.EventId
+                                  where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && MatchRole.Contains(r.RoleName)
+                                  select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                    totalItems = filterTeam.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterTeam.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    return Json(new { cards, totalPages, totalItems });
+                }
+                // 當選擇賽事時
+                else if (MatchEvent.Count() > 0)
+                {
+                    filterTeam = (from t in _context.Teams
+                                  join r in _context.Roles
+                                  on t.RoleId equals r.RoleId
+                                  join e in _context.Events
+                                  on t.EventId equals e.EventId
+                                  where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && MatchEvent.Contains(e.EventName)
+                                  select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                    totalItems = filterTeam.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterTeam.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    return Json(new { cards, totalPages, totalItems });
+                }
+                return Json(new { cards, totalPages, totalItems });
             }
         }
 

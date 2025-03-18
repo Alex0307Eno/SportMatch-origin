@@ -84,11 +84,5 @@ namespace SportMatch.Controllers
         {
             return View();
         }
-
-        public IActionResult Bill()
-        {
-            ViewBag.ForProducts = MartDb.Product;
-            return View();
-        }
     }
 }

@@ -66,6 +66,23 @@
 }
 
 
+// CSS隔離標籤
+function addCssIsolationElement() {
+    function cssIsolationElement() {
+        for (let sheet of document.styleSheets) {
+            for (let rule of sheet.cssRules) {           // 記得修改頁面標籤
+                const match = rule.selectorText?.match(/\.CheckoutContainer\[(b-[^\]]+)\]/);
+                if (match) { return match[1]; }
+            }
+        }
+    }
+    //console.log(cssIsolationElement())
+    document.querySelectorAll('*').forEach(div => {
+        div.setAttribute(cssIsolationElement(), '');
+    });
+}
+
+
 
 // 購物車localstorage接收資料用
 function LoadCart() {   
@@ -174,31 +191,15 @@ function LoadCart() {
             // 計算折扣
             const discountedPrice = price * ((100 - discount) / 100);            
             total += discountedPrice;
-
         });
         // 顯示總價格
         NoDiscountPrice.textContent = `${NoDiscount.toFixed(0)}元`
         TotalPrice.textContent = `${total.toFixed(0)}元`;
 
-        function existingElement() {
-            for (let sheet of document.styleSheets) {
-                for (let rule of sheet.cssRules) {
-                    const match = rule.selectorText?.match(/\.CheckoutContainer\[(b-[^\]]+)\]/);
-                    if (match) { return match[1]; }
-                }
-            }
-        }
-        document.querySelectorAll('.CartItem').forEach(div => {
-            div.setAttribute(existingElement(), '');
-        });
-        document.querySelectorAll('.btnPlusMinus').forEach(div => {
-            div.setAttribute(existingElement(), '');
-        });
-        document.querySelectorAll('.quantityText').forEach(div => {
-            div.setAttribute(existingElement(), '');
-        });
-    }
+        addCssIsolationElement();
+    }    
 }
+
 // 更新購物車商品數量
 function updateQuantity(ItemID, Delta) {
     let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
@@ -220,7 +221,6 @@ function removeItem(ItemID) {
 
 // 頁面載入時顯示購物車
 document.addEventListener('DOMContentLoaded', LoadCart);
-
 
 
 
@@ -260,6 +260,132 @@ function fetchCheckout(cartCheckoutData) {
         .then(data => {
             // 成功獲取到回應後，處理返回的資料
             console.log('結帳成功，返回資料：', data);
+            if (data) {
+                billPage(data);
+            }
         })
 }
 
+
+function billPage(data) {     
+    const CheckoutContainer = document.getElementById("CheckoutContainer");
+    const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+    
+    CheckoutContainer.innerHTML = "";
+    localStorage.removeItem('Cart');
+
+    const container = document.createElement('div');
+    container.classList.add('container', 'mt-4');
+    
+    const orderFrame = document.createElement('div');
+    orderFrame.classList.add('OrderFrame');
+    
+    const orderNumberSection = document.createElement('div');
+    orderNumberSection.classList.add('OrderSection');
+    const orderNumberHeading = document.createElement('h5');
+    orderNumberHeading.textContent = `訂單編號: #${data[0].billNumber}`;
+    orderNumberSection.appendChild(orderNumberHeading);
+    
+    const productListSection = document.createElement('div');
+    productListSection.classList.add('OrderSection');
+    const productListHeading = document.createElement('h6');
+    productListHeading.textContent = '商品清單';
+    productListSection.appendChild(productListHeading);
+
+    const scrollableList = document.createElement('div');
+    scrollableList.classList.add('ScrollableList');
+
+    const products = [
+        { Name: '商品 1', Price: 'NT$ 1000' },
+        { Name: '商品 2', Price: 'NT$ 2000' }
+    ];
+
+    products.forEach(item => {
+        const orderItem = document.createElement('div');
+        orderItem.classList.add('OrderItem');
+
+        const itemHeading = document.createElement('h6');
+        itemHeading.textContent = item.Name;
+        orderItem.appendChild(itemHeading);
+
+        const itemDetails = document.createElement('div');
+        itemDetails.classList.add('d-flex', 'justify-content-between');
+
+        const quantity = document.createElement('span');
+        quantity.textContent = '數量: 2';
+        itemDetails.appendChild(quantity);
+
+        const price = document.createElement('span');
+        price.textContent = `價格: ${item.Price}`;
+        itemDetails.appendChild(price);
+
+        orderItem.appendChild(itemDetails);
+
+        scrollableList.appendChild(orderItem);
+    });
+
+    productListSection.appendChild(scrollableList);
+
+    const totalPriceSection = document.createElement('div');
+    totalPriceSection.classList.add('OrderSection');
+    const totalPriceHeading = document.createElement('h6');
+    totalPriceHeading.textContent = '總價格: NT$ 8000';
+    totalPriceSection.appendChild(totalPriceHeading);
+
+    const shippingMethodSection = document.createElement('div');
+    shippingMethodSection.classList.add('OrderSection');
+    const shippingMethodHeading = document.createElement('h6');
+    shippingMethodHeading.textContent = '貨運方式: 7-11取貨';
+    shippingMethodSection.appendChild(shippingMethodHeading);
+
+    const shippingButton = document.createElement('a');
+    shippingButton.href = '#';
+    shippingButton.classList.add('btn', 'btn-primary', 'OrderButton');
+    shippingButton.textContent = '貨運查詢';
+    shippingMethodSection.appendChild(shippingButton);
+
+    const paymentMethodSection = document.createElement('div');
+    paymentMethodSection.classList.add('OrderSection');
+    const paymentMethodHeading = document.createElement('h6');
+    paymentMethodHeading.textContent = '付款方式: ATM轉帳';
+    paymentMethodSection.appendChild(paymentMethodHeading);
+
+    const buyerInfoSection = document.createElement('div');
+    buyerInfoSection.classList.add('OrderSection');
+    const buyerInfoHeading = document.createElement('h6');
+    buyerInfoHeading.textContent = '訂購人資訊';
+    buyerInfoSection.appendChild(buyerInfoHeading);
+
+    const name = document.createElement('p');
+    name.textContent = '姓名: 張三';
+    buyerInfoSection.appendChild(name);
+
+    const phone = document.createElement('p');
+    phone.textContent = '電話: 0912345678';
+    buyerInfoSection.appendChild(phone);
+
+    const address = document.createElement('p');
+    address.textContent = '地址: 台北市中正區某某路123號';
+    buyerInfoSection.appendChild(address);
+
+    const orderPageButtonSection = document.createElement('div');
+    orderPageButtonSection.classList.add('OrderSection', 'd-flex', 'justify-content-end');
+    const orderPageButton = document.createElement('button');
+    orderPageButton.classList.add('btn', 'btn-primary', 'OrderButton');
+    orderPageButton.textContent = '前往訂單頁面';
+    orderPageButtonSection.appendChild(orderPageButton);
+
+    orderFrame.appendChild(orderNumberSection);
+    orderFrame.appendChild(productListSection);
+    orderFrame.appendChild(totalPriceSection);
+    orderFrame.appendChild(shippingMethodSection);
+    orderFrame.appendChild(paymentMethodSection);
+    orderFrame.appendChild(buyerInfoSection);
+    orderFrame.appendChild(orderPageButtonSection);
+
+    container.appendChild(orderFrame);
+
+    CheckoutContainer.appendChild(container);
+
+    addCssIsolationElement();
+}

@@ -8,8 +8,7 @@
 }
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
-<body>
-    <!-- 主頁面 -->
+<!-- 主頁面 -->
     <div class="container-fluid" id="CheckoutTopContainer">
         <div class="d-flex CheckoutContainer">
             <!-- 左購物車 -->
@@ -29,21 +28,17 @@
                     <!-- 結帳方式 -->
                     <h4><i class="bi bi-bag"></i>選擇結帳方式</h4>
                     <div class="d-flex flex-column mx-5 my-3">
-                        <div class="d-flex align-items-center mb-3">
+                        <div class="d-flex align-items-center mb-4">
                             <input type="radio" name="PaymentMethod" id="Seveneleven" onclick="TogglePaymentMethod();" />
                             <label for="Seveneleven">7-11取貨付款</label>
                         </div>
-                        <div class="d-flex align-items-center mb-3">
+                        <div class="d-flex align-items-center mb-4">
                             <input type="radio" name="PaymentMethod" id="Familymart" onclick="TogglePaymentMethod();" />
                             <label for="Familymart">全家取貨付款</label>
                         </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <input type="radio" name="PaymentMethod" id="Atm" onclick="TogglePaymentMethod();" />
-                            <label for="Atm">ATM轉帳</label>
-                        </div>
-                        <div class="d-flex align-items-center mb-3">
-                            <input type="radio" name="PaymentMethod" id="Linepay" onclick="TogglePaymentMethod();" />
-                            <label for="Linepay">Linepay</label>
+                        <div class="d-flex align-items-center mb-4">
+                            <input type="radio" name="PaymentMethod" id="ComeHome" onclick="TogglePaymentMethod();" />
+                            <label for="ComeHome">貨到付款</label>
                         </div>
                     </div>
                 </div>
@@ -55,12 +50,12 @@
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="ShippingMethod" id="SevenelevenPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="SevenelevenPickup" class="ms-2 Pickuptext">7-11取貨</label>
-                            <button class="btn btn-outline ms-2 PickupBtn" id="SevenelevenPickupStore" for="FamilymartPickup" disabled>選擇取貨店家</button>
+                            <button class="btn btn-outline ms-2 PickupBtn" id="SevenelevenPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" disabled>選擇取貨店家</button>
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="ShippingMethod" id="FamilymartPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="FamilymartPickup" class="ms-2 Pickuptext">全家取貨</label>
-                            <button class="btn btn-outline ms-2 PickupBtn" id="FamilymartPickupStore" for="FamilymartPickup" disabled>選擇取貨店家</button>
+                            <button class="btn btn-outline ms-2 PickupBtn" id="FamilymartPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" disabled>選擇取貨店家</button>
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="ShippingMethod" id="HomeDeliveryPickup" onclick="TogglePaymentMethod();" disabled />
@@ -95,4 +90,14 @@
         </div>
     </div>
 
-</body>
+
+  <div class="modal fade" id="MartModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body d-flex flex-wrap justify-content-center">
+            <img src="\image\MartImage\FamilyMartOr7-11.jpg"alt="Image" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="top" data-bs-content="123" data-bs-html="true">
+            <div class="OrderButton" data-bs-dismiss="modal">Close</div>
+        </div>        
+      </div>
+    </div>
+  </div>

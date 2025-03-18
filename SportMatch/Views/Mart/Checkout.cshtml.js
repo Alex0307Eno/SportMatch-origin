@@ -1,7 +1,7 @@
 ﻿function TogglePaymentMethod() {
     // 取得結帳方式點擊事件
     var PaymentSelected = {
-        AtmLinepay: document.getElementById('Atm').checked || document.getElementById('Linepay').checked,
+        ComeHomepay: document.getElementById('ComeHome').checked,
         Seveneleven: document.getElementById('Seveneleven').checked,
         Familymart: document.getElementById('Familymart').checked
     };
@@ -32,7 +32,7 @@
         true;
 
     // 事件控制
-    if (PaymentSelected.AtmLinepay) {
+    if (PaymentSelected.ComeHomepay) {
         Elements.SevenElevenPickup.checked =
             Elements.FamilyMartPickup.checked =
             Elements.HomeDeliveryPickup.disabled =
@@ -385,3 +385,13 @@ function billPage(data) {
 
     addCssIsolationElement();
 }
+
+const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+const popoverList = [...popoverTriggerList].map(popoverTriggerEl => {
+    return new bootstrap.Popover(popoverTriggerEl, {
+        trigger: 'hover',
+        placement: 'top',
+        container: 'body',
+        html: true
+    });
+});

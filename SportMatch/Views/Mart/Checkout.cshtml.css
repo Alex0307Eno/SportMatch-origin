@@ -10,21 +10,6 @@
     left: 50%;
 }
 
-@media screen and (max-width: 1215px) {
-    body {
-        overflow: auto;
-    }
-    .CheckoutContainer {
-        width: 55rem;
-        overflow-x: auto;
-    }
-    .Logistics,
-    .Logistics .form-control,
-    .Logistics .PickupBtn {
-        font-size: 0.85rem;
-    }
-}
-
 .CartBody {
     width: 100%;
     padding: 20px 20px 25px 20px;
@@ -68,6 +53,7 @@
 /* 配色統合 */
 .CheckoutContainer,
 .container-fluid,
+.modal-body,
 /*以下訂單頁*/
 .OrderFrame {
     background-color: #000000;
@@ -165,9 +151,10 @@
     margin: 0 0 0 0.1rem;
 }
 
-.OrderButton {
-    margin: 0 0 6.5px 0;
-}
+    .OrderButton,
+    .OrderButton:hover {
+        margin: 0 0 6.5px 0;
+    }
 
     .OrderButton:hover,
     .backBtnClass:hover {
@@ -193,4 +180,29 @@
 /* 滾動條背景 */
 ::-webkit-scrollbar-track {
     background-color: none;
+}
+
+@media screen and (max-width: 1215px) {
+    body {
+        overflow-x: auto;
+    }
+
+    .CheckoutContainer {
+        width: 55rem;
+        overflow-x: auto;
+    }
+
+    .Logistics,
+    .Logistics .form-control,
+    .Logistics .PickupBtn {
+        font-size: 0.85rem;
+    }
+}
+
+.modal {
+    background-color: rgba(0,0,0,0.65);
+}
+
+.modal-body {
+    border-radius: 0.2rem;
 }

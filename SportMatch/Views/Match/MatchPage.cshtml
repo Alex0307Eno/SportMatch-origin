@@ -28,8 +28,7 @@
 	<div id="bg-overlay">
 		<h1>@ViewBag.Event</h1>
 		<h1>@ViewBag.MatchType	</h1>
-		<h1>@ViewBag.MatchCategory</h1>
-		<h1>@ViewBag.MatchGender</h1>
+		<h1>@ViewBag.MatchCategory</h1>		
 		@{
 			if (ViewBag.MatchEvent != null)
 			{
@@ -111,9 +110,9 @@
 			</div>
 
 			<!-- 配對區域 -->
-			<div class="row" style="height: 90vh;">
+			<div class="row" style="">
 				<div class="col-3 mt-3">
-					<form action="/Match/GetSelection" method="post">
+					<form id="filterForm">
 						<div class="row">
 							<!-- 找隊友/找隊員 -->
 							<div class="d-flex col-8 align-items-center justify-content-center">
@@ -123,8 +122,8 @@
 								</div>
 								<div>&nbsp&nbsp&nbsp</div>
 								<div class="">
-									<input type="radio" name="MatchType" class="" id="radioOption2" value="FindTeam" style="cursor:pointer"><label for="radioOption2"
-																																 style="color: white;cursor:pointer">尋找隊伍</label>
+									<input type="radio" name="MatchType" class="" id="radioOption2" value="FindTeam" style="cursor:pointer" checked="checked"><label for="radioOption2"
+																																		  style="color: white;cursor:pointer">尋找隊伍</label>
 								</div>
 							</div>
 							<!-- 搜尋按鈕 -->
@@ -138,7 +137,7 @@
 								<!-- 羽球 -->
 								<div class="accordion-item">
 									<h2 class="accordion-header sportRadio">
-										<input type="radio" name="MatchCategory" id="badmintonRadio" class="ms-3 my-3 me-1 " data-bs-toggle="collapse" data-bs-target="#sport1"
+										<input type="radio" name="MatchCategory" id="badmintonRadio" class="ms-3 my-3 me-1 forCheckCategory" data-bs-toggle="collapse" data-bs-target="#sport1"
 											   style="font-size:x-large;cursor:pointer" aria-controls="sport1" value="badminton" onselect="GetRole('badminton')"><label for="badmintonRadio" style="color:white;font-size:x-large;cursor:pointer" class="my-3">羽球</label>
 									</h2>
 									<div id="sport1" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
@@ -149,7 +148,7 @@
 								<!-- 籃球 -->
 								<div class="accordion-item">
 									<h2 class="accordion-header sportRadio">
-										<input type="radio" name="MatchCategory" id="basketballRadio" class="ms-3 my-3 me-1" data-bs-toggle="collapse" data-bs-target="#sport2"
+										<input type="radio" name="MatchCategory" id="basketballRadio" class="ms-3 my-3 me-1 forCheckCategory" data-bs-toggle="collapse" data-bs-target="#sport2"
 											   style="font-size:x-large;cursor:pointer" aria-controls="sport1" value="basketball" onselect="GetRole('basketball')"><label for="basketballRadio" style="color:white;font-size:x-large;cursor:pointer" class="my-3">籃球</label>
 									</h2>
 									<div id="sport2" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
@@ -160,7 +159,7 @@
 								<!-- 排球 -->
 								<div class="accordion-item">
 									<h2 class="accordion-header sportRadio">
-										<input type="radio" name="MatchCategory" id="valleyballRadio" class="ms-3 my-3 me-1" data-bs-toggle="collapse" data-bs-target="#sport3"
+										<input type="radio" name="MatchCategory" id="valleyballRadio" class="ms-3 my-3 me-1 forCheckCategory" data-bs-toggle="collapse" data-bs-target="#sport3"
 											   style="font-size:x-large;cursor:pointer" aria-controls="sport1" value="valleyball" onselect="GetRole('valleyball')"><label for="valleyballRadio" style="color:white;font-size:x-large;cursor:pointer" class="my-3">排球</label>
 									</h2>
 									<div id="sport3" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
@@ -179,16 +178,16 @@
 									<div id="Area" class="accordion-collapse collapse" data-bs-parent="#sportsArea">
 										<div class="accordion-body row">
 											<label class="col-6">
-												<input type="checkbox" id="checkbox9" name="MatchArea" value="North" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox9" style="cursor:pointer">北</label>
+												<input type="checkbox" id="checkbox9" name="MatchArea" value="北" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox9" style="cursor:pointer">北</label>
 											</label><br>
 											<label class="col-6">
-												<input type="checkbox" id="checkbox10" name="MatchArea" value="West" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox10" style="cursor:pointer">中</label>
+												<input type="checkbox" id="checkbox10" name="MatchArea" value="中" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox10" style="cursor:pointer">中</label>
 											</label><br>
 											<label class="col-6">
-												<input type="checkbox" id="checkbox11" name="MatchArea" value="South" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox11" style="cursor:pointer">南</label>
+												<input type="checkbox" id="checkbox11" name="MatchArea" value="南" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox11" style="cursor:pointer">南</label>
 											</label><br>
 											<label class="col-6">
-												<input type="checkbox" id="checkbox12" name="MatchArea" value="East" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox12" style="cursor:pointer">東</label>
+												<input type="checkbox" id="checkbox12" name="MatchArea" value="東" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox12" style="cursor:pointer">東</label>
 											</label><br>
 										</div>
 									</div>
@@ -203,25 +202,6 @@
 									</h2>
 									<div id="Role" class="accordion-collapse collapse" data-bs-parent="#sportsRole">
 										<div class="accordion-body row" id="RoleContainer">
-										</div>
-									</div>
-								</div>
-								<!-- 性別 -->
-								<div class="accordion-item">
-									<h2 class="accordion-header">
-										<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#Gender"
-												style="font-size:x-large;">
-											性別
-										</button>
-									</h2>
-									<div id="Gender" class="accordion-collapse collapse" data-bs-parent="#sportsGender">
-										<div class="accordion-body row">
-											<label class="col-6">
-												<input type="radio" id="radioMale" name="MatchGender" value="Male" class="MatchCheckBoxItem me-1 forCheckGender" style="cursor:pointer"><label for="radioMale" style="cursor:pointer">男</label>
-											</label><br>
-											<label class="col-6">
-												<input type="radio" id="radioFemale" name="MatchGender" value="Female" class="MatchCheckBoxItem me-1 forCheckGender" style="cursor:pointer"><label for="radioFemale" style="cursor:pointer">女</label>
-											</label><br>
 										</div>
 									</div>
 								</div>
@@ -248,10 +228,10 @@
 						</div>
 					</div>
 					<!-- 球員/球隊區域 -->
-					<div style="height:90%">
-						<div class="row" id="CardContainer">
+					<div style="">
+						<div class="row d-flex justify-content-center align-items-center" id="CardContainer">
+							<img src="~/image/MatchPage/loading.gif" alt="GIF Image" style="width:50%">
 						</div>
-
 					</div>
 				</div>
 			</div>
@@ -261,7 +241,7 @@
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 					<div class="modal-content text-light ">
 						<div class="modal-header">
-							<p class="modal-title" id="playerModalLabel" style="font-size:x-large">個人簡介</p>
+							<p class="modal-title" id="playerModalLabel" style="font-size:x-large"></p>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 						</div>
 						<div class="modal-body">
@@ -279,7 +259,7 @@
 									<br />
 									<p id="modal-player-position"></p>
 									<hr />
-									<label for="">**這裡放入個人簡介內容**</label>
+									<label id="userMemo" for="">**這裡放入個人簡介內容**</label>
 								</div>
 							</div>
 						</div>
@@ -304,7 +284,7 @@
 				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
 					<div class="modal-content text-light ">
 						<div class="modal-header">
-							<h5 class="modal-title" id="playerModalLabel" style="font-size:x-large">招募確認</h5>
+							<h5 class="modal-title" id="applyModalLabel" style="font-size:x-large"></h5>
 							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
 									style="filter: invert(1);"></button>
 						</div>
@@ -328,7 +308,7 @@
 			</div>
 
 			@section Scripts {
-				<script src="~/js/MatchPage.js" asp-append-version="true"></script>				
+				<script src="~/js/MatchPage.js" asp-append-version="true"></script>
 			}
 		</div>
 	</div>

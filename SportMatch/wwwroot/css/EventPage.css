@@ -19,7 +19,7 @@
     border-radius: 10px;
     overflow: hidden;
     padding: 10px;
-    z-index: 999;
+    z-index: 5;
 }
 
 .calendar-header {
@@ -107,16 +107,31 @@ h5 {
 .filter-section h2 {
     margin-bottom: 20px;
 }
-
 .dropdowns {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
 }
-
-    .dropdowns select {
-        flex: 1;
-    }
+.dropdowns select {
+    flex: 1;
+}
+.form-control:focus {
+    border-color: #ff6b81 !important; /* 自訂選取邊框顏色 */
+    box-shadow: 0 0 10px rgba(255, 107, 129, 0.5) !important; /* 發光陰影 */
+}
+.form-control {
+    appearance: none; /* 隱藏預設箭頭 */
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="black"><path d="M5 7l5 5 5-5H5z"/></svg>');
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 15px;
+    padding-right: 30px; /* 避免文字擋住箭頭 */
+}
+.form-control option:checked,
+.form-control option:hover {
+    background-color: #ffebee !important; /* 淡紅色 */
+    color: #d32f2f !important; /* 文字顏色變成深紅色 */
+}
 /*換頁按鈕*/
 #MyPagination {
     display: flex;
@@ -124,7 +139,66 @@ h5 {
     margin-bottom: 20px; /* 增加與底下內容的間距 */
     margin-top: 20px; /* 增加與篩選區塊的間距 */
 }
+.page-btn {
+    background-color: #f4b71de0;
+    color: white;
+    border: none;
+    padding: 10px;
+    margin: 5px;
+    border-radius: 8px;
+    transition: background-color 0.3s, transform 0.2s;
+    /* 固定按鈕寬度，確保所有按鈕大小一致 */
+    min-width: 40px;
+    height: 40px; /* 確保按鈕為正方形，文字不會偏移 */
+    /* 讓文字水平+垂直完全置中 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 確保數字不因為字體大小而影響按鈕對齊 */
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+}
+    .page-btn:hover {
+        background-color: #9c7618e0;
+        transform: scale(1.1);
+    }
 
+    .page-btn.active {
+        background-color: #ff4d4d;
+        font-weight: bold;
+    }
+    .page-btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+        transform: none;
+    }
+/* 上一頁、下一頁按鈕有不同寬度 */
+.prev-btn, .next-btn {
+    width: auto;
+    padding: 10px 20px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* ...的按鈕與數字按鈕對齊 */
+.ellipsis {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #666;
+}
+.total-records {
+    font-size: 16px;
+    font-weight: bold;
+    margin-left: 15px; /*確保與「下一頁」按鈕有間距 */
+    color:white;
+    display: inline-flex;
+    align-items: center; /*讓文字與按鈕對齊 */
+}
 /*賽事box*/
 .events-section {
     margin-bottom: 40px;
@@ -180,6 +254,12 @@ svg #heart {
 }
 svg #main-circ {
     transform-origin: 29.5px 29.5px
+}
+.custom-checkbox {
+    transition: all 0.2s ease-in-out;
+}
+.custom-checkbox:hover {
+    transform: scale(1.1);
 }
 .checkbox {
     display: none
@@ -388,13 +468,28 @@ svg #main-circ {
     background: none;
     font-size: 40px;
     margin-right: 48px;
+    color: #766c5f;
+    transition: color 0.3s ease;
 }
-    .join-btn :hover {
-
+.join-btn:hover {
+    color: #b0aca6;
+    transform: scale(1.1);
+    animation: blink 0.5s linear;
+}
+@keyframes blink {
+    0% {
+        opacity: 1;
     }
+    50% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
 /*控制頁底距離*/
 footer {
-    margin-top: 220px;
+/*    margin-top: 220px;*/
 }
 /* 輪播區域樣式 */
 .EventCarousel {

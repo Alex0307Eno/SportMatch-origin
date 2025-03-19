@@ -7,9 +7,7 @@
     @using System.Text.Json;
     var countdowns = ViewBag.Countdowns as List<object>;
 }
-@{
-    Layout = "_Layout";
-}
+
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 <link rel="stylesheet" href="~/css/EventPage.css" asp-append-version="true" />
@@ -53,7 +51,7 @@
                                 <option>南部</option>
                                 <option>東部</option>
                             </select>
-                            <input type="submit" value="搜尋" class="btn btn-success ms-2 w-auto">
+                        <input type="submit" value="搜尋" class="btn btn-danger">
                         </div>
                     </div>
                     <!-- 分頁按鈕區域 -->
@@ -69,7 +67,7 @@
                                 <div class="event-heart">
                                     <div class="heartbox">
                                         <input type="checkbox" class="checkbox" id="checkbox_@countdownData.Id" />
-                                        <label for="checkbox_@countdownData.Id">
+                                    <label for="checkbox_@countdownData.Id" class="custom-checkbox">
                                             <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
                                                 <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
                                                     <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2" />
@@ -112,7 +110,7 @@
                                     <p>比賽日期:@countdownData.EventDate</p>
                                 </div>
                                 <h1 class="countdown" data-target-time="@targetTimestamp"></h1>
-                                <button class="join-btn">立即報名</button>
+                            <button class="join-btn" id="join-btn_@countdownData.Id">立即報名</button>
                             </div>
                         }
                     </div>
@@ -131,32 +129,30 @@
                     </div>
                     <div class="calendar-days"></div>
                 </div>
-            </div>
-        </div>
-
-        <!--輪播圖片 -->
-        <span></span>
-        <div class="EventCarousel">
-            <h5 class="toggle-button">焦點新聞▼</h5>
-            <div class="EventCarousel-track">
-                <img src="~/image/EventPicture/second_01.jpg" alt="圖片1" class="EventCarousel-item">
-                <img src="~/image/EventPicture/second_02.jpg" alt="圖片2" class="EventCarousel-item">
-                <img src="~/image/EventPicture/second_03.jpg" alt="圖片3" class="EventCarousel-item">
-                <img src="~/image/EventPicture/second_03.jpg" alt="圖片4" class="EventCarousel-item">
-                <img src="~/image/EventPicture/second_04.jpg" alt="圖片5" class="EventCarousel-item">
-                <img src="~/image/EventPicture/second_05.jpg" alt="圖片6" class="EventCarousel-item">
-                <img src="~/image/EventPicture/second_06.jpg" alt="圖片7" class="EventCarousel-item">
-            </div>
-            <button class="EventCarousel-button prev">❮</button>
-            <button class="EventCarousel-button next">❯</button>
-            <div class="EventCarousel-indicators">
-                <button class="EventIndicator" data-index="0"></button>
-                <button class="EventIndicator" data-index="1"></button>
-                <button class="EventIndicator" data-index="2"></button>
-                <button class="EventIndicator" data-index="3"></button>
-                <button class="EventIndicator" data-index="4"></button>
-                <button class="EventIndicator" data-index="5"></button>
-                <button class="EventIndicator" data-index="6"></button><br>
+                <!--輪播圖片 -->
+                <div class="EventCarousel">
+                    <h5 class="toggle-button">焦點新聞▼</h5>
+                    <div class="EventCarousel-track">
+                        <img src="~/image/EventPicture/second_01.jpg" alt="圖片1" class="EventCarousel-item">
+                        <img src="~/image/EventPicture/second_02.jpg" alt="圖片2" class="EventCarousel-item">
+                        <img src="~/image/EventPicture/second_03.jpg" alt="圖片3" class="EventCarousel-item">
+                        <img src="~/image/EventPicture/second_03.jpg" alt="圖片4" class="EventCarousel-item">
+                        <img src="~/image/EventPicture/second_04.jpg" alt="圖片5" class="EventCarousel-item">
+                        <img src="~/image/EventPicture/second_05.jpg" alt="圖片6" class="EventCarousel-item">
+                        <img src="~/image/EventPicture/second_06.jpg" alt="圖片7" class="EventCarousel-item">
+                    </div>
+                    <button class="EventCarousel-button prev">❮</button>
+                    <button class="EventCarousel-button next">❯</button>
+                    <div class="EventCarousel-indicators">
+                        <button class="EventIndicator" data-index="0"></button>
+                        <button class="EventIndicator" data-index="1"></button>
+                        <button class="EventIndicator" data-index="2"></button>
+                        <button class="EventIndicator" data-index="3"></button>
+                        <button class="EventIndicator" data-index="4"></button>
+                        <button class="EventIndicator" data-index="5"></button>
+                        <button class="EventIndicator" data-index="6"></button><br>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -204,6 +200,6 @@
         });
     });
 </script>
-
+@await Html.PartialAsync("_PartialFooter")
   
  

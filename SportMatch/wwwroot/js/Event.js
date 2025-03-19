@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCalendar();
 });
 //日曆區跟隨滑鼠滾動
-
+//寫jquery在原頁面
 //倒數計時器
 document.addEventListener("DOMContentLoaded", function () {
     var countdownElements = document.querySelectorAll(".countdown");
@@ -103,38 +103,132 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(updateCountdown, 1000);
     updateCountdown();
 });
+//報名特效
+document.addEventListener("DOMContentLoaded", function () {
+    // 選取所有 class 為 join-btn 的按鈕
+    document.querySelectorAll(".join-btn").forEach(function (button) {
+        button.addEventListener("mouseover", function () {
+            this.innerText = "快點擊我";
+        });
 
+        button.addEventListener("mouseout", function () {
+            this.innerText = "立即報名";
+        });
+    });
+});
 //資料換頁功能
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Event.js 成功載入！");
 
-    const itemsPerPage = 5; // 每頁顯示的賽事數量
+    const itemsPerPage = 3; // 每頁顯示的賽事數量
     let currentPage = 1;
     const eventsContainer = document.getElementById("events-container");
     const paginationContainer = document.getElementById("MyPagination");
     const eventItems = Array.from(document.querySelectorAll(".event-item"));
     const totalPages = Math.ceil(eventItems.length / itemsPerPage);
-
     function renderPagination() {
         paginationContainer.innerHTML = ""; // 先清空按鈕
 
-        for (let i = 1; i <= totalPages; i++) {
-            const btn = document.createElement("button");
-            btn.innerText = i;
-            btn.classList.add("page-btn");
-            if (i === currentPage) btn.classList.add("active");
+        const totalVisibleButtons = 7; // 固定按鈕顯示數量，包括 `...`
 
-            btn.addEventListener("click", function () {
-                console.log("按下按鈕：" + i);
-                currentPage = i;
+        // 建立「上一頁」按鈕
+        const prevBtn = document.createElement("button");
+        prevBtn.innerText = "« 上一頁";
+        prevBtn.classList.add("page-btn", "prev-btn");
+        prevBtn.disabled = currentPage === 1;
+        prevBtn.addEventListener("click", function () {
+            if (currentPage > 1) {
+                currentPage--;
                 updatePagination();
-            });
+            }
+        });
+        paginationContainer.appendChild(prevBtn);
 
-            paginationContainer.appendChild(btn);
+        // ✅ 修正邏輯，處理當 totalPages < 7 的情況
+        let startPage, endPage;
+
+        if (totalPages < 7) {
+            // ✅ 如果總頁數小於 7，直接顯示所有頁碼，沒有 `...`
+            startPage = 1;
+            endPage = totalPages;
+        } else {
+            // ✅ 原本的邏輯，當總頁數大於等於 7 才使用 `...`
+            if (currentPage <= 3) {
+                startPage = 1;
+                endPage = 5;
+            } else if (currentPage >= totalPages - 2) {
+                startPage = totalPages - 4;
+                endPage = totalPages;
+            } else {
+                startPage = currentPage - 1;
+                endPage = currentPage + 1;
+            }
         }
 
-        paginationContainer.style.display = "flex"; // 確保按鈕區塊顯示
+        if (startPage > 1) {
+            addPageButton(1);
+            if (startPage > 2) addEllipsis();
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            addPageButton(i);
+        }
+
+        if (endPage < totalPages) {
+            if (endPage < totalPages - 1) addEllipsis();
+            addPageButton(totalPages);
+        }
+
+        // 建立「下一頁」按鈕
+        const nextBtn = document.createElement("button");
+        nextBtn.innerText = "下一頁 »";
+        nextBtn.classList.add("page-btn", "next-btn");
+        nextBtn.disabled = currentPage === totalPages;
+        nextBtn.addEventListener("click", function () {
+            if (currentPage < totalPages) {
+                currentPage++;
+                updatePagination();
+            }
+        });
+        paginationContainer.appendChild(nextBtn);
+
+        // ✅ 先移除舊的 "共 xx 筆資料"
+        const oldTotalRecords = document.querySelector(".total-records");
+        if (oldTotalRecords) {
+            oldTotalRecords.remove();
+        }
+
+        // ✅ 新增「共 xx 筆資料」的顯示區塊
+        const totalRecordsText = document.createElement("span");
+        totalRecordsText.innerText = `共 ${eventItems.length} 筆資料`;
+        totalRecordsText.classList.add("total-records");
+
+        // ✅ 放到「下一頁」按鈕的右邊
+        paginationContainer.appendChild(totalRecordsText);
     }
+
+    //新增頁碼按鈕的函式
+    function addPageButton(page) {
+        const btn = document.createElement("button");
+        btn.innerText = page;
+        btn.classList.add("page-btn");
+        if (page === currentPage) btn.classList.add("active");
+
+        btn.addEventListener("click", function () {
+            currentPage = page;
+            updatePagination();
+        });
+
+        paginationContainer.appendChild(btn);
+    }
+    //新增省略號 (...) 按鈕
+    function addEllipsis() {
+        const ellipsis = document.createElement("span");
+        ellipsis.innerText = "...";
+        ellipsis.classList.add("ellipsis");
+        paginationContainer.appendChild(ellipsis);
+    }
+
     function updatePagination() {
         console.log("執行 updatePagination，當前頁面：" + currentPage);
         eventItems.forEach((item, index) => {

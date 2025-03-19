@@ -4,8 +4,13 @@ $(document).ready(function () {
     loadEvent()
     matchTypeChangeOrNot();
     checkEventOrNot();
-    getUserInfoFromlocalStorage()
+    //getUserInfoFromlocalStorage()
     getSelectionCard(1)
+    if (!sessionStorage.getItem("hasRunUserInfo")) {
+        getUserInfoFromlocalStorage();
+        sessionStorage.setItem("hasRunUserInfo", "true"); // **設定標記，確保只執行一次**
+    }
+
 });
 
 // 從localStorage獲取使用者的資訊
@@ -206,7 +211,7 @@ function loadCards(page) {
 		                                <p class="card-text">招募位置：${card.role}</p>
 		                                <div class="row">
 			                                <div class="col-md-8 d-flex align-items-center">
-				                                <label class="card-text">隊伍簡介</label>
+				                                <label class="card-text Memo" >隊伍簡介</label>
 				                                <a id="personalInfo" class="bi bi-info-square ms-2"
 				                                   style="color: white;cursor: pointer;" data-bs-toggle="modal"
 				                                   data-bs-target="#playerModal"
@@ -225,7 +230,7 @@ function loadCards(page) {
                  </div>
                  `);
             });
-            updatePagination(response.totalPages, page, response.totalItems);
+            updatePagination(response.totalPages, page, response.totalItems, "loadCard");
         }
     });
 }
@@ -254,10 +259,10 @@ function getSelectionCard(page) {
         console.log(data);
         $.ajax({
             url: "/Match/GetSelection",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify(data),
+            type: "GET",
+            data: data,
             success: function (response) {
+                console.log(response)
                 const playerModalLabel = $("#playerModalLabel");
                 const applyModalLabel = $("#applyModalLabel");
                 const cardContainer = $("#CardContainer");
@@ -283,7 +288,7 @@ function getSelectionCard(page) {
 		                                <p class="card-text">擅長位置：${card.role}</p>
 		                                <div class="row">
 			                                <div class="col-md-8 d-flex align-items-center">
-				                                <label class="card-text">個人簡介</label>
+				                                <label class="card-text Memo" >個人簡介</label>
 				                                <a id="personalInfo" class="bi bi-info-square ms-2"
 				                                   style="color: white;cursor: pointer;" data-bs-toggle="modal"
 				                                   data-bs-target="#playerModal"
@@ -322,7 +327,7 @@ function getSelectionCard(page) {
 		                                <p class="card-text">招募位置：${card.role}</p>
 		                                <div class="row">
 			                                <div class="col-md-8 d-flex align-items-center">
-				                                <label class="card-text">隊伍簡介</label>
+				                                <label class="card-text Memo">隊伍簡介</label>
 				                                <a id="personalInfo" class="bi bi-info-square ms-2"
 				                                   style="color: white;cursor: pointer;" data-bs-toggle="modal"
 				                                   data-bs-target="#playerModal"
@@ -345,23 +350,148 @@ function getSelectionCard(page) {
                 else {
                     console.log("error");
                 }
-                updatePagination(response.totalPages, page, response.totalItems);
+                updatePagination(response.totalPages, page, response.totalItems, "getCard");
             }
         });
     });
 }
 
+//
+function getSelectionCardNextPage(page) {
+
+    if (($('.Memo').text().indexOf("個人")) == 0) {
+        selectType = "Player"
+    }
+    else {
+        selectType = "Team"
+    }
+    console.log(selectType);
+    $.ajax({
+        url: "/Match/GetSelectionNextPage",
+        type: "GET",
+        data: { page: page, selectType: selectType },
+        success: function (response) {
+            console.log(response)
+            const playerModalLabel = $("#playerModalLabel");
+            const applyModalLabel = $("#applyModalLabel");
+            const cardContainer = $("#CardContainer");
+            cardContainer.empty();
+            let type;
+            // 判斷回傳的是User還是Team
+            if (response.cards.some(item => item.hasOwnProperty("userID"))) {
+                playerModalLabel.text("個人簡介");
+                applyModalLabel.text("招募確認");
+                type = "user";
+                response.cards.forEach(card => {
+                    cardContainer.append(`
+                 <div class="col-md-6 mb-3">
+                     <div class="card mb-3 " style="max-width: 540px;">
+                         <div class="row g-0">
+                             <div class="col-md-4">
+                                 <img src="${card.image}" class="img-fluid rounded-start" alt="...">
+                             </div>
+                             <div class="col-md-8">
+                                 <div class="card-body">
+                                  <p class="card-title" style="font-size:x-large">${card.name}</p>
+                                  <hr/>
+                                  <p class="card-text">擅長位置：${card.role}</p>
+                                  <div class="row">
+                                   <div class="col-md-8 d-flex align-items-center">
+                                    <label class="card-text Memo">個人簡介</label>
+                                    <a id="personalInfo" class="bi bi-info-square ms-2"
+                                       style="color: white;cursor: pointer;" data-bs-toggle="modal"
+                                       data-bs-target="#playerModal"
+                                       onclick="updateInfoModalContent('${card.name}','${card.role}','${card.image}','${card.memo}','${type}')"></a>
+                                   </div>
+                                   <div class="col-md-4">
+                                    <a href="#" class="btn btn-primary" style="border-radius: 60px;"
+                                       data-bs-toggle="modal" data-bs-target="#playerApply"
+                                       onclick="updateApplyModalContent('${card.name}','${card.role}','${type}')">招募</a>
+                                   </div>
+                                  </div>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 `);
+                });
+            }
+            else if (response.cards.some(item => item.hasOwnProperty("teamID"))) {
+                playerModalLabel.text("隊伍簡介");
+                applyModalLabel.text("申請確認");
+                type = "Team";
+                response.cards.forEach(card => {
+                    cardContainer.append(`
+                 <div class="col-md-6 mb-3">
+                     <div class="card mb-3 " style="max-width: 540px;">
+                         <div class="row g-0">
+                             <div class="col-md-4">
+                                 <img src="${card.image}" class="img-fluid rounded-start" alt="...">
+                             </div>
+                             <div class="col-md-8">
+                                 <div class="card-body">
+                                  <p class="card-title" style="font-size:x-large">${card.name}</p>
+                                  <hr/>
+                                  <p class="card-text">招募位置：${card.role}</p>
+                                  <div class="row">
+                                   <div class="col-md-8 d-flex align-items-center">
+                                    <label class="card-text Memo">隊伍簡介</label>
+                                    <a id="personalInfo" class="bi bi-info-square ms-2"
+                                       style="color: white;cursor: pointer;" data-bs-toggle="modal"
+                                       data-bs-target="#playerModal"
+                                       onclick="updateInfoModalContent('${card.name}','${card.role}','${card.image}','${card.memo}','${type}')"></a>
+                                   </div>
+                                   <div class="col-md-4">
+                                    <a href="#" class="btn btn-primary" style="border-radius: 60px;"
+                                       data-bs-toggle="modal" data-bs-target="#playerApply"
+                                       onclick="updateApplyModalContent('${card.name}','${card.role}','${type}')">申請</a>
+                                   </div>
+                                  </div>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 `);
+                });
+            }
+            else {
+                console.log("error");
+            }
+            updatePagination(response.totalPages, page, response.totalItems, "getCard");
+        }
+    });
+}
 
 // 分頁功能
-function updatePagination(totalPages, activePage, totalItems) {
+function updatePagination(totalPages, activePage, totalItems, typeOfCard) {
     $("#paginationInfo").text(`當前第 ${activePage} 頁 ，總共 ${totalItems} 筆資料`);
     const pagination = $("#pagination");
     pagination.empty();
 
     let prevDisabled = activePage === 1 ? "disabled" : "";
     let nextDisabled = activePage === totalPages ? "disabled" : "";
-
-    pagination.append(`
+    console.log(typeOfCard)
+    if (typeOfCard == "getCard") {
+        pagination.append(`
+        <li class="page-item ${prevDisabled}">
+            <a class="page-link " href="#" onclick="getSelectionCardNextPage(${activePage - 1}); return false;">          
+                <span aria-hidden="true">&laquo;</span>
+            </a>
+        </li>
+        <li class="page-item active" style="z-index:0;">
+            <span class="page-link" style="background-color: #212121;border: 1px solid #00ADB5;">${activePage} / ${totalPages}</span>
+        </li>
+        <li class="page-item ${nextDisabled}">
+            <a class="page-link" href="#" onclick="getSelectionCardNextPage(${activePage + 1}); return false;">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    `);
+    }
+    else {
+        pagination.append(`
         <li class="page-item ${prevDisabled}">
             <a class="page-link " href="#" onclick="loadCards(${activePage - 1}); return false;">
                 <span aria-hidden="true">&laquo;</span>
@@ -376,6 +506,8 @@ function updatePagination(totalPages, activePage, totalItems) {
             </a>
         </li>
     `);
+    }
+
 }
 
 // 更新模態視窗內容

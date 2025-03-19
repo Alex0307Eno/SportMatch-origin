@@ -2,9 +2,12 @@
 using System.Drawing.Printing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using NuGet.Protocol.Plugins;
 using SportMatch.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using static SportMatch.Controllers.DoorController;
 
 namespace SportMatch.Controllers
@@ -121,8 +124,8 @@ namespace SportMatch.Controllers
         }
 
         // 篩選功能
-        [HttpPost]
-        public IActionResult GetSelection(string MatchType, string MatchCategory, List<string> MatchEvent, List<string> MatchArea, List<string> MatchRole, int page, int pageSize = 6)
+        [HttpGet]
+        public JsonResult GetSelection(string MatchType, string MatchCategory, List<string> MatchEvent, List<string> MatchArea, List<string> MatchRole, int page, int pageSize = 6)
         {
             // 取得使用者資料
             string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
@@ -149,15 +152,20 @@ namespace SportMatch.Controllers
             if (MatchType == "FindPlayer")
             {
 
-                var filterPlayer = (from u in _context.Users
-                                    join r in _context.Roles
-                                    on u.RoleId equals r.RoleId
-                                    where r.SportId == SportType && u.GenderId == UserInfoForSuggest[0].GenderId
-                                    select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+                List<SelectViewModel> filterPlayer = (from u in _context.Users
+                                                      join r in _context.Roles
+                                                      on u.RoleId equals r.RoleId
+                                                      where r.SportId == SportType && u.GenderId == UserInfoForSuggest[0].GenderId
+                                                      select new SelectViewModel { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
 
                 int totalItems = filterPlayer.Count();
                 int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                 var cards = filterPlayer.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                HttpContext.Session.SetString("filterPlayer", JsonConvert.SerializeObject(filterPlayer));
+                HttpContext.Session.SetInt32("totalItems", totalItems);
+                HttpContext.Session.SetInt32("totalPages", totalPages);
+
+
 
                 if (MatchRole.Count() > 0 && MatchArea.Count() > 0)
                 {
@@ -167,10 +175,13 @@ namespace SportMatch.Controllers
                                     join a in _context.Areas
                                     on u.AreaId equals a.AreaId
                                     where r.SportId == SportType && u.GenderId == UserInfoForSuggest[0].GenderId && MatchArea.Contains(a.AreaName) && MatchRole.Contains(r.RoleName)
-                                    select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+                                    select new SelectViewModel { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
                     totalItems = filterPlayer.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterPlayer.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterPlayer", JsonConvert.SerializeObject(filterPlayer));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
                     return Json(new { cards, totalPages, totalItems });
                 }
 
@@ -182,11 +193,14 @@ namespace SportMatch.Controllers
                                     join a in _context.Areas
                                     on u.AreaId equals a.AreaId
                                     where r.SportId == SportType && u.GenderId == UserInfoForSuggest[0].GenderId && MatchArea.Contains(a.AreaName)
-                                    select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+                                    select new SelectViewModel { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
 
                     totalItems = filterPlayer.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterPlayer.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterPlayer", JsonConvert.SerializeObject(filterPlayer));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
                     return Json(new { cards, totalPages, totalItems });
                 }
 
@@ -196,10 +210,13 @@ namespace SportMatch.Controllers
                                     join r in _context.Roles
                                     on u.RoleId equals r.RoleId
                                     where MatchRole.Contains(r.RoleName)
-                                    select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+                                    select new SelectViewModel { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
                     totalItems = filterPlayer.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterPlayer.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterPlayer", JsonConvert.SerializeObject(filterPlayer));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
                     return Json(new { cards, totalPages, totalItems });
                 }
 
@@ -211,15 +228,18 @@ namespace SportMatch.Controllers
             else
             {
                 // 什麼都不選預設帶出羽球隊伍資料
-                var filterTeam = (from t in _context.Teams
-                                  join r in _context.Roles
-                                  on t.RoleId equals r.RoleId
-                                  where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId
-                                  select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                List<SelectViewModel> filterTeam = (from t in _context.Teams
+                                                    join r in _context.Roles
+                                                    on t.RoleId equals r.RoleId
+                                                    where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId
+                                                    select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
 
                 int totalItems = filterTeam.Count();
                 int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-                var cards = filterTeam.Skip((page - 1) * pageSize).Take(pageSize).ToList();                
+                var cards = filterTeam.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
+                HttpContext.Session.SetInt32("totalItems", totalItems);
+                HttpContext.Session.SetInt32("totalPages", totalPages);
 
                 // 選擇賽事且選擇招募位置時
                 if (MatchEvent.Count() > 0 && MatchRole.Count() > 0)
@@ -230,10 +250,13 @@ namespace SportMatch.Controllers
                                   join e in _context.Events
                                   on t.EventId equals e.EventId
                                   where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && MatchEvent.Contains(e.EventName) && MatchRole.Contains(r.RoleName)
-                                  select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                                  select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
                     totalItems = filterTeam.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterTeam.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
                     return Json(new { cards, totalPages, totalItems });
                 }
 
@@ -248,10 +271,13 @@ namespace SportMatch.Controllers
                                   join a in _context.Areas
                                   on t.AreaId equals a.AreaId
                                   where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && MatchRole.Contains(r.RoleName) && MatchArea.Contains(a.AreaName)
-                                  select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                                  select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
                     totalItems = filterTeam.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterTeam.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
                     return Json(new { cards, totalPages, totalItems });
                 }
 
@@ -264,10 +290,13 @@ namespace SportMatch.Controllers
                                   join e in _context.Events
                                   on t.EventId equals e.EventId
                                   where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && MatchRole.Contains(r.RoleName)
-                                  select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                                  select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
                     totalItems = filterTeam.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterTeam.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
                     return Json(new { cards, totalPages, totalItems });
                 }
                 // 當選擇賽事時
@@ -279,14 +308,40 @@ namespace SportMatch.Controllers
                                   join e in _context.Events
                                   on t.EventId equals e.EventId
                                   where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && MatchEvent.Contains(e.EventName)
-                                  select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                                  select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
                     totalItems = filterTeam.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterTeam.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
                     return Json(new { cards, totalPages, totalItems });
                 }
                 return Json(new { cards, totalPages, totalItems });
             }
+        }
+
+        //
+        [HttpGet]
+        public JsonResult GetSelectionNextPage(int page, string selectType, int pageSize = 6)
+        {
+            List<SelectViewModel>? data;
+            var filterTeam = HttpContext.Session.GetString("filterTeam");
+            var filterPlayer = HttpContext.Session.GetString("filterPlayer");
+            if (filterTeam != null)
+            {
+                data = JsonConvert.DeserializeObject<List<SelectViewModel>>(filterTeam);
+            }
+            else 
+            {
+                data = JsonConvert.DeserializeObject<List<SelectViewModel>>(filterPlayer);
+            }
+
+            int? totalItems = HttpContext.Session.GetInt32("totalItems");
+            int? totalPages = HttpContext.Session.GetInt32("totalPages");
+            var cards = data.ToList().Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return Json(new { cards, totalPages, totalItems });
+
         }
 
         // 篩選列功能

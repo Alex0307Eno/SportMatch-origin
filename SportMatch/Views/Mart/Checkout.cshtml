@@ -50,12 +50,12 @@
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="ShippingMethod" id="SevenelevenPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="SevenelevenPickup" class="ms-2 Pickuptext">7-11取貨</label>
-                            <button class="btn btn-outline ms-2 PickupBtn" id="SevenelevenPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" disabled>選擇取貨店家</button>
+                            <button class="btn btn-outline ms-2 PickupBtn" id="SevenelevenPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" onclick="electronicMapSeven()" disabled>選擇取貨店家</button>
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="ShippingMethod" id="FamilymartPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="FamilymartPickup" class="ms-2 Pickuptext">全家取貨</label>
-                            <button class="btn btn-outline ms-2 PickupBtn" id="FamilymartPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" disabled>選擇取貨店家</button>
+                            <button class="btn btn-outline ms-2 PickupBtn" id="FamilymartPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" onclick="electronicMapFami()" disabled>選擇取貨店家</button>
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="ShippingMethod" id="HomeDeliveryPickup" onclick="TogglePaymentMethod();" disabled />
@@ -110,15 +110,3 @@
 
         </div>
     </div>
-
-
-  <div class="modal fade" id="MartModal" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body d-flex flex-wrap justify-content-center">
-            <img src="\image\MartImage\FamilyMartOr7-11.jpg"alt="Image" data-bs-toggle="popover" data-bs-trigger="hover" data-bs-placement="top" data-bs-content="123" data-bs-html="true">
-            <div class="OrderButton" data-bs-dismiss="modal">Close</div>
-        </div>        
-      </div>
-    </div>
-  </div>

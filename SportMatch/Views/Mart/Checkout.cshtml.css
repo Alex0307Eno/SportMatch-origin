@@ -54,7 +54,6 @@
 /* 配色統合 */
 .CheckoutContainer,
 .container-fluid,
-.modal-body,
 /*以下訂單頁*/
 .OrderFrame {
     background-color: #000000;
@@ -199,12 +198,4 @@
     .Logistics .PickupBtn {
         font-size: 0.85rem;
     }
-}
-
-.modal {
-    background-color: rgba(0,0,0,0.65);
-}
-
-.modal-body {
-    border-radius: 0.2rem;
 }

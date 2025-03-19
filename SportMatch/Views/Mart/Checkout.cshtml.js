@@ -261,7 +261,8 @@ checkoutNow.addEventListener('click', function () {
         billNumber: _billNumber,
         loggedInEmail: _loggedInEmail,
         address: _city + _address,
-        selectedPaymentMethod: _selectedPaymentMethod
+        selectedPaymentMethod: _selectedPaymentMethod,
+        parameters: `ChoosePayment=ALL&EncryptType=1&ItemName=運動用品&MerchantID=3002607&MerchantTradeDate=2025/03/19 16:00:00&MerchantTradeNo=${_billNumber}&PaymentType=aio&ReturnURL=https://localhost:8888/Mart/Checkout&TotalAmount=30000&TradeDesc=運動用品`
     }));    
     fetchCheckout(cartCheckoutData);
 });
@@ -275,34 +276,6 @@ function isCitySelected() {
     let homeDeliveryCity = document.getElementById('HomeDeliveryCity');
     return homeDeliveryCity.value && homeDeliveryCity.value !== "-- 縣 --";
 }
-
-//function electronicMap(billNumber) {
-//    const url = "https://allorigins.win/https://logistics-stage.ecpay.com.tw/Express/map";
-
-//    const data = new URLSearchParams();
-//    data.append('MerchantID', '2000132');
-//    data.append('MerchantTradeNo', billNumber);
-//    data.append('LogisticsType', 'CVS'); // 超商取貨
-//    data.append('LogisticsSubType', 'FAMI'); // 根據需求選擇 B2C 或 C2C
-//    data.append('IsCollection', 'N'); // 是否代收貨款
-//    data.append('ServerReplyURL', 'https://localhost:8888/Mart/Checkout'); // 回傳網址
-
-//    fetch(url, {
-//        method: 'POST',
-//        headers: {
-//            'Content-Type': 'application/x-www-form-urlencoded'
-//        },
-//        body: data
-//    })
-//        .then(response => response.json())
-//        .then(data => {
-//            console.log('API 回應:', data);
-//            // 在這裡處理回應數據
-//        })
-//        .catch(error => {
-//            console.error('發生錯誤:', error);
-//        });
-//}
 
 // 發送資訊到交易用API
 let regex = /^產品ID \d+ 庫存不足$/
@@ -346,8 +319,8 @@ function fetchCheckout(cartCheckoutData) {
                     }
                 }
                 console.log('結帳成功，返回資料：', data);
-                //electronicMap(data.billNumber)
-                billPage(data);
+                ecPayApi(data);
+                //billPage(data);
             }
         })
         .catch(error => {
@@ -507,3 +480,96 @@ const popoverList = [...popoverTriggerList].map(popoverTriggerEl => {
         html: true
     });
 });
+
+function ecPayApi(data) {
+let totalPrice = 0;
+data.forEach(item => {
+    totalPrice += (item.price * ((100 - item.discount) / 100));
+});
+    console.log(data[0].parameters)
+const form = document.createElement('form');
+form.action = 'https://payment-stage.ecpay.com.tw/Cashier/AioCheckOut/V5';
+form.method = 'POST';
+
+const fields = [
+    { name: 'MerchantID', value: '3002607' },  // 商店編號
+    { name: 'MerchantTradeNo', value: data[0].billNumber },  // 訂單編號，billNumber 需要替換為具體值
+    { name: 'MerchantTradeDate', value: '2025/03/19 16:00:00' },  // 訂單交易時間
+    { name: 'PaymentType', value: 'aio' },  // 訂單交易時間
+    { name: 'TotalAmount', value: 30000 },  // 訂單總金額，根據實際情況替換
+    { name: 'TradeDesc', value: '運動用品' },  // 訂單描述
+    { name: 'ItemName', value: '運動用品' },  // 商品名稱
+    { name: 'ReturnURL', value: 'https://localhost:8888/Mart/Checkout' },  // 支付完成後返回的網址
+    { name: 'ChoosePayment', value: 'ALL' },  // 支付方式，ALL代表所有可用支付方式
+
+    { name: 'CheckMacValue', value: data[0].parameters },
+    { name: 'EncryptType', value: '1' },  // 支付方式，ALL代表所有可用支付方式
+];
+
+// 創建 input 元素並加入 form
+fields.forEach(field => {
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = field.name;
+    input.value = field.value;
+    form.appendChild(input);  // 使用 appendChild 添加到表單
+});
+
+
+document.body.appendChild(form);
+form.submit();
+}
+
+// 7-11超取
+function electronicMapSeven() {
+    const form = document.createElement('form');
+    form.action = 'https://logistics-stage.ecpay.com.tw/Express/map';
+    form.method = 'POST';
+
+    const fields = [
+        { name: 'MerchantID', value: '2000132' },
+        { name: 'MerchantTradeNo', value: 'billNumber' },
+        { name: 'LogisticsType', value: 'CVS' },
+        { name: 'LogisticsSubType', value: 'UNIMART' },
+        { name: 'IsCollection', value: 'N' },
+        { name: 'ServerReplyURL', value: 'https://localhost:8888/Mart/Checkout' }
+    ];
+
+    fields.forEach(field => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = field.name;
+        input.value = field.value;
+        form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+}
+
+// 全家超取
+function electronicMapFami() {
+    const form = document.createElement('form');
+    form.action = 'https://logistics-stage.ecpay.com.tw/Express/map';
+    form.method = 'POST';
+
+    const fields = [
+        { name: 'MerchantID', value: '2000132' },
+        { name: 'MerchantTradeNo', value: 'billNumber' },
+        { name: 'LogisticsType', value: 'CVS' },
+        { name: 'LogisticsSubType', value: 'FAMI' },
+        { name: 'IsCollection', value: 'N' },
+        { name: 'ServerReplyURL', value: 'https://localhost:8888/Mart/Checkout' }
+    ];
+
+    fields.forEach(field => {
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = field.name;
+        input.value = field.value;
+        form.appendChild(input);
+    });
+
+    document.body.appendChild(form);
+    form.submit();
+}

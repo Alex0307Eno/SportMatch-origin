@@ -116,6 +116,7 @@ namespace SportMatch.Controllers
             };
         }
 
+
         [HttpDelete]
         public IActionResult DeleteUser(int id)
         {

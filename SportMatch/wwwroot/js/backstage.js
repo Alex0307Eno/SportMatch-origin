@@ -254,86 +254,128 @@ if (userInfo) {
         });
 }
 document.addEventListener("DOMContentLoaded", function () {
-    const addUserForm = document.getElementById("add-user-form");
 
-    // 表單提交處理
-    addUserForm.addEventListener("submit", function (event) {
-        event.preventDefault(); // 防止頁面刷新
+    // 篩選條件選項
+    const filterOptions = [
+        { value: "all", label: "所有" },
+        { value: "使用者", label: "使用者" },
+        { value: "廠商", label: "廠商" },
+        { value: "管理員", label: "管理員" }
+    ];
 
-        const userName = document.getElementById("userName").value;
-        const userEmail = document.getElementById("userEmail").value;
-        const userIdentity = document.getElementById("userIdentity").value;
-        const guiCode = document.getElementById("guiCode").value;
+    // 取得篩選下拉選單元素
+    const paymentMethodSelect = document.getElementById("payment-method");
 
-        const newUser = {
-            userName: userName,
-            userEmail: userEmail,
-            identity: userIdentity,
-            guiCode: guiCode
-        };
-
-        // 發送新增會員的請求
-        fetch("/Back/AddUser", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(newUser)
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert("新增會員成功！");
-                    addUserForm.reset();  // 清空表單
-                    loadUsers();  // 重新載入會員資料
-                } else {
-                    alert("新增會員失敗：" + data.message);
-                }
-            })
-            .catch(error => console.error("新增會員失敗:", error));
+    // 動態填充篩選選項
+    filterOptions.forEach(option => {
+        const optionElement = document.createElement("option");
+        optionElement.value = option.value;
+        optionElement.textContent = option.label;
+        paymentMethodSelect.appendChild(optionElement);
     });
 
-    // 初始化載入會員資料
-    loadUsers();
+    // 先從後端獲取所有的會員資料
+    fetch("/Back/GetUsers")
+        .then(response => response.json())
+        .then(data => {
+            const tbody = document.querySelector("#member-management tbody");
+            tbody.innerHTML = ""; // 清空表格內容
 
-    function loadUsers() {
-        fetch("/Back/GetUsers")
-            .then(response => response.json())
-            .then(data => {
-                const tbody = document.querySelector("#member-management tbody");
-                tbody.innerHTML = ""; // 清空表格內容
+            // 渲染會員資料到表格
+            data.forEach(user => {
+                const row = document.createElement("tr");
 
-                // 渲染會員資料到表格
-                data.forEach(user => {
-                    const row = document.createElement("tr");
+                row.innerHTML = `
+                    <td>${user.identity}</td>
+                    <td>${user.userId}</td>
+                    <td>${user.userName}</td>
+                    <td>${user.email}</td>
+                    <td>${user.guiCode || "無"}</td>
+                    <td>${user.createdAt}</td>
+                    <td>
+                        <button class="delete-btn" data-id="${user.userId}">刪除</button>
+                    </td>
+                `;
 
-                    row.innerHTML = `
-                        <td>${user.identity}</td>
-                        <td>${user.userId}</td>
-                        <td>${user.userName}</td>
-                        <td>${user.email}</td>
-                        <td>${user.guiCode || "無"}</td>
-                        <td>${user.createdAt}</td>
-                        <td>
-                            <button class="delete-btn" data-id="${user.userId}">刪除</button>
-                        </td>
-                    `;
+                tbody.appendChild(row);
+            });
 
-                    tbody.appendChild(row);
+            // 綁定刪除按鈕事件
+            document.querySelectorAll(".delete-btn").forEach(button => {
+                button.addEventListener("click", function () {
+                    const userId = this.getAttribute("data-id");
+                    deleteUser(userId);
                 });
+            });
 
-                // 綁定刪除按鈕事件
-                document.querySelectorAll(".delete-btn").forEach(button => {
-                    button.addEventListener("click", function () {
-                        const userId = this.getAttribute("data-id");
-                        deleteUser(userId);
-                    });
-                });
-            })
-            .catch(error => console.error("獲取會員資料失敗:", error));
+            // 篩選功能
+            paymentMethodSelect.addEventListener("change", function () {
+                const selectedMethod = this.value;
+                console.log("Selected Method: ", selectedMethod);  // 用來檢查選擇的篩選條件
+                filterTable(selectedMethod, data);
+            });
+
+            // 初始載入顯示所有會員
+            filterTable('all', data);
+
+        })
+        .catch(error => console.error("獲取會員資料失敗:", error));
+
+    // 篩選資料表格
+    function filterTable(selectedMethod, data) {
+        const tbody = document.querySelector("#member-management tbody");
+        tbody.innerHTML = ""; // 清空表格內容
+
+        console.log("Selected Method:", selectedMethod); // 打印 selectedMethod
+        console.log("Data:", data); // 打印資料結構
+
+        let filteredData = [...data]; // 複製資料以便篩選
+
+        if (selectedMethod !== 'all') {
+            filteredData = filteredData.filter(user => {
+                console.log("Comparing:", user.identity, selectedMethod); // 打印每個過濾的條件
+                return user.identity === selectedMethod;
+            });
+        }
+
+        console.log('Filtered Data:', filteredData); // 打印過濾後的資料
+
+        if (filteredData.length === 0) {
+            console.log("沒有符合篩選條件的資料");
+        }
+
+        filteredData.forEach(user => {
+            const row = document.createElement("tr");
+
+            row.innerHTML = `
+        <td>${user.identity}</td>
+        <td>${user.userId}</td>
+        <td>${user.userName}</td>
+        <td>${user.email}</td>
+        <td>${user.guiCode || "無"}</td>
+        <td>${user.createdAt}</td>
+        <td>
+            <button class="delete-btn" data-id="${user.userId}">刪除</button>
+        </td>
+    `;
+
+            tbody.appendChild(row);
+        });
+
+        // 綁定刪除按鈕事件
+        document.querySelectorAll(".delete-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                const userId = this.getAttribute("data-id");
+                deleteUser(userId);
+            });
+        });
     }
 
+
+
+
     // 刪除會員函數
+
     function deleteUser(userId) {
         if (confirm("確定要刪除此會員嗎？")) {
             fetch(`/Back/DeleteUser/${userId}`, { method: "DELETE" })
@@ -341,7 +383,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 .then(data => {
                     if (data.success) {
                         alert("會員已刪除");
-                        loadUsers(); // 重新載入會員資料
+                        location.reload(); // 重新載入頁面
                     } else {
                         alert("刪除失敗：" + data.message);
                     }
@@ -350,5 +392,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
-
 

@@ -102,16 +102,18 @@
 
             const result = await response.json();
 
-            // 檢查驗證碼是否過期的情況
-            if (result.success === false) {
+            // 檢查密碼更新是否成功
+            if (result.success) {
+                displayMessage(result.message, result.success);
+                // 跳轉到首頁
+                window.location.href = result.redirectUrl;  // 根據後端回傳的 URL 跳轉
+            } else {
                 displayMessage(result.message, false);
-                return;
             }
-
-            displayMessage(result.message, result.success);
         } catch (error) {
             displayMessage("重設密碼時出錯，請稍後再試！", false);
         }
     });
+
 
 });

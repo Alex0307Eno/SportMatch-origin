@@ -6,41 +6,44 @@
     const emailInput = document.getElementById("email");
     const verificationCodeInput = document.getElementById("verification-code");
     const usernameInput = document.getElementById("username");
-    const guiCode = document.getElementById("guiCode"); 
+    const guiCode = document.getElementById("guiCode");
     const countdown = document.getElementById("countdown");
 
     let countdownTimer;
 
-    //document.getElementById("username").addEventListener("blur", async function () {
-    //    const username = this.value.trim();
-    //    if (!username) return;
 
-    //    try {
-    //        const response = await fetch(`/Account/CheckUsername?username=${username}`);
-    //        const result = await response.json();
 
-    //        if (!result.available) {
-    //            alert("使用者名稱已被使用，請換一個！");
-    //            this.value = "";
-    //        }
-    //    } catch (error) {
-    //        console.error("檢查使用者名稱時出錯:", error);
-    //    }
-    //});
+    // 按鈕初始狀態為禁用
+    sendCodeBtn.disabled = true;
+    sendCodeBtn.classList.add("disabled");
 
+    // 驗證 Email 格式的函數
+    function isValidEmail(email) {
+        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+    }
+
+    // 監聽輸入框變化
+    emailInput.addEventListener("input", function () {
+        if (isValidEmail(emailInput.value)) {
+            sendCodeBtn.disabled = false;
+            sendCodeBtn.classList.remove("disabled");
+        } else {
+            sendCodeBtn.disabled = true;
+            sendCodeBtn.classList.add("disabled");
+        }
+    });
 
     // 發送驗證碼按鈕事件
     sendCodeBtn.addEventListener("click", async function () {
-        if (!emailInput.value) {
-            alert("請輸入電子郵件地址！");
-            return; // 如果沒有輸入信箱就直接返回
+        if (!isValidEmail(emailInput.value)) {
+            alert("請輸入有效的電子郵件地址！");
+            return;
         }
 
         // 禁用按鈕並開始倒數
         sendCodeBtn.disabled = true;
         sendCodeBtn.classList.add("disabled");
         startCountdown();
-
 
         try {
             const response = await fetch("/Account/SendVerificationCode", {
@@ -51,7 +54,6 @@
             const result = await response.json();
             if (response.ok && result.success) {
                 alert("驗證碼已發送到您的電子郵件！");
-
             } else {
                 alert(result.message || "發送失敗，請再試一次");
             }
@@ -89,7 +91,6 @@
             this.value = this.value.replace(/[^0-9]/g, "").slice(0, 8);
         });
     });
-
 
 
     // 密碼顯示切換

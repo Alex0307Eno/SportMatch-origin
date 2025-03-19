@@ -48,9 +48,9 @@
                            required />
                 </div>
                 <div class="form-group">
-    <label for="guiNumber">統一編號</label>
-    <input type="text" class="form-control" name="guiCode" id="guiCode"  maxlength="8" placeholder="請輸入統一編號">
-</div>
+                    <label for="guiNumber">統一編號</label>
+                    <input type="text" class="form-control" name="guiCode" id="guiCode" maxlength="8" placeholder="(選填)廠商請輸入統一編號">
+                </div>
 
 
                 <div class="form-group">
@@ -104,105 +104,105 @@
 
 
     <script>
-    
 
-        // 切換密碼可見性
-        document.addEventListener("DOMContentLoaded", function () {
-            const showPasswordBtn = document.getElementById("showPasswordBtn");
-            const showConfirmPasswordBtn = document.getElementById("showConfirmPasswordBtn");
 
-            if (showPasswordBtn) {
-                showPasswordBtn.addEventListener("click", function () {
-                    togglePasswordVisibility("password", this);
-                });
-            }
+                // 切換密碼可見性
+                document.addEventListener("DOMContentLoaded", function () {
+                    const showPasswordBtn = document.getElementById("showPasswordBtn");
+                    const showConfirmPasswordBtn = document.getElementById("showConfirmPasswordBtn");
 
-            if (showConfirmPasswordBtn) {
-                showConfirmPasswordBtn.addEventListener("click", function () {
-                    togglePasswordVisibility("confirm-password", this);
-                });
-            }
-
-            function togglePasswordVisibility(inputId, button) {
-                const input = document.getElementById(inputId);
-                if (input) {
-                    if (input.type === "password") {
-                        input.type = "text";
-                        button.textContent = "🙈"; // 變成隱藏圖示
-                    } else {
-                        input.type = "password";
-                        button.textContent = "👁"; // 變成顯示圖示
+                    if (showPasswordBtn) {
+                        showPasswordBtn.addEventListener("click", function () {
+                            togglePasswordVisibility("password", this);
+                        });
                     }
-                }
-            }
 
-            // 密碼強度顯示
-            const passwordStrengthText = document.getElementById("passwordStrength");
-            const password = document.getElementById("password");
+                    if (showConfirmPasswordBtn) {
+                        showConfirmPasswordBtn.addEventListener("click", function () {
+                            togglePasswordVisibility("confirm-password", this);
+                        });
+                    }
 
-            const createStrengthIndicators = () => {
-                passwordStrengthText.innerHTML = `
-                    <div class="strength-indicator" id="indicator-1"></div>
-                    <div class="strength-indicator" id="indicator-2"></div>
-                    <div class="strength-indicator" id="indicator-3"></div>
-                `;
-            };
+                    function togglePasswordVisibility(inputId, button) {
+                        const input = document.getElementById(inputId);
+                        if (input) {
+                            if (input.type === "password") {
+                                input.type = "text";
+                                button.textContent = "🙈"; // 變成隱藏圖示
+                            } else {
+                                input.type = "password";
+                                button.textContent = "👁"; // 變成顯示圖示
+                            }
+                        }
+                    }
 
-            const updateStrengthIndicators = (strength) => {
-                const indicators = [
-                    document.getElementById("indicator-1"),
-                    document.getElementById("indicator-2"),
-                    document.getElementById("indicator-3")
-                ];
+                    // 密碼強度顯示
+                    const passwordStrengthText = document.getElementById("passwordStrength");
+                    const password = document.getElementById("password");
 
-                // 重置顏色
-                indicators.forEach(indicator => indicator.classList.remove("strength-weak", "strength-medium", "strength-strong"));
+                    const createStrengthIndicators = () => {
+                        passwordStrengthText.innerHTML = `
+        <div class="strength-indicator" id="indicator-1"></div>
+        <div class="strength-indicator" id="indicator-2"></div>
+        <div class="strength-indicator" id="indicator-3"></div>
+                        `;
+                    };
 
-                if (strength === "弱") {
-                    indicators[0].classList.add("strength-weak");
-                } else if (strength === "中") {
-                    indicators[0].classList.add("strength-weak");
-                    indicators[1].classList.add("strength-medium");
-                } else if (strength === "強") {
-                    indicators[0].classList.add("strength-weak");
-                    indicators[1].classList.add("strength-medium");
-                    indicators[2].classList.add("strength-strong");
-                }
-            };
+                    const updateStrengthIndicators = (strength) => {
+                        const indicators = [
+                            document.getElementById("indicator-1"),
+                            document.getElementById("indicator-2"),
+                            document.getElementById("indicator-3")
+                        ];
 
-            createStrengthIndicators();
+                        // 重置顏色
+                        indicators.forEach(indicator => indicator.classList.remove("strength-weak", "strength-medium", "strength-strong"));
 
-            password.addEventListener("input", function () {
-                const value = password.value;
-                let strength = "弱";
+                        if (strength === "弱") {
+                            indicators[0].classList.add("strength-weak");
+                        } else if (strength === "中") {
+                            indicators[0].classList.add("strength-weak");
+                            indicators[1].classList.add("strength-medium");
+                        } else if (strength === "強") {
+                            indicators[0].classList.add("strength-weak");
+                            indicators[1].classList.add("strength-medium");
+                            indicators[2].classList.add("strength-strong");
+                        }
+                    };
 
-                if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@@#$%^&*]).{8,}$/.test(value)) {
-                    strength = "強";
-                } else if (/^(?=.*[A-Za-z])(?=.*\d).{6,}$/.test(value)) {
-                    strength = "中";
-                }
+                    createStrengthIndicators();
 
-                updateStrengthIndicators(strength);
-            });
-        });
+                    password.addEventListener("input", function () {
+                        const value = password.value;
+                        let strength = "弱";
 
-        // 發送驗證碼倒數
-        let countdownInterval;
-        document.getElementById('sendCodeBtn').addEventListener('click', function () {
-            let countdownTime = 60;
-            const countdownElem = document.getElementById('countdown');
-            countdownElem.style.display = 'inline';
-            countdownInterval = setInterval(function () {
-                countdownElem.textContent = `${countdownTime} 秒`;
-                countdownTime--;
+                        if (/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@@#$%^&*]).{8,}$/.test(value)) {
+                            strength = "強";
+                        } else if (/^(?=.*[A-Za-z])(?=.*\d).{6,}$/.test(value)) {
+                            strength = "中";
+                        }
 
-                if (countdownTime < 0) {
-                    clearInterval(countdownInterval);
-                    countdownElem.style.display = 'none';
-                    alert('驗證碼發送完畢');
-                }
-            }, 1000);
-        });
+                        updateStrengthIndicators(strength);
+                    });
+                });
+
+                // 發送驗證碼倒數
+                let countdownInterval;
+                document.getElementById('sendCodeBtn').addEventListener('click', function () {
+                    let countdownTime = 60;
+                    const countdownElem = document.getElementById('countdown');
+                    countdownElem.style.display = 'inline';
+                    countdownInterval = setInterval(function () {
+                        countdownElem.textContent = `${countdownTime} 秒`;
+                        countdownTime--;
+
+                        if (countdownTime < 0) {
+                            clearInterval(countdownInterval);
+                            countdownElem.style.display = 'none';
+                            alert('驗證碼發送完畢');
+                        }
+                    }, 1000);
+                });
     </script>
     <style>
         .password-container {

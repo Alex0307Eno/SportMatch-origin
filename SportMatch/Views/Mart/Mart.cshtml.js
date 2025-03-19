@@ -1,4 +1,6 @@
-﻿// 加入我的最愛
+﻿history.pushState({}, '', '/Mart');
+
+// 加入我的最愛
 function HeartIconChange(button) {
     let ItemID = button.getAttribute('data-ProductID');
     let ItemMyHeart = button.getAttribute('data-MyHeart');
@@ -57,24 +59,31 @@ function AddToCart(button) {
 
     // 檢查 localStorage 是否已有購物車
     let Cart = JSON.parse(localStorage.getItem("Cart")) || [];        
+    let isLoggedIn = localStorage.getItem('isLoggedIn');
 
     // 檢查是否已經有此商品，若有則更新數量，若沒有則新增
     let existingItem = Cart.find(Item => Item.ID === ItemID);
-    if (existingItem) {
-        GetCartModalSuccess(false);        
-    } else {
-        Cart.push({
-            ID: ItemID,
-            Name: ItemName,
-            Price: ItemPrice,
-            Discount: ItemDiscount,
-            Image01: ItemImage,
-            Stock: ItemStock,
-            Quantity: 1
-        });        
-        updateCartNumber(); //_Layout.js
-        GetCartModalSuccess(true);
-    }        
+    if(!isLoggedIn) {
+        alert('請先登入');
+    }
+    else {
+        if (existingItem) {
+            GetCartModalSuccess(false);
+        } else {
+            Cart.push({
+                ID: ItemID,
+                Name: ItemName,
+                Price: ItemPrice,
+                Discount: ItemDiscount,
+                Image01: ItemImage,
+                Stock: ItemStock,
+                Quantity: 1
+            });
+            updateCartNumber(); //_Layout.js
+            GetCartModalSuccess(true);
+        }
+    }
+    
     // 將更新後的購物車儲存在 localStorage
     localStorage.setItem("Cart", JSON.stringify(Cart));
 }

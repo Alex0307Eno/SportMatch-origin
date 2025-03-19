@@ -84,6 +84,8 @@ function loginUser() {
 // ✅ 退出登入
 function logoutUser() {
     localStorage.removeItem("isLoggedIn");  // 移除登入標記
+    //250319新增清除購物車
+    localStorage.removeItem("Cart");
     console.log("👋 用戶已登出");
     updateUI(); // 更新 UI
 }

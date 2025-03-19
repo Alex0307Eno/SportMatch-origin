@@ -31,7 +31,6 @@ namespace SportMatch.Controllers
             public string loggedInEmail { get; set; }
             public string address { get; set; }
             public string selectedPaymentMethod { get; set; }
-            public string parameters { get; set; }
 
         }
 
@@ -45,43 +44,6 @@ namespace SportMatch.Controllers
             public string? mobile { get; set; }
         }
 
-        internal static class SHA256Encoder
-        {
-            /// <summary>
-            /// 雜湊加密演算法物件。
-            /// </summary>
-            private static readonly HashAlgorithm Crypto = null;
-
-            static SHA256Encoder()
-            {
-                SHA256Encoder.Crypto = new SHA256CryptoServiceProvider();
-            }
-
-            public static string Encrypt(string originalString)
-            {
-                byte[] source = Encoding.Default.GetBytes(originalString);//將字串轉為Byte[]
-                byte[] crypto = SHA256Encoder.Crypto.ComputeHash(source);//進行SHA256加密
-                string result = string.Empty;
-
-                for (int i = 0; i < crypto.Length; i++)
-                {
-                    result += crypto[i].ToString("X2");
-                }
-
-                return result.ToUpper();
-            }
-        }
-
-        //private string BuildCheckMacValue([FromBody] List<ProductInfo> products)
-        //{
-        //    string szCheckMacValue = String.Empty;
-        //    // 產生檢查碼。
-        //    szCheckMacValue = String.Format("HashKey={0}{1}&HashIV={2}", "spPjZn66i0OhqJsQ", products.parameters, "hT5OJckN45isQTTs");
-        //    szCheckMacValue = HttpUtility.UrlEncode(szCheckMacValue).ToLower();
-        //    szCheckMacValue = SHA256Encoder.Encrypt(szCheckMacValue);
-
-        //    return szCheckMacValue;
-        //}
 
         [HttpPost]
         public async Task<IActionResult> CartInfo([FromBody] List<ProductInfo> products)
@@ -127,13 +89,6 @@ namespace SportMatch.Controllers
                         //Console.WriteLine(JsonConvert.SerializeObject(productDetails, Formatting.Indented));
                         var userDetails = userLinqResult.FirstOrDefault(u => u.Email == productInfo.loggedInEmail);
 
-                        string szCheckMacValue = String.Empty;
-                        // 產生檢查碼。
-                        szCheckMacValue = String.Format("HashKey={0}{1}&HashIV={2}", "pwFHCqoQZGmho4w6", productInfo.parameters, "EkRm7iFT261dpevs");
-                        szCheckMacValue = HttpUtility.UrlEncode(szCheckMacValue).ToLower();
-                        szCheckMacValue = SHA256Encoder.Encrypt(szCheckMacValue);
-                        Console.WriteLine("\n\n\n" + productInfo.parameters + "\n\n\n");
-                        Console.WriteLine("\n\n\n" + szCheckMacValue + "\n\n\n");
                         ExtendedProductInfo extendedProductInfos = new ExtendedProductInfo
                         {
                             id = productInfo.id,
@@ -148,8 +103,7 @@ namespace SportMatch.Controllers
                             email = userDetails.Email,
                             mobile = userDetails.Mobile,
                             address = productInfo.address,
-                            selectedPaymentMethod = productInfo.selectedPaymentMethod,
-                            parameters = szCheckMacValue
+                            selectedPaymentMethod = productInfo.selectedPaymentMethod
                         };
 
                         extendedProducts.Add(extendedProductInfos);

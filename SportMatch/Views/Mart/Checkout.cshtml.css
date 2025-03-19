@@ -1,21 +1,20 @@
-﻿.card {
+﻿#CartItem {
     border: 0px;
 }
 
 .CheckoutContainer {
-    background-color: #000000;
-    color: #ffffff;
-    display: flex;
-    flex-direction: row; /* 讓左右元素並排 */
+    position: relative;
+    transform: translate(-50%, 0);
+    height: 50rem;
+    width: 75rem;
+    left: 50%;
 }
 
 .CartBody {
-    border: 0px;
-    background-color: #202020;
-    height: 80.8vh;
-    width: 35vw;
+    width: 100%;
     padding: 20px 20px 25px 20px;
-    margin: 15px 6px 15px 15px;
+    margin: 15px 0 15px 15px;
+    justify-content: center;
 }
 
 .CartScrollable {
@@ -28,42 +27,91 @@
 }
 
 .Logistics {
-    background-color: #202020;
     padding: 20px 15px 15px 15px;
     margin: 8px 11px 8px 8px;
     flex-grow: 1
 }
 
+    .Logistics .bi-bag {
+        font-size: 40px;
+        margin-right: 5px;
+    }
 
-/*以下修改顏色*/
+    .Logistics .bi-truck {
+        font-size: 45px;
+    }
+
 .PickupBtn {
     border-color: #ff5f00;
     color: #ff5f00;
 }
 
-    .PickupBtn:hover {
-        color: #ffffff;
-    }
+/* 配色統合 */
+.container-fluid {
+    background-color: #000000;
+}
+
+#CartItem,
+.CartBody,
+.Logistics,
+/* 以下JS */
+.quantityText,
+.btnPlusMinus:hover {
+    background-color: #202020;
+}
 
 .OrangeBtnClass {
     background-color: #ff5f00;
-    color: #ffffff
+}
+
+.CheckoutContainer,
+.PickupBtn:hover,
+.OrangeBtnClass,
+.Logistics .bi-bag
+.BodyLiftField .h5
+/* 以下JS */
+.btnPlusMinus,
+.quantityText {
+    color: #ffffff;
 }
 
 
-/* 整個滾動條 */
+/* 滾動條 */
 ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
 }
-
 /* 滾動條圓角顏色 */
 ::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 5px;
 }
-
 /* 滾動條背景 */
 ::-webkit-scrollbar-track {
     background-color: none;
+}
+
+/* JS插入的HTML用CSS */
+
+.CartItem,
+.btnPlusMinus:hover,
+.quantityText {
+    border: 1px solid #ff5f00;
+    width: 99%;
+}
+
+.btnPlusMinus {
+    background-Color: #ff5f00;
+    border: 0px;
+}
+
+    .btnPlusMinus:hover {
+        color: #ff5f00;
+    }
+
+.quantityText {
+    width: 100%;
+    text-align: center;
+    border-radius: 0.2rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
 }

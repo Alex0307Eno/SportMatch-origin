@@ -102,10 +102,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let matchingLink = document.getElementById("matchingLink");
     let eventsLink = document.getElementById("eventsLink");
+    let martLink = document.getElementById("martLink");
     let logoutButton = document.querySelector(".btn-logout");
 
     if (matchingLink) matchingLink.addEventListener("click", promptLogin);
     if (eventsLink) eventsLink.addEventListener("click", promptLogin);
+    if (martLink) martLink.addEventListener("click", promptLogin);
     if (logoutButton) logoutButton.addEventListener("click", logoutUser);
 });
 

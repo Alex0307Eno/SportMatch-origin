@@ -78,38 +78,106 @@ function LoadCart() {
 
     // 如果購物車是空的
     if (Cart.length === 0) {
-        CartContainer.innerHTML = "<h2 class='d-flex justify-content-center align-items-center mt-2'>購物車是空的</h2>";
+        CartContainer.innerHTML = "<h2 class='d-flex justify-content-center align-items-center m-5'>購物車是空的</h2>";
         return;
     }
     else {
         CartContainer.innerHTML = "";
-        // 顯示每個商品
         Cart.forEach(Item => {
             const ItemElement = document.createElement('div');
-            ItemElement.innerHTML =
-                `
-             <div class="card CartItem bg-dark" style="border: 1px solid #ff5f00;">
-                 <div class="row">
-                     <div class="col-3 d-flex align-items-center" >
-                         <img src="${Item.Image}" class="img-fluid mx-3" alt="商品圖片">
-                     </div>
-                     <div class="col-9">
-                         <div class="card-body">
-                             <h5 class="card-title mb-3">${Item.Name}</h5>
-                             ${Item.Discount < 0 ? `<p><strong>折扣:&nbsp;</strong>&nbsp;${Item.Discount}&nbsp;%</p>` : `<p><strong>折扣:&nbsp;</strong></p>`}
-                             <p><strong>價格:&nbsp;&nbsp;</strong>${Item.Price}</p>                             
-                             <div class="d-flex justify-content-between">
-                                 <button class="btn btn-light btn-sm w-25" style="background-color: #ff5f00;color: #ffffff;border:0px;" onclick="updateQuantity('${Item.ID}', -1)">-</button>
-                                 <button class="btn btn-sm w-100" style="background-color: #202020;color:#ffffff;border: 1px solid #ff5f00;">${Item.Quantity}</button>
-                                 <button class="btn btn-light btn-sm w-25" style="background-color: #ff5f00;color: #ffffff;border:0px;" onclick="updateQuantity('${Item.ID}', 1)">+</button>
-                             </div>
-                             <button class="btn btn-danger btn-sm mt-2" onclick="removeItem('${Item.ID}')">刪除</button>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-            `;
+            ItemElement.className = 'card bg-dark';
+            ItemElement.classList.add('CartItem');
+            const rowDiv = document.createElement('div');
+            rowDiv.className = 'row';
+
+            // 左側圖片
+            const colImage = document.createElement('div');
+            colImage.className = 'col-3 d-flex align-items-center';
+            const img = document.createElement('img');
+            img.src = Item.Image01;
+            img.className = 'img-fluid mx-3';
+            img.alt = '商品圖片';
+            colImage.appendChild(img);
+
+            // 右側內容
+            const colContent = document.createElement('div');
+            colContent.className = 'col-9';
+            const cardBody = document.createElement('div');
+            cardBody.className = 'card-body';
+
+            // 商品名稱
+            const title = document.createElement('h5');
+            title.className = 'card-title mb-3';
+            title.innerText = Item.Name;
+            cardBody.appendChild(title);
+
+            // 商品折扣
+            const discountText = document.createElement('p');
+            discountText.textContent = `折扣: ${Item.Discount > 0 ? `${Item.Discount}%` : '無'}`;
+            cardBody.appendChild(discountText);
+
+            // 商品價格
+            const priceText = document.createElement('p');
+            priceText.textContent = `價格: ${Item.Price}`;
+            cardBody.appendChild(priceText);
+
+            // 數量操作
+            const quantityDiv = document.createElement('div');
+            quantityDiv.className = 'd-flex', 'justify-content-between';
+
+            const btnPlus = document.createElement('button');
+            btnPlus.className = 'btn btn-light btn-sm w-25';
+            btnPlus.classList.add('btnPlusMinus');
+            btnPlus.innerText = '-';
+            btnPlus.onclick = () => updateQuantity(Item.ID, -1);
+
+            const quantityText = document.createElement('div');
+            quantityText.classList.add('quantityText');
+            quantityText.innerText = Item.Quantity;
+
+            const btnMinus = document.createElement('button');
+            btnMinus.className = 'btn btn-light btn-sm w-25';
+            btnMinus.classList.add('btnPlusMinus');
+            btnMinus.innerText = '+';
+            btnMinus.onclick = () => updateQuantity(Item.ID, 1);
+
+            quantityDiv.appendChild(btnPlus);
+            quantityDiv.appendChild(quantityText);
+            quantityDiv.appendChild(btnMinus);
+
+            // 刪除按鈕
+            const btnRemove = document.createElement('button');
+            btnRemove.className = 'btn btn-danger btn-sm mt-2';
+            btnRemove.innerText = '刪除';
+            btnRemove.onclick = () => removeItem(Item.ID);
+
+            cardBody.appendChild(quantityDiv);
+            cardBody.appendChild(btnRemove);
+            colContent.appendChild(cardBody);
+
+            rowDiv.appendChild(colImage);
+            rowDiv.appendChild(colContent);
+
+            ItemElement.appendChild(rowDiv);
+
             CartContainer.appendChild(ItemElement);
+        });
+        function existingElement() {
+            for (let sheet of document.styleSheets) {
+                for (let rule of sheet.cssRules) {
+                    const match = rule.selectorText?.match(/\.CheckoutContainer\[(b-[^\]]+)\]/);
+                    if (match) { return match[1]; }
+                }
+            }
+        }
+        document.querySelectorAll('.CartItem').forEach(div => {
+            div.setAttribute(existingElement(), '');
+        });
+        document.querySelectorAll('.btnPlusMinus').forEach(div => {
+            div.setAttribute(existingElement(), '');
+        });
+        document.querySelectorAll('.quantityText').forEach(div => {
+            div.setAttribute(existingElement(), '');
         });
     }
 }

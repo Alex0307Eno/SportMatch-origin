@@ -90,4 +90,10 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+
+// 設置 BackController 的路由
+app.MapControllerRoute(
+    name: "back",
+    pattern: "Back/{action=RedirectToBackstage}");
+
 app.Run();

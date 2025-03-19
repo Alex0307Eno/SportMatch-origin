@@ -1,0 +1,254 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+   
+}
+
+ 
+    <title>SportMatch 訂單紀錄</title>
+    <link rel="stylesheet" href="/css/backstage.css" />
+    <link rel="stylesheet" href="/layout/layout.css" />
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+<body>
+
+
+    <div class="container">
+        <aside class="sidebar">
+            <h2>SportMatch</h2>
+            <nav>
+                <ul>
+                    <li class="active"
+                        data-target="product-management"
+                        onclick="switchTab('product-management')">
+                        <i class="fas fa-box"></i> 比賽刊登
+                    </li>
+                    <li data-target="order-management"
+                        onclick="switchTab('order-management')">
+                        <i class="fas fa-clipboard-list"></i> 活動商品
+                    </li>
+                </ul>
+            </nav>
+        </aside>
+
+        <main class="content">
+            <div class="welcome-message">
+                <p id="userNameDisplay">歡迎，訪客</p>
+            </div>
+            <header>
+                <h1>歷史紀錄</h1>
+                <div class="tabs">
+                    <button class="tab-button active" data-target="order-history">
+                        已上架
+                    </button>
+                    <button class="tab-button" data-target="match-history">
+                        待審核<span class="badge">2</span>
+                    </button>
+                </div>
+                <div class="category-toggle">
+                    <button class="category-btn active" data-category="baseball">
+                        棒球
+                    </button>
+                    <button class="category-btn" data-category="badminton">羽球</button>
+                    <button class="category-btn" data-category="volleyball">
+                        排球
+                    </button>
+                </div>
+                <div class="search-bar">
+                    <input type="text"
+                           id="search-input"
+                           placeholder="輸入訂單編號或商品名稱" />
+                    <button id="search-btn">搜尋</button>
+                </div>
+
+            </header>
+            <div class="filter">
+                <label for="payment-method">篩選方式</label>
+                <select id="payment-method">
+                    <option value="all">所有</option>
+                    <option value="credit-card">信用卡</option>
+                    <option value="bank-transfer">銀行轉帳</option>
+                    <option value="cash">現金</option>
+                </select>
+            </div>
+            <!-- 商品管理區域 -->
+            <section id="product-management" class="section-content">
+                <h2>商品管理</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>商品編號</th>
+                            <th>名稱</th>
+                            <th>價格</th>
+                            <th>廠牌</th>
+                            <th>類型</th>
+                            <th>庫存</th>
+                            <th>上架狀態</th>
+                            <th>上架日期</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>XH349745bfd</td>
+                            <td>球拍</td>
+                            <td>$2,200</td>
+                            <td>YONEX</td>
+                            <td>球拍</td>
+                            <td>2400</td>
+                            <td>Y</td>
+                            <td>2025-02-11</td>
+                            <td><a href="#">編輯</a></td>
+                        </tr>
+                        <tr>
+                            <td>DHJ348y5fbf</td>
+                            <td>平織運動短褲</td>
+                            <td>$910</td>
+                            <td>YONEX</td>
+                            <td>褲子</td>
+                            <td>999</td>
+                            <td>Y</td>
+                            <td>2025-02-11</td>
+                            <td><a href="#">編輯</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 訂單管理區域 -->
+            <section id="order-management" class="section-content">
+                <h2>訂單管理</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>訂單編號</th>
+                            <th>客戶名稱</th>
+                            <th>商品名稱</th>
+                            <th>數量</th>
+                            <th>價格</th>
+                            <th>付款狀態</th>
+                            <th>訂單日期</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ORD001</td>
+                            <td>張三</td>
+                            <td>球拍</td>
+                            <td>1</td>
+                            <td>$2,200</td>
+                            <td>已付款</td>
+                            <td>2025-02-12</td>
+                            <td><a href="#">編輯</a></td>
+                        </tr>
+                        <tr>
+                            <td>ORD002</td>
+                            <td>李四</td>
+                            <td>平織運動短褲</td>
+                            <td>2</td>
+                            <td>$1,820</td>
+                            <td>未付款</td>
+                            <td>2025-02-13</td>
+                            <td><a href="#">編輯</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 已上架商品區 -->
+            <section id="order-history" class="tab-content active">
+                <h2>已上架</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>商品編號</th>
+                            <th>名稱</th>
+                            <th>價格</th>
+                            <th>廠牌</th>
+                            <th>類型</th>
+                            <th>庫存</th>
+                            <th>上架狀態</th>
+                            <th>上架日期</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>XH349745bfd</td>
+                            <td>球拍</td>
+                            <td>$2,200</td>
+                            <td>YONEX</td>
+                            <td>球拍</td>
+                            <td>2400</td>
+                            <td>Y</td>
+                            <td>2025-02-11</td>
+                            <td><a href="#">編輯</a></td>
+                        </tr>
+                        <tr>
+                            <td>DHJ348y5fbf</td>
+                            <td>平織運動短褲</td>
+                            <td>$910</td>
+                            <td>YONEX</td>
+                            <td>褲子</td>
+                            <td>999</td>
+                            <td>Y</td>
+                            <td>2025-02-11</td>
+                            <td><a href="#">編輯</a></td>
+                        </tr>
+                        <!-- 更多商品 -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- 待審核商品區 -->
+            <section id="match-history" class="tab-content">
+                <h2>待審核 <span class="badge">2</span></h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>訂單標和</th>
+                            <th>商品名稱</th>
+                            <th>價格</th>
+                            <th>廠牌</th>
+                            <th>類型</th>
+                            <th>訂購數量</th>
+                            <th>客戶名稱</th>
+                            <th>購買日期</th>
+                            <th>編輯</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>XH349745bfd</td>
+                            <td>球拍</td>
+                            <td>$2,200</td>
+                            <td>YONEX</td>
+                            <td>球拍</td>
+                            <td>2400</td>
+                            <td>Y</td>
+                            <td>2025-02-11</td>
+                            <td><a href="#">編輯</a></td>
+                        </tr>
+                        <tr>
+                            <td>DHJ348y5fbf</td>
+                            <td>平織運動短褲</td>
+                            <td>$910</td>
+                            <td>YONEX</td>
+                            <td>褲子</td>
+                            <td>999</td>
+                            <td>Y</td>
+                            <td>2025-02-11</td>
+                            <td><a href="#">編輯</a></td>
+                        </tr>
+                        <!-- 更多待審核商品 -->
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script src="/js/backstage.js"></script>
+</body>

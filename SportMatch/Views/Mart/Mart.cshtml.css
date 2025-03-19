@@ -1,94 +1,215 @@
-﻿/*.ModalFooterImages {
-    margin: -10% 0 -10% 0;
-    width: 40%;
-    height: 100%;
+﻿.container-fluid {
+    display: flex;
+    justify-content: center;
 }
 
-    .ModalFooterImages img {
-        height: 100%;
-        width: 30%;
-        margin-right: 10px;
-        object-fit: cover
-    }*/
-
+.MartContainer {
+    height: 72rem;
+    width: 116.5rem;
+}
 
 #GetCartModal .modal-dialog,
 #HeartModal .modal-dialog {
     transform: none;
 }
 
-.HeartModal .modal-content {
-    background-color: #000000;
-}
-
 .HeartModal .modal-header {
     border-bottom: none;
 }
 
-.HeartModal .modal-title {
-    color: #ffffff;
+/* 手型滑鼠 */
+select:hover,
+form input[type="radio"], form input[type="checkbox"], form label,
+/* 底下JS */
+.ProductsCard,
+.PageButton,
+.numberPageButton,
+.numberPageButtonLink,
+.FooterImage {
+    cursor: pointer;
 }
 
-#ModelFooterProductImage01:active {
-    content: url('\image\icon.jpg');
-}
+    select:focus,
+    .BootstrapItemClass,
+    .BootstrapChildItemClass,
+    /* 底下JS */
+    .PageButton,
+    .numberPageButton,
+    .numberPageButtonLink,
+    .numberPageButtonLinkTake,
+    .ProductsCard,
+    .PageButton:hover,
+    .numberPageButton:hover,
+    .numberPageButtonLink:hover,
+    .numberPageButtonLinkTake:hover {
+        border: 1px solid #ff5f00;
+    }
 
-#ModelFooterProductImage02:active {
-    content: url('\image\icon1.jpg');
-}
-
-/* 去除價格高低的藍色框及添加手型滑鼠 */
 select:focus {
     outline: none;
-    background-color: #ff5f00;
     box-shadow: #ff5f00;
-    border: 1px solid #ff5f00;
 }
 
-select:hover {
-    cursor: pointer;
-}
+/*配色整合*/
 
-form input[type="radio"], form input[type="checkbox"], form label {
-    cursor: pointer;
-}
-
-/*以下修正配色*/
-.MartContainer {
+.container-fluid,
+.HeartModal .modal-content,
+.MartContainer,
+.BootstrapItemClass,
+.BootstrapItemClass.ListPage,
+/* 底下JS */
+.ModalContent,
+.PageButton,
+.numberPageButton,
+.numberPageButtonLink {
     background-color: #000000;
+}
+
+    select:focus,
+    .BootstrapChildItemClass,
+    /* 底下JS */
+    .BtnOrange,
+    .PriceText,
+    .CartButton,
+    .CloseButton,
+    .numberPageButtonLinkTake,
+    .PageButton:hover,
+    .numberPageButton:hover,
+    .numberPageButtonLink:hover,
+    .numberPageButtonLinkTake:hover {
+        background-color: #ff5f00;
+    }
+
+.HeartModal .modal-title,
+.MartContainer,
+.BootstrapItemClass,
+/* 底下JS */
+.CartButton,
+.PageButton,
+.numberPageButton,
+.numberPageButtonLink {
     color: #ffffff;
 }
 
-.BootstrapItemClass {
-    background-color: #000000;
-    color: #ffffff;
-    border: 1px solid #ff5f00;
-}
+    /* 底下JS */
+    .numberPageButtonLinkTake,
+    .PageButton:hover,
+    .numberPageButton:hover,
+    .numberPageButtonLink:hover,
+    .numberPageButtonLinkTake:hover {
+        color: #000000;
+    }
 
-.BootstrapChildItemClass {
-    background-color: #ff5f00;
-    border: 1px solid #ff5f00;
-}
-
-.BootstrapItemClass.ListPage {
-    background-color: #000000;
-}
-
-
-/*添加背景*/
 .BodyLiftField {
-    background-color: #202020;
+    display: flex;
+    flex-direction: column;
+    width: 100rem;
+}
+
+.BodyLiftFieldImage {
+    margin-top: auto;
+}
+
+.BodyRightField {
+    margin: 0 0 0 13px;
+    width: 800rem;
+}
+/* 區塊背景 */
+.BodyLiftField {
     padding: 10px;
+    margin: 0 0 10px 0;
 }
 
 .PaginationBackground {
-    background-color: #202020;
     padding: 16px 12px 0 12px;
     margin: 1px;
 }
 
 .ProductsList {
+    padding: 0 0 30px 0;
+    margin: 0 1px 0 1px;
+}
+
+.BodyLiftField,
+.PaginationBackground,
+.ProductsList {
     background-color: #202020;
-    padding: 10px 0 0 0;
-    margin: 1px;
+}
+
+/* JS插入的HTML用CSS */
+.BtnOrange,
+.BtnOrangeDisabled,
+.DiscountText,
+.PriceText {
+    display: inline-block;
+    border-radius: 0.2rem;
+    padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+    margin: 0 0 0 0.1rem;
+}
+
+.BtnOrangeDisabled {
+    color: #b1aca9;
+    background-color: #b1490b;
+}
+
+.BtnOrange,
+.BtnOrangeDisabled {
+    padding: 0.3rem 0.5rem 0.3rem 0.5rem;
+    margin: 0 0 0 0.5rem;
+}
+
+.ProductsCardDiv {
+    max-width: 20%;
+    max-height: auto;
+}
+
+.ProductsCard {
+    border-radius: 0.2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.ProductsCardImgBody {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.ProductsCardImg {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.DiscountText {
+    background-color: #ff0000;
+}
+
+.ModalBodyLeftImage {
+    width: 36.5vw;
+    height: 41vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.2rem;
+}
+
+.ModelBodyProductImage {
+    max-width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.ModalFooterImages {
+    max-height: 2rem;
+    overflow: hidden;
+}
+
+.FooterImage {
+    width: 7vw;
+    margin-right: 10px;
+    object-fit: cover;
 }

@@ -69,6 +69,7 @@ document.querySelectorAll(".category-btn").forEach((button) => {
 document.addEventListener("DOMContentLoaded", function () {
     const tabs = document.querySelectorAll(".sidebar nav ul li");
     const contentSections = document.querySelectorAll(".tab-content");
+    const header = document.getElementById("header"); // 這是 header 元素
 
     tabs.forEach((tab) => {
         tab.addEventListener("click", function () {
@@ -80,15 +81,25 @@ document.addEventListener("DOMContentLoaded", function () {
             // 隱藏所有內容區域
             contentSections.forEach((section) => section.classList.remove("active"));
 
-            // 顯示對應的內容區域
+            // 檢查是否選擇了會員管理區，並隱藏 header 和其他區域
             const targetId = tab.getAttribute("data-target");
             const targetSection = document.getElementById(targetId);
             targetSection.classList.add("active");
+
+            if (targetId === "member-management") {
+                // 隱藏 header 和已上架、待審核的部分
+                if (header) header.style.display = "none"; // 隱藏 header
+                document.getElementById("order-history").style.display = "none"; // 隱藏已上架
+                document.getElementById("match-history").style.display = "none"; // 隱藏待審核
+            } else {
+                // 顯示 header 和已上架、待審核部分
+                if (header) header.style.display = "block"; // 顯示 header
+            }
         });
     });
 });
 
-// 切換 Tab 顯示
+// 修改 switchTab 函數，以便在選擇 member-management 時隱藏其他區域
 function switchTab(tabName) {
     // 隱藏所有的 tab-content
     const allTabs = document.querySelectorAll(".tab-content");
@@ -97,6 +108,16 @@ function switchTab(tabName) {
     // 顯示選中的 tab
     const selectedTab = document.getElementById(tabName);
     selectedTab.classList.add("active");
+
+    // 隱藏 header 和已上架、待審核區域
+    const header = document.getElementById("header");
+    if (tabName === "member-management") {
+        if (header) header.style.display = "none"; // 隱藏 header
+        document.getElementById("order-history").style.display = "none"; // 隱藏已上架
+        document.getElementById("match-history").style.display = "none"; // 隱藏待審核
+    } else {
+        if (header) header.style.display = "block"; // 顯示 header
+    }
 
     // 更新側邊欄的選中狀態
     const allSidebarItems = document.querySelectorAll(".sidebar ul li");
@@ -113,6 +134,7 @@ window.onload = function () {
     // 初始化已上架商品
     switchTab("order-history");
 };
+
 
 document.addEventListener("DOMContentLoaded", function () {
     // 確保頁面加載時，顯示已上架商品區
@@ -149,6 +171,9 @@ document.addEventListener("DOMContentLoaded", function () {
             } else if (target === "match-history") {
                 document.getElementById("order-history").style.display = "none";
                 document.getElementById("match-history").style.display = "block";
+            } else {
+                document.getElementById("order-history").style.display = "none";
+                document.getElementById("match-history").style.display = "none";
             }
         });
     });
@@ -181,7 +206,149 @@ function switchTab(target) {
     }
 }
 
-// 初始時顯示商品管理
+// 初始時顯示會員管理
 document.addEventListener("DOMContentLoaded", function () {
-    switchTab("product-management");
+    switchTab("member-management");
 });
+
+
+window.onload = function () {
+    // 頁面加載時，隱藏 header 和已上架、待審核區域
+    document.getElementById("header").style.display = "none"; // 隱藏 header
+    document.getElementById("order-history").style.display = "none"; // 隱藏已上架
+    document.getElementById("match-history").style.display = "none"; // 隱藏待審核
+
+    // 預設顯示商品管理的已上架商品
+    switchTab("product-management");
+};
+
+document.addEventListener("DOMContentLoaded", function () {
+    // 確保頁面加載時，隱藏 header 和已上架、待審核區域
+    document.getElementById("header").style.display = "none"; // 隱藏 header
+    document.getElementById("order-history").style.display = "none"; // 隱藏已上架
+    document.getElementById("match-history").style.display = "none"; // 隱藏待審核
+});
+let userInfo = localStorage.getItem("loggedInEmail");
+
+if (userInfo) {
+    fetch("/Back/ReceiveLocalStorage", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userInfo), // 傳送資料
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log("資料已成功接收", data.userName);
+
+                // 將 userName 顯示在網頁上
+                document.getElementById("userNameDisplay").textContent = `歡迎，${data.userName}`;
+            } else {
+                console.log("資料接收失敗", data.message);
+            }
+        })
+        .catch(error => {
+            console.error("錯誤:", error);
+        });
+}
+document.addEventListener("DOMContentLoaded", function () {
+    const addUserForm = document.getElementById("add-user-form");
+
+    // 表單提交處理
+    addUserForm.addEventListener("submit", function (event) {
+        event.preventDefault(); // 防止頁面刷新
+
+        const userName = document.getElementById("userName").value;
+        const userEmail = document.getElementById("userEmail").value;
+        const userIdentity = document.getElementById("userIdentity").value;
+        const guiCode = document.getElementById("guiCode").value;
+
+        const newUser = {
+            userName: userName,
+            userEmail: userEmail,
+            identity: userIdentity,
+            guiCode: guiCode
+        };
+
+        // 發送新增會員的請求
+        fetch("/Back/AddUser", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(newUser)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert("新增會員成功！");
+                    addUserForm.reset();  // 清空表單
+                    loadUsers();  // 重新載入會員資料
+                } else {
+                    alert("新增會員失敗：" + data.message);
+                }
+            })
+            .catch(error => console.error("新增會員失敗:", error));
+    });
+
+    // 初始化載入會員資料
+    loadUsers();
+
+    function loadUsers() {
+        fetch("/Back/GetUsers")
+            .then(response => response.json())
+            .then(data => {
+                const tbody = document.querySelector("#member-management tbody");
+                tbody.innerHTML = ""; // 清空表格內容
+
+                // 渲染會員資料到表格
+                data.forEach(user => {
+                    const row = document.createElement("tr");
+
+                    row.innerHTML = `
+                        <td>${user.identity}</td>
+                        <td>${user.userId}</td>
+                        <td>${user.userName}</td>
+                        <td>${user.email}</td>
+                        <td>${user.guiCode || "無"}</td>
+                        <td>${user.createdAt}</td>
+                        <td>
+                            <button class="delete-btn" data-id="${user.userId}">刪除</button>
+                        </td>
+                    `;
+
+                    tbody.appendChild(row);
+                });
+
+                // 綁定刪除按鈕事件
+                document.querySelectorAll(".delete-btn").forEach(button => {
+                    button.addEventListener("click", function () {
+                        const userId = this.getAttribute("data-id");
+                        deleteUser(userId);
+                    });
+                });
+            })
+            .catch(error => console.error("獲取會員資料失敗:", error));
+    }
+
+    // 刪除會員函數
+    function deleteUser(userId) {
+        if (confirm("確定要刪除此會員嗎？")) {
+            fetch(`/Back/DeleteUser/${userId}`, { method: "DELETE" })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert("會員已刪除");
+                        loadUsers(); // 重新載入會員資料
+                    } else {
+                        alert("刪除失敗：" + data.message);
+                    }
+                })
+                .catch(error => console.error("刪除失敗:", error));
+        }
+    }
+});
+
+

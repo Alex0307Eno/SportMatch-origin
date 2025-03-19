@@ -33,7 +33,7 @@ function GetCartModalSuccess(CartExist) {
     let GetCartModal = new bootstrap.Modal(document.getElementById('GetCartModal'));
     let GetCartModalMessage = document.getElementById('GetCartModalMessage');
     if (CartExist) {
-        GetCartModalMessage.innerHTML = "商品成功加入購物車";
+        GetCartModalMessage.innerHTML = "商品成功加入購物車";        
     }
     else {
         GetCartModalMessage.innerHTML = "購物車已經有該商品";
@@ -46,22 +46,22 @@ function GetCartModalSuccess(CartExist) {
 }
 
 // 購物車localstorage傳送資料用
-function AddToCart(button) {
+function AddToCart(button) {    
     // 從按鈕的 data-* 屬性中獲取商品資料
     ItemID = button.getAttribute('data-ProductID');
     ItemName = button.getAttribute('data-Name');
     ItemPrice = button.getAttribute('data-Price');
     ItemDiscount = button.getAttribute('data-Discount');
     ItemImage = button.getAttribute('data-Image');
-    ItemStock = button.getAttribute('data-Stock');
+    ItemStock = button.getAttribute('data-Stock');            
 
     // 檢查 localStorage 是否已有購物車
-    let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+    let Cart = JSON.parse(localStorage.getItem("Cart")) || [];        
 
     // 檢查是否已經有此商品，若有則更新數量，若沒有則新增
     let existingItem = Cart.find(Item => Item.ID === ItemID);
     if (existingItem) {
-        GetCartModalSuccess(false);
+        GetCartModalSuccess(false);        
     } else {
         Cart.push({
             ID: ItemID,
@@ -71,10 +71,10 @@ function AddToCart(button) {
             Image01: ItemImage,
             Stock: ItemStock,
             Quantity: 1
-        });
+        });        
+        updateCartNumber(); //_Layout.js
         GetCartModalSuccess(true);
-
-    }
+    }        
     // 將更新後的購物車儲存在 localStorage
     localStorage.setItem("Cart", JSON.stringify(Cart));
 }
@@ -89,7 +89,7 @@ let priceSort = document.getElementById('PriceSort');
 // 分頁
 function fetchProducts(page = 1, itemsPerPage = 10, orderByDesc = priceSort.value, categoryName = "全部", subCategoryName = ['無']) {
     let subCategoryNamesStr = subCategoryName.join(',') || '';
-    console.log(page, itemsPerPage, orderByDesc, categoryName, subCategoryName)
+    //console.log(page, itemsPerPage, orderByDesc, categoryName, subCategoryName)
     //console.log(subCategoryNamesStr)
     // 字串部分需為C#端參數名稱
     fetch(`/api/products?page=${page}&itemsPerPage=${itemsPerPage}&orderByDesc=${orderByDesc}&_categoryName=${categoryName}&_subCategoryName=${subCategoryNamesStr}`)
@@ -262,8 +262,8 @@ function renderProducts(products) {
         cartButton.setAttribute('data-Price', item.price);
         cartButton.setAttribute('data-Discount', item.discount);
         cartButton.setAttribute('data-Image', item.image01);
-        cartButton.setAttribute('data-Stock', item.stock);
-        cartButton.onclick = function () { AddToCart(this); };
+        cartButton.setAttribute('data-Stock', item.stock);  //_Layout.js    
+        cartButton.onclick = function () { AddToCart(this), updateCartNumber(); };
         cartButton.disabled = item.stock <= 0;
 
 
@@ -412,8 +412,8 @@ function renderProducts(products) {
         footerCartButton.setAttribute('data-Price', item.price);
         footerCartButton.setAttribute('data-Discount', item.discount);
         footerCartButton.setAttribute('data-Image', item.image01);
-        footerCartButton.setAttribute('data-Stock', item.stock);
-        footerCartButton.onclick = function () { AddToCart(this); };
+        footerCartButton.setAttribute('data-Stock', item.stock);  //_Layout.js
+        footerCartButton.onclick = function () { AddToCart(this), updateCartNumber(); };
         footerCartButton.disabled = item.stock <= 0;
         footerCartButton.innerText = '加入購物車';
 

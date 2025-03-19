@@ -1,10 +1,13 @@
-﻿function TogglePaymentMethod() {
+﻿let _selectedPaymentMethod = null;
+let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+function TogglePaymentMethod() {
     // 取得結帳方式點擊事件
     var PaymentSelected = {
         ComeHomepay: document.getElementById('ComeHome').checked,
         Seveneleven: document.getElementById('Seveneleven').checked,
         Familymart: document.getElementById('Familymart').checked
     };
+    
     // 取得取貨方式所有事件
     var Elements = {
         SevenElevenPickup: document.getElementById('SevenelevenPickup'),
@@ -16,7 +19,9 @@
 
         HomeDeliveryName: document.getElementById('HomeDeliveryName'),
         HomeDeliveryPhone: document.getElementById('HomeDeliveryPhone'),
-        HomeDeliveryAddress: document.getElementById('HomeDeliveryAddress')
+        HomeDeliveryAddress: document.getElementById('HomeDeliveryAddress'),
+        HomeDeliveryCity: document.getElementById('HomeDeliveryCity')
+
     };
 
     // 重置所有事件
@@ -29,6 +34,7 @@
         Elements.HomeDeliveryName.disabled =
         Elements.HomeDeliveryPhone.disabled =
         Elements.HomeDeliveryAddress.disabled =
+        Elements.HomeDeliveryCity.disabled =
         true;
 
     // 事件控制
@@ -39,10 +45,12 @@
             Elements.HomeDeliveryName.disabled =
             Elements.HomeDeliveryPhone.disabled =
             Elements.HomeDeliveryAddress.disabled =
+            Elements.HomeDeliveryCity.disabled =
             false;
 
         Elements.HomeDeliveryPickup.checked =
             true
+        _selectedPaymentMethod = 'ComeHomepay';
 
     } else if (PaymentSelected.Seveneleven) {
         Elements.FamilyMartPickup.checked =
@@ -52,7 +60,8 @@
             false;
 
         Elements.SevenElevenPickup.checked =
-            true;
+            true;       
+        _selectedPaymentMethod = 'Seveneleven';
 
     } else if (PaymentSelected.Familymart) {
         Elements.SevenElevenPickup.checked =
@@ -62,6 +71,7 @@
             false;
         Elements.FamilyMartPickup.checked =
             true;
+        _selectedPaymentMethod = 'Familymart';
     }
 }
 
@@ -86,7 +96,7 @@ function addCssIsolationElement() {
 
 // 購物車localstorage接收資料用
 function LoadCart() {   
-    const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+    //const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
     const CartContainer = document.getElementById("CartItem");
     const TotalPrice = document.getElementById('TotalPrice');
     const NoDiscountPrice = document.getElementById('NoDiscountPrice');
@@ -202,7 +212,7 @@ function LoadCart() {
 
 // 更新購物車商品數量
 function updateQuantity(ItemID, Delta) {
-    let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+    //let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
     const Item = Cart.find(Item => Item.ID === ItemID);
     if (Item) {
         Item.Quantity = Math.max(1, Item.Quantity + Delta);
@@ -213,9 +223,10 @@ function updateQuantity(ItemID, Delta) {
 
 // 刪除購物車中的商品
 function removeItem(ItemID) {
-    let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+    //let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
     Cart = Cart.filter(Item => Item.ID !== ItemID);
     localStorage.setItem("Cart", JSON.stringify(Cart));
+    updateCartNumber(); //_Layout.js
     LoadCart();
 }
 
@@ -237,20 +248,40 @@ function generateRandomString(length) {
 // 結帳
 let checkoutNow = document.getElementById('checkoutNow');
 checkoutNow.addEventListener('click', function () {    
-    const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+    //const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
     let _billNumber = generateRandomString(10);
+    let _loggedInEmail = localStorage.getItem('loggedInEmail');
+    let _cityElemant = document.getElementById("HomeDeliveryCity");
+    let _city = _cityElemant.value;
+    let _addressElemant = document.getElementById("HomeDeliveryAddress");       
+    let _address = _addressElemant.value;
+    
     const cartCheckoutData = Cart.map(Item => ({
         id: Item.ID,
         quantity: Item.Quantity,        
-        billNumber: _billNumber
-    }));
-
+        billNumber: _billNumber,
+        loggedInEmail: _loggedInEmail,
+        address: _city + _address,
+        selectedPaymentMethod: _selectedPaymentMethod
+    }));    
     fetchCheckout(cartCheckoutData);
 });
+//檢查地址
+function taiwanAddressCheck() {
+    const addressRegex = /^(?=.*[A-Za-z0-9\u4e00-\u9fa5])([A-Za-z0-9\u4e00-\u9fa5]+(?:區|鄉|鎮|市|縣轄市)?(?:[巷弄街路大道街道段]\d{1,4})?(?:號\d{1,4})?)$/;
+    const addressInput = document.getElementById('HomeDeliveryAddress');    
+    return addressRegex.test(addressInput.value);
+}
+
+function isCitySelected() {
+    let homeDeliveryCity = document.getElementById('HomeDeliveryCity');
+    return homeDeliveryCity.value && homeDeliveryCity.value !== "-- 縣 --";
+}
 
 // 發送資訊到交易用API
 let regex = /^產品ID \d+ 庫存不足$/
-function fetchCheckout(cartCheckoutData) {
+//const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+function fetchCheckout(cartCheckoutData) {    
     fetch('/api/checkout', {
         method: 'POST',
         headers: {
@@ -259,22 +290,48 @@ function fetchCheckout(cartCheckoutData) {
         body: JSON.stringify(cartCheckoutData)
     })
         .then(response => response.json())
-        .then(data => {
-            // 成功獲取到回應後，處理返回的資料
-            if (!regex.test(data.message)) {
+        .then(data => {            
+            if (Cart.length <= 0) {
+                console.log('結帳失敗：商品未選');
+                alert('請先選擇商品');
+            }
+            else
+            {
+                if (regex.test(data.message)) {
+                    console.log('結帳失敗：', data);
+                    alert('產品庫存不足，無法結帳');
+                    return;
+                }
+                if (!_selectedPaymentMethod) {
+                    console.log('結帳失敗：結帳未選');
+                    alert('請選擇結帳方式');
+                    return;
+                }
+                if (_selectedPaymentMethod === 'ComeHomepay') {
+                    if (!isCitySelected()) {
+                        console.log('結帳失敗：城市未選');
+                        alert('請選擇有效的城市');
+                        return;
+                    }
+                    if (!taiwanAddressCheck()) {
+                        console.log('結帳失敗：地址錯誤');
+                        alert('地址格式錯誤，請重新輸入');
+                        return;
+                    }
+                }
                 console.log('結帳成功，返回資料：', data);
                 billPage(data);
             }
-            else {
-                console.log('結帳失敗：', data);
-            }
         })
+        .catch(error => {
+            console.error('結帳過程中發生錯誤:', error);
+            alert('結帳過程中發生錯誤，請稍後再試');
+        });
 }
 
 // 訂單頁
 function billPage(data) {     
-    const CheckoutTopContainer = document.getElementById("CheckoutTopContainer");
-    const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+    const CheckoutTopContainer = document.getElementById("CheckoutTopContainer");        
     
     CheckoutTopContainer.innerHTML = "";
     localStorage.removeItem('Cart');
@@ -340,12 +397,30 @@ function billPage(data) {
     const shippingHeading = document.createElement('h4');    
     shippingHeading.textContent = `貨運資訊`;
     paymentMethodSection.appendChild(shippingHeading);
-    const shippingMethod = document.createElement('p');
-    shippingMethod.textContent = '貨運方式: 7-11取貨';
-    paymentMethodSection.appendChild(shippingMethod);
+
     const paymentMethod = document.createElement('p');
-    paymentMethod.textContent = '付款方式: ATM轉帳';
+    if (data[0].selectedPaymentMethod == 'ComeHomepay') {
+        paymentMethod.textContent = '付款方式: 貨到付款';
+    }
+    else if (data[0].selectedPaymentMethod == 'Seveneleven') {
+        paymentMethod.textContent = '付款方式: 7-11取貨付款';
+    }
+    else if (data[0].selectedPaymentMethod == 'Familymart') {
+        paymentMethod.textContent = '付款方式: 全家取貨付款';
+    }
     paymentMethodSection.appendChild(paymentMethod);
+
+    const shippingMethod = document.createElement('p');
+    if (data[0].selectedPaymentMethod == 'ComeHomepay') {
+        shippingMethod.textContent = '貨運方式: 宅配到府';
+    }
+    else if (data[0].selectedPaymentMethod == 'Seveneleven') {
+        shippingMethod.textContent = '貨運方式: 7-11取貨';
+    }
+    else if (data[0].selectedPaymentMethod == 'Familymart') {
+        shippingMethod.textContent = '貨運方式: 全家取貨';
+    }    
+    paymentMethodSection.appendChild(shippingMethod);   
 
     const buyerInfoSection = document.createElement('div');
     buyerInfoSection.classList.add('OrderSection');
@@ -354,15 +429,24 @@ function billPage(data) {
     buyerInfoSection.appendChild(buyerInfoHeading);
 
     const name = document.createElement('p');
-    name.textContent = '姓名: 張三';
+    name.textContent = `姓名: ${data[0].userName}`;
     buyerInfoSection.appendChild(name);
 
     const phone = document.createElement('p');
-    phone.textContent = '電話: 0912345678';
+    phone.textContent = `電話: ${data[0].mobile}`;
     buyerInfoSection.appendChild(phone);
 
+    const email = document.createElement('p');
+    email.textContent = `信箱: ${data[0].email}`;
+    buyerInfoSection.appendChild(email);
+
     const address = document.createElement('p');
-    address.textContent = '地址: 台北市中正區某某路123號';
+    if (data[0].addres !== "") {        
+        address.textContent = `地址: ${data[0].address}`;     
+    }
+    else {        
+        address.textContent = `地址: - `;      
+    }   
     buyerInfoSection.appendChild(address);
 
     const orderPageButtonSection = document.createElement('div');
@@ -383,6 +467,7 @@ function billPage(data) {
 
     CheckoutTopContainer.appendChild(container);
 
+    updateCartNumber(); //_Layout.js
     addCssIsolationElement();
 }
 

@@ -24,7 +24,10 @@ namespace SportMatch.Controllers
         {
             public int id { get; set; }
             public int quantity { get; set; }
-            public string billNumber { get; set; }           
+            public string billNumber { get; set; }                   
+            public string loggedInEmail { get; set; }
+            public string address { get; set; }
+            public string selectedPaymentMethod { get; set; }
         }
 
         public class ExtendedProductInfo : ProductInfo
@@ -32,6 +35,9 @@ namespace SportMatch.Controllers
             public int discount { get; set; }
             public string name { get; set; }
             public decimal price { get; set; }
+            public string? userName { get; set; }
+            public string email { get; set; } = null!;
+            public string? mobile { get; set; }
         }
 
         [HttpPost]
@@ -43,11 +49,20 @@ namespace SportMatch.Controllers
                 using (var transaction = await MartDb.Database.BeginTransactionAsync())
                 {
                     var productIds = products.Select(p => p.id).ToList();
-                    
+
+                    var userEmail = products.Select(p => p.loggedInEmail).ToList();
+
+
                     var productsLinqResult = await MartDb.Product
                         .Where(p => productIds.Contains(p.ProductID))
                         .Select(p => new { p.ProductID, p.Name, p.Price, p.Discount })
                         .ToListAsync();
+
+                    var userLinqResult = await MartDb.Users
+                        .Where(u => userEmail.Contains(u.Email))
+                        .Select(u => new {u.Name, u.Email, u.Mobile})
+                        .ToListAsync();
+                        
 
                     List<ExtendedProductInfo> extendedProducts = new List<ExtendedProductInfo>();
 
@@ -67,16 +82,23 @@ namespace SportMatch.Controllers
 
                         var productDetails = productsLinqResult.FirstOrDefault(p => p.ProductID == productInfo.id);
                         //Console.WriteLine(JsonConvert.SerializeObject(productDetails, Formatting.Indented));
+                        var userDetails = userLinqResult.FirstOrDefault(u => u.Email == productInfo.loggedInEmail);
 
                         ExtendedProductInfo extendedProductInfos = new ExtendedProductInfo
                         {
                             id = productInfo.id,
-                            quantity = productInfo.quantity,                            
+                            quantity = productInfo.quantity,
                             billNumber = productInfo.billNumber,
 
                             discount = productDetails.Discount,
                             name = productDetails.Name,
-                            price = productDetails.Price
+                            price = productDetails.Price,
+
+                            userName = userDetails.Name,
+                            email = userDetails.Email,
+                            mobile = userDetails.Mobile,
+                            address = productInfo.address,
+                            selectedPaymentMethod = productInfo.selectedPaymentMethod
                         };
 
                         extendedProducts.Add(extendedProductInfos);
@@ -86,8 +108,8 @@ namespace SportMatch.Controllers
                     await MartDb.SaveChangesAsync();
                     await transaction.CommitAsync();
 
-                    //Console.WriteLine(string.Join(", ", products));
-                    //Console.WriteLine(JsonConvert.SerializeObject(products, Formatting.Indented));
+                    //Console.WriteLine(string.Join(", ", extendedProducts));
+                    Console.WriteLine(JsonConvert.SerializeObject(extendedProducts, Formatting.Indented));
                     return Ok(extendedProducts);
                 }
             } 

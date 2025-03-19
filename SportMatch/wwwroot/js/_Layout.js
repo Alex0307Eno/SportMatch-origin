@@ -61,11 +61,17 @@ function updateUI() {
         cartContainer.style.display = "none"; // 隱藏購物車
         notificationsContainer.style.display = "none"; // 隱藏通知
     }
+    updateCartNumber();
 }
 document.addEventListener("DOMContentLoaded", function () {
-    updateUI(); // 在頁面加載後更新 UI
+    updateUI(); // 在頁面加載後更新 UI    
 });
 
+let cartButton = document.querySelector('#cartButton');
+function updateCartNumber() {
+    const Cart = JSON.parse(localStorage.getItem('Cart')) || [];
+    cartButton.setAttribute('data-count', Cart.length);    
+}
 
 // ✅ 登入函數
 function loginUser() {

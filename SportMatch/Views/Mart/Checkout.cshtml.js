@@ -114,8 +114,7 @@ function LoadCart() {
         let total = 0;
         let NoDiscount = 0;
         Cart.forEach(Item => {
-            const ItemElement = document.createElement('div');
-            ItemElement.className = 'card bg-dark';
+            const ItemElement = document.createElement('div');            
             ItemElement.classList.add('CartItem');
             const rowDiv = document.createElement('div');
             rowDiv.className = 'row';
@@ -272,11 +271,38 @@ function taiwanAddressCheck() {
     const addressInput = document.getElementById('HomeDeliveryAddress');    
     return addressRegex.test(addressInput.value);
 }
-
 function isCitySelected() {
     let homeDeliveryCity = document.getElementById('HomeDeliveryCity');
     return homeDeliveryCity.value && homeDeliveryCity.value !== "-- 縣 --";
 }
+
+//function electronicMap(billNumber) {
+//    const url = "https://allorigins.win/https://logistics-stage.ecpay.com.tw/Express/map";
+
+//    const data = new URLSearchParams();
+//    data.append('MerchantID', '2000132');
+//    data.append('MerchantTradeNo', billNumber);
+//    data.append('LogisticsType', 'CVS'); // 超商取貨
+//    data.append('LogisticsSubType', 'FAMI'); // 根據需求選擇 B2C 或 C2C
+//    data.append('IsCollection', 'N'); // 是否代收貨款
+//    data.append('ServerReplyURL', 'https://localhost:8888/Mart/Checkout'); // 回傳網址
+
+//    fetch(url, {
+//        method: 'POST',
+//        headers: {
+//            'Content-Type': 'application/x-www-form-urlencoded'
+//        },
+//        body: data
+//    })
+//        .then(response => response.json())
+//        .then(data => {
+//            console.log('API 回應:', data);
+//            // 在這裡處理回應數據
+//        })
+//        .catch(error => {
+//            console.error('發生錯誤:', error);
+//        });
+//}
 
 // 發送資訊到交易用API
 let regex = /^產品ID \d+ 庫存不足$/
@@ -320,6 +346,7 @@ function fetchCheckout(cartCheckoutData) {
                     }
                 }
                 console.log('結帳成功，返回資料：', data);
+                //electronicMap(data.billNumber)
                 billPage(data);
             }
         })

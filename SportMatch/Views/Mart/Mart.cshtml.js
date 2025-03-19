@@ -1,4 +1,4 @@
-﻿history.pushState({}, '', '/Mart');
+﻿//history.pushState({}, '', '/Mart');
 
 // 加入我的最愛
 function HeartIconChange(button) {

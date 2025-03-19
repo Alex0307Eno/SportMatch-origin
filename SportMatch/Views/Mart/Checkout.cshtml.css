@@ -1,5 +1,6 @@
 ﻿#CartItem {
-    border: 0px;
+    border: 0px;    
+    border-radius: 0.2rem;
 }
 
 .CheckoutContainer {
@@ -42,7 +43,7 @@
     }
 
 .PickupBtn {
-    border-color: #ff5f00;    
+    border-color: #fd7e14;    
 }
 
 #NoDiscountPrice {
@@ -61,7 +62,7 @@
 
 .PickupBtn,
 .btnPlusMinus:hover {
-    color: #ff5f00;
+    color: #fd7e14;
 }
 
 #CartItem,
@@ -80,7 +81,7 @@
 /*以下訂單頁*/
 .OrderButton,
 .OrderButton:hover {
-    background-color: #ff5f00;
+    background-color: #fd7e14;
 }
 
 .CheckoutContainer,
@@ -104,9 +105,10 @@
 
 /* JS插入的HTML用CSS */
 .CartItem,
+.btnPlusMinus,
 .btnPlusMinus:hover,
 .quantityText {
-    border: 1px solid #ff5f00;
+    border: 1px solid #fd7e14;
     width: 99%;
 }
 

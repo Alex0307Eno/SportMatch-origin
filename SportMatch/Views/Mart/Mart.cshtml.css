@@ -36,21 +36,27 @@ form input[type="radio"], form input[type="checkbox"], form label,
     .BootstrapItemClass,
     .BootstrapChildItemClass,
     /* 底下JS */
+    .PriceText,
+    .DiscountText,
     .PageButton,
+    .ProductsCard,
     .numberPageButton,
     .numberPageButtonLink,
     .numberPageButtonLinkTake,
-    .ProductsCard,
     .PageButton:hover,
     .numberPageButton:hover,
     .numberPageButtonLink:hover,
     .numberPageButtonLinkTake:hover {
-        border: 1px solid #ff5f00;
+        border: 1px solid #fd7e14;
     }
+
+.ProductsCardImgBody {
+    border-bottom: 1px solid #331904;
+}
 
 select:focus {
     outline: none;
-    box-shadow: #ff5f00;
+    box-shadow: #fd7e14;
 }
 
 /*配色整合*/
@@ -58,13 +64,8 @@ select:focus {
 .container-fluid,
 .HeartModal .modal-content,
 .MartContainer,
-.BootstrapItemClass,
-.BootstrapItemClass.ListPage,
 /* 底下JS */
-.ModalContent,
-.PageButton,
-.numberPageButton,
-.numberPageButtonLink {
+.ModalContent {
     background-color: #000000;
 }
 
@@ -80,7 +81,7 @@ select:focus {
     .numberPageButton:hover,
     .numberPageButtonLink:hover,
     .numberPageButtonLinkTake:hover {
-        background-color: #ff5f00;
+        background-color: #fd7e14;
     }
 
 .HeartModal .modal-title,
@@ -133,8 +134,13 @@ select:focus {
 
 .BodyLiftField,
 .PaginationBackground,
-.ProductsList {
-    background-color: #202020;
+.ProductsList,
+.BootstrapItemClass,
+.BootstrapItemClass.ListPage,
+.PageButton,
+.numberPageButton,
+.numberPageButtonLink {
+    background-color: #190d02;
 }
 
 /* JS插入的HTML用CSS */
@@ -165,6 +171,7 @@ select:focus {
 }
 
 .ProductsCard {
+/*    border: 1px solid #653208;*/
     border-radius: 0.2rem;
     height: 100%;
     display: flex;
@@ -173,6 +180,7 @@ select:focus {
 }
 
 .ProductsCardImgBody {
+/*    border-radius: 0.2rem;*/
     width: 100%;
     height: 100%;
     display: flex;
@@ -186,7 +194,8 @@ select:focus {
 }
 
 .DiscountText {
-    background-color: #ff0000;
+    background-color: #190d02;
+    color: #fd7e14;
 }
 
 .ModalBodyLeftImage {

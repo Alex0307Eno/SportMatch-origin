@@ -10,25 +10,38 @@
 		transform: scale(1.2);
 	}
 
-	.card, .page-link, .modal-content {
-		background-color: #212121;
-		color: #F5F5F5;
-		border: 1px solid #00ADB5; /* 藍色邊框 */
+	.card, .page-link {
+		background-color: rgba(51,25,4,0.3);
+		color: #f3f5f5;
+		border: 1px solid #fd7e14; /* 藍色邊框 */
+		box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
+	}
+
+	.modal-content {
+		background-color: rgba(26,10,1);
+		color: #f3f5f5;
+		border: 1px solid #fd7e14; /* 藍色邊框 */
 		box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
 	}
 
 	.pagination .disabled .page-link {
-		background-color: #212121;
-		color: #212121;
-		border: 1px solid #00ADB5; /* 藍色邊框 */
+		background-color: rgb(51,25,4,0.3);
+		color: #331904;
+		border: 1px solid #fd7e14; /* 藍色邊框 */
 		box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
+	}
+
+	.btn {
+		background-color: #fd7e14;
+		color: #f3f5f5;
+		border-radius: 10px;
 	}
 </style>
 <div id="background">
 	<div id="bg-overlay">
 		<h1>@ViewBag.Event</h1>
 		<h1>@ViewBag.MatchType	</h1>
-		<h1>@ViewBag.MatchCategory</h1>		
+		<h1>@ViewBag.MatchCategory</h1>
 		@{
 			if (ViewBag.MatchEvent != null)
 			{
@@ -113,7 +126,7 @@
 			<div class="row" style="">
 				<div class="col-3 mt-3">
 					<form id="filterForm">
-						<div class="row">
+						<div class="row mb-2">
 							<!-- 找隊友/找隊員 -->
 							<div class="d-flex col-8 align-items-center justify-content-center">
 								<div class="">
@@ -128,7 +141,7 @@
 							</div>
 							<!-- 搜尋按鈕 -->
 							<div class="col-4 bg-muted d-flex align-items-center justify-content-end">
-								<input type="submit" value="搜尋" class="btn btn-success ms-2 w-auto">
+								<input type="submit" value="搜尋" class="btn ms-2 w-auto">
 							</div>
 						</div>
 						<!-- 漢堡選單區域 -->

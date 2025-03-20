@@ -96,7 +96,6 @@ function addCssIsolationElement() {
 
 // 購物車localstorage接收資料用
 function LoadCart() {   
-    //const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
     const CartContainer = document.getElementById("CartItem");
     const TotalPrice = document.getElementById('TotalPrice');
     const NoDiscountPrice = document.getElementById('NoDiscountPrice');
@@ -211,7 +210,6 @@ function LoadCart() {
 
 // 更新購物車商品數量
 function updateQuantity(ItemID, Delta) {
-    //let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
     const Item = Cart.find(Item => Item.ID === ItemID);
     if (Item) {
         Item.Quantity = Math.max(1, Item.Quantity + Delta);
@@ -222,7 +220,6 @@ function updateQuantity(ItemID, Delta) {
 
 // 刪除購物車中的商品
 function removeItem(ItemID) {
-    //let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
     Cart = Cart.filter(Item => Item.ID !== ItemID);
     localStorage.setItem("Cart", JSON.stringify(Cart));
     updateCartNumber(); //_Layout.js
@@ -259,7 +256,6 @@ function isCitySelected() {
 // 結帳
 let checkoutNow = document.getElementById('checkoutNow');
 checkoutNow.addEventListener('click', function () {    
-    //const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
     let _billNumber = generateRandomString(10);
     let _loggedInEmail = localStorage.getItem('loggedInEmail');
     let _cityElemant = document.getElementById("HomeDeliveryCity");
@@ -299,7 +295,6 @@ checkoutNow.addEventListener('click', function () {
 
 // 發送資訊到交易用API
 let regex = /^產品ID \d+ 庫存不足$/
-//const Cart = JSON.parse(localStorage.getItem("Cart")) || [];
 function fetchCheckout(cartCheckoutData) {    
     fetch('/api/checkout', {
         method: 'POST',

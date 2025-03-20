@@ -17,8 +17,10 @@ public partial class Order
 
     public int Quantity { get; set; }
 
+    //250320新增
     public string Payment { get; set; }
 
+    //250320新增
     public string Address { get; set; } = null!;
 
 

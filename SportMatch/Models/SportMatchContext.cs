@@ -45,6 +45,9 @@ public partial class SportMatchContext : DbContext
 
     public virtual DbSet<ProductSubCategory> ProductSubCategory { get; set; }
 
+    //250320新增
+    public virtual DbSet<ProductFavorite> ProductFavorite { get; set; }
+
 
     public virtual DbSet<Role> Roles { get; set; }
 

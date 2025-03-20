@@ -1,32 +1,33 @@
 ﻿//history.pushState({}, '', '/Mart');
 
 // 加入我的最愛
-function HeartIconChange(button) {
-    let ItemID = button.getAttribute('data-ProductID');
-    let ItemMyHeart = button.getAttribute('data-MyHeart');
+function HeartIconChange(products) {
+    let MyHeartProductsID = products.ProductID;
+    let MyHeartUserID = localStorage.getItem("loggedInEmail")
+    //let MyHeartStorage = button.getAttribute('data-MyHeart');
 
-    let Icon = document.getElementById('ModalHeartIcon_' + ItemID);
-    let Modal = new bootstrap.Modal(document.getElementById('HeartModal'));
-    let ModalMessage = document.getElementById('HeartModalMessage');
+    let MyHeartIcon = document.getElementById('ModalHeartIcon_' + MyHeartProductsID);
+    let HeartModal = new bootstrap.Modal(document.getElementById('HeartModal'));
+    let HeartModalMessage = document.getElementById('HeartModalMessage');
 
-    if (ItemMyHeart == 'true') {
+    if (MyHeartStorage == 'y') {
 
-        Icon.classList.remove('bi-heart-fill');
-        Icon.classList.add('bi-heart');
-        button.setAttribute('data-MyHeart', 'false');
-        Icon.style.color = "#FFFFFF";
-        ModalMessage.innerHTML = "已從我的最愛移除";
+        MyHeartIcon.classList.remove('bi-heart-fill');
+        MyHeartIcon.classList.add('bi-heart');
+        //button.setAttribute('data-MyHeart', 'n');
+        MyHeartIcon.style.color = "#FFFFFF";
+        HeartModalMessage.innerHTML = "已從我的最愛移除";
     } else {
-        Icon.classList.remove('bi-heart');
-        Icon.classList.add('bi-heart-fill');
-        button.setAttribute('data-MyHeart', 'true');
-        Icon.style.color = "#fd7e14";
-        ModalMessage.innerHTML = "已加入我的最愛";
+        MyHeartIcon.classList.remove('bi-heart');
+        MyHeartIcon.classList.add('bi-heart-fill');
+        //button.setAttribute('data-MyHeart', 'y');
+        MyHeartIcon.style.color = "#fd7e14";
+        HeartModalMessage.innerHTML = "已加入我的最愛";
     }
 
-    Modal.show();
+    HeartModal.show();
     setTimeout(function () {
-        Modal.hide();
+        HeartModal.hide();
     }, 700);
 }
 
@@ -58,7 +59,7 @@ function AddToCart(button) {
     ItemStock = button.getAttribute('data-Stock');            
 
     // 檢查 localStorage 是否已有購物車
-    let Cart = JSON.parse(localStorage.getItem("Cart")) || [];        
+    //let Cart = JSON.parse(localStorage.getItem("Cart")) || [];        
     let isLoggedIn = localStorage.getItem('isLoggedIn');
 
     // 檢查是否已經有此商品，若有則更新數量，若沒有則新增
@@ -368,7 +369,7 @@ function renderProducts(products) {
         const favoriteButton = document.createElement('button');
         favoriteButton.className = 'btn mb-4 ms-auto fs-5';
         favoriteButton.setAttribute('data-ProductID', item.productID);
-        favoriteButton.onclick = function () { HeartIconChange(this); };
+        favoriteButton.onclick = function () { HeartIconChange(item); };
 
         const heartIcon = document.createElement('i');
         heartIcon.className = 'bi bi-heart';

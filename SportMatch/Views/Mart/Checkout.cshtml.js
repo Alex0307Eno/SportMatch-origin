@@ -267,7 +267,7 @@ checkoutNow.addEventListener('click', function () {
 });
 //檢查地址
 function taiwanAddressCheck() {
-    const addressRegex = /^(?=.*[A-Za-z0-9\u4e00-\u9fa5])([A-Za-z0-9\u4e00-\u9fa5]+(?:區|鄉|鎮|市|縣轄市)?(?:[巷弄街路大道街道段]\d{1,4})?(?:號\d{1,4})?)$/;
+    const addressRegex = /^(?=.*[A-Za-z0-9\u4e00-\u9fa5])([A-Za-z0-9\u4e00-\u9fa5]+(?:區|鄉|鎮|市)?(?:[巷弄街路大道街道段]\d{1,4})?號\d{1,4}.*)$/;
     const addressInput = document.getElementById('HomeDeliveryAddress');    
     return addressRegex.test(addressInput.value);
 }

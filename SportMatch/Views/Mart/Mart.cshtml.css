@@ -66,9 +66,11 @@ form input[type="radio"], form input[type="checkbox"], form label,
         border-left: 1px solid #150900;
         box-shadow: -5px 5px 5px #150900, 5px 5px 5px #150900;
     }
-    .ProductsCard:hover {        
-        border: none;
-    }
+        .ProductsCard:hover {
+            border: none;
+            transform: scale(1.04);
+            transition: transform 0.1s ease-in-out;
+        }
 
 .ProductsCardImgBody {
     border-bottom: 1px solid #331904;

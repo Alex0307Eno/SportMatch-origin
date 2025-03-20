@@ -13,5 +13,12 @@ public partial class ProductCategory
 
     public string? CategoryName { get; set; }
 
-    //public virtual ICollection<ProductCategoryMapping> ProductCategoryMappings { get; set; } = new List<ProductCategoryMapping>();
+
+    public string? SubCategoryName { get; set; }
+
+    public int? ParentID { get; set; }
+
+
+
+    public virtual ICollection<ProductCategoryMapping> ProductCategoryMappings { get; set; } = new List<ProductCategoryMapping>();
 }

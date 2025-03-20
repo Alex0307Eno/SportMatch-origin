@@ -47,7 +47,6 @@ body {
   font-family: var(--font-family);
   line-height: var(--line-height);
   color: var(--text-color);
-  background-color: var(--background);
 }
 
 .container {
@@ -58,20 +57,22 @@ body {
 
 /* 導航欄樣式 */
 .main-header {
-  background: white;
-  box-shadow: var(--shadow);
-  width: 100%;
-  z-index: 1000;
-  position: sticky; /* 固定在頁面頂部 */
-  top: 0;
-  left: 0;
+    background: white;
+    box-shadow: var(--shadow);
+    width: 100%;
+    z-index: 1000;
+    position: sticky; /* 固定在頁面頂部 */
+    top: 0;
+    left: 0;
 }
 
 .header-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: #331904;
+    color:white;
 }
 
 .logo {
@@ -88,7 +89,7 @@ body {
   display: flex;
   align-items: center;
   flex: 1;
-  justify-content: center;
+  justify-content: center;  
 }
 
 .main-nav ul {
@@ -473,6 +474,7 @@ body.dark-mode .btn-register:hover {
     box-shadow: var(--shadow);
 }
 
+
 /* 登入容器 */
 .login-container {
     width: 100%;
@@ -786,6 +788,7 @@ body.no-scroll {
     padding: 5px 10px; /* 內邊距 */
     font-size: 16px; /* 字體大小 */
     cursor: pointer; /* 滑鼠懸停顯示指標 */
+
     border-radius: 5px; /* 圓角邊框 */
     display: inline-flex; /* 使用 flex 來對齊圖標和文字 */
     align-items: center; /* 垂直居中 */

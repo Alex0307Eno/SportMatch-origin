@@ -619,8 +619,26 @@ function scrollToTop() {
         }
 
 
-    
 
+
+
+    /* Dark Mode */
+    body.dark-mode {
+        background-color: #121212;
+        color: white;
+        transition: background-color 0.8s ease, color 0.8s ease; /* 延長過渡時間 */
+    }
+
+        body.dark-mode #features,
+        body.dark-mode #venues {
+            background-color: #181818;
+            transition: background-color 0.8s ease; /* 延長過渡時間 */
+        }
+
+        body.dark-mode .feature-card {
+            background-color: #333;
+            transition: background-color 0.5s ease;
+        }
 
     /* 切換按鈕樣式 */
     #darkModeToggle {
@@ -639,13 +657,34 @@ function scrollToTop() {
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: background-color 0.5s, color 0.5s;
+        transition: background-color 0.5s ease, color 0.5s ease, transform 0.3s ease;
     }
 
-        #darkModeToggle:hover {
-            opacity: 0.8;
+    /* 改進按鈕的過渡效果 */
+    body.dark-mode #darkModeToggle {
+        background-color: white; /* 切換到白色 */
+        color: black;
+    }
 
+    #darkModeToggle:hover {
+        opacity: 0.8;
+        transform: scale(1.1);
+    }
+
+    /* 改進按鈕過渡效果 */
+    body.dark-mode .btn-primary {
+        background: linear-gradient(145deg, #333, #444);
+        color: white;
+        transition: background 0.3s ease;
+    }
+
+        body.dark-mode .btn-primary:hover {
+            background: linear-gradient(145deg, #444, #333);
+            transition: background 0.3s ease;
         }
+
+
+
 </style>
 
     <script src="~/js/site.js"></script>
@@ -669,7 +708,7 @@ function scrollToTop() {
         };
 
         function scrollFunction() {
-            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 1300) {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 1900) {
                 backToTopBtn.style.display = "block"; // 顯示按鈕
             } else {
                 backToTopBtn.style.display = "none"; // 隱藏按鈕

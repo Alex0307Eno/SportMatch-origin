@@ -128,12 +128,7 @@ function switchTab(tabName) {
     selectedItem.classList.add("active");
 }
 
-// 頁面加載時預設顯示商品管理的已上架商品
-window.onload = function () {
-    switchTab("product-management");
-    // 初始化已上架商品
-    switchTab("order-history");
-};
+
 
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -392,4 +387,65 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 });
+// 獲取商品資料
+function getProducts() {
+    fetch('/Back/GetProducts')  // 假設 API 路徑是這樣
+        .then(response => {
+            if (!response.ok) {
+                // 如果回應狀態碼不是 2xx，顯示錯誤
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json(); // 解析 JSON
+        })
+        .then(data => {
+            const productTable = document.getElementById('productTable');
+            productTable.innerHTML = ''; // 清空表格
+
+            if (data && data.length > 0) {
+                data.forEach(product => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product.productName}</td>
+                        <td>${product.price}</td>
+                        <td>${product.discount}</td>
+                        <td>${product.stock}</td>
+                        <td>${product.releaseDate}</td>
+                        <td>
+                            <button onclick="deleteProduct(${product.productID})">刪除</button>
+                        </td>
+                    `;
+                    productTable.appendChild(row);
+                });
+            } else {
+                alert('沒有商品資料');
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching products:', error);
+            alert('獲取商品資料時發生錯誤: ' + error.message);  // 顯示詳細錯誤訊息
+        });
+}
+
+// 用來刪除商品
+function deleteProduct(id) {
+    fetch(`/Back/DeleteProduct/${id}`, {
+        method: 'DELETE',
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('商品已刪除');
+                getProducts(); // 重新載入商品列表
+            } else {
+                alert(data.message); // 顯示錯誤訊息
+            }
+        })
+        .catch(error => {
+            console.error('Error deleting product:', error);
+            alert('刪除商品時發生錯誤');
+        });
+}
+// 頁面加載後獲取商品資料
+document.addEventListener('DOMContentLoaded', getProducts);
+
 

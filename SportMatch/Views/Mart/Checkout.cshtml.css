@@ -1,9 +1,19 @@
-﻿#CartItem {
+﻿@font-face {
+    font-family: 'openhuninn';
+    src: url('../image/MatchPage/jf-openhuninn-2.1.ttf');
+}
+
+#CartItem {
     border: 0px;    
     border-radius: 0.2rem;
 }
 
+#CheckoutTopContainer {
+    font-family: 'openhuninn';
+}
+
 .CheckoutContainer {
+    
     position: relative;
     transform: translate(-50%, 0);
     height: 50rem;
@@ -72,7 +82,7 @@
 .btnPlusMinus:hover,
 /*以下訂單頁*/
 .OrderSection {
-    background-color: #202020;
+    background-color: #190d02;
 }
 
 .OrangeBtnClass,
@@ -94,7 +104,7 @@
 /*以下訂單頁*/
 .OrderButton,
 .OrderFrame {
-    color: #ffffff;
+    color: ivory;
 }
 
 .backBtnClass {
@@ -102,17 +112,21 @@
     background-color: #6c757d;
 }
 
+.quantityText,
+.btnPlusMinus:hover {
+    background-color: #331904;
+}
 /* JS插入的HTML用CSS */
-.CartItem,
+.CartItem {
+    background-image: linear-gradient(to right, #4b2606, #331904);
+    border-radius: 0.2rem;
+    margin-bottom: 2px;
+}
+
 .btnPlusMinus,
 .btnPlusMinus:hover,
 .quantityText {
     border: 1px solid #fd7e14;
-    width: 99%;
-}
-
-.btnPlusMinus {
-    border: 0px;
 }
 
 .quantityText {

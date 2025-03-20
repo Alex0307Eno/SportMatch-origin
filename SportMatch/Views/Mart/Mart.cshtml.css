@@ -1,4 +1,9 @@
-﻿.modal {
+﻿@font-face {
+    font-family: 'openhuninn';
+    src: url('../image/MatchPage/jf-openhuninn-2.1.ttf');
+}
+
+.MainModal {
     background-color: rgba(0,0,0,0.65);
 }
 .container-fluid {
@@ -7,6 +12,7 @@
 }
 
 .MartContainer {
+    font-family: 'openhuninn';
     height: 72rem;
     width: 116.5rem;
 }
@@ -39,7 +45,7 @@ form input[type="radio"], form input[type="checkbox"], form label,
     .PriceText,
     .DiscountText,
     .PageButton,
-    .ProductsCard,
+    
     .numberPageButton,
     .numberPageButtonLink,
     .numberPageButtonLinkTake,
@@ -48,6 +54,20 @@ form input[type="radio"], form input[type="checkbox"], form label,
     .numberPageButtonLink:hover,
     .numberPageButtonLinkTake:hover {
         border: 1px solid #fd7e14;
+    }
+
+.HeartModal .modal-content,
+.ProductsCard {
+    background-image: linear-gradient(to right, #4b2606, #331904);
+}
+
+    .ProductsCard {        
+        border-top: 1px solid #150900;
+        border-left: 1px solid #150900;
+        box-shadow: -5px 5px 5px #150900, 5px 5px 5px #150900;
+    }
+    .ProductsCard:hover {        
+        border: none;
     }
 
 .ProductsCardImgBody {
@@ -60,29 +80,25 @@ select:focus {
 }
 
 /*配色整合*/
-
 .container-fluid,
-.HeartModal .modal-content,
-.MartContainer,
-/* 底下JS */
-.ModalContent {
+.MartContainer {
     background-color: #000000;
 }
 
-    select:focus,
-    .BootstrapChildItemClass,
-    /* 底下JS */
-    .BtnOrange,
-    .PriceText,
-    .CartButton,
-    .CloseButton,
-    .numberPageButtonLinkTake,
-    .PageButton:hover,
-    .numberPageButton:hover,
-    .numberPageButtonLink:hover,
-    .numberPageButtonLinkTake:hover {
-        background-color: #fd7e14;
-    }
+select:focus,
+.BootstrapChildItemClass,
+/* 底下JS */
+.BtnOrange,
+.PriceText,
+.CartButton,
+.CloseButton,
+.numberPageButtonLinkTake,
+.PageButton:hover,
+.numberPageButton:hover,
+.numberPageButtonLink:hover,
+.numberPageButtonLinkTake:hover {
+    background-color: #fd7e14;
+}
 
 .HeartModal .modal-title,
 .MartContainer,
@@ -92,7 +108,7 @@ select:focus {
 .PageButton,
 .numberPageButton,
 .numberPageButtonLink {
-    color: #ffffff;
+    color: ivory;
 }
 
     /* 底下JS */
@@ -116,7 +132,7 @@ select:focus {
     margin-top: auto;
 }
 
-.BodyRightField {
+.BodyRightField {    
     margin: 0 0 0 13px;
     width: 800rem;
 }
@@ -129,7 +145,7 @@ select:focus {
 .ProductsList {
     padding: 0 0 30px 0;
     margin: 0 1px 0 1px;
-    min-height:40%;
+    min-height:78.2%;
 }
 
 .BodyLiftField,
@@ -139,11 +155,20 @@ select:focus {
 .BootstrapItemClass.ListPage,
 .PageButton,
 .numberPageButton,
-.numberPageButtonLink {
+.numberPageButtonLink,
+.ModalContent {
     background-color: #190d02;
 }
 
+.DiscountText {
+    background-color: #331904;
+}
+
 /* JS插入的HTML用CSS */
+.ProductsList {
+    padding: 0 0 0 1rem;
+}
+
 .BtnOrange,
 .BtnOrangeDisabled,
 .DiscountText,
@@ -171,7 +196,6 @@ select:focus {
 }
 
 .ProductsCard {
-/*    border: 1px solid #653208;*/
     border-radius: 0.2rem;
     height: 100%;
     display: flex;
@@ -180,7 +204,6 @@ select:focus {
 }
 
 .ProductsCardImgBody {
-/*    border-radius: 0.2rem;*/
     width: 100%;
     height: 100%;
     display: flex;
@@ -188,13 +211,13 @@ select:focus {
 }
 
 .ProductsCardImg {
+    border-radius: 0.2rem;
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
 .DiscountText {
-    background-color: #190d02;
     color: #fd7e14;
 }
 
@@ -234,6 +257,9 @@ select:focus {
     .BodyLiftField {
         width: 85rem
     }
+    .ProductsList {
+        min-height: 79.5%;
+    }
 }
 
 
@@ -246,6 +272,9 @@ select:focus {
     }
     .BodyLiftField {
         width: 45rem
+    }
+    .ProductsList {
+        min-height: 82%;
     }
 }
 
@@ -263,10 +292,11 @@ select:focus {
         width: 20rem;
         overflow-x:auto;
     }
-
     .ProductsCardDiv {
         width: 20rem;
         height: 26.655rem;
     }
-
+    .ProductsList {
+        min-height: 84.1%;
+    }
 }

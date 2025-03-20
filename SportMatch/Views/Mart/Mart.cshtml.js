@@ -20,14 +20,14 @@ function HeartIconChange(button) {
         Icon.classList.remove('bi-heart');
         Icon.classList.add('bi-heart-fill');
         button.setAttribute('data-MyHeart', 'true');
-        Icon.style.color = "#FF007F";
+        Icon.style.color = "#fd7e14";
         ModalMessage.innerHTML = "已加入我的最愛";
     }
 
     Modal.show();
     setTimeout(function () {
         Modal.hide();
-    }, 450);
+    }, 700);
 }
 
 //加入購物車
@@ -44,7 +44,7 @@ function GetCartModalSuccess(CartExist) {
     GetCartModal.show();
     setTimeout(function () {
         GetCartModal.hide();
-    }, 450);
+    }, 700);
 }
 
 // 購物車localstorage傳送資料用
@@ -139,31 +139,9 @@ $("input[name='SubCategory']").change(function () {
     fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText);
 });
 
-// 維持當下頁數
-function fetchProductsNowPageCheck(_Page, _itemsPerPage, _orderByDesc, _categoryName, _subCategoryName) {
-    let nextPageButtons = document.querySelectorAll('.nextPageButton');
-    nextPageButtons.forEach(button => {
-        if (button.querySelector('.numberPageButtonLinkTake')) {
-            let nowPage = button.querySelector('.numberPageButtonLinkTake').innerText;
-            fetchProducts(nowPage, _itemsPerPage, _orderByDesc, _categoryName, _subCategoryName);
-        }
-    });
-}
-
-// 載入完成抓取商品資料
-document.addEventListener('DOMContentLoaded', function () {
-    fetchProducts();
-});
-
-// 價格大小排序   
-priceSort.addEventListener('change', function () {
-    fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText);
-});
-
-
+// 檢查視窗大小並傳入
 let windowWidth;
-// 視窗大小事件
-window.addEventListener('resize', function () {   
+function windowWidthCheck() {
     if (window.innerWidth < 1200) {
         windowWidth = 4
     }
@@ -176,7 +154,33 @@ window.addEventListener('resize', function () {
     else {
         windowWidth = 10;
     }
-    fetchProductsNowPageCheck(undefined, windowWidth, undefined, parentLabelText, subLabelText);
+    return windowWidth;
+}
+
+// 維持當下頁數
+function fetchProductsNowPageCheck(_Page, _itemsPerPage, _orderByDesc, _categoryName, _subCategoryName) {
+    let nextPageButtons = document.querySelectorAll('.nextPageButton');
+    nextPageButtons.forEach(button => {
+        if (button.querySelector('.numberPageButtonLinkTake')) {
+            let nowPage = button.querySelector('.numberPageButtonLinkTake').innerText;
+            fetchProducts(nowPage, windowWidthCheck(), _orderByDesc, _categoryName, _subCategoryName);          
+        }
+    });
+}
+
+// 載入完成抓取商品資料
+document.addEventListener('DOMContentLoaded', function () {
+    fetchProducts(1, windowWidthCheck());
+});
+
+// 價格大小排序   
+priceSort.addEventListener('change', function () {
+    fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText);
+});
+
+// 視窗大小事件
+window.addEventListener('resize', function () {   
+    fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText);
 });
 
 // 捕捉CSS隔離標籤
@@ -233,7 +237,7 @@ function renderProducts(products) {
 
         // 按鈕區塊
         const buttonDiv = document.createElement('div');
-        buttonDiv.className = 'CardButton d-flex';
+        buttonDiv.className = 'CardButton d-flex';        
 
         // 折扣按鈕
         if (parseInt(item.discount) > 0) {
@@ -251,6 +255,7 @@ function renderProducts(products) {
 
         // 價格按鈕
         const priceDiv = document.createElement('div');
+        priceDiv.className = 'me-auto';
         priceDiv.setAttribute('data-bs-toggle', 'modal');
         priceDiv.setAttribute('data-bs-target', `#ProductModal_${item.productID}`);
 
@@ -261,9 +266,15 @@ function renderProducts(products) {
         priceDiv.appendChild(priceText);
         buttonDiv.appendChild(priceDiv);
 
+        const pointerDiv = document.createElement('div');
+        pointerDiv.className = 'flex-grow-1';
+        pointerDiv.setAttribute('data-bs-toggle', 'modal');
+        pointerDiv.setAttribute('data-bs-target', `#ProductModal_${item.productID}`);
+        buttonDiv.appendChild(pointerDiv);
+
         // 加入購物車按鈕
         const cartButton = document.createElement('button');
-        cartButton.className = 'btn ms-auto';
+        cartButton.className = 'btn';
         cartButton.style.fontSize = '13px';
         cartButton.classList.add('CartButton');
         cartButton.setAttribute('data-ProductID', item.productID);
@@ -299,6 +310,7 @@ function renderProducts(products) {
         // 創建模態框
         const modalDiv = document.createElement('div');
         modalDiv.className = 'modal fade';        
+        modalDiv.classList.add('MainModal');        
         modalDiv.id = `ProductModal_${item.productID}`;
         modalDiv.tabIndex = '-1';
 
@@ -498,7 +510,7 @@ function updatePagination(totalPages, currentPage) {
             numberPageButtonLink.classList.add('numberPageButtonLink');
         }
         numberPageButtonLink.innerText = i;
-        numberPageButtonLink.onclick = () => fetchProducts(i);
+        numberPageButtonLink.onclick = () => fetchProducts(i, windowWidthCheck());
 
         numberPageButton.appendChild(numberPageButtonLink);
         paginationContainer.appendChild(numberPageButton);
@@ -511,7 +523,7 @@ function updatePagination(totalPages, currentPage) {
     nextPageButtonLink.className = 'page-link';
     nextPageButtonLink.classList.add('PageButton');
     nextPageButtonLink.innerHTML = '&raquo;';
-    nextPageButtonLink.onclick = () => fetchProducts(currentPage + 1);
+    nextPageButtonLink.onclick = () => fetchProducts(currentPage + 1, windowWidthCheck());
     nextPageButton.appendChild(nextPageButtonLink);
     paginationContainer.appendChild(nextPageButton);
 

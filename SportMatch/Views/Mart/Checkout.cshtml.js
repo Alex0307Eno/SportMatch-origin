@@ -462,7 +462,7 @@ function billPage(data) {
     orderFrame.appendChild(orderPageButtonSection);
 
     container.appendChild(orderFrame);
-
+        
     CheckoutTopContainer.appendChild(container);
 
     updateCartNumber(); //_Layout.js

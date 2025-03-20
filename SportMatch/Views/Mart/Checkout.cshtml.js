@@ -244,6 +244,18 @@ function generateRandomString(length) {
     }
     return result;
 }
+
+//檢查地址
+function taiwanAddressCheck() {
+    const addressRegex = /^(?=.*[A-Za-z0-9\u4e00-\u9fa5])([A-Za-z0-9\u4e00-\u9fa5]+(?:區|鄉|鎮|市)?(?:[巷弄街路大道街道段]\d{1,4})+號\d{1,4}.*)$/;
+    const addressInput = document.getElementById('HomeDeliveryAddress');
+    return addressRegex.test(addressInput.value);
+}
+function isCitySelected() {
+    let homeDeliveryCity = document.getElementById('HomeDeliveryCity');
+    return homeDeliveryCity.value && homeDeliveryCity.value !== "-- 縣 --";
+}
+
 // 結帳
 let checkoutNow = document.getElementById('checkoutNow');
 checkoutNow.addEventListener('click', function () {    
@@ -254,27 +266,36 @@ checkoutNow.addEventListener('click', function () {
     let _city = _cityElemant.value;
     let _addressElemant = document.getElementById("HomeDeliveryAddress");       
     let _address = _addressElemant.value;
+    let _userNameElement = document.getElementById('HomeDeliveryName')
+    let _userName = _userNameElement.value;
+    let _userMobileElement = document.getElementById('HomeDeliveryPhone')
+    let _userMobile = _userMobileElement.value;
     
     const cartCheckoutData = Cart.map(Item => ({
         id: Item.ID,
         quantity: Item.Quantity,        
         billNumber: _billNumber,
-        loggedInEmail: _loggedInEmail,
+        email: _loggedInEmail,
         address: _city + _address,
-        selectedPaymentMethod: _selectedPaymentMethod
+        selectedPaymentMethod: _selectedPaymentMethod,
+        userInputName: _userName,  
+        userInputMobile: _userMobile
+
     }));    
+    if (_selectedPaymentMethod === 'ComeHomepay') {
+        if (!isCitySelected()) {
+            console.log('結帳失敗：城市未選');
+            alert('請選擇有效的城市');
+            return;
+        }
+        if (!taiwanAddressCheck()) {
+            console.log('結帳失敗：地址錯誤');
+            alert('地址格式錯誤，請重新輸入');
+            return;
+        }
+    }
     fetchCheckout(cartCheckoutData);
 });
-//檢查地址
-function taiwanAddressCheck() {
-    const addressRegex = /^(?=.*[A-Za-z0-9\u4e00-\u9fa5])([A-Za-z0-9\u4e00-\u9fa5]+(?:區|鄉|鎮|市)?(?:[巷弄街路大道街道段]\d{1,4})?號\d{1,4}.*)$/;
-    const addressInput = document.getElementById('HomeDeliveryAddress');    
-    return addressRegex.test(addressInput.value);
-}
-function isCitySelected() {
-    let homeDeliveryCity = document.getElementById('HomeDeliveryCity');
-    return homeDeliveryCity.value && homeDeliveryCity.value !== "-- 縣 --";
-}
 
 // 發送資訊到交易用API
 let regex = /^產品ID \d+ 庫存不足$/
@@ -289,6 +310,7 @@ function fetchCheckout(cartCheckoutData) {
     })
         .then(response => response.json())
         .then(data => {            
+            console.log(data);
             if (Cart.length <= 0) {
                 console.log('結帳失敗：商品未選');
                 alert('請先選擇商品');
@@ -297,7 +319,7 @@ function fetchCheckout(cartCheckoutData) {
             {
                 if (regex.test(data.message)) {
                     console.log('結帳失敗：', data);
-                    alert('產品庫存不足，無法結帳');
+                    alert(`產品"${data.name}"庫存不足，無法結帳`);
                     return;
                 }
                 if (!_selectedPaymentMethod) {
@@ -306,14 +328,24 @@ function fetchCheckout(cartCheckoutData) {
                     return;
                 }
                 if (_selectedPaymentMethod === 'ComeHomepay') {
-                    if (!isCitySelected()) {
-                        console.log('結帳失敗：城市未選');
-                        alert('請選擇有效的城市');
+                    if (data.message == "尚未登錄姓名") {
+                        console.log('結帳失敗：姓名未登');
+                        alert('尚未登錄姓名，欲使用宅配請先輸入姓名');
                         return;
                     }
-                    if (!taiwanAddressCheck()) {
-                        console.log('結帳失敗：地址錯誤');
-                        alert('地址格式錯誤，請重新輸入');
+                    if (data.message == "姓名格式錯誤") {
+                        console.log('結帳失敗：姓名格式錯誤');
+                        alert('請以正確格式輸入姓名');
+                        return;
+                    }
+                    if (data.message == "尚未登錄電話") {
+                        console.log('結帳失敗：電話未登');
+                        alert('尚未登錄電話，欲使用宅配請先輸入電話');
+                        return;
+                    }
+                    if (data.message == "電話格式錯誤") {
+                        console.log('結帳失敗：手機號碼格式錯誤');
+                        alert('請以正確格式輸入手機號碼');
                         return;
                     }
                 }

@@ -386,7 +386,7 @@ function renderProducts(products) {
 
         const stockButton = document.createElement('div');
         item.stock > 0 ? stockButton.classList.add('BtnOrange') : stockButton.classList.add('BtnOrangeDisabled');
-        stockButton.textContent = item.stock > 0 ? '有貨' : '缺貨';
+        stockButton.textContent = item.stock > 0 ? `貨量 : ${item.stock}` : '缺貨';
         stockInfo.appendChild(stockButton);
 
         const detailInfo = document.createElement('p');

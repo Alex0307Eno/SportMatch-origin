@@ -327,9 +327,9 @@ namespace SportMatch.Controllers
             }
         }
 
-        //
+        // 獲得切換下一頁後的資料
         [HttpGet]
-        public JsonResult GetSelectionNextPage(int page, string selectType, int pageSize = 6)
+        public JsonResult GetSelectionNextPage(int page, int pageSize = 6)
         {
             List<SelectViewModel>? data;
             var filterTeam = HttpContext.Session.GetString("filterTeam");
@@ -338,7 +338,7 @@ namespace SportMatch.Controllers
             {
                 data = JsonConvert.DeserializeObject<List<SelectViewModel>>(filterTeam);
             }
-            else 
+            else
             {
                 data = JsonConvert.DeserializeObject<List<SelectViewModel>>(filterPlayer);
             }
@@ -382,6 +382,63 @@ namespace SportMatch.Controllers
             {
                 return Json(new { message = "未找到對應的運動" });
             }
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ApplyTask(string applyName, string applyNote, string applyType)
+        {
+            string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
+            var UserInfoForSuggest = (from u in _context.Users
+                                      join t in _context.Teams
+                                      on u.UserId equals t.UserId
+                                      where u.Email.ToString().ToLower() == UserInfo.ToLower()
+                                      select new { u.UserId, t.TeamId }).ToList();
+            Apply tmp = new Apply();
+            switch (applyType)
+            {
+                case "申請確認":
+                    var TeamInfo = (from t in _context.Teams where t.TeamName == applyName select t.TeamId).ToList();
+                    var CheckTeam = (from a in _context.Applies where a.UserId == UserInfoForSuggest[0].UserId && a.TeamId == TeamInfo[0] select a).ToList();
+                    if (CheckTeam.Count() != 0)
+                    {
+                        return Json(new { success = false, message = "資料已存在" });
+                    }
+
+                    tmp.UserId = UserInfoForSuggest[0].UserId;
+                    tmp.TeamId = TeamInfo[0];
+                    tmp.Memo = applyNote;
+                    tmp.Status = "申請中";
+                    _context.Add(tmp);
+                    await _context.SaveChangesAsync();
+                    return Json(new { success = true, message = "資料已儲存" });
+                case "招募確認":
+                    var PlayerInfo = (from u in _context.Users where u.Name == applyName select u.UserId).ToList();
+                    var CheckPlayer = (from a in _context.Applies where a.UserId == PlayerInfo[0] && a.TeamId == UserInfoForSuggest[0].TeamId select a).ToList();
+                    if (CheckPlayer.Count() != 0)
+                    {
+                        return Json(new { success = false, message = "資料已存在" });
+                    }
+
+                    tmp.UserId = PlayerInfo[0];
+                    tmp.TeamId = UserInfoForSuggest[0].TeamId;
+                    tmp.Memo = applyNote;
+                    tmp.Status = "申請中";
+                    _context.Add(tmp);
+                    await _context.SaveChangesAsync();
+                    return Json(new { success = true, message = "資料已儲存" });                   
+
+                default:
+                    break;
+            }
+
+            ViewBag.AN1 = applyName;
+            ViewBag.AN2 = applyNote;
+            // applyName = modal-apply-name 內的值
+            // applyNote = exampleTextarea 內的值
+
+            // 你可以在這裡處理邏輯，例如儲存到資料庫
+            return View("MatchPage");
         }
     }
 }

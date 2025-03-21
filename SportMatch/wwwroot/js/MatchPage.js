@@ -10,7 +10,8 @@ $(document).ready(function () {
         getUserInfoFromlocalStorage();
         sessionStorage.setItem("hasRunUserInfo", "true"); // **設定標記，確保只執行一次**
     }
-
+    getApply()
+    ExpandAccordion()
 });
 
 // 從localStorage獲取使用者的資訊
@@ -77,6 +78,15 @@ function loadEvent() {
         }
     });
 }
+
+// 
+function ExpandAccordion() {
+    $(".forCheckCategory").on('click', function () {
+        $("#Area").addClass("show");
+        $("#Role").addClass("show");
+    })
+}
+
 
 // 切換配對類型更新篩選列
 function matchTypeChangeOrNot() {
@@ -282,7 +292,7 @@ function getSelectionCard(page) {
                     console.log(response)
                     let type;
                     // 判斷回傳的是User還是Team
-                    if (response.cards[0].userID != 0) {                        
+                    if (response.cards[0].userID != 0) {
                         playerModalLabel.text("個人簡介");
                         applyModalLabel.text("招募確認");
                         type = "user";
@@ -321,7 +331,7 @@ function getSelectionCard(page) {
                  `);
                         });
                     }
-                    else if (response.cards[0].teamID != 0) {                        
+                    else if (response.cards[0].teamID != 0) {
                         playerModalLabel.text("隊伍簡介");
                         applyModalLabel.text("申請確認");
                         type = "Team";
@@ -390,7 +400,7 @@ function getSelectionCard(page) {
                         </a>
                     </li>
                 `);
-                }               
+                }
             }
         });
     });
@@ -398,18 +408,10 @@ function getSelectionCard(page) {
 
 // 送出篩選後切換分頁
 function getSelectionCardNextPage(page) {
-
-    if (($('.Memo').text().indexOf("個人")) == 0) {
-        selectType = "Player"
-    }
-    else {
-        selectType = "Team"
-    }
-    console.log(selectType);
     $.ajax({
         url: "/Match/GetSelectionNextPage",
         type: "GET",
-        data: { page: page, selectType: selectType },
+        data: { page: page },
         success: function (response) {
             console.log(response)
             const playerModalLabel = $("#playerModalLabel");
@@ -521,7 +523,7 @@ function updatePagination(totalPages, activePage, totalItems, typeOfCard) {
             </a>
         </li>
         <li class="page-item active" style="z-index:0;">
-            <span class="page-link" style="background-color: #212121;border: 1px solid #fd7e14;">${activePage} / ${totalPages}</span>
+            <span class="page-link" style="border: 1px solid #fd7e14;">${activePage} / ${totalPages}</span>
         </li>
         <li class="page-item ${nextDisabled}">
             <a class="page-link" href="#" onclick="getSelectionCardNextPage(${activePage + 1}); return false;">
@@ -538,7 +540,7 @@ function updatePagination(totalPages, activePage, totalItems, typeOfCard) {
             </a>
         </li>
         <li class="page-item active" style="z-index:0;">
-            <span class="page-link" style="background-color: #212121;border: 1px solid #fd7e14;">${activePage} / ${totalPages}</span>
+            <span class="page-link" style="border: 1px solid #fd7e14;">${activePage} / ${totalPages}</span>
         </li>
         <li class="page-item ${nextDisabled}">
             <a class="page-link" href="#" onclick="loadCards(${activePage + 1}); return false;">
@@ -548,6 +550,52 @@ function updatePagination(totalPages, activePage, totalItems, typeOfCard) {
     `);
     }
 
+}
+
+// Apply彈窗資訊獲取
+function getApply() {
+    $("#ApplyForm").on('submit', function (event) {
+        event.preventDefault(); // 防止表單刷新
+        let applyName = $("#modal-apply-name").text();
+        let applyNote = $("#exampleTextarea").val();
+        let applyType = $("#applyModalLabel").text();
+        console.log(applyName);
+        console.log(applyNote);
+        // 動態加入 hidden input
+        $(this).append(`<input type="hidden" name="applyName" value="${applyName}">`);
+        $(this).append(`<input type="hidden" name="applyNote" value="${applyNote}">`);
+        $(this).append(`<input type="hidden" name="applyType" value="${applyType}">`);
+
+        $.ajax({
+            url: "/Match/ApplyTask",
+            type: "POST",
+            data: { applyName: applyName, applyNote: applyNote, applyType: applyType },
+            success: function (response) {
+                console.log("後端回應:", response);
+                $("#playerApply").css("display", "none");
+                $("#customConfirm").css("display", "block");
+                if (response.message == "資料已存在") {
+                    $("#confirmMessage").text("已有申請紀錄！");
+                }
+                else {
+                    $("#confirmMessage").text("申請成功！");
+                }
+                // 清空 textarea
+                $("#exampleTextarea").val("");
+
+                // 關閉 Modal
+                $("#playerApply").modal("hide");
+            },
+            error: function (xhr, status, error) {
+                console.error("發生錯誤:", error);
+            }
+        });
+    });
+}
+
+// 
+function closeConfirm() {
+    $("#customConfirm").css("display", "none");
 }
 
 // 更新模態視窗內容

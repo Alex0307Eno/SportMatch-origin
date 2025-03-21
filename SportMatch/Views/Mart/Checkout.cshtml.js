@@ -250,7 +250,8 @@ function taiwanAddressCheck() {
 }
 function isCitySelected() {
     let homeDeliveryCity = document.getElementById('HomeDeliveryCity');
-    return homeDeliveryCity.value && homeDeliveryCity.value !== "-- 縣 --";
+    let cityValue = homeDeliveryCity.value
+    return cityValue.replace(/&nbsp;/g, '') && cityValue.replace(/&nbsp;/g, '') !== "-- 縣 --";
 }
 
 // 結帳
@@ -272,7 +273,7 @@ checkoutNow.addEventListener('click', function () {
         quantity: Item.Quantity,        
         billNumber: _billNumber,
         email: _loggedInEmail,
-        address: _city + _address,
+        address: _city.replace(/&nbsp;/g, '') + _address,
         selectedPaymentMethod: _selectedPaymentMethod,
         userInputName: _userName,  
         userInputMobile: _userMobile

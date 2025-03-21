@@ -50,41 +50,41 @@
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="ShippingMethod" id="SevenelevenPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="SevenelevenPickup" class="ms-2 Pickuptext">7-11取貨</label>
-                            <button class="btn btn-outline ms-auto PickupBtn" id="SevenelevenPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" onclick="electronicMapSeven()" disabled>取貨店家</button>
+                            <button class="btn btn-outline ms-auto PickupBtn" id="SevenelevenPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" onclick="electronicMapSeven()" disabled>選擇取貨店家</button>
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="ShippingMethod" id="FamilymartPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="FamilymartPickup" class="ms-2 Pickuptext">全家取貨</label>
-                            <button class="btn btn-outline ms-auto PickupBtn" id="FamilymartPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" onclick="electronicMapFami()" disabled>取貨店家</button>
+                            <button class="btn btn-outline ms-auto PickupBtn" id="FamilymartPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" onclick="electronicMapFami()" disabled>選擇取貨店家</button>
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="ShippingMethod" id="HomeDeliveryPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="HomeDeliveryPickup" class="ms-2 Pickuptext">宅配到府</label>
-                            <div class="d-flex ms-auto w-50">
+                            <div class="d-flex ms-auto PickupBtn">
                                 <input type="text" class="form-control" id="HomeDeliveryName" placeholder="姓名" for="HomeDeliveryPickup" disabled />
                                 <input type="text" class="form-control" id="HomeDeliveryPhone" placeholder="電話" for="HomeDeliveryPickup" disabled />
                             </div>
                         </div>
                         <div class="ms-2 d-flex align-items-center mb-3">
                             <div class="w-50">
-                                <select id="HomeDeliveryCity" name="city" class="form-control" disabled >
-                                    <option value=""disabled selected>-- 縣 --</option>
-                                    <option value="台北市">台北市</option>
-                                    <option value="新北市">新北市</option>
-                                    <option value="桃園市">桃園市</option>
-                                    <option value="台中市">台中市</option>
-                                    <option value="台南市">台南市</option>
-                                    <option value="高雄市">高雄市</option>
-                                    <option value="基隆市">基隆市</option>
-                                    <option value="新竹市">新竹市</option>
-                                    <option value="嘉義市">嘉義市</option>
-                                    <option value="宜蘭縣">宜蘭縣</option>
-                                    <option value="屏東縣">屏東縣</option>
-                                    <option value="台東縣">台東縣</option>
-                                    <option value="花蓮縣">花蓮縣</option>
-                                    <option value="澎湖縣">澎湖縣</option>
-                                    <option value="金門縣">金門縣</option>
-                                    <option value="連江縣">連江縣</option>
+                                <select id="HomeDeliveryCity" name="city" class="form-control text-center" disabled >
+                                    <option value="" disabled selected>-- 縣 --&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="台北市">台北市&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="新北市">新北市&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="桃園市">桃園市&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="台中市">台中市&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="台南市">台南市&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="高雄市">高雄市&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="基隆市">基隆市&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="新竹市">新竹市&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="嘉義市">嘉義市&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="宜蘭縣">宜蘭縣&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="屏東縣">屏東縣&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="台東縣">台東縣&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="花蓮縣">花蓮縣&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="澎湖縣">澎湖縣&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="金門縣">金門縣&nbsp;&nbsp;&nbsp;</option>
+                                    <option value="連江縣">連江縣&nbsp;&nbsp;&nbsp;</option>
                                 </select>
                             </div>
                             <input type="text" class="form-control" id="HomeDeliveryAddress" placeholder="地址" for="HomeDeliveryPickup" disabled />

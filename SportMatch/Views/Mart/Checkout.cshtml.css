@@ -54,7 +54,11 @@
 
 .PickupBtn {
     border-color: #fd7e14;    
-    width: 50%;
+    width: 66%;
+}
+
+::placeholder {
+    text-align: center;
 }
 
 #NoDiscountPrice {
@@ -200,7 +204,7 @@
 
 @media screen and (max-width: 1215px) {
     body {
-        overflow: auto;
+        overflow-x: auto;
     }
 
     .CheckoutContainer {

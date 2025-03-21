@@ -3,58 +3,42 @@ let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
 let _myHeartUserEmail = localStorage.getItem("loggedInEmail");
 
 // 加入我的最愛
-function HeartIconChange(IsModal, productID, FetchStorage) {    
+function HeartIconChange(productID) {    
     let MyHeartIcon = document.getElementById('ModalHeartIcon_' + productID);
     let HeartModal = new bootstrap.Modal(document.getElementById('HeartModal'));
     let HeartModalMessage = document.getElementById('HeartModalMessage');
+    console.log(MyHeartIcon.classList.contains('bi-heart-fill'))
 
-    if (IsModal == "buttonClick") {
-        if (FetchStorage == 'fill(not)') {
+        if (MyHeartIcon.classList.contains('bi-heart-fill')) {
             MyHeartIcon.classList.remove('bi-heart-fill');
             MyHeartIcon.classList.add('bi-heart');
+            fetchFavorite(productID);
             MyHeartIcon.style.color = "#FFFFFF";
             HeartModalMessage.innerHTML = "已從我的最愛移除";
             HeartModal.show();
         } else {
             MyHeartIcon.classList.remove('bi-heart');
             MyHeartIcon.classList.add('bi-heart-fill');
+            fetchFavorite(productID);
             MyHeartIcon.style.color = "#fd7e14";
             HeartModalMessage.innerHTML = "已加入我的最愛";
             HeartModal.show();
         }
-    }
-    if (IsModal != "buttonClick") {
-        if (FetchStorage == 'fill') {
-            MyHeartIcon.classList.remove('bi-heart');
-            MyHeartIcon.classList.add('bi-heart-fill');
-            MyHeartIcon.style.color = "#fd7e14";            
-        } else {
-            MyHeartIcon.classList.remove('bi-heart-fill');
-            MyHeartIcon.classList.add('bi-heart');
-            MyHeartIcon.style.color = "#FFFFFF";
-        }
-    }
     setTimeout(function () {
         HeartModal.hide();
     }, 700);
 }
-function fetchFavorite(_isModal, _myHeartProductsID) {
+function fetchFavorite(_myHeartProductsID) {
     fetch('/api/Favorite', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            isModal: _isModal,
             myHeartProductsID: _myHeartProductsID,
             myHeartUserEmail: _myHeartUserEmail
         })
     })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data)
-            HeartIconChange(_isModal, _myHeartProductsID, data.storage);
-        })
 }
 
 //加入購物車
@@ -123,16 +107,17 @@ let priceSort = document.getElementById('PriceSort');
 
 
 // 分頁
-function fetchProducts(page = 1, itemsPerPage = 10, orderByDesc = priceSort.value, categoryName = "全部", subCategoryName = ['無']/*, myHeartUserEmail = _myHeartUserEmail*/) {
+function fetchProducts(page = 1, itemsPerPage = 10, orderByDesc = priceSort.value, categoryName = "全部", subCategoryName = ['無'], myHeartUserEmail = _myHeartUserEmail) {
     let subCategoryNamesStr = subCategoryName.join(',') || '';
     //console.log(page, itemsPerPage, orderByDesc, categoryName, subCategoryName)
     //console.log(subCategoryNamesStr)
     // 字串部分需為C#端參數名稱
-    fetch(`/api/products?page=${page}&itemsPerPage=${itemsPerPage}&orderByDesc=${orderByDesc}&_categoryName=${categoryName}&_subCategoryName=${subCategoryNamesStr}`)
+    fetch(`/api/products?page=${page}&itemsPerPage=${itemsPerPage}&orderByDesc=${orderByDesc}&_categoryName=${categoryName}&_subCategoryName=${subCategoryNamesStr}&_myHeartUserEmail=${myHeartUserEmail}`)
         .then(response => response.json())
         .then(data => {
-            renderProducts(data.products/*, data.favoriteQueryStorage*/);  // 渲染商品
+            renderProducts(data.products);  // 渲染商品
             updatePagination(data.totalPages, data.currentPage);  // 更新分頁按鈕
+            console.log(data.products)
         })
 }
 
@@ -227,7 +212,7 @@ function addCssIsolationElement() {
 }
 
 //以下HTML
-function renderProducts(products, favoriteQueryStorage) {
+function renderProducts(products/*, _favoriteQueryStorage*/) {
     const productContainer = document.querySelector('.ProductsList');
     productContainer.innerHTML = ''; // 清空容器
 
@@ -264,7 +249,7 @@ function renderProducts(products, favoriteQueryStorage) {
 
         // 按鈕區塊
         const buttonDiv = document.createElement('div');
-        buttonDiv.className = 'CardButton d-flex';        
+        buttonDiv.className = 'CardButton d-flex';
 
         // 折扣按鈕
         if (parseInt(item.discount) > 0) {
@@ -336,8 +321,8 @@ function renderProducts(products, favoriteQueryStorage) {
 
         // 創建模態框
         const modalDiv = document.createElement('div');
-        modalDiv.className = 'modal fade';        
-        modalDiv.classList.add('MainModal');        
+        modalDiv.className = 'modal fade';
+        modalDiv.classList.add('MainModal');
         modalDiv.id = `ProductModal_${item.productID}`;
         modalDiv.tabIndex = '-1';
 
@@ -346,7 +331,7 @@ function renderProducts(products, favoriteQueryStorage) {
 
         const modalContent = document.createElement('div');
         modalContent.className = 'modal-content';
-        modalContent.classList.add('ModalContent');        
+        modalContent.classList.add('ModalContent');
 
         // Modal Header
         const modalHeader = document.createElement('div');
@@ -395,17 +380,15 @@ function renderProducts(products, favoriteQueryStorage) {
         const favoriteButton = document.createElement('button');
         favoriteButton.className = 'btn mb-4 ms-auto fs-5';
         favoriteButton.setAttribute('data-ProductID', item.productID);
-        favoriteButton.onclick = function () { fetchFavorite("buttonClick", item.productID) };
-
+        favoriteButton.onclick = function () { HeartIconChange(item.productID) };
+        
         const heartIcon = document.createElement('i');
-        //heartIcon.className = `bi ${favoriteQueryStorage == "nuel" ? "bi-heart" : "bi-heart-fill"}`;
-        //heartIcon.style.color = `${favoriteQueryStorage == "nuel" ? "#ffffff" : "#fd7e14"}`;
-        heartIcon.className = `bi bi-heart`;
-        heartIcon.style.color = `#ffffff`;
+        heartIcon.className = `bi ${item.storage == "fill" ? "bi-heart-fill" : "bi-heart"}`;
+        heartIcon.style.color = `${item.storage == "fill" ? "#fd7e14" : "#ffffff"}`;
         heartIcon.id = `ModalHeartIcon_${item.productID}`;
 
         favoriteButton.appendChild(heartIcon);
-
+       
         // 商品資訊
         const priceInfo = document.createElement('p');
         priceInfo.textContent = `價格:${item.price}`;

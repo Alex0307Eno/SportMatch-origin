@@ -19,7 +19,6 @@ namespace SportMatch.Controllers
 
         public class FavoriteInfo
         {
-            public string isModal { get; set; }
             public int myHeartProductsID { get; set; }
             public string myHeartUserEmail { get; set; }
         }
@@ -36,6 +35,8 @@ namespace SportMatch.Controllers
 
                 var existingFavorite = await MartDb.ProductFavorite
                     .FirstOrDefaultAsync(pf => pf.ProductID == favorites.myHeartProductsID && pf.UserID == FavoriteUserEmailLinqResult);
+                Console.WriteLine(JsonConvert.SerializeObject(existingFavorite, Formatting.Indented));
+
 
                 using (var transaction = await MartDb.Database.BeginTransactionAsync())
                 {
@@ -43,9 +44,6 @@ namespace SportMatch.Controllers
                     {
                         // 如果兩者都對應，則刪除該記錄
                         MartDb.ProductFavorite.Remove(existingFavorite);
-                        Console.WriteLine(JsonConvert.SerializeObject(new { existingFavorite, status = "del" }, Formatting.Indented));
-
-
                     }
                     else
                     {
@@ -56,21 +54,13 @@ namespace SportMatch.Controllers
                             UserID = FavoriteUserEmailLinqResult
                         };
                         MartDb.ProductFavorite.Add(ProductFavoriteInfo);
-                        Console.WriteLine(JsonConvert.SerializeObject(new { ProductFavoriteInfo, status = "fill" }, Formatting.Indented));
                     }
 
-                    if (favorites.isModal != "buttonClick")
-                    {
-                        // 提交交易
-                        await MartDb.SaveChangesAsync();
-                        await transaction.CommitAsync();
-                        // 如果進行了交易的結果是空或是滿
-                        return Ok(new { storage = existingFavorite != null ? "nuel(not)" : "fill(not)" });
-                    }
-                    else {
-                        // 如果只是modal打開就判斷有或沒有
-                        return Ok(new { storage = existingFavorite != null ? "fill" : "nuel" });
-                    }
+                    // 提交交易
+                    await MartDb.SaveChangesAsync();
+                    await transaction.CommitAsync();
+                    // 交易結果是空或是滿
+                    return Ok(new { storage = existingFavorite != null ? "nuel" : "fill" });
                 }
             }
             catch (Exception ex)

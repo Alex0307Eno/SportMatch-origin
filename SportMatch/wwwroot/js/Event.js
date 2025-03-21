@@ -67,7 +67,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderCalendar();
 });
-//日曆區跟隨滑鼠滾動
 //寫jquery在原頁面
 //倒數計時器
 document.addEventListener("DOMContentLoaded", function () {
@@ -120,8 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     console.log("Event.js 成功載入！");
 
-    const itemsPerPage = 3; // 每頁顯示的賽事數量
-    let currentPage = 1;
+    const itemsPerPage = 5; // 每頁顯示的賽事數量
+    let currentPage = 1; 
     const eventsContainer = document.getElementById("events-container");
     const paginationContainer = document.getElementById("MyPagination");
     const eventItems = Array.from(document.querySelectorAll(".event-item"));
@@ -129,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
     function renderPagination() {
         paginationContainer.innerHTML = ""; // 先清空按鈕
 
-        const totalVisibleButtons = 7; // 固定按鈕顯示數量，包括 `...`
+        const totalVisibleButtons = 7; // 固定按鈕顯示數量，包括 ...
 
         // 建立「上一頁」按鈕
         const prevBtn = document.createElement("button");
@@ -144,15 +143,15 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         paginationContainer.appendChild(prevBtn);
 
-        // ✅ 修正邏輯，處理當 totalPages < 7 的情況
+        //修正邏輯，處理當 totalPages < 7 的情況
         let startPage, endPage;
 
         if (totalPages < 7) {
-            // ✅ 如果總頁數小於 7，直接顯示所有頁碼，沒有 `...`
+            //如果總頁數小於 7，直接顯示所有頁碼，沒有 `...`
             startPage = 1;
             endPage = totalPages;
         } else {
-            // ✅ 原本的邏輯，當總頁數大於等於 7 才使用 `...`
+            //原本的邏輯，當總頁數大於等於 7 才使用 `...`
             if (currentPage <= 3) {
                 startPage = 1;
                 endPage = 5;
@@ -192,18 +191,18 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         paginationContainer.appendChild(nextBtn);
 
-        // ✅ 先移除舊的 "共 xx 筆資料"
+        // 先移除舊的 "共 xx 筆資料"
         const oldTotalRecords = document.querySelector(".total-records");
         if (oldTotalRecords) {
             oldTotalRecords.remove();
         }
 
-        // ✅ 新增「共 xx 筆資料」的顯示區塊
+        //新增「共 xx 筆資料」的顯示區塊
         const totalRecordsText = document.createElement("span");
         totalRecordsText.innerText = `共 ${eventItems.length} 筆資料`;
         totalRecordsText.classList.add("total-records");
 
-        // ✅ 放到「下一頁」按鈕的右邊
+        //放到「下一頁」按鈕的右邊
         paginationContainer.appendChild(totalRecordsText);
     }
 
@@ -259,7 +258,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     let currentIndex = 0;
 
-    // 更新畫廊顯示和指示器樣式
+    // 更新輪播顯示和指示器樣式
     function updateCarousel() {
         const itemWidth = items[0].clientWidth;
         track.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
@@ -290,4 +289,10 @@ document.addEventListener("DOMContentLoaded", function () {
         nextButton.click();
     }, 8000);
     updateCarousel();
-
+//彈窗開啟 / 關閉
+function openModal() {
+    document.getElementById("JoincustomModal").style.display = "flex";
+}
+function closeModal() {
+    document.getElementById("JoincustomModal").style.display = "none";
+}

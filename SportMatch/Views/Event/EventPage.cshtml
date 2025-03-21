@@ -16,7 +16,7 @@
     <div class="background">
         <div class="Eventcontainer">
                 <div class="left">
-                    <!--篩選賽事+下拉式選單  -->
+                    <!--篩選賽事+下拉式選單-->
                     <div class="filter-section">
                         <h2>篩選賽事:</h2>
                         <div class="dropdowns">
@@ -110,13 +110,28 @@
                                     <p>比賽日期:@countdownData.EventDate</p>
                                 </div>
                                 <h1 class="countdown" data-target-time="@targetTimestamp"></h1>
-                            <button class="join-btn" id="join-btn_@countdownData.Id">立即報名</button>
+                            <!-- 按鈕開啟報名彈窗 -->
+                            <button class="join-btn" id="join-btn_@countdownData.Id" onclick="openModal()">立即報名</button>
                             </div>
                         }
                     </div>
                 </div>
-
             <div class="right">
+                <!--輪播圖片 -->
+                <div class="EventCarousel">
+                    <h5 class="toggle-button">焦點新聞 ⇧</h5>
+                    <div class="EventCarousel-track">
+                        <img src="~/image/EventPicture/second_01.jpg" alt="圖片1" class="EventCarousel-item">
+                        <img src="~/image/EventPicture/second_02.jpg" alt="圖片2" class="EventCarousel-item">
+                        <img src="~/image/EventPicture/second_03.jpg" alt="圖片3" class="EventCarousel-item">
+                        <img src="~/image/EventPicture/second_03.jpg" alt="圖片4" class="EventCarousel-item">
+                        <img src="~/image/EventPicture/second_04.jpg" alt="圖片5" class="EventCarousel-item">
+                        <img src="~/image/EventPicture/second_05.jpg" alt="圖片6" class="EventCarousel-item">
+                        <img src="~/image/EventPicture/second_06.jpg" alt="圖片7" class="EventCarousel-item">
+                    </div>
+                    <button class="EventCarousel-button prev">❮</button>
+                    <button class="EventCarousel-button next">❯</button>
+                </div>
                 <!--日曆區 -->
                 <div class="calendar">
                     <div class="calendar-header">
@@ -129,53 +144,55 @@
                     </div>
                     <div class="calendar-days"></div>
                 </div>
-                <!--輪播圖片 -->
-                <div class="EventCarousel">
-                    <h5 class="toggle-button">焦點新聞▼</h5>
-                    <div class="EventCarousel-track">
-                        <img src="~/image/EventPicture/second_01.jpg" alt="圖片1" class="EventCarousel-item">
-                        <img src="~/image/EventPicture/second_02.jpg" alt="圖片2" class="EventCarousel-item">
-                        <img src="~/image/EventPicture/second_03.jpg" alt="圖片3" class="EventCarousel-item">
-                        <img src="~/image/EventPicture/second_03.jpg" alt="圖片4" class="EventCarousel-item">
-                        <img src="~/image/EventPicture/second_04.jpg" alt="圖片5" class="EventCarousel-item">
-                        <img src="~/image/EventPicture/second_05.jpg" alt="圖片6" class="EventCarousel-item">
-                        <img src="~/image/EventPicture/second_06.jpg" alt="圖片7" class="EventCarousel-item">
-                    </div>
-                    <button class="EventCarousel-button prev">❮</button>
-                    <button class="EventCarousel-button next">❯</button>
-                    <div class="EventCarousel-indicators">
-                        <button class="EventIndicator" data-index="0"></button>
-                        <button class="EventIndicator" data-index="1"></button>
-                        <button class="EventIndicator" data-index="2"></button>
-                        <button class="EventIndicator" data-index="3"></button>
-                        <button class="EventIndicator" data-index="4"></button>
-                        <button class="EventIndicator" data-index="5"></button>
-                        <button class="EventIndicator" data-index="6"></button><br>
-                    </div>
-                </div>
             </div>
+        </div>
+    </div>
+    <!-- 報名彈窗 -->
+    <div id="JoincustomModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()">&times;</span>
+            <h2>報名表單</h2>
+            <form action="#" method="post">
+                <label for="name">姓名：</label>
+                <input type="text" id="name" name="name" required><br><br>
+
+                <label for="id">身分證字號：</label>
+                <input type="text" id="id" name="id" required><br><br>
+
+                <label for="phone">手機號碼：</label>
+                <input type="tel" id="phone" name="phone" required><br><br>
+
+                <label for="email">Email：</label>
+                <input type="email" id="email" name="email" required><br><br>
+
+                <label>性別：</label>
+                <input type="radio" id="male" name="gender" value="男" required>
+                <label for="male">男</label>
+                <input type="radio" id="female" name="gender" value="女" required>
+                <label for="female">女</label><br><br>
+
+                <label for="birthdate">出生年月日：</label>
+                <input type="date" id="birthdate" name="birthdate" required><br><br>
+
+                <h3>緊急聯絡人資訊</h3>
+                <label for="emergency_name">姓名：</label>
+                <input type="text" id="emergency_name" name="emergency_name" required><br><br>
+
+                <label for="emergency_phone">電話：</label>
+                <input type="tel" id="emergency_phone" name="emergency_phone" required><br><br>
+
+                <label for="relationship">與報名者關係：</label>
+                <input type="text" id="relationship" name="relationship" required><br><br>
+
+                <button class="btn btn-primary" type="submit">報名</button>
+                <button class="btn btn-primary" type="reset">取消報名</button>
+            </form>
         </div>
     </div>
 </body>
 <script defer>
     var markedDates = @Html.Raw(JsonSerializer.Serialize(Model?.Select(e => e.EventDate.ToString("yyyy-MM-dd")) ?? new List<string>()))
-    //日曆區滑鼠滾動
-    let targetY = 0; // 目標 Y 軸位置
-    let currentY = 0; // 當前 Y 軸位置
-    const easing = 0.1; // 緩動係數（越小越慢）
-    const calendar = document.querySelector('.calendar');
 
-    window.addEventListener('scroll', () => {
-        targetY = window.pageYOffset; // 設定目標位置
-    });
-    // 動畫函數
-    function smoothScroll() {
-        currentY += (targetY - currentY) * easing; // 讓 currentY 慢慢接近 targetY
-        calendar.style.transform = `translateY(${currentY}px)`;
-        requestAnimationFrame(smoothScroll); // 持續更新動畫
-    }
-    // 啟動動畫
-    smoothScroll();
 </script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/Event.js" defer></script>
@@ -191,14 +208,58 @@
                 $(".EventCarousel-button").fadeOut(300); // 按鈕淡出
             } 
             else {
-                carousel.animate({ height: "200px" }, 500); // 展開至 n px (可調整)
+                carousel.animate({ height: "250px" }, 500); // 展開至 n px (可調整)
                 $(".EventCarousel-button").fadeIn(300); // 按鈕淡入
             }
             // 切換箭頭文字
-            let arrow = $(this).text() === "焦點新聞▼" ? "焦點新聞▲" : "焦點新聞▼";
+                                    let arrow = $(this).text() === "焦點新聞 ⇩" ? "焦點新聞 ⇧" : "焦點新聞 ⇩";
             $(this).text(arrow);
         });
     });
+            document.addEventListener("DOMContentLoaded", () => {
+            const calendar = document.querySelector('.calendar');
+            const footer = document.querySelector('.main-footer');
+
+            if (!calendar || !footer) {
+                console.error("找不到 .calendar 或 .footer 元素");
+                return;
+            }
+
+            let targetY = 0;
+            let currentY = 0;
+            const easing = 0.1;
+
+            window.addEventListener('scroll', () => {
+                targetY = window.pageYOffset;
+            });
+
+        const eventCarousel = document.querySelector('.EventCarousel');
+
+            function smoothScroll() {
+                currentY += (targetY - currentY) * easing;
+
+                const calendarHeight = calendar.offsetHeight;
+                const footerTop = footer.getBoundingClientRect().top + window.pageYOffset;
+                    if (eventCarousel.offsetHeight <= 100)
+                {
+                    const maxY = footerTop - calendarHeight -167;
+                if (currentY + calendarHeight +167> footerTop) {
+                currentY = maxY;}
+                }
+                else
+                {
+                    const maxY = footerTop - calendarHeight -400;
+                if (currentY + calendarHeight +400> footerTop) {
+                currentY = maxY;}
+                }
+
+                calendar.style.transform = `translateY(${currentY}px)`;
+
+                requestAnimationFrame(smoothScroll);
+            }
+
+            smoothScroll();
+        });
 </script>
 @await Html.PartialAsync("_PartialFooter")
   

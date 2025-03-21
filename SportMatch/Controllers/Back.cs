@@ -116,6 +116,7 @@ namespace SportMatch.Controllers
             };
         }
 
+
         [HttpDelete]
         public IActionResult DeleteUser(int id)
         {
@@ -130,6 +131,77 @@ namespace SportMatch.Controllers
 
             return Json(new { success = true });
         }
+
+        [HttpGet]
+        public IActionResult GetProducts()
+        {
+            // 先從資料庫獲取資料
+            var products = _context.Product.ToList();
+
+            // 在 C# 轉換 Identity 數值為對應的角色名稱
+            var productList = products.Select(p => new
+            {
+                ProductName = p.Name, 
+                Price = p.Price,
+                Discount = p.Discount,
+                Stock = p.Stock,
+                Image01 = p.Image01,
+                ReleaseDate = p.ReleaseDate.ToString("yyyy-MM-dd") // 格式化日期
+                
+            }).ToList();
+
+            return Json(productList);
+        }
+        [HttpDelete]
+        public IActionResult DeleteProduct(int id)
+        {
+            // 輸出 ID 來檢查
+            Console.WriteLine($"Attempting to delete product with ID: {id}");
+
+            try
+            {
+                // 先刪除 Order 表中與該商品關聯的所有訂單資料
+                var orders = _context.Orders.Where(o => o.ProductId == id).ToList();
+                if (orders.Any())
+                {
+                    _context.Orders.RemoveRange(orders);  // 使用 RemoveRange 來刪除多筆資料
+                    _context.SaveChanges();  // 刪除訂單資料
+                }
+
+                // 再刪除 ProductCategoryMapping 表中與該商品關聯的資料
+                var categoryMappings = _context.ProductCategoryMapping.Where(m => m.ProductID == id).ToList();
+                if (categoryMappings.Any())
+                {
+                    _context.ProductCategoryMapping.RemoveRange(categoryMappings);  // 刪除商品與類別的關聯資料
+                    _context.SaveChanges();  // 保存更改
+                }
+
+                // 然後刪除商品
+                var product = _context.Product.FirstOrDefault(p => p.ProductID == id);
+                if (product == null)
+                {
+                    return Json(new { success = false, message = "找不到該商品" });
+                }
+
+                // 刪除商品
+                _context.Product.Remove(product);
+                _context.SaveChanges();  // 保存刪除商品資料
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "刪除商品時發生錯誤: " + ex.Message });
+            }
+        }
+
+
+
+
+
+
+
+
 
     }
 }

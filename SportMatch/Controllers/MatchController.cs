@@ -1,8 +1,13 @@
 ﻿using System.Diagnostics;
+using System.Drawing.Printing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 using NuGet.Protocol.Plugins;
 using SportMatch.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 using static SportMatch.Controllers.DoorController;
 
 namespace SportMatch.Controllers
@@ -12,86 +17,10 @@ namespace SportMatch.Controllers
     {
         // 導入資料庫
         private readonly SportMatchContext _context;
-
         public MatchController(SportMatchContext context)
         {
             _context = context;
         }
-
-        List<TestForMatch> Player2 = new List<TestForMatch>
-                {
-                    new TestForMatch { Name = "妙蛙種子", Role = "控球後衛", Image = "../image/MatchPage/001.png" },
-                    new TestForMatch { Name = "妙蛙草", Role = "大前鋒", Image = "../image/MatchPage/002.png" },
-                    new TestForMatch { Name = "妙蛙花", Role = "中鋒", Image = "../image/MatchPage/003.png" },
-                    new TestForMatch { Name = "小火龍", Role = "小前鋒", Image = "../image/MatchPage/004.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "妙蛙花", Role = "中鋒", Image = "../image/MatchPage/003.png" },
-                    new TestForMatch { Name = "小火龍", Role = "小前鋒", Image = "../image/MatchPage/004.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "妙蛙種子", Role = "控球後衛", Image = "../image/MatchPage/001.png" },
-                    new TestForMatch { Name = "妙蛙草", Role = "大前鋒", Image = "../image/MatchPage/002.png" },
-                    new TestForMatch { Name = "妙蛙花", Role = "中鋒", Image = "../image/MatchPage/003.png" },
-                    new TestForMatch { Name = "小火龍", Role = "小前鋒", Image = "../image/MatchPage/004.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "妙蛙花", Role = "中鋒", Image = "../image/MatchPage/003.png" },
-                    new TestForMatch { Name = "小火龍", Role = "小前鋒", Image = "../image/MatchPage/004.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "妙蛙種子", Role = "控球後衛", Image = "../image/MatchPage/001.png" },
-                    new TestForMatch { Name = "妙蛙草", Role = "大前鋒", Image = "../image/MatchPage/002.png" },
-                    new TestForMatch { Name = "妙蛙花", Role = "中鋒", Image = "../image/MatchPage/003.png" },
-                    new TestForMatch { Name = "小火龍", Role = "小前鋒", Image = "../image/MatchPage/004.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "火恐龍", Role = "得分後衛", Image = "../image/MatchPage/005.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                    new TestForMatch { Name = "噴火龍", Role = "中鋒", Image = "../image/MatchPage/006.png" },
-                };
 
         public IActionResult MatchPage()
         {
@@ -99,19 +28,65 @@ namespace SportMatch.Controllers
             return View();
         }
 
+        // 接收Localstorage的資料
+        [HttpPost]
+        public IActionResult ReceiveLocalStorage([FromBody] string userInfo)
+        {
+            if (userInfo != null && !string.IsNullOrEmpty(userInfo))
+            {
+                HttpContext.Session.SetString("UserInfo", userInfo); // 把接收到的信箱存入 Session
+                //UserInfo = userInfo; // 把接收到的信箱存起來
+                return Json(new { success = true, message = "資料已接收", receivedValue = userInfo });
+            }
+            return Json(new { success = false, message = "未接收到有效資料" });
+        }
+
+
+        // 取得卡片資料
         [HttpGet]
         public JsonResult GetCards(int page, int pageSize)
         {
-            int totalItems = Player2.Count();
+            var UserInfoFromSQL = (from u in _context.Users
+                                   join r in _context.Roles
+                                   on u.RoleId equals r.RoleId
+                                   select new { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+
+
+            // 從Session取得使用者資訊到資料庫查詢符合的詳細資料
+            string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
+            var UserInfoForSuggest = (from u in _context.Users
+                                      where u.Email.ToString().ToLower() == UserInfo.ToLower()
+                                      select u).ToList();
+
+            // 推薦與使用者擅長位置以及招募性別相同的隊伍
+            var TeamInfoFromSQL = (from t in _context.Teams
+                                   join r in _context.Roles
+                                   on t.RoleId equals r.RoleId
+                                   where t.RoleId == UserInfoForSuggest[0].RoleId && t.GenderId == UserInfoForSuggest[0].GenderId
+                                   select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+
+            // 符合條件小於6筆則取招募性別與使用者相同的隊伍
+            if (TeamInfoFromSQL.Count() < 6)
+            {
+                TeamInfoFromSQL = (from t in _context.Teams
+                                   join r in _context.Roles
+                                   on t.RoleId equals r.RoleId
+                                   where t.GenderId == UserInfoForSuggest[0].GenderId && t.SportId == UserInfoForSuggest[0].SportId
+                                   select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+            }
+
+            int totalItems = TeamInfoFromSQL.Count();
             int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-            var cards = Player2.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var cards = TeamInfoFromSQL.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             return Json(new { cards, totalPages, totalItems });
         }
 
+        // 取得賽事資料
         [HttpGet]
         public JsonResult GetEvent()
         {
+            // 從資料庫帶出查詢結果
             var Event = from e in _context.Events
                         join g in _context.Genders
                         on e.GenderId equals g.GenderId
@@ -121,9 +96,12 @@ namespace SportMatch.Controllers
                         on e.AreaId equals a.AreaId
                         select new { Name = e.EventName, Gender = g.GenderType, Sport = s.SportName, Area = a.AreaName };
 
+            // 宣告三個空的字串清單準備存資料
             List<string> BasketballEventList = new List<string>();
             List<string> ValleyballEventList = new List<string>();
             List<string> BadmintonEventList = new List<string>();
+
+            // 把對應的運動種類內的賽事放入對應的清單
             foreach (var item in Event)
             {
                 if (item.Sport == "BasketBall")
@@ -142,27 +120,234 @@ namespace SportMatch.Controllers
                 }
             }
 
-            return Json(new { BasketballEventList, ValleyballEventList, BadmintonEventList,Event });
+            return Json(new { BasketballEventList, ValleyballEventList, BadmintonEventList });
         }
 
+
+
+        // 篩選功能
         [HttpPost]
-        public IActionResult GetSelection(string MatchType, string MatchCategory, List<string> MatchEvent, List<string> MatchArea, List<string> MatchRole, string MatchGender)
+        public JsonResult GetSelection([FromBody] SelectionRequestModel model, int pageSize = 6)
         {
-            if (MatchType == null)
+            // 取得使用者資料
+            string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
+            var UserInfoForSuggest = (from u in _context.Users
+                                      where u.Email.ToString().ToLower() == UserInfo.ToLower()
+                                      select u).ToList();
+
+            // 確認運動種類
+            int SportType = 0;
+            switch (model.MatchCategory)
             {
-                ViewBag.MatchType = null;
-                return View("MatchPage");
+                case "badminton":
+                    SportType = 3;
+                    break;
+                case "valleyball":
+                    SportType = 2;
+                    break;
+                default:
+                    SportType = 1; // 什麼都沒選預設為羽球
+                    break;
             }
+
+            model.MatchEvent ??= new List<string>();
+            model.MatchArea ??= new List<string>();
+            model.MatchRole ??= new List<string>();
+
+            // 選擇招募隊員
+            if (model.MatchType == "FindPlayer")
+            {
+
+                List<SelectViewModel> filterPlayer = (from u in _context.Users
+                                                      join r in _context.Roles
+                                                      on u.RoleId equals r.RoleId
+                                                      where r.SportId == SportType && u.GenderId == UserInfoForSuggest[0].GenderId
+                                                      select new SelectViewModel { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+
+                int totalItems = filterPlayer.Count();
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                var cards = filterPlayer.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                HttpContext.Session.SetString("filterPlayer", JsonConvert.SerializeObject(filterPlayer));
+                HttpContext.Session.SetInt32("totalItems", totalItems);
+                HttpContext.Session.SetInt32("totalPages", totalPages);
+
+
+
+                if (model.MatchRole.Count() > 0 && model.MatchArea.Count() > 0)
+                {
+                    filterPlayer = (from u in _context.Users
+                                    join r in _context.Roles
+                                    on u.RoleId equals r.RoleId
+                                    join a in _context.Areas
+                                    on u.AreaId equals a.AreaId
+                                    where r.SportId == SportType && u.GenderId == UserInfoForSuggest[0].GenderId && model.MatchArea.Contains(a.AreaName) && model.MatchRole.Contains(r.RoleName)
+                                    select new SelectViewModel { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+                    totalItems = filterPlayer.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterPlayer.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterPlayer", JsonConvert.SerializeObject(filterPlayer));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
+                    return Json(new { cards, totalPages, totalItems });
+                }
+
+                else if (model.MatchArea.Count() > 0)
+                {
+                    filterPlayer = (from u in _context.Users
+                                    join r in _context.Roles
+                                    on u.RoleId equals r.RoleId
+                                    join a in _context.Areas
+                                    on u.AreaId equals a.AreaId
+                                    where r.SportId == SportType && u.GenderId == UserInfoForSuggest[0].GenderId && model.MatchArea.Contains(a.AreaName)
+                                    select new SelectViewModel { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+
+                    totalItems = filterPlayer.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterPlayer.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterPlayer", JsonConvert.SerializeObject(filterPlayer));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
+                    return Json(new { cards, totalPages, totalItems });
+                }
+
+                else if (model.MatchRole.Count() > 0)
+                {
+                    filterPlayer = (from u in _context.Users
+                                    join r in _context.Roles
+                                    on u.RoleId equals r.RoleId
+                                    where model.MatchRole.Contains(r.RoleName) && u.GenderId == UserInfoForSuggest[0].GenderId
+                                    select new SelectViewModel { UserID = u.UserId, Name = u.Name, Role = r.RoleName, Memo = u.UserMemo, Image = u.UserPic }).ToList();
+                    totalItems = filterPlayer.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterPlayer.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterPlayer", JsonConvert.SerializeObject(filterPlayer));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
+                    return Json(new { cards, totalPages, totalItems });
+                }
+
+                return Json(new { cards, totalPages, totalItems });
+
+            }
+
+            // 選擇加入隊伍
             else
             {
-                ViewBag.MatchType = MatchType;
-                ViewBag.MatchCategory = MatchCategory;
-                ViewBag.MatchEvent = MatchEvent;
-                ViewBag.MatchArea = MatchArea;
-                ViewBag.MatchRole = MatchRole;
-                ViewBag.MatchGender = MatchGender;
-                return View("MatchPage");
+                // 什麼都不選預設帶出羽球隊伍資料
+                List<SelectViewModel> filterTeam = (from t in _context.Teams
+                                                    join r in _context.Roles
+                                                    on t.RoleId equals r.RoleId
+                                                    where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId
+                                                    select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+
+                int totalItems = filterTeam.Count();
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                var cards = filterTeam.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
+                HttpContext.Session.SetInt32("totalItems", totalItems);
+                HttpContext.Session.SetInt32("totalPages", totalPages);
+
+                // 選擇賽事且選擇招募位置時
+                if (model.MatchEvent.Count() > 0 && model.MatchRole.Count() > 0)
+                {
+                    filterTeam = (from t in _context.Teams
+                                  join r in _context.Roles
+                                  on t.RoleId equals r.RoleId
+                                  join e in _context.Events
+                                  on t.EventId equals e.EventId
+                                  where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && model.MatchEvent.Contains(e.EventName) && model.MatchRole.Contains(r.RoleName)
+                                  select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                    totalItems = filterTeam.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterTeam.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
+                    return Json(new { cards, totalPages, totalItems });
+                }
+
+                // 選擇位置與區域
+                else if (model.MatchRole.Count() > 0 && model.MatchArea.Count() > 0)
+                {
+                    filterTeam = (from t in _context.Teams
+                                  join r in _context.Roles
+                                  on t.RoleId equals r.RoleId
+                                  join e in _context.Events
+                                  on t.EventId equals e.EventId
+                                  join a in _context.Areas
+                                  on t.AreaId equals a.AreaId
+                                  where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && model.MatchRole.Contains(r.RoleName) && model.MatchArea.Contains(a.AreaName)
+                                  select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                    totalItems = filterTeam.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterTeam.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
+                    return Json(new { cards, totalPages, totalItems });
+                }
+
+                // 只選擇位置時
+                else if (model.MatchRole.Count() > 0)
+                {
+                    filterTeam = (from t in _context.Teams
+                                  join r in _context.Roles
+                                  on t.RoleId equals r.RoleId
+                                  join e in _context.Events
+                                  on t.EventId equals e.EventId
+                                  where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && model.MatchRole.Contains(r.RoleName)
+                                  select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                    totalItems = filterTeam.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterTeam.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
+                    return Json(new { cards, totalPages, totalItems });
+                }
+                // 當選擇賽事時
+                else if (model.MatchEvent.Count() > 0)
+                {
+                    filterTeam = (from t in _context.Teams
+                                  join r in _context.Roles
+                                  on t.RoleId equals r.RoleId
+                                  join e in _context.Events
+                                  on t.EventId equals e.EventId
+                                  where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && model.MatchEvent.Contains(e.EventName)
+                                  select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                    totalItems = filterTeam.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterTeam.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
+                    return Json(new { cards, totalPages, totalItems });
+                }
+                return Json(new { cards, totalPages, totalItems });
             }
+        }
+
+        //
+        [HttpGet]
+        public JsonResult GetSelectionNextPage(int page, string selectType, int pageSize = 6)
+        {
+            List<SelectViewModel>? data;
+            var filterTeam = HttpContext.Session.GetString("filterTeam");
+            var filterPlayer = HttpContext.Session.GetString("filterPlayer");
+            if (filterTeam != null)
+            {
+                data = JsonConvert.DeserializeObject<List<SelectViewModel>>(filterTeam);
+            }
+            else 
+            {
+                data = JsonConvert.DeserializeObject<List<SelectViewModel>>(filterPlayer);
+            }
+
+            int? totalItems = HttpContext.Session.GetInt32("totalItems");
+            int? totalPages = HttpContext.Session.GetInt32("totalPages");
+            var cards = data.ToList().Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            return Json(new { cards, totalPages, totalItems });
+
         }
 
         // 篩選列功能

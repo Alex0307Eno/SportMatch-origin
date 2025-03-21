@@ -59,17 +59,23 @@ body {
     width: 100%;
     max-width: 400px;
     padding: 20px;
+    opacity: 0.4;
+    transition: opacity 0.1s; /* 添加過渡效果 */
 }
 
-/* 註冊卡片 */
-.register-card {
-    width: 100%;
-    padding: 2rem;
-    background: rgba(255, 255, 255, 0.9); /* 半透明背景 */
-    backdrop-filter: blur(10px); /* 背景霧化 */
-    border-radius: 8px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+.register-container:hover {
+    opacity: 1;
 }
+
+    /* 註冊卡片 */
+    .register-card {
+        width: 100%;
+        padding: 2rem;
+        background: rgba(255, 255, 255, 0.9); /* 半透明背景 */
+        backdrop-filter: blur(10px); /* 背景霧化 */
+        border-radius: 8px;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
 
 .register-title {
     text-align: center;

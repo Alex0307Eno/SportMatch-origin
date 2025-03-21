@@ -54,6 +54,7 @@
 
 .PickupBtn {
     border-color: #fd7e14;    
+    width: 50%;
 }
 
 #NoDiscountPrice {
@@ -199,17 +200,11 @@
 
 @media screen and (max-width: 1215px) {
     body {
-        overflow-x: auto;
+        overflow: auto;
     }
 
     .CheckoutContainer {
         width: 55rem;
         overflow-x: auto;
-    }
-
-    .Logistics,
-    .Logistics .form-control,
-    .Logistics .PickupBtn {
-        font-size: 0.85rem;
     }
 }

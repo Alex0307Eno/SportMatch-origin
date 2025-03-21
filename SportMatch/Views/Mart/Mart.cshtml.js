@@ -1,4 +1,5 @@
 ﻿//history.pushState({}, '', '/Mart');
+let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
 
 // 加入我的最愛
 function HeartIconChange(products) {

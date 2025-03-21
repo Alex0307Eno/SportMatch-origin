@@ -50,20 +50,18 @@
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="ShippingMethod" id="SevenelevenPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="SevenelevenPickup" class="ms-2 Pickuptext">7-11取貨</label>
-                            <button class="btn btn-outline ms-2 PickupBtn" id="SevenelevenPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" onclick="electronicMapSeven()" disabled>選擇取貨店家</button>
+                            <button class="btn btn-outline ms-auto PickupBtn" id="SevenelevenPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" onclick="electronicMapSeven()" disabled>取貨店家</button>
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="ShippingMethod" id="FamilymartPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="FamilymartPickup" class="ms-2 Pickuptext">全家取貨</label>
-                            <button class="btn btn-outline ms-2 PickupBtn" id="FamilymartPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" onclick="electronicMapFami()" disabled>選擇取貨店家</button>
+                            <button class="btn btn-outline ms-auto PickupBtn" id="FamilymartPickupStore" for="FamilymartPickup" data-bs-toggle="modal" data-bs-target="#MartModal" onclick="electronicMapFami()" disabled>取貨店家</button>
                         </div>
                         <div class="d-flex align-items-center mb-3">
                             <input type="radio" name="ShippingMethod" id="HomeDeliveryPickup" onclick="TogglePaymentMethod();" disabled />
                             <label for="HomeDeliveryPickup" class="ms-2 Pickuptext">宅配到府</label>
-                            <div class="ms-2 w-25">
+                            <div class="d-flex ms-auto w-50">
                                 <input type="text" class="form-control" id="HomeDeliveryName" placeholder="姓名" for="HomeDeliveryPickup" disabled />
-                            </div>
-                            <div class="ms-2 w-25">
                                 <input type="text" class="form-control" id="HomeDeliveryPhone" placeholder="電話" for="HomeDeliveryPickup" disabled />
                             </div>
                         </div>

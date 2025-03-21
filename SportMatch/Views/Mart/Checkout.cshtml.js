@@ -321,29 +321,27 @@ function fetchCheckout(cartCheckoutData) {
                     console.log('結帳失敗：結帳未選');
                     alert('請選擇結帳方式');
                     return;
+                }                
+                if (data.message == "尚未登錄姓名") {
+                    console.log('結帳失敗：姓名未登');
+                    alert('尚未登錄姓名，請先填寫姓名');
+                    return;
                 }
-                if (_selectedPaymentMethod === 'ComeHomepay') {
-                    if (data.message == "尚未登錄姓名") {
-                        console.log('結帳失敗：姓名未登');
-                        alert('尚未登錄姓名，欲使用宅配請先輸入姓名');
-                        return;
-                    }
-                    if (data.message == "姓名格式錯誤") {
-                        console.log('結帳失敗：姓名格式錯誤');
-                        alert('請以正確格式輸入姓名');
-                        return;
-                    }
-                    if (data.message == "尚未登錄電話") {
-                        console.log('結帳失敗：電話未登');
-                        alert('尚未登錄電話，欲使用宅配請先輸入電話');
-                        return;
-                    }
-                    if (data.message == "電話格式錯誤") {
-                        console.log('結帳失敗：手機號碼格式錯誤');
-                        alert('請以正確格式輸入手機號碼');
-                        return;
-                    }
+                if (data.message == "姓名格式錯誤") {
+                    console.log('結帳失敗：姓名格式錯誤');
+                    alert('請以正確格式輸入姓名');
+                    return;
                 }
+                if (data.message == "尚未登錄電話") {
+                    console.log('結帳失敗：電話未登');
+                    alert('尚未登錄電話，請先填寫電話');
+                    return;
+                }
+                if (data.message == "電話格式錯誤") {
+                    console.log('結帳失敗：手機號碼格式錯誤');
+                    alert('請以正確格式輸入手機號碼');
+                    return;
+                }                
                 console.log('結帳成功，返回資料：', data);
                 billPage(data);
             }

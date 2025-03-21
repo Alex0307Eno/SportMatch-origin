@@ -1,35 +1,60 @@
 ﻿//history.pushState({}, '', '/Mart');
 let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+let _myHeartUserEmail = localStorage.getItem("loggedInEmail");
 
 // 加入我的最愛
-function HeartIconChange(products) {
-    let MyHeartProductsID = products.ProductID;
-    let MyHeartUserID = localStorage.getItem("loggedInEmail")
-    //let MyHeartStorage = button.getAttribute('data-MyHeart');
-
-    let MyHeartIcon = document.getElementById('ModalHeartIcon_' + MyHeartProductsID);
+function HeartIconChange(IsModal, productID, FetchStorage) {    
+    let MyHeartIcon = document.getElementById('ModalHeartIcon_' + productID);
     let HeartModal = new bootstrap.Modal(document.getElementById('HeartModal'));
     let HeartModalMessage = document.getElementById('HeartModalMessage');
 
-    if (MyHeartStorage == 'y') {
-
-        MyHeartIcon.classList.remove('bi-heart-fill');
-        MyHeartIcon.classList.add('bi-heart');
-        //button.setAttribute('data-MyHeart', 'n');
-        MyHeartIcon.style.color = "#FFFFFF";
-        HeartModalMessage.innerHTML = "已從我的最愛移除";
-    } else {
-        MyHeartIcon.classList.remove('bi-heart');
-        MyHeartIcon.classList.add('bi-heart-fill');
-        //button.setAttribute('data-MyHeart', 'y');
-        MyHeartIcon.style.color = "#fd7e14";
-        HeartModalMessage.innerHTML = "已加入我的最愛";
+    if (IsModal == "buttonClick") {
+        if (FetchStorage == 'fill(not)') {
+            MyHeartIcon.classList.remove('bi-heart-fill');
+            MyHeartIcon.classList.add('bi-heart');
+            MyHeartIcon.style.color = "#FFFFFF";
+            HeartModalMessage.innerHTML = "已從我的最愛移除";
+            HeartModal.show();
+        } else {
+            MyHeartIcon.classList.remove('bi-heart');
+            MyHeartIcon.classList.add('bi-heart-fill');
+            MyHeartIcon.style.color = "#fd7e14";
+            HeartModalMessage.innerHTML = "已加入我的最愛";
+            HeartModal.show();
+        }
     }
-
-    HeartModal.show();
+    if (IsModal != "buttonClick") {
+        if (FetchStorage == 'fill') {
+            MyHeartIcon.classList.remove('bi-heart');
+            MyHeartIcon.classList.add('bi-heart-fill');
+            MyHeartIcon.style.color = "#fd7e14";            
+        } else {
+            MyHeartIcon.classList.remove('bi-heart-fill');
+            MyHeartIcon.classList.add('bi-heart');
+            MyHeartIcon.style.color = "#FFFFFF";
+        }
+    }
     setTimeout(function () {
         HeartModal.hide();
     }, 700);
+}
+function fetchFavorite(_isModal, _myHeartProductsID) {
+    fetch('/api/Favorite', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            isModal: _isModal,
+            myHeartProductsID: _myHeartProductsID,
+            myHeartUserEmail: _myHeartUserEmail
+        })
+    })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data)
+            HeartIconChange(_isModal, _myHeartProductsID, data.storage);
+        })
 }
 
 //加入購物車
@@ -98,15 +123,15 @@ let priceSort = document.getElementById('PriceSort');
 
 
 // 分頁
-function fetchProducts(page = 1, itemsPerPage = 10, orderByDesc = priceSort.value, categoryName = "全部", subCategoryName = ['無']) {
+function fetchProducts(page = 1, itemsPerPage = 10, orderByDesc = priceSort.value, categoryName = "全部", subCategoryName = ['無'], myHeartUserEmail) {
     let subCategoryNamesStr = subCategoryName.join(',') || '';
     //console.log(page, itemsPerPage, orderByDesc, categoryName, subCategoryName)
     //console.log(subCategoryNamesStr)
     // 字串部分需為C#端參數名稱
-    fetch(`/api/products?page=${page}&itemsPerPage=${itemsPerPage}&orderByDesc=${orderByDesc}&_categoryName=${categoryName}&_subCategoryName=${subCategoryNamesStr}`)
+    fetch(`/api/products?page=${page}&itemsPerPage=${itemsPerPage}&orderByDesc=${orderByDesc}&_categoryName=${categoryName}&_subCategoryName=${subCategoryNamesStr}&_myHeartUserEmail=${myHeartUserEmail}`)
         .then(response => response.json())
         .then(data => {
-            renderProducts(data.products);  // 渲染商品
+            renderProducts(data.products, data.favoriteQueryStorage);  // 渲染商品
             updatePagination(data.totalPages, data.currentPage);  // 更新分頁按鈕
         })
 }
@@ -121,7 +146,7 @@ $("input[name='ParentCategory']").change(function () {
     subLabelText = ['無'];
     let selectedRadio = $(this);
     parentLabelText = $("label[for='" + selectedRadio.attr("id") + "']").text();
-    fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText);
+    fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText, _myHeartUserEmail);
 
 });
 
@@ -138,7 +163,7 @@ $("input[name='SubCategory']").change(function () {
             subLabelText.push("無");
         }
     }
-    fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText);
+    fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText, _myHeartUserEmail);
 });
 
 // 檢查視窗大小並傳入
@@ -160,12 +185,12 @@ function windowWidthCheck() {
 }
 
 // 維持當下頁數
-function fetchProductsNowPageCheck(_Page, _itemsPerPage, _orderByDesc, _categoryName, _subCategoryName) {
+function fetchProductsNowPageCheck(_Page, _itemsPerPage, _orderByDesc, _categoryName, _subCategoryName, _myHeartUserEmail) {
     let nextPageButtons = document.querySelectorAll('.nextPageButton');
     nextPageButtons.forEach(button => {
         if (button.querySelector('.numberPageButtonLinkTake')) {
             let nowPage = button.querySelector('.numberPageButtonLinkTake').innerText;
-            fetchProducts(nowPage, windowWidthCheck(), _orderByDesc, _categoryName, _subCategoryName);          
+            fetchProducts(nowPage, windowWidthCheck(), _orderByDesc, _categoryName, _subCategoryName, _myHeartUserEmail);          
         }
     });
 }
@@ -177,12 +202,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // 價格大小排序   
 priceSort.addEventListener('change', function () {
-    fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText);
+    fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText, _myHeartUserEmail);
 });
 
 // 視窗大小事件
 window.addEventListener('resize', function () {   
-    fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText);
+    fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText, _myHeartUserEmail);
 });
 
 // 捕捉CSS隔離標籤
@@ -202,7 +227,7 @@ function addCssIsolationElement() {
 }
 
 //以下HTML
-function renderProducts(products) {
+function renderProducts(products, favoriteQueryStorage) {
     const productContainer = document.querySelector('.ProductsList');
     productContainer.innerHTML = ''; // 清空容器
 
@@ -370,11 +395,11 @@ function renderProducts(products) {
         const favoriteButton = document.createElement('button');
         favoriteButton.className = 'btn mb-4 ms-auto fs-5';
         favoriteButton.setAttribute('data-ProductID', item.productID);
-        favoriteButton.onclick = function () { HeartIconChange(item); };
+        favoriteButton.onclick = function () { fetchFavorite("buttonClick", item.productID) };
 
         const heartIcon = document.createElement('i');
-        heartIcon.className = 'bi bi-heart';
-        heartIcon.style.color = '#ffffff';
+        heartIcon.className = `bi ${favoriteQueryStorage == "nuel" ? "bi-heart" : "bi-heart-fill"}`;
+        heartIcon.style.color = `${favoriteQueryStorage == "nuel" ? "#ffffff" : "#fd7e14"}`;
         heartIcon.id = `ModalHeartIcon_${item.productID}`;
 
         favoriteButton.appendChild(heartIcon);
@@ -461,8 +486,9 @@ function renderProducts(products) {
 
         productContainer.appendChild(modalDiv);
 
-        //捕捉modal打開事件使footer圖片可點擊更換主圖
-        document.getElementById(`ProductModal_${item.productID}`).addEventListener('shown.bs.modal', function () {
+        //捕捉modal打開事件使footer圖片可點擊更換主圖以及修改我的最愛圖案
+        document.getElementById(`ProductModal_${item.productID}`).addEventListener('shown.bs.modal', function () {             
+
             document.getElementById(`FooterImgLeft_${item.productID}`).addEventListener('click', function () {
                 document.getElementById(`ModelBodyProductImage_${item.productID}`).src = item.image01
             });
@@ -476,7 +502,7 @@ function renderProducts(products) {
 
         const modals = document.getElementById(`ProductModal_${item.productID}`);
         var modal = new bootstrap.Modal(modals);
-        // 視窗變動關閉modal
+         //視窗變動關閉modal
         window.addEventListener('resize', function () {
             modal.hide();           
         });

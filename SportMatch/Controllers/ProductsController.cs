@@ -18,7 +18,7 @@ namespace SportMatch.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetProducts(int page, int itemsPerPage, string orderByDesc, string _categoryName, string _subCategoryName)
+        public IActionResult GetProducts(int page, int itemsPerPage, string orderByDesc, string _categoryName, string _subCategoryName, string _myHeartUserEmail)
         {
             List<string> subCategoryNames = _subCategoryName.Split(',').ToList() ?? new List<string>();
             //Console.WriteLine("\n\n\n\n\n" + _categoryName + " " + string.Join(", ", subCategoryNames) + "\n\n\n\n\n");
@@ -28,8 +28,7 @@ namespace SportMatch.Controllers
                 join PC in MartDb.ProductCategory on PM.CategoryID equals PC.CategoryID
                 join PSC in MartDb.ProductSubCategory on PM.SubCategoryID equals PSC.SubCategoryID
                 orderby (orderByDesc == "none" ? P.ProductID : (orderByDesc == "high" ? P.Price : -P.Price))
-                where (_categoryName == "全部" ? true : (PC.CategoryName == _categoryName && (subCategoryNames.Contains("無") || subCategoryNames.Any(subCategory => PSC.SubCategoryName == subCategory)))
-    )
+                where (_categoryName == "全部" ? true : (PC.CategoryName == _categoryName && (subCategoryNames.Contains("無") || subCategoryNames.Any(subCategory => PSC.SubCategoryName == subCategory))))
                 select new
                 {
                     productID = P.ProductID,
@@ -43,9 +42,17 @@ namespace SportMatch.Controllers
                     productDetails = P.ProductDetails,
                     releaseDate = P.ReleaseDate,
                     categoryName = PC.CategoryName,
-                    subCategoryName = PSC.SubCategoryName
+                    subCategoryName = PSC.SubCategoryName,
                 };
 
+            var favoriteQuery =
+                from PF in MartDb.ProductFavorite 
+                join P in MartDb.Product on PF.ProductID equals P.ProductID 
+                join U in MartDb.Users on PF.UserID equals U.UserId
+                select new
+                {
+                    storage = (PF.ProductID == P.ProductID && U.Email == _myHeartUserEmail) ? "fill" : "nuel"
+                };
 
             int totalItems = productsQuery.Count();
 
@@ -65,7 +72,8 @@ namespace SportMatch.Controllers
                 TotalItems = totalItems,
                 TotalPages = totalPages,
                 CurrentPage = page,
-                Products = pagedProducts
+                Products = pagedProducts,
+                favoriteQueryStorage = favoriteQuery
             };
 
             return Ok(result);

@@ -360,7 +360,7 @@ function toggleNotifications() {
 function toggleCart() {
 
     window.location.href = "/Mart/Checkout";
-    //250318註解
+    //250318改為直接連結購物車
     //const dropdown = document.querySelector(".cart-dropdown");
     //dropdown.classList.toggle("active");
 }

@@ -76,6 +76,8 @@ namespace SportMatch.Controllers
             TempData["VerificationCode"] = verificationCode;
             TempData["Email"] = model.Email;
             TempData["LastSentTime"] = DateTime.Now;
+            //250318新增用console直接查看驗證碼
+            Console.WriteLine(verificationCode);
 
             // 發送電子郵件
             bool isSent = SendEmail(model.Email, "您的忘記密碼驗證碼", $"您的驗證碼是：{verificationCode}，請在10分鐘內使用此驗證碼重設您的密碼。");

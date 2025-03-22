@@ -61,11 +61,17 @@ function updateUI() {
         cartContainer.style.display = "none"; // 隱藏購物車
         notificationsContainer.style.display = "none"; // 隱藏通知
     }
+    updateCartNumber();
 }
 document.addEventListener("DOMContentLoaded", function () {
-    updateUI(); // 在頁面加載後更新 UI
+    updateUI(); // 在頁面加載後更新 UI    
 });
 
+let cartButton = document.querySelector('#cartButton');
+function updateCartNumber() {
+    const Cart = JSON.parse(localStorage.getItem('Cart')) || [];
+    cartButton.setAttribute('data-count', Cart.length);    
+}
 
 // ✅ 登入函數
 function loginUser() {
@@ -78,6 +84,8 @@ function loginUser() {
 // ✅ 退出登入
 function logoutUser() {
     localStorage.removeItem("isLoggedIn");  // 移除登入標記
+    //250319新增清除購物車
+    localStorage.removeItem("Cart");
     console.log("👋 用戶已登出");
     updateUI(); // 更新 UI
 }
@@ -353,9 +361,10 @@ function toggleNotifications() {
 
 function toggleCart() {
 
-
-    const dropdown = document.querySelector(".cart-dropdown");
-    dropdown.classList.toggle("active");
+    window.location.href = "/Mart/Checkout";
+    //250318改為直接連結購物車
+    //const dropdown = document.querySelector(".cart-dropdown");
+    //dropdown.classList.toggle("active");
 }
 
 function handleLogin(event) {

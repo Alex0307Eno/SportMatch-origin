@@ -8,20 +8,16 @@ using Microsoft.EntityFrameworkCore;
 using Humanizer;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Newtonsoft.Json;
+using System.Net.Http;
+using System.Text;
 
 namespace SportMatch.Controllers
 {
     public class MartController : Controller
     {
-        public class Product
-        {
-            public string Name { get; set; }
-            public int Price { get; set; }
-            public int Discount { get; set; }
-            public string Image { get; set; }
-        }
-
         private readonly SportMatchContext MartDb;
+
         public MartController(SportMatchContext context)
         {
             MartDb = context;
@@ -86,20 +82,6 @@ namespace SportMatch.Controllers
 
         public IActionResult Checkout()
         {
-            return View();
-        }
-
-        public IActionResult Bill()
-        {
-            List<Product> _Products = new List<Product>
-            {
-                new Product { Name = "商品 1", Price = 199, Discount = -20, Image = "/image/icon.jpg" },
-                new Product { Name = "商品 2", Price = 299, Discount = -10, Image = "/image/icon.jpg" },
-                new Product { Name = "商品 3", Price = 399, Discount = -5, Image = "/image/icon.jpg" },
-                new Product { Name = "商品 4", Price = 499, Discount = 0, Image = "/image/icon.jpg" },
-            };
-            ViewBag.ForProducts = MartDb.Product;
-
             return View();
         }
     }

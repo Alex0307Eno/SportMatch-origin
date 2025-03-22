@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.Internal;
+using Microsoft.Identity.Client.Extensions.Msal;
 using SportMatch.Models;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
 using System.Linq;
 using static SportMatch.Controllers.MartController;
 
@@ -16,18 +19,16 @@ public class ProductsController : ControllerBase
     }
 
     [HttpGet]
-    public IActionResult GetProducts(int page, int itemsPerPage, string orderByDesc, string _categoryName, string _subCategoryName)
+    public IActionResult GetProducts(int page, int itemsPerPage, string orderByDesc, string _categoryName, string _subCategoryName, string _myHeartUserEmail)
     {
         List<string> subCategoryNames = _subCategoryName.Split(',').ToList() ?? new List<string>();
-        Console.WriteLine("\n\n\n\n\n" + _categoryName + " " + string.Join(", ", subCategoryNames) + "\n\n\n\n\n");
         var productsQuery =
             from P in MartDb.Product
             join PM in MartDb.ProductCategoryMapping on P.ProductID equals PM.ProductID
             join PC in MartDb.ProductCategory on PM.CategoryID equals PC.CategoryID
             join PSC in MartDb.ProductSubCategory on PM.SubCategoryID equals PSC.SubCategoryID
             orderby (orderByDesc == "none" ? P.ProductID : (orderByDesc == "high" ? P.Price : -P.Price))
-            where (_categoryName == "全部" ? true : (PC.CategoryName == _categoryName && (subCategoryNames.Contains("無") || subCategoryNames.Any(subCategory => PSC.SubCategoryName == subCategory)))
-)
+            where (_categoryName == "全部" ? true : (PC.CategoryName == _categoryName && (subCategoryNames.Contains("無") || subCategoryNames.Any(subCategory => PSC.SubCategoryName == subCategory))))
             select new
             {
                 productID = P.ProductID,
@@ -44,8 +45,54 @@ public class ProductsController : ControllerBase
                 subCategoryName = PSC.SubCategoryName
             };
 
+        var favoriteQuery =
+            from PF in MartDb.ProductFavorite
+            join P in MartDb.Product on PF.ProductID equals P.ProductID
+            join U in MartDb.Users on PF.UserID equals U.UserId
+            select new
+            {
+                productID = PF.ProductID,
+                storage = ((PF.ProductID == P.ProductID && U.Email == _myHeartUserEmail) ? "fill" : null)
+            };
 
-        int totalItems = productsQuery.Count();
+        //var productStrings = favoriteQuery
+        //    .Select(p => $"ProductID: {p.productID}, Name: {p.storage}")
+        //    .ToList();
+
+        var combinedQuery =
+            from P in productsQuery
+            join F in favoriteQuery on P.productID equals F.productID into productFavorites
+            from PF in productFavorites.DefaultIfEmpty()            
+            select new
+            {
+                P.productID,
+                P.name,
+                P.price,
+                P.discount,
+                P.stock,
+                P.image01,
+                P.image02,
+                P.image03,
+                P.productDetails,
+                P.releaseDate,
+                P.categoryName,
+                P.subCategoryName,
+                storage = ((PF.storage == null) ? "nuel" : "fill")
+            };
+
+        //var productStrings = combinedQuery
+        //    .Select(p => $"ProductID: {p.productID}, Name: {p.name}, Price: {p.price:F2}, Discount: {p.discount:F2}, Stock: {p.stock}, " +  // 格式化價格和折扣，保留兩位小數
+        //                $"Image01: {(string.IsNullOrEmpty(p.image01) ? "No Image" : p.image01)}, " +  // 檢查 image01 是否為 null 或空
+        //                $"Image02: {(string.IsNullOrEmpty(p.image02) ? "No Image" : p.image02)}, " +  // 檢查 image02 是否為 null 或空
+        //                $"Image03: {(string.IsNullOrEmpty(p.image03) ? "No Image" : p.image03)}, " +  // 檢查 image03 是否為 null 或空
+        //                $"ProductDetails: {p.productDetails}, " +
+        //                $"ReleaseDate: {p.releaseDate:yyyy-MM-dd}, " +  // 格式化日期
+        //                $"Category: {p.categoryName}, SubCategory: {p.subCategoryName}, " +
+        //                $"Storage: {p.storage}")
+        //    .ToList();
+        //Console.WriteLine("\n\n\n\n\n" + string.Join("\n", productStrings) + "\n\n\n\n\n");
+
+        int totalItems = combinedQuery.Count();
 
         // 計算總頁數
         int totalPages = (int)Math.Ceiling((double)totalItems / itemsPerPage);
@@ -55,7 +102,7 @@ public class ProductsController : ControllerBase
         if (page > totalPages) page = totalPages;
 
         // 擷取當前頁面的商品
-        var pagedProducts = productsQuery.ToList().Skip((page - 1) * itemsPerPage).Take(itemsPerPage).ToList();
+        var pagedProducts = combinedQuery.Skip((page - 1) * itemsPerPage).Take(itemsPerPage).ToList();
 
         // 返回商品資料以及分頁資訊
         var result = new

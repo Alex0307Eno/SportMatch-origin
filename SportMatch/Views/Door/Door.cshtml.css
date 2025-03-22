@@ -1,5 +1,10 @@
-﻿body,
-html {
+﻿@font-face {
+    font-family: 'openhuninn';
+    src: url('../image/MatchPage/jf-openhuninn-2.1.ttf');
+}
+
+body,
+html {    
     margin: 0;
     padding: 0;
     height: 100%;
@@ -13,6 +18,7 @@ body {
 }
 
 .DoorContainer {
+    font-family: 'openhuninn';
     height: 100vh;
     transform: translate(0, 0);
     overflow: hidden;

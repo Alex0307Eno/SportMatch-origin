@@ -12,14 +12,14 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">關閉</button>
-                <button type="submit" class="btn btn-primary d-none" id="modalSubmitButton">儲存</button>
+                <button type="submit" class="btn btn-primary" id="modalSubmitButton">儲存</button>
             </div>
         </div>
     </div>
 </div>
 
 @* 編輯資訊 *@
-<div class="modal fade" id="userDataModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userDataModalLabel" aria-hidden="true">
+<div class="modal" id="userDataModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userDataModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header">
@@ -27,37 +27,26 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form>
-                    <div class="mb-3">
-                        <label for="user-name" class="col-form-label">姓名</label>
-                        <input type="text" class="form-control" id="user-name">
-                    </div>
-                    <div class="mb-3">
-                        <label for="user-gender" class="col-form-label">性別</label>
-                        <select class="form-select" aria-label="請選擇性別" id="user-gender">
-                            <option value="1">男</option>
-                            <option value="2">女</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="user-birthday" class="col-form-label">生日</label>
-                        <input type="date" class="form-control" id="user-birthday">
-                    </div>
-                    <div class="mb-3">
-                        <label for="user-password" class="col-form-label">密碼</label>
-                        <input type="password" class="form-control" id="user-password">
-                    </div>
-                    <label for="user-phone" class="col-form-label">手機</label>
-                    <div class="input-group mb-3 p-0">
-                        <input type="text" class="form-control" placeholder="請輸入欲變更的手機號碼" aria-label=""
-                               aria-describedby="button-addon2" id="user-phone">
-                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">傳送驗證碼</button>
-                    </div>
-                </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">儲存變更</button>
+                <button type="button" class="btn btn-primary" id="updateUserDataBtn" onclick="updateUserInfo()">儲存變更</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="userSportModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userDataModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-6" id="userSportModalLabel">編輯運動資料</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="editPreferBtn" onclick="updateUserSport()">儲存變更</button>
             </div>
         </div>
     </div>

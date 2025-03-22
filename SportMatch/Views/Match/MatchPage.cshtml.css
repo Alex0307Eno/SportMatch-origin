@@ -61,10 +61,10 @@
     transform: skew(20deg);
 }
 
-@font-face {
-    font-family: 'openhuninn';
-    src: url('../image/MatchPage/jf-openhuninn-2.1.ttf');
-}
+/*@font-face {*/
+/*    font-family: 'openhuninn';*/
+/*    src: url('../image/MatchPage/jf-openhuninn-2.1.ttf');*/
+/*}*/
 
 #background {
     background-image: url("../image/MatchPage/SportMatch.jpg");

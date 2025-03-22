@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SportMatch.Models;
 
@@ -40,8 +41,10 @@ public partial class Team
     public virtual Role? Role { get; set; }
 
     public virtual Sport Sport { get; set; } = null!;
-
+    
+    [NotMapped]
     public virtual ICollection<TeamMemberMapping> TeamMemberMappingTeamIdLeaderNavigations { get; set; }
+    [NotMapped]
 
     public virtual ICollection<TeamMemberMapping> TeamMemberMappingTeamIdMemberNavigations { get; set; } = new List<TeamMemberMapping>();
 

@@ -152,6 +152,7 @@ header {
                         text-wrap: nowrap;
                     }
                 }
+                
                 /*btn-點擊之外的匡線*/
                 button.btn {
                     &:focus {
@@ -170,7 +171,8 @@ header {
                     padding: 16px;
                     background-color: white;
                     border-radius: 16px;
-
+                    
+                    /*loading遮罩*/
                     .loading-overlay {
                         position: fixed;
                         top: 0;
@@ -244,15 +246,56 @@ header {
                         }
                     }
 
+                    /*tab線條版*/
+                    ul.nav.nav-underline {
+                        margin-bottom: 2rem;
+
+                        li {
+                            cursor: pointer;
+
+                            a {
+                                color: darkgray;
+                                font-size: 19px;
+                                position: relative;
+                                cursor: pointer;
+
+                                &:before {
+                                    content: '';
+                                    width: 0;
+                                    height: 4px;
+                                    background: var(--primary-color);
+                                    border-radius: 4px;
+                                    position: absolute;
+                                    top: unset;
+                                    bottom: -3px;
+                                    left: 0;
+                                    transition: width 0.4s ease-out, width 0.4s ease-out;
+                                }
+                                &:hover {
+                                    font-weight: bold;
+                                }
+
+                                &.active {
+                                    color: var(--primary-color);
+                                    font-weight: bold;
+
+                                    &:before {
+                                        width: 100%;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
                     /*tab內容容器*/
                     .tab-wrapper {
+                        overflow: hidden;
 
                         .tab-content {
                             padding: 0 0 0 1rem;
                             visibility: hidden;
                             opacity: 0;
                             height: 0;
-                            overflow: hidden;
                             transition: opacity 0.3s ease-in-out;
 
                             table {
@@ -482,15 +525,26 @@ header {
                             }
                         }
                     }
-
+                    
+                    /*區塊標題*/
                     .blockTitle {
                         display: flex;
                         align-items: center;
                         justify-content: space-between;
+                        font-size: 17px;
+                        color: #6c757d;
                         font-weight: bold;
                         border-bottom: 1px solid;
                         padding: 0 0 10px;
                         margin-top: 0.125rem;
+                        
+                        /*說明文字*/
+                        .hint {
+                            display: inline-flex;
+                            font-weight: lighter;
+                            color: lightslategray;
+                            font-size: 14px;
+                        }
                     }
 
                     /*移除特效*/
@@ -525,7 +579,7 @@ header {
                                 width: 100%;
                                 cursor: pointer;
 
-                                i {
+                                i.fa-caret-down {
                                     rotate: 0deg;
                                     transition: all 0.3s;
                                 }
@@ -598,7 +652,7 @@ header {
                             .wrapHeader {
                                 /*margin-bottom: 0 !important;*/
 
-                                i {
+                                i.fa-caret-down {
                                     rotate: 180deg;
                                 }
                             }
@@ -612,46 +666,6 @@ header {
                             tr.wrapBody {
                                 display: none;
                                 opacity: 0;
-                            }
-                        }
-                    }
-                    
-                    /*tab線條版*/
-                    ul.nav.nav-underline {
-                        margin-bottom: 2rem;
-                        
-                        li {
-                            cursor: pointer;
-                            
-                            a {
-                                font-size: 16px;
-                                position: relative;
-                                cursor: pointer;
-                                
-                                &:before {
-                                    content: '';
-                                    width: 0;
-                                    height: 4px;
-                                    background: var(--primary-color);
-                                    border-radius: 4px;
-                                    position: absolute;
-                                    top: unset;
-                                    bottom: -3px;
-                                    left: 0;
-                                    transition: width 0.4s ease-out, width 0.4s ease-out;
-                                }
-                                &:hover {
-                                    font-weight: bold;
-                                }
-
-                                &.active {
-                                    color: var(--primary-color);
-                                    font-weight: bold;
-
-                                    &:before {
-                                        width: 100%;
-                                    }
-                                }
                             }
                         }
                     }

@@ -7,23 +7,26 @@ function HeartIconChange(productID) {
     let MyHeartIcon = document.getElementById('ModalHeartIcon_' + productID);
     let HeartModal = new bootstrap.Modal(document.getElementById('HeartModal'));
     let HeartModalMessage = document.getElementById('HeartModalMessage');
-    console.log(MyHeartIcon.classList.contains('bi-heart-fill'))
+    //console.log(MyHeartIcon.classList.contains('bi-heart-fill'))
 
-        if (MyHeartIcon.classList.contains('bi-heart-fill')) {
-            MyHeartIcon.classList.remove('bi-heart-fill');
-            MyHeartIcon.classList.add('bi-heart');
-            fetchFavorite(productID);
-            MyHeartIcon.style.color = "#FFFFFF";
-            HeartModalMessage.innerHTML = "已從我的最愛移除";
-            HeartModal.show();
-        } else {
-            MyHeartIcon.classList.remove('bi-heart');
-            MyHeartIcon.classList.add('bi-heart-fill');
-            fetchFavorite(productID);
-            MyHeartIcon.style.color = "#fd7e14";
-            HeartModalMessage.innerHTML = "已加入我的最愛";
-            HeartModal.show();
-        }
+    if (_myHeartUserEmail == null) {
+        return alert("欲使用我的最愛功能請先加入會員")
+    }
+    if (MyHeartIcon.classList.contains('bi-heart-fill')) {
+        MyHeartIcon.classList.remove('bi-heart-fill');
+        MyHeartIcon.classList.add('bi-heart');
+        fetchFavorite(productID);
+        MyHeartIcon.style.color = "#FFFFFF";
+        HeartModalMessage.innerHTML = "已從我的最愛移除";
+        HeartModal.show();
+    } else {
+        MyHeartIcon.classList.remove('bi-heart');
+        MyHeartIcon.classList.add('bi-heart-fill');
+        fetchFavorite(productID);
+        MyHeartIcon.style.color = "#fd7e14";
+        HeartModalMessage.innerHTML = "已加入我的最愛";
+        HeartModal.show();
+    }
     setTimeout(function () {
         HeartModal.hide();
     }, 700);

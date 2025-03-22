@@ -248,6 +248,7 @@ function handleLogout() {
     document.querySelector(".login-btn").style.display = "block";
     document.querySelector(".logout-btn").style.display = "none";
     document.querySelector(".user-email-container").style.display = "none";
+    // 250322 改為連結到首頁，而不是入口頁
     window.location.href = '/';  // 假設首頁是根目錄
 
     checkLoginStatus();

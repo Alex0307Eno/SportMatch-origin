@@ -478,6 +478,9 @@ function billPage(data) {
     const orderPageButton = document.createElement('div');
     orderPageButton.classList.add('OrderButton');
     orderPageButton.textContent = '前往訂單頁面';
+    orderPageButton.addEventListener('click', function () {
+        window.location.href = '/MemberCenter/HistoryRecords';
+    });
     orderPageButtonSection.appendChild(orderPageButton);
 
     orderFrame.appendChild(orderNumberSection);

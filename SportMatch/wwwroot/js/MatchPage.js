@@ -388,10 +388,19 @@ function getSelectionCard(page) {
 
 // 送出篩選後切換分頁
 function getSelectionCardNextPage(page) {
+    var type;
+    
+    if ($(".Memo").text().indexOf("個人簡介") == 0) {
+        type = "FindPlayer";       
+    }
+    else {
+        type = "FindTeam";       
+    }
+    
     $.ajax({
         url: "/Match/GetSelectionNextPage",
         type: "GET",
-        data: { page: page },
+        data: { page: page ,type:type},
         success: function (response) {
             console.log(response)
             const playerModalLabel = $("#playerModalLabel");

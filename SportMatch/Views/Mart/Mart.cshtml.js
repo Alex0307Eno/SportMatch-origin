@@ -157,7 +157,7 @@ $("input[name='SubCategory']").change(function () {
 // 檢查視窗大小並傳入
 let windowWidth;
 function windowWidthCheck() {
-    if (window.innerWidth < 1200) {
+    if (window.innerWidth < 1100) {
         windowWidth = 4
     }
     else if (window.innerWidth < 1350) {

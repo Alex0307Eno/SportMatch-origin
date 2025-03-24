@@ -9,16 +9,18 @@
 }
 
 #CheckoutTopContainer {
+    display: flex;
+    justify-content: center;
     font-family: 'openhuninn';
+    background: linear-gradient(135deg, #4b2606, #984c0c, #653208, #ca6510);
 }
 
-.CheckoutContainer {
-    
-    position: relative;
-    transform: translate(-50%, 0);
+.CheckoutContainer {    
+/*    position: relative;
+    transform: translate(-50%, 0);*/
     height: 50rem;
     width: 75rem;
-    left: 50%;
+/*    left: 50%;*/
 }
 
 .CartBody {
@@ -67,8 +69,8 @@
 }
 
 /* 配色統合 */
-.CheckoutContainer,
-.container-fluid,
+/*.CheckoutContainer,
+.container-fluid,*/
 /*以下訂單頁*/
 .OrderFrame {
     background-color: #000000;
@@ -186,29 +188,40 @@
     overflow-y: auto;
 }
 
-
 /* 滾動條 */
-::-webkit-scrollbar {
+.CartBody ::-webkit-scrollbar,
+#productListSection ::-webkit-scrollbar {
     width: 5px;
     height: 5px;
 }
 /* 滾動條圓角顏色 */
-::-webkit-scrollbar-thumb {
+.CartBody ::-webkit-scrollbar-thumb,
+#productListSection ::-webkit-scrollbar-thumb {
     background-color: #888;
     border-radius: 5px;
 }
 /* 滾動條背景 */
-::-webkit-scrollbar-track {
+.CartBody ::-webkit-scrollbar-track,
+#productListSection ::-webkit-scrollbar-track {
     background-color: none;
 }
 
-@media screen and (max-width: 1215px) {
+@media screen and (max-width: 1120px) {
+    .Logistics {
+        padding: 15px 15px 10px 15px;
+    }
+}
+
+@media screen and (max-width: 885px) {
     body {
         overflow-x: auto;
     }
 
+    #CheckoutTopContainer {
+        width: 55rem;
+    }
+
     .CheckoutContainer {
         width: 55rem;
-        overflow-x: auto;
     }
 }

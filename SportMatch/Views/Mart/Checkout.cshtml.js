@@ -361,7 +361,7 @@ function billPage(data) {
     localStorage.removeItem('Cart');
 
     const container = document.createElement('div');
-    container.classList.add('container', 'mt-4');
+    container.classList.add('container', 'mb-4');
     
     const orderFrame = document.createElement('div');
     orderFrame.classList.add('OrderFrame');
@@ -374,6 +374,7 @@ function billPage(data) {
     
     const productListSection = document.createElement('div');
     productListSection.classList.add('OrderSection');
+    productListSection.id = 'productListSection';
     const productListHeading = document.createElement('h4');
     productListHeading.textContent = '商品清單';
     productListSection.appendChild(productListHeading);

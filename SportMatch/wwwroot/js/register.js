@@ -143,7 +143,8 @@
             if (response.ok && result.success) {
                 alert("註冊成功！");
                 localStorage.setItem("savedEmail", emailInput.value);
-                window.location.href = "/";
+                // 250324改為連結到首頁，而不是入口頁
+                window.location.href = "/Home/Index";
             } else {
                 alert(result.message || "註冊失敗");
             }
@@ -170,7 +171,8 @@ const hideNotification = () => {
     successNotification.style.opacity = "0";
     setTimeout(() => {
         successNotification.style.display = "none";
-        window.location.href = "/"; // 跳轉到首頁
+        // 250324改為連結到首頁，而不是入口頁
+        window.location.href = "/Home/Index";// 跳轉到首頁
     }, 300); // 與 CSS 過渡時間一致
 };
 

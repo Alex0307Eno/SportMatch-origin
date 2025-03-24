@@ -78,6 +78,7 @@ public partial class SportMatchContext : DbContext
             entity.Property(e => e.ApplyId).HasColumnName("ApplyID");
             entity.Property(e => e.Memo).HasMaxLength(100);
             entity.Property(e => e.Status).HasMaxLength(4);
+            entity.Property(e => e.Type).HasMaxLength(3);
             entity.Property(e => e.TeamId).HasColumnName("TeamID");
             entity.Property(e => e.UserId).HasColumnName("UserID");
 

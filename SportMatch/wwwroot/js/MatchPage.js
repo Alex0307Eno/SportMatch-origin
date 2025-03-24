@@ -619,3 +619,32 @@ function updateApplyModalContent(playerName, playerPosition, type) {
         document.getElementById('modal-apply-position').innerText = ("招募位置：" + playerPosition);
     }
 }
+
+// 歷史紀錄
+$("#dropdownMenuButton").on("click", function () {
+    $(".dropdown-menu").empty();
+    $.ajax({
+        url: "/Match/GetHistory",
+        type: "GET",
+        success: function (response) {
+            console.log("後端回應:", response);
+            for (var i = 0; i < response.length; i++) {
+                if (response[i].type == "找隊伍") {
+                    $(".dropdown-menu").append(`
+                    <li><a class="dropdown-item" style="color: #f3f5f5">已申請加入 ${response[i].name} </a></li>
+                    <hr/>
+                    `)
+                }
+                else {
+                    $(".dropdown-menu").append(`
+                    <li><a class="dropdown-item" style="color: #f3f5f5">已招募 ${response[i].name} 加入隊伍</a></li>
+                    <hr/>
+                    `)
+                }
+            }
+            $(".dropdown-menu").append(`
+                    <li><a class="dropdown-item" style="color: #f3f5f5">沒有更多紀錄😓</a></li>                    
+                    `)
+        }
+    });
+})

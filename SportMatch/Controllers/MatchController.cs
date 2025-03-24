@@ -384,16 +384,18 @@ namespace SportMatch.Controllers
             }
         }
 
-
+        // 送出申請/招募事件
         [HttpPost]
         public async Task<IActionResult> ApplyTask(string applyName, string applyNote, string applyType)
         {
+            // 取得目前使用者資料
             string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
             var UserInfoForSuggest = (from u in _context.Users
                                       join t in _context.Teams
                                       on u.UserId equals t.UserId
                                       where u.Email.ToString().ToLower() == UserInfo.ToLower()
                                       select new { u.UserId, t.TeamId }).ToList();
+
             Apply tmp = new Apply();
             switch (applyType)
             {
@@ -409,6 +411,7 @@ namespace SportMatch.Controllers
                     tmp.TeamId = TeamInfo[0];
                     tmp.Memo = applyNote;
                     tmp.Status = "申請中";
+                    tmp.Type = "找隊伍";
                     _context.Add(tmp);
                     await _context.SaveChangesAsync();
                     return Json(new { success = true, message = "資料已儲存" });
@@ -424,21 +427,45 @@ namespace SportMatch.Controllers
                     tmp.TeamId = UserInfoForSuggest[0].TeamId;
                     tmp.Memo = applyNote;
                     tmp.Status = "申請中";
+                    tmp.Type = "找隊友";
                     _context.Add(tmp);
                     await _context.SaveChangesAsync();
-                    return Json(new { success = true, message = "資料已儲存" });                   
+                    return Json(new { success = true, message = "資料已儲存" });
 
                 default:
                     break;
             }
-
-            ViewBag.AN1 = applyName;
-            ViewBag.AN2 = applyNote;
-            // applyName = modal-apply-name 內的值
-            // applyNote = exampleTextarea 內的值
-
-            // 你可以在這裡處理邏輯，例如儲存到資料庫
             return View("MatchPage");
+        }
+
+        // 
+        public JsonResult GetHistory()
+        {
+            // 取得目前使用者資料
+            string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
+            var UserInfoForSuggest = (from u in _context.Users
+                                      join t in _context.Teams
+                                      on u.UserId equals t.UserId
+                                      where u.Email.ToString().ToLower() == UserInfo.ToLower()
+                                      select new { u.UserId, t.TeamId }).ToList();
+
+
+
+            var HistroyTeam = (from a in _context.Applies
+                               join t in _context.Teams
+                               on a.TeamId equals t.TeamId
+                               where a.UserId == UserInfoForSuggest[0].UserId && a.Status == "申請中"
+                               select new { Name = t.TeamName, Type = a.Type }).ToList();
+
+            var HistoryPlayer = (from a in _context.Applies
+                                 join u in _context.Users
+                                 on a.UserId equals u.UserId 
+                                 where a.TeamId == UserInfoForSuggest[0].TeamId && a.Status == "申請中"
+                                 select new { Name = u.Name, Type = a.Type }).ToList();
+
+            var TotalHistory = HistroyTeam.Concat(HistoryPlayer).ToList();
+
+            return Json(TotalHistory);
         }
     }
 }

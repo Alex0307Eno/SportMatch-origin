@@ -61,3 +61,7 @@
 #heartIcon:hover {
     transform: scale(1.2);
 }
+
+.dropdown-menu::-webkit-scrollbar {
+    display: none;
+}

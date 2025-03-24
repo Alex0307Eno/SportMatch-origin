@@ -18,14 +18,14 @@
 		box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
 	}
 
-	.modal-content {		
+	.modal-content, .dropdown-menu {
 		background-color: rgba(26,10,1);
 		color: #f3f5f5;
 		border: 1px solid #fd7e14; /* 橘色邊框 */
 		box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
 	}
 
-	.confirm-content{
+	.confirm-content {
 		position: fixed; /* 固定在畫面中 */
 		top: 50%;
 		left: 50%;
@@ -58,6 +58,10 @@
 			transition: 0.2s;
 		}
 
+	.dropdown-item:hover{
+		background: linear-gradient(145deg, #984c0c, #fd7e14);
+		color: #f3f5f5;
+		cursor: default;
 	}
 </style>
 <div id="background">
@@ -230,8 +234,13 @@
 						</div>
 						<!-- 上/下頁切換 -->
 						<div class="col-6 d-flex align-items-center justify-content-end">
-							<div class="me-3">
-								<a class="bi bi-clock-history me-1" id="historyIcon" style="cursor:pointer;color:white"></a><label for="historyIcon" style="color:white;cursor:pointer" class="">歷史紀錄</label>
+							<div class="me-3 dropdown">
+								<a class="bi bi-clock-history me-1 " id="historyIcon" style="cursor:pointer;color:white"></a><label for="historyIcon" style="color:white;cursor:pointer" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuButton">歷史紀錄</label>
+								<ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="max-height: 200px;overflow-y: auto;">
+									<li><a class="dropdown-item" href="#">Action</a></li>
+									<li><a class="dropdown-item" href="#">Another action</a></li>
+									<li><a class="dropdown-item" href="#">Something else here</a></li>
+								</ul>
 							</div>
 							<nav class="">
 								<ul id="pagination" class="pagination"></ul>
@@ -321,7 +330,7 @@
 			<!-- 自訂的確認框 -->
 			<div id="customConfirm" class="confirm-modal" style="display:none;">
 				<div class="confirm-content">
-					<p id="confirmMessage"></p>					
+					<p id="confirmMessage"></p>
 					<button class="btn mt-3" onclick="closeConfirm()">取消</button>
 				</div>
 			</div>

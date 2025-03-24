@@ -1,31 +1,44 @@
-﻿// 加入我的最愛
-function HeartIconChange(button) {
-    let ItemID = button.getAttribute('data-ProductID');
-    let ItemMyHeart = button.getAttribute('data-MyHeart');
+﻿//history.pushState({}, '', '/Mart');
+let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+let _myHeartUserEmail = localStorage.getItem("loggedInEmail");
 
-    let Icon = document.getElementById('ModalHeartIcon_' + ItemID);
-    let Modal = new bootstrap.Modal(document.getElementById('HeartModal'));
-    let ModalMessage = document.getElementById('HeartModalMessage');
+// 加入我的最愛
+function HeartIconChange(productID) {    
+    let MyHeartIcon = document.getElementById('ModalHeartIcon_' + productID);
+    let HeartModal = new bootstrap.Modal(document.getElementById('HeartModal'));
+    let HeartModalMessage = document.getElementById('HeartModalMessage');
+    console.log(MyHeartIcon.classList.contains('bi-heart-fill'))
 
-    if (ItemMyHeart == 'true') {
-
-        Icon.classList.remove('bi-heart-fill');
-        Icon.classList.add('bi-heart');
-        button.setAttribute('data-MyHeart', 'false');
-        Icon.style.color = "#FFFFFF";
-        ModalMessage.innerHTML = "已從我的最愛移除";
-    } else {
-        Icon.classList.remove('bi-heart');
-        Icon.classList.add('bi-heart-fill');
-        button.setAttribute('data-MyHeart', 'true');
-        Icon.style.color = "#FF007F";
-        ModalMessage.innerHTML = "已加入我的最愛";
-    }
-
-    Modal.show();
+        if (MyHeartIcon.classList.contains('bi-heart-fill')) {
+            MyHeartIcon.classList.remove('bi-heart-fill');
+            MyHeartIcon.classList.add('bi-heart');
+            fetchFavorite(productID);
+            MyHeartIcon.style.color = "#FFFFFF";
+            HeartModalMessage.innerHTML = "已從我的最愛移除";
+            HeartModal.show();
+        } else {
+            MyHeartIcon.classList.remove('bi-heart');
+            MyHeartIcon.classList.add('bi-heart-fill');
+            fetchFavorite(productID);
+            MyHeartIcon.style.color = "#fd7e14";
+            HeartModalMessage.innerHTML = "已加入我的最愛";
+            HeartModal.show();
+        }
     setTimeout(function () {
-        Modal.hide();
-    }, 1000);
+        HeartModal.hide();
+    }, 700);
+}
+function fetchFavorite(_myHeartProductsID) {
+    fetch('/api/Favorite', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            myHeartProductsID: _myHeartProductsID,
+            myHeartUserEmail: _myHeartUserEmail
+        })
+    })
 }
 
 //加入購物車
@@ -33,7 +46,7 @@ function GetCartModalSuccess(CartExist) {
     let GetCartModal = new bootstrap.Modal(document.getElementById('GetCartModal'));
     let GetCartModalMessage = document.getElementById('GetCartModalMessage');
     if (CartExist) {
-        GetCartModalMessage.innerHTML = "商品成功加入購物車";
+        GetCartModalMessage.innerHTML = "商品成功加入購物車";        
     }
     else {
         GetCartModalMessage.innerHTML = "購物車已經有該商品";
@@ -42,39 +55,46 @@ function GetCartModalSuccess(CartExist) {
     GetCartModal.show();
     setTimeout(function () {
         GetCartModal.hide();
-    }, 1000);
+    }, 700);
 }
 
 // 購物車localstorage傳送資料用
-function AddToCart(button) {
+function AddToCart(button) {    
     // 從按鈕的 data-* 屬性中獲取商品資料
     ItemID = button.getAttribute('data-ProductID');
     ItemName = button.getAttribute('data-Name');
     ItemPrice = button.getAttribute('data-Price');
     ItemDiscount = button.getAttribute('data-Discount');
     ItemImage = button.getAttribute('data-Image');
-    ItemStock = button.getAttribute('data-Stock');
+    ItemStock = button.getAttribute('data-Stock');            
 
     // 檢查 localStorage 是否已有購物車
-    let Cart = JSON.parse(localStorage.getItem("Cart")) || [];
+    //let Cart = JSON.parse(localStorage.getItem("Cart")) || [];        
+    let isLoggedIn = localStorage.getItem('isLoggedIn');
 
     // 檢查是否已經有此商品，若有則更新數量，若沒有則新增
     let existingItem = Cart.find(Item => Item.ID === ItemID);
-    if (existingItem) {
-        GetCartModalSuccess(false);
-    } else {
-        Cart.push({
-            ID: ItemID,
-            Name: ItemName,
-            Price: ItemPrice,
-            Discount: ItemDiscount,
-            Image01: ItemImage,
-            Stock: ItemStock,
-            Quantity: 1
-        });
-        GetCartModalSuccess(true);
-
+    if(!isLoggedIn) {
+        alert('請先登入');
     }
+    else {
+        if (existingItem) {
+            GetCartModalSuccess(false);
+        } else {
+            Cart.push({
+                ID: ItemID,
+                Name: ItemName,
+                Price: ItemPrice,
+                Discount: ItemDiscount,
+                Image01: ItemImage,
+                Stock: ItemStock,
+                Quantity: 1
+            });
+            updateCartNumber(); //_Layout.js
+            GetCartModalSuccess(true);
+        }
+    }
+    
     // 將更新後的購物車儲存在 localStorage
     localStorage.setItem("Cart", JSON.stringify(Cart));
 }
@@ -84,17 +104,20 @@ let itemsPerPage;
 let orderByDesc;
 
 let priceSort = document.getElementById('PriceSort');
+
+
 // 分頁
-function fetchProducts(page = 1, itemsPerPage = window.innerWidth < 1700 ? 4 : 5, orderByDesc = priceSort.value, categoryName = "全部", subCategoryName = ['無']) {
+function fetchProducts(page = 1, itemsPerPage = 10, orderByDesc = priceSort.value, categoryName = "全部", subCategoryName = ['無'], myHeartUserEmail = _myHeartUserEmail) {
     let subCategoryNamesStr = subCategoryName.join(',') || '';
-    console.log(page, itemsPerPage, orderByDesc, categoryName, subCategoryName)
+    //console.log(page, itemsPerPage, orderByDesc, categoryName, subCategoryName)
     //console.log(subCategoryNamesStr)
     // 字串部分需為C#端參數名稱
-    fetch(`/api/products?page=${page}&itemsPerPage=${itemsPerPage}&orderByDesc=${orderByDesc}&_categoryName=${categoryName}&_subCategoryName=${subCategoryNamesStr}`)
+    fetch(`/api/products?page=${page}&itemsPerPage=${itemsPerPage}&orderByDesc=${orderByDesc}&_categoryName=${categoryName}&_subCategoryName=${subCategoryNamesStr}&_myHeartUserEmail=${myHeartUserEmail}`)
         .then(response => response.json())
         .then(data => {
             renderProducts(data.products);  // 渲染商品
             updatePagination(data.totalPages, data.currentPage);  // 更新分頁按鈕
+            console.log(data.products)
         })
 }
 
@@ -128,20 +151,38 @@ $("input[name='SubCategory']").change(function () {
     fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText);
 });
 
+// 檢查視窗大小並傳入
+let windowWidth;
+function windowWidthCheck() {
+    if (window.innerWidth < 1200) {
+        windowWidth = 4
+    }
+    else if (window.innerWidth < 1350) {
+        windowWidth = 6
+    }
+    else if (window.innerWidth < 1700) {
+        windowWidth = 8
+    }
+    else {
+        windowWidth = 10;
+    }
+    return windowWidth;
+}
+
 // 維持當下頁數
 function fetchProductsNowPageCheck(_Page, _itemsPerPage, _orderByDesc, _categoryName, _subCategoryName) {
     let nextPageButtons = document.querySelectorAll('.nextPageButton');
     nextPageButtons.forEach(button => {
         if (button.querySelector('.numberPageButtonLinkTake')) {
             let nowPage = button.querySelector('.numberPageButtonLinkTake').innerText;
-            fetchProducts(nowPage, _itemsPerPage, _orderByDesc, _categoryName, _subCategoryName);
+            fetchProducts(nowPage, windowWidthCheck(), _orderByDesc, _categoryName, _subCategoryName);          
         }
     });
 }
 
 // 載入完成抓取商品資料
 document.addEventListener('DOMContentLoaded', function () {
-    fetchProducts();
+    fetchProducts(1, windowWidthCheck());
 });
 
 // 價格大小排序   
@@ -150,8 +191,7 @@ priceSort.addEventListener('change', function () {
 });
 
 // 視窗大小事件
-let windowWidth = window.innerWidth;
-window.addEventListener('resize', function () {
+window.addEventListener('resize', function () {   
     fetchProductsNowPageCheck(undefined, undefined, undefined, parentLabelText, subLabelText);
 });
 
@@ -172,7 +212,7 @@ function addCssIsolationElement() {
 }
 
 //以下HTML
-function renderProducts(products) {
+function renderProducts(products/*, _favoriteQueryStorage*/) {
     const productContainer = document.querySelector('.ProductsList');
     productContainer.innerHTML = ''; // 清空容器
 
@@ -227,6 +267,7 @@ function renderProducts(products) {
 
         // 價格按鈕
         const priceDiv = document.createElement('div');
+        priceDiv.className = 'me-auto';
         priceDiv.setAttribute('data-bs-toggle', 'modal');
         priceDiv.setAttribute('data-bs-target', `#ProductModal_${item.productID}`);
 
@@ -237,9 +278,15 @@ function renderProducts(products) {
         priceDiv.appendChild(priceText);
         buttonDiv.appendChild(priceDiv);
 
+        const pointerDiv = document.createElement('div');
+        pointerDiv.className = 'flex-grow-1';
+        pointerDiv.setAttribute('data-bs-toggle', 'modal');
+        pointerDiv.setAttribute('data-bs-target', `#ProductModal_${item.productID}`);
+        buttonDiv.appendChild(pointerDiv);
+
         // 加入購物車按鈕
         const cartButton = document.createElement('button');
-        cartButton.className = 'btn ms-auto';
+        cartButton.className = 'btn';
         cartButton.style.fontSize = '13px';
         cartButton.classList.add('CartButton');
         cartButton.setAttribute('data-ProductID', item.productID);
@@ -247,8 +294,8 @@ function renderProducts(products) {
         cartButton.setAttribute('data-Price', item.price);
         cartButton.setAttribute('data-Discount', item.discount);
         cartButton.setAttribute('data-Image', item.image01);
-        cartButton.setAttribute('data-Stock', item.stock);
-        cartButton.onclick = function () { AddToCart(this); };
+        cartButton.setAttribute('data-Stock', item.stock);  //_Layout.js    
+        cartButton.onclick = function () { AddToCart(this), updateCartNumber(); };
         cartButton.disabled = item.stock <= 0;
 
 
@@ -272,9 +319,10 @@ function renderProducts(products) {
         /*----以下modal----*/
 
 
-        // 創建模態框 (商品詳情)
+        // 創建模態框
         const modalDiv = document.createElement('div');
         modalDiv.className = 'modal fade';
+        modalDiv.classList.add('MainModal');
         modalDiv.id = `ProductModal_${item.productID}`;
         modalDiv.tabIndex = '-1';
 
@@ -332,15 +380,15 @@ function renderProducts(products) {
         const favoriteButton = document.createElement('button');
         favoriteButton.className = 'btn mb-4 ms-auto fs-5';
         favoriteButton.setAttribute('data-ProductID', item.productID);
-        favoriteButton.onclick = function () { HeartIconChange(this); };
-
+        favoriteButton.onclick = function () { HeartIconChange(item.productID) };
+        
         const heartIcon = document.createElement('i');
-        heartIcon.className = 'bi bi-heart';
-        heartIcon.style.color = '#ffffff';
+        heartIcon.className = `bi ${item.storage == "fill" ? "bi-heart-fill" : "bi-heart"}`;
+        heartIcon.style.color = `${item.storage == "fill" ? "#fd7e14" : "#ffffff"}`;
         heartIcon.id = `ModalHeartIcon_${item.productID}`;
 
         favoriteButton.appendChild(heartIcon);
-
+       
         // 商品資訊
         const priceInfo = document.createElement('p');
         priceInfo.textContent = `價格:${item.price}`;
@@ -350,7 +398,7 @@ function renderProducts(products) {
 
         const stockButton = document.createElement('div');
         item.stock > 0 ? stockButton.classList.add('BtnOrange') : stockButton.classList.add('BtnOrangeDisabled');
-        stockButton.textContent = item.stock > 0 ? '有貨' : '缺貨';
+        stockButton.textContent = item.stock > 0 ? `貨量 : ${item.stock}` : '缺貨';
         stockInfo.appendChild(stockButton);
 
         const detailInfo = document.createElement('p');
@@ -397,8 +445,8 @@ function renderProducts(products) {
         footerCartButton.setAttribute('data-Price', item.price);
         footerCartButton.setAttribute('data-Discount', item.discount);
         footerCartButton.setAttribute('data-Image', item.image01);
-        footerCartButton.setAttribute('data-Stock', item.stock);
-        footerCartButton.onclick = function () { AddToCart(this); };
+        footerCartButton.setAttribute('data-Stock', item.stock);  //_Layout.js
+        footerCartButton.onclick = function () { AddToCart(this), updateCartNumber(); };
         footerCartButton.disabled = item.stock <= 0;
         footerCartButton.innerText = '加入購物車';
 
@@ -423,8 +471,9 @@ function renderProducts(products) {
 
         productContainer.appendChild(modalDiv);
 
-        //捕捉modal打開事件使footer圖片可點擊更換主圖
-        document.getElementById(`ProductModal_${item.productID}`).addEventListener('shown.bs.modal', function () {
+        //捕捉modal打開事件使footer圖片可點擊更換主圖以及修改我的最愛圖案
+        document.getElementById(`ProductModal_${item.productID}`).addEventListener('shown.bs.modal', function () {             
+
             document.getElementById(`FooterImgLeft_${item.productID}`).addEventListener('click', function () {
                 document.getElementById(`ModelBodyProductImage_${item.productID}`).src = item.image01
             });
@@ -434,6 +483,13 @@ function renderProducts(products) {
             document.getElementById(`FooterImgRight_${item.productID}`).addEventListener('click', function () {
                 document.getElementById(`ModelBodyProductImage_${item.productID}`).src = item.image03
             });
+        });
+
+        const modals = document.getElementById(`ProductModal_${item.productID}`);
+        var modal = new bootstrap.Modal(modals);
+         //視窗變動關閉modal
+        window.addEventListener('resize', function () {
+            modal.hide();           
         });
     });
     addCssIsolationElement();
@@ -450,7 +506,7 @@ function updatePagination(totalPages, currentPage) {
     backPageButtonLink.className = 'page-link';
     backPageButtonLink.classList.add('PageButton');
     backPageButtonLink.innerHTML = '&laquo;';
-    backPageButtonLink.onclick = () => fetchProducts(currentPage - 1);
+    backPageButtonLink.onclick = () => fetchProducts(currentPage - 1, windowWidthCheck(), undefined, parentLabelText, subLabelText);
     backPageButton.appendChild(backPageButtonLink);
     paginationContainer.appendChild(backPageButton);
 
@@ -467,7 +523,7 @@ function updatePagination(totalPages, currentPage) {
             numberPageButtonLink.classList.add('numberPageButtonLink');
         }
         numberPageButtonLink.innerText = i;
-        numberPageButtonLink.onclick = () => fetchProducts(i);
+        numberPageButtonLink.onclick = () => fetchProducts(i, windowWidthCheck(), undefined, parentLabelText, subLabelText);
 
         numberPageButton.appendChild(numberPageButtonLink);
         paginationContainer.appendChild(numberPageButton);
@@ -480,7 +536,7 @@ function updatePagination(totalPages, currentPage) {
     nextPageButtonLink.className = 'page-link';
     nextPageButtonLink.classList.add('PageButton');
     nextPageButtonLink.innerHTML = '&raquo;';
-    nextPageButtonLink.onclick = () => fetchProducts(currentPage + 1);
+    nextPageButtonLink.onclick = () => fetchProducts(currentPage + 1, windowWidthCheck(), undefined, parentLabelText, subLabelText);
     nextPageButton.appendChild(nextPageButtonLink);
     paginationContainer.appendChild(nextPageButton);
 

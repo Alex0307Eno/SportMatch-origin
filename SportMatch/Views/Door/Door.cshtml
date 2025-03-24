@@ -13,7 +13,7 @@
         <img class="DoorBackground" src="/image/DoorImage/DoorBackground.jpg">
         @foreach (var item in ViewBag.ForSport)
         {
-            <a href="javascript:void(0);" onclick="HomeLinkDelay('@Url.Action("Mart", "Mart", new { Sport = item.Ball })')">
+            <a href="javascript:void(0);" onclick="HomeLinkDelay('@Url.Action("Index", "Home")')" data-ballSpecies="@item.Ball">
                 <img class=@($"{item.Ball}Logo") id=@($"{item.Ball}Logo") src="@Url.Content($"/image/DoorImage/{item.Ball}Logo01.png")" />
             </a>
         }

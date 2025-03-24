@@ -32,10 +32,7 @@ public partial class SportMatchContext : DbContext
     public virtual DbSet<Order> Orders { get; set; }
 
 
-    //public virtual DbSet<ProducCategory> ProducCategories { get; set; }
-    //public virtual DbSet<Product> Products { get; set; }
-    //public virtual DbSet<ProductCategoryMapping> ProductCategoryMappings { get; set; }
-    //250314註解 改成下面四個↓
+    //250314新增↓
 
     public virtual DbSet<Product> Product { get; set; }
 
@@ -44,6 +41,10 @@ public partial class SportMatchContext : DbContext
     public virtual DbSet<ProductCategoryMapping> ProductCategoryMapping { get; set; }
 
     public virtual DbSet<ProductSubCategory> ProductSubCategory { get; set; }
+
+
+    //250320新增↓
+    public virtual DbSet<ProductFavorite> ProductFavorite { get; set; }
 
 
     public virtual DbSet<Role> Roles { get; set; }
@@ -250,9 +251,6 @@ public partial class SportMatchContext : DbContext
 
             entity.Property(e => e.CategoryID).HasColumnName("CategoryID");
             entity.Property(e => e.CategoryName).HasMaxLength(50);
-            //entity.Property(e => e.ParentId).HasColumnName("ParentID");
-            //entity.Property(e => e.SubCategoryName).HasMaxLength(50);
-            //250314註解掉
         });
 
         modelBuilder.Entity<Product>(entity =>
@@ -264,9 +262,6 @@ public partial class SportMatchContext : DbContext
             entity.HasIndex(e => e.ProductID, "UQ__Product__B40CC6EC304CC451").IsUnique();
 
             entity.Property(e => e.ProductID).HasColumnName("ProductID");
-            //entity.Property(e => e.OrderState).HasMaxLength(3);
-            //entity.Property(e => e.ParentProductID).HasColumnName("ParentProductID");
-            //250314註解掉
             entity.Property(e => e.Price).HasColumnType("decimal(10, 2)");
             entity.Property(e => e.ProductDetails).HasColumnType("text");
             entity.Property(e => e.Name).HasMaxLength(255);
@@ -284,17 +279,6 @@ public partial class SportMatchContext : DbContext
                 .ValueGeneratedOnAdd()
                 .HasColumnName("ProductID");
             entity.Property(e => e.CategoryID).HasColumnName("CategoryID");
-
-            /*entity.HasOne(d => d.ProductCategory).WithMany(p => p.ProductCategoryMappings)
-                .HasForeignKey(d => d.CategoryID)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__ProductCa__Categ__160F4887");
-
-            entity.HasOne(d => d.Product).WithOne(p => p.ProductCategoryMapping)
-                .HasForeignKey<ProductCategoryMapping>(d => d.ProductID)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__ProductCa__Produ__151B244E");*/
-            //250314註解掉
         });
 
         modelBuilder.Entity<Role>(entity =>

@@ -81,14 +81,14 @@
             <div class="row ProductsList">
                 <!-- 這邊使用JS加入HTML -->
             </div>
+@* @await Html.PartialAsync("_PartialFooter") *@
         </div>
     </div>
 </div>
-
 <!-- 加入我的最愛彈出視窗 -->
-<div class="modal fade HeartModal" id="HeartModal" data-bs-backdrop="false" tabindex="-1" role="dialog">
+<div class="modal fade HeartModal" id="HeartModal" tabindex="-1" role="dialog" data-bs-backdrop="false">
     <div class="modal-dialog" role="document">
-        <div class="modal-content border-2 border-white">
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="HeartModalMessage">已加入我的最愛</h5>
             </div>
@@ -97,12 +97,13 @@
 </div>
 
 <!-- 加入購物車彈出視窗 -->
-<div class="modal fade HeartModal" id="GetCartModal" data-bs-backdrop="false" tabindex="-1">
+<div class="modal fade HeartModal" id="GetCartModal" tabindex="-1" data-bs-backdrop="false">
     <div class="modal-dialog">
-        <div class="modal-content border-2 border-white">
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="GetCartModalMessage">已加入購物車</h5>
             </div>
         </div>
     </div>
 </div>
+

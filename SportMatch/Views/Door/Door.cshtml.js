@@ -1,4 +1,6 @@
-﻿var TopMask = document.querySelector(".TopMask");
+﻿history.pushState({}, '', 'Door');
+
+var TopMask = document.querySelector(".TopMask");
 var BottomMask = document.querySelector(".BottomMask");
 var DoorBackground = document.querySelector(".DoorBackground");
 
@@ -56,6 +58,10 @@ window.onload = function () {
 
     Logos.forEach(function (item) {
         item.addEventListener("click", function () {
+            const ballSpecies = this.closest('a').getAttribute('data-ballSpecies');
+            console.log(ballSpecies)
+            localStorage.setItem('ballSpecies', ballSpecies);
+
             this.style.pointerEvents = "none";
             this.style.clipPath = "none"
             this.style.transform = "clip-path 0s";
@@ -73,3 +79,5 @@ function HomeLinkDelay(url) {
         window.location.href = url;
     }, 100);
 }
+
+

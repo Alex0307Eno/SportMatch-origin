@@ -459,13 +459,20 @@ namespace SportMatch.Controllers
 
             var HistoryPlayer = (from a in _context.Applies
                                  join u in _context.Users
-                                 on a.UserId equals u.UserId 
+                                 on a.UserId equals u.UserId
                                  where a.TeamId == UserInfoForSuggest[0].TeamId && a.Status == "申請中"
                                  select new { Name = u.Name, Type = a.Type }).ToList();
 
             var TotalHistory = HistroyTeam.Concat(HistoryPlayer).ToList();
 
             return Json(TotalHistory);
+        }
+
+        //
+        public JsonResult Favorite(string UserID,string FavoriteType)
+        {
+
+            return Json("");
         }
     }
 }

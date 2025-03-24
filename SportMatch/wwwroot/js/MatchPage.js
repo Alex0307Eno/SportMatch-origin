@@ -6,6 +6,9 @@ $(document).ready(function () {
     checkEventOrNot();
     //getUserInfoFromlocalStorage()
     getSelectionCard(1)
+    window.addEventListener("beforeunload", function () {
+        sessionStorage.removeItem("hasRunUserInfo"); // 在頁面重新整理時清除標記
+    });
     if (!sessionStorage.getItem("hasRunUserInfo")) {
         getUserInfoFromlocalStorage();
         sessionStorage.setItem("hasRunUserInfo", "true"); // **設定標記，確保只執行一次**
@@ -159,32 +162,6 @@ function getRole() {
             }
         });
     });
-}
-
-
-
-
-
-// 加入最愛功能
-function addToMyFavorite() {
-    var dom = document.getElementById('heartIcon');
-    var toa = document.getElementById('toastMessage');
-    var toast = new bootstrap.Toast(document.getElementById("heartToast"));
-    if (dom.classList.contains("bi-heart")) {
-        dom.classList.toggle("bi-heart");
-        dom.classList.toggle("bi-heart-fill");
-        dom.style.color = "pink";
-        toa.innerHTML = "已加入收藏"
-        // alert("已加入收藏");
-    }
-    else {
-        dom.classList.toggle("bi-heart");
-        dom.classList.toggle("bi-heart-fill");
-        dom.style.color = "white";
-        toa.innerHTML = "已取消收藏"
-        // alert("已取消收藏");
-    }
-    toast.show();
 }
 
 // 一頁顯示幾個Card
@@ -648,3 +625,27 @@ $("#dropdownMenuButton").on("click", function () {
         }
     });
 })
+
+// 加入最愛功能
+function addToMyFavorite() {
+    var dom = document.getElementById('heartIcon');
+    var toa = document.getElementById('toastMessage');
+    var toast = new bootstrap.Toast(document.getElementById("heartToast"));
+    if (dom.classList.contains("bi-heart")) {
+        dom.classList.toggle("bi-heart");
+        dom.classList.toggle("bi-heart-fill");
+        dom.style.color = "pink";
+        toa.innerHTML = "已加入收藏"
+        // alert("已加入收藏");
+    }
+    else {
+        dom.classList.toggle("bi-heart");
+        dom.classList.toggle("bi-heart-fill");
+        dom.style.color = "white";
+        toa.innerHTML = "已取消收藏"
+        // alert("已取消收藏");
+    }
+    toast.show();
+}
+
+

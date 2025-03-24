@@ -29,6 +29,7 @@ function getUserInfoFromlocalStorage() {
             data: JSON.stringify(userInfo), // 傳遞 JSON 格式
             success: function (response) {
                 console.log("後端回應:", response);
+                $("#CardContainerTitle").text("為您推薦");
                 loadCards(1);
             },
             error: function (xhr, status, error) {
@@ -264,7 +265,9 @@ function getSelectionCard(page) {
                 const playerModalLabel = $("#playerModalLabel");
                 const applyModalLabel = $("#applyModalLabel");
                 const cardContainer = $("#CardContainer");
+                const CardContainerTitle = $("#CardContainerTitle");
                 cardContainer.empty();
+                CardContainerTitle.text("查詢結果")
                 if (response.cards.length != 0) {
                     console.log(response)
                     let type;
@@ -356,7 +359,7 @@ function getSelectionCard(page) {
                     console.log("error");
                     cardContainer.append(`
                     <img src="../image/MatchPage/NotFound2.gif" alt="GIF Image" style="width:40%">
-                    <label class="text-light text-center" style="font-size:x-large" >抱歉，目前沒有符合的查詢結果</label>
+                    <label class="text-light text-center" style="font-size:x-large" >抱歉，目前沒有符合的查詢結果😓</label>
                     `);
 
                     $("#paginationInfo").text(`當前第 0 頁 ，總共 0 筆資料`);

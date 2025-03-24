@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Drawing.Printing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -16,7 +17,7 @@ namespace SportMatch.Controllers
     public class MatchController : Controller
     {
         // 導入資料庫
-        private readonly SportMatchContext _context;
+        private readonly SportMatchContext _context;        
         public MatchController(SportMatchContext context)
         {
             _context = context;
@@ -46,6 +47,7 @@ namespace SportMatch.Controllers
         [HttpGet]
         public JsonResult GetCards(int page, int pageSize)
         {
+            var random = new Random();
             var UserInfoFromSQL = (from u in _context.Users
                                    join r in _context.Roles
                                    on u.RoleId equals r.RoleId
@@ -78,6 +80,7 @@ namespace SportMatch.Controllers
             int totalItems = TeamInfoFromSQL.Count();
             int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
             var cards = TeamInfoFromSQL.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            cards = cards.OrderBy(x => random.Next()).ToList();
 
             return Json(new { cards, totalPages, totalItems });
         }
@@ -129,6 +132,7 @@ namespace SportMatch.Controllers
         [HttpPost]
         public JsonResult GetSelection([FromBody] SelectionRequestModel model, int pageSize = 6)
         {
+            var random = new Random();
             // 取得使用者資料
             string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
             var UserInfoForSuggest = (from u in _context.Users
@@ -146,7 +150,7 @@ namespace SportMatch.Controllers
                     SportType = 2;
                     break;
                 default:
-                    SportType = 1; // 什麼都沒選預設為羽球
+                    SportType = 1; // 什麼都沒選預設為籃球
                     break;
             }
 
@@ -167,6 +171,7 @@ namespace SportMatch.Controllers
                 int totalItems = filterPlayer.Count();
                 int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                 var cards = filterPlayer.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                cards = cards.OrderBy(x => random.Next()).ToList();
                 HttpContext.Session.SetString("filterPlayer", JsonConvert.SerializeObject(filterPlayer));
                 HttpContext.Session.SetInt32("totalItems", totalItems);
                 HttpContext.Session.SetInt32("totalPages", totalPages);
@@ -185,6 +190,7 @@ namespace SportMatch.Controllers
                     totalItems = filterPlayer.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterPlayer.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    cards = cards.OrderBy(x => random.Next()).ToList();
                     HttpContext.Session.SetString("filterPlayer", JsonConvert.SerializeObject(filterPlayer));
                     HttpContext.Session.SetInt32("totalItems", totalItems);
                     HttpContext.Session.SetInt32("totalPages", totalPages);
@@ -204,6 +210,7 @@ namespace SportMatch.Controllers
                     totalItems = filterPlayer.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterPlayer.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    cards = cards.OrderBy(x => random.Next()).ToList();
                     HttpContext.Session.SetString("filterPlayer", JsonConvert.SerializeObject(filterPlayer));
                     HttpContext.Session.SetInt32("totalItems", totalItems);
                     HttpContext.Session.SetInt32("totalPages", totalPages);
@@ -220,6 +227,7 @@ namespace SportMatch.Controllers
                     totalItems = filterPlayer.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterPlayer.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    cards = cards.OrderBy(x => random.Next()).ToList();
                     HttpContext.Session.SetString("filterPlayer", JsonConvert.SerializeObject(filterPlayer));
                     HttpContext.Session.SetInt32("totalItems", totalItems);
                     HttpContext.Session.SetInt32("totalPages", totalPages);
@@ -233,7 +241,7 @@ namespace SportMatch.Controllers
             // 選擇加入隊伍
             else
             {
-                // 什麼都不選預設帶出羽球隊伍資料
+                // 什麼都不選預設帶出籃球隊伍資料
                 List<SelectViewModel> filterTeam = (from t in _context.Teams
                                                     join r in _context.Roles
                                                     on t.RoleId equals r.RoleId
@@ -243,6 +251,7 @@ namespace SportMatch.Controllers
                 int totalItems = filterTeam.Count();
                 int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                 var cards = filterTeam.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                cards = cards.OrderBy(x => random.Next()).ToList();
                 HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
                 HttpContext.Session.SetInt32("totalItems", totalItems);
                 HttpContext.Session.SetInt32("totalPages", totalPages);
@@ -260,6 +269,7 @@ namespace SportMatch.Controllers
                     totalItems = filterTeam.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterTeam.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    cards = cards.OrderBy(x => random.Next()).ToList();
                     HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
                     HttpContext.Session.SetInt32("totalItems", totalItems);
                     HttpContext.Session.SetInt32("totalPages", totalPages);
@@ -281,6 +291,7 @@ namespace SportMatch.Controllers
                     totalItems = filterTeam.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterTeam.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    cards = cards.OrderBy(x => random.Next()).ToList();
                     HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
                     HttpContext.Session.SetInt32("totalItems", totalItems);
                     HttpContext.Session.SetInt32("totalPages", totalPages);
@@ -300,6 +311,26 @@ namespace SportMatch.Controllers
                     totalItems = filterTeam.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterTeam.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    cards = cards.OrderBy(x => random.Next()).ToList();
+                    HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
+                    HttpContext.Session.SetInt32("totalItems", totalItems);
+                    HttpContext.Session.SetInt32("totalPages", totalPages);
+                    return Json(new { cards, totalPages, totalItems });
+                }
+                // 只選擇區域時
+                else if (model.MatchArea.Count() > 0)
+                {
+                    filterTeam = (from t in _context.Teams
+                                  join r in _context.Roles
+                                  on t.RoleId equals r.RoleId
+                                  join a in _context.Areas
+                                  on t.AreaId equals a.AreaId
+                                  where t.SportId == SportType && t.GenderId == UserInfoForSuggest[0].GenderId && model.MatchArea.Contains(a.AreaName)
+                                  select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                    totalItems = filterTeam.Count();
+                    totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                    cards = filterTeam.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    cards = cards.OrderBy(x => random.Next()).ToList();
                     HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
                     HttpContext.Session.SetInt32("totalItems", totalItems);
                     HttpContext.Session.SetInt32("totalPages", totalPages);
@@ -318,6 +349,7 @@ namespace SportMatch.Controllers
                     totalItems = filterTeam.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
                     cards = filterTeam.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+                    cards = cards.OrderBy(x => random.Next()).ToList();
                     HttpContext.Session.SetString("filterTeam", JsonConvert.SerializeObject(filterTeam));
                     HttpContext.Session.SetInt32("totalItems", totalItems);
                     HttpContext.Session.SetInt32("totalPages", totalPages);
@@ -331,6 +363,7 @@ namespace SportMatch.Controllers
         [HttpGet]
         public JsonResult GetSelectionNextPage(int page, int pageSize = 6)
         {
+            var random = new Random();
             List<SelectViewModel>? data;
             var filterTeam = HttpContext.Session.GetString("filterTeam");
             var filterPlayer = HttpContext.Session.GetString("filterPlayer");
@@ -340,12 +373,13 @@ namespace SportMatch.Controllers
             }
             else
             {
-                data = JsonConvert.DeserializeObject<List<SelectViewModel>>(filterPlayer);
+                data = JsonConvert.DeserializeObject<List<SelectViewModel>>(filterPlayer!);
             }
 
             int? totalItems = HttpContext.Session.GetInt32("totalItems");
             int? totalPages = HttpContext.Session.GetInt32("totalPages");
-            var cards = data.ToList().Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            var cards = data!.ToList().Skip((page - 1) * pageSize).Take(pageSize).ToList();
+            cards = cards.OrderBy(x => random.Next()).ToList();
             return Json(new { cards, totalPages, totalItems });
 
         }
@@ -469,7 +503,7 @@ namespace SportMatch.Controllers
         }
 
         //
-        public JsonResult Favorite(string UserID,string FavoriteType)
+        public JsonResult Favorite(string UserID, string FavoriteType)
         {
 
             return Json("");

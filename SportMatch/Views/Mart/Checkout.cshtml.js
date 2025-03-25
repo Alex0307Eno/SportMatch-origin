@@ -345,7 +345,7 @@ function fetchCheckout(cartCheckoutData) {
                 }                
                 if (data.message == "未填寫完整收件資訊") {
                     console.log('結帳失敗：未填寫完整收件資訊');
-                    alert('請填寫完整收件資訊');
+                    alert('請填寫完整會員姓名電話或宅配用資訊');
                     return;
                 }      
                 console.log('結帳成功，返回資料：', data);

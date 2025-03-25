@@ -124,14 +124,23 @@ namespace SportMatch.Controllers
                             .ToListAsync();
 
                         var deliveryInfoExists = await MartDb.DeliveryInfo
-                            .Where(d => d.Recepient == productInfo.userInputName ||
-                                     d.Phone == productInfo.userInputMobile ||
+                            .Where(d => d.Recepient == productInfo.userInputName &&
+                                     d.Phone == productInfo.userInputMobile &&
                                      d.Address == productInfo.address)
                             .FirstOrDefaultAsync();
 
                         if (productInfo.userInputName != "" && productInfo.userInputMobile != "")
                         {
-                            if (deliveryInfoExists == null)
+
+                            if (productInfo.selectedPaymentMethod != "ComeHomepay")
+                            {
+                                extendedProductInfos.userName = productInfo.userInputName;
+                                extendedProductInfos.mobile = productInfo.userInputMobile;
+                                orderProductInfo.DeliveryInfoID = -1;
+
+                                await MartDb.SaveChangesAsync();
+                            }
+                            else if (deliveryInfoExists == null)
                             {
                                 DeliveryInfo addDeliveryInfo = new DeliveryInfo
                                 {

@@ -47,7 +47,7 @@ function loadEvent() {
         success: function (response) {
             $("#badmintonEventList").empty(); // 清空舊的賽事
             $("#basketballEventList").empty(); // 清空舊的賽事
-            $("#valleyballEventList").empty(); // 清空舊的賽事
+            $("#volleyballEventList").empty(); // 清空舊的賽事
             console.log(response);
             response.badmintonEventList.forEach(x => {
                 $("#badmintonEventList").append(`
@@ -67,8 +67,8 @@ function loadEvent() {
                     <br>
                     `)
             })
-            response.valleyballEventList.forEach(x => {
-                $("#valleyballEventList").append(`
+            response.volleyballEventList.forEach(x => {
+                $("#volleyballEventList").append(`
                     <label class="col-6">
 	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer">
 	                    <label for="${x}" style="cursor:pointer">${x}</label>
@@ -107,7 +107,7 @@ function matchTypeChangeOrNot() {
             $("#RoleContainer").empty();
             $("#badmintonEventList").empty();
             $("#basketballEventList").empty();
-            $("#valleyballEventList").empty();
+            $("#volleyballEventList").empty();
         } else if ($("#radioOption2").is(":checked")) {
             $(".forCheckCategory").attr("data-bs-toggle", "collapse");
             // 當 radioOption2 被選中時，執行 loadEvent()

@@ -101,7 +101,7 @@ namespace SportMatch.Controllers
 
             // 宣告三個空的字串清單準備存資料
             List<string> BasketballEventList = new List<string>();
-            List<string> ValleyballEventList = new List<string>();
+            List<string> VolleyballEventList = new List<string>();
             List<string> BadmintonEventList = new List<string>();
 
             // 把對應的運動種類內的賽事放入對應的清單
@@ -112,9 +112,9 @@ namespace SportMatch.Controllers
                     BasketballEventList.Add(item.Name);
                 }
 
-                if (item.Sport == "ValleyBall")
+                if (item.Sport == "VolleyBall")
                 {
-                    ValleyballEventList.Add(item.Name);
+                    VolleyballEventList.Add(item.Name);
                 }
 
                 if (item.Sport == "Badminton")
@@ -123,7 +123,7 @@ namespace SportMatch.Controllers
                 }
             }
 
-            return Json(new { BasketballEventList, ValleyballEventList, BadmintonEventList });
+            return Json(new { BasketballEventList, VolleyballEventList, BadmintonEventList });
         }
 
 
@@ -153,7 +153,7 @@ namespace SportMatch.Controllers
                 case "badminton":
                     SportType = 3;
                     break;
-                case "valleyball":
+                case "volleyball":
                     SportType = 2;
                     break;
                 default:

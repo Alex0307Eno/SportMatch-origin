@@ -343,6 +343,11 @@ function fetchCheckout(cartCheckoutData) {
                     alert('請以正確格式輸入手機號碼');
                     return;
                 }                
+                if (data.message == "未填寫完整收件資訊") {
+                    console.log('結帳失敗：未填寫完整收件資訊');
+                    alert('請填寫完整收件資訊');
+                    return;
+                }      
                 console.log('結帳成功，返回資料：', data);
                 billPage(data);
             }

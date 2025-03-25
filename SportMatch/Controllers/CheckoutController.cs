@@ -121,26 +121,30 @@ namespace SportMatch.Controllers
 
                         var deliveryInfoNameAndMobile = await MartDb.DeliveryInfo
                             .Select(d => new { d.Recepient, d.Phone, d.Address})
-                            .ToListAsync();                        
+                            .ToListAsync();
 
-                        if (deliveryInfoNameAndMobile.All(
-                            d => d.Recepient != productInfo.userInputName ||
-                                 d.Phone != productInfo.userInputMobile ||
-                                 d.Address != productInfo.address)){
+                        var deliveryInfoExists = await MartDb.DeliveryInfo
+                            .Where(d => d.Recepient == productInfo.userInputName ||
+                                     d.Phone == productInfo.userInputMobile ||
+                                     d.Address == productInfo.address)
+                            .FirstOrDefaultAsync();
 
-                            DeliveryInfo addDeliveryInfo = new DeliveryInfo
+                        if (productInfo.userInputName != "" && productInfo.userInputMobile != "")
+                        {
+                            if (deliveryInfoExists == null)
                             {
-                                Address = productInfo.address,
-                                UserID = userDetails.UserId
-                            };
-
-                            if (deliveryInfoNameAndMobile.All(d => d.Recepient != userNameAndMobile.Name) && userNameAndMobile.Name == "")
-                            {
-                                //Console.WriteLine("\n\n\n");
-                                //Console.WriteLine(JsonConvert.SerializeObject(addDeliveryInfo, Formatting.Indented));
-                                //Console.WriteLine("\n\n\n");
-                                if (productInfo.userInputName != "")
+                                DeliveryInfo addDeliveryInfo = new DeliveryInfo
                                 {
+                                    Address = productInfo.address,
+                                    UserID = userDetails.UserId
+                                };
+
+                                if (deliveryInfoNameAndMobile.All(d => d.Recepient != userNameAndMobile.Name) && userNameAndMobile.Name == "")
+                                {
+                                    //Console.WriteLine("\n\n\n");
+                                    //Console.WriteLine(JsonConvert.SerializeObject(addDeliveryInfo, Formatting.Indented));
+                                    //Console.WriteLine("\n\n\n");
+
                                     string namePattern = @"^[\u4e00-\u9fa5]{2,5}$";
                                     if (Regex.IsMatch(productInfo.userInputName, namePattern))
                                     {
@@ -152,14 +156,7 @@ namespace SportMatch.Controllers
                                         return BadRequest(new { message = "姓名格式錯誤" });
                                     }
                                 }
-                                else
-                                {
-                                    return BadRequest(new { message = "尚未登錄姓名" });
-                                }
-                            }
-                            if (deliveryInfoNameAndMobile.All(d => d.Phone != userNameAndMobile.Mobile) && userNameAndMobile.Mobile == "")
-                            {
-                                if (productInfo.userInputMobile != "")
+                                if (deliveryInfoNameAndMobile.All(d => d.Phone != userNameAndMobile.Mobile) && userNameAndMobile.Mobile == "")
                                 {
                                     string mobilePattern = @"^(09)[0-9]{8}$";
                                     if (Regex.IsMatch(productInfo.userInputMobile, mobilePattern))
@@ -171,26 +168,22 @@ namespace SportMatch.Controllers
                                     {
                                         return BadRequest(new { message = "電話格式錯誤" });
                                     }
-                                }
-                                else
-                                {
-                                    return BadRequest(new { message = "尚未登錄電話" });
-                                }
-                            }                            
+                                }                            
 
-                            MartDb.DeliveryInfo.Add(addDeliveryInfo);
-                            await MartDb.SaveChangesAsync();
-
-                            //var getDeliveryInfoID = await MartDb.DeliveryInfo
-                            //    .Where(d => d.Recepient == addDeliveryInfo.Recepient &&
-                            //                d.Phone == addDeliveryInfo.Phone &&
-                            //                d.Address == addDeliveryInfo.Address &&
-                            //                d.UserID == addDeliveryInfo.UserID)
-                            //    .Select(d => d.DeliveryInfoID)
-                            //    .ToListAsync();
-                            //foreach (var ID in getDeliveryInfoID) { 
-                            //orderProductInfo.DeliveryInfoID = ID;
-                            //}
+                                MartDb.DeliveryInfo.Add(addDeliveryInfo);
+                                await MartDb.SaveChangesAsync();
+                                orderProductInfo.DeliveryInfoID = addDeliveryInfo.DeliveryInfoID;
+                            }
+                            else{
+                                extendedProductInfos.userName = productInfo.userInputName;
+                                extendedProductInfos.mobile = productInfo.userInputMobile;
+                                orderProductInfo.DeliveryInfoID = deliveryInfoExists.DeliveryInfoID;
+                                await MartDb.SaveChangesAsync();
+                            }
+                        }
+                        else
+                        {
+                            return BadRequest(new { message = "未填寫完整收件資訊" });
                         }
                     }
 

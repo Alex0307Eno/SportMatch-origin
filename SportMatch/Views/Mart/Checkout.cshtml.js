@@ -266,6 +266,9 @@ function isCitySelected() {
 
 let HomeDeliveryName = document.getElementById('HomeDeliveryName');
 let HomeDeliveryPhone = document.getElementById('HomeDeliveryPhone');
+let HomeDeliveryAddress = document.getElementById('HomeDeliveryAddress');
+let HomeDeliveryCity = document.getElementById('HomeDeliveryCity');
+
 
 function CheckoutRadioChange(_loggedInEmail = localStorage.getItem('loggedInEmail')) {
     var loggedInEmail = [{
@@ -289,6 +292,8 @@ function CheckoutRadioChange(_loggedInEmail = localStorage.getItem('loggedInEmai
             {
                 HomeDeliveryName.value = "";
                 HomeDeliveryPhone.value = "";
+                HomeDeliveryAddress.value = "";
+                HomeDeliveryCity.value = "";
             }
         })
 }

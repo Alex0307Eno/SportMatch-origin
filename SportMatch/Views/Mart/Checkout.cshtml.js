@@ -20,7 +20,8 @@ function TogglePaymentMethod() {
         HomeDeliveryName: document.getElementById('HomeDeliveryName'),
         HomeDeliveryPhone: document.getElementById('HomeDeliveryPhone'),
         HomeDeliveryAddress: document.getElementById('HomeDeliveryAddress'),
-        HomeDeliveryCity: document.getElementById('HomeDeliveryCity')
+        HomeDeliveryCity: document.getElementById('HomeDeliveryCity'),
+        HomeDeliveryAllInfo: document.getElementById('HomeDeliveryAllInfo')
 
     };
 
@@ -35,6 +36,7 @@ function TogglePaymentMethod() {
         Elements.HomeDeliveryPhone.disabled =
         Elements.HomeDeliveryAddress.disabled =
         Elements.HomeDeliveryCity.disabled =
+        Elements.HomeDeliveryAllInfo.disabled =
         true;
 
     // 事件控制
@@ -46,6 +48,7 @@ function TogglePaymentMethod() {
             Elements.HomeDeliveryPhone.disabled =
             Elements.HomeDeliveryAddress.disabled =
             Elements.HomeDeliveryCity.disabled =
+            Elements.HomeDeliveryAllInfo.disabled =
             false;
 
         Elements.HomeDeliveryPickup.checked =
@@ -253,6 +256,64 @@ function isCitySelected() {
     let cityValue = homeDeliveryCity.value
     return cityValue.replace(/&nbsp;/g, '') && cityValue.replace(/&nbsp;/g, '') !== "-- 縣 --";
 }
+
+let HomeDeliveryName = document.getElementById('HomeDeliveryName');
+let HomeDeliveryPhone = document.getElementById('HomeDeliveryPhone');
+
+document.querySelectorAll('input[name="ShippingMethod"]').forEach(radio => {
+    radio.addEventListener('change', function () {
+    var loggedInEmail = localStorage.getItem('loggedInEmail');
+
+    // 準備發送的資料
+    var data = {
+        loggedInEmail: loggedInEmail
+    };
+
+    // 使用 fetch 發送資料到後端
+    fetch('api/Checkout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data) // 傳送 JSON 格式資料
+    })
+        .then(response => response.json())
+        .then(data => {
+            HomeDeliveryName.value = data.UserName;   // 填入姓名
+            HomeDeliveryPhone.value = data.Mobile; // 填入電話
+        })
+}
+
+
+document.getElementById('HomeDeliveryAllInfo').addEventListener('change', function () {
+    var selectedOption = this.value; // 選中的地址
+    if (selectedOption) {
+        // 提取收件人姓名、電話和地址
+        var optionText = this.selectedOptions[0].text;
+        var addressParts = optionText.split(' - ');
+
+        var recipient = addressParts[0];
+        var phone = addressParts[1];
+        var address = addressParts[2];
+
+        // 填入姓名和電話
+        document.getElementById('HomeDeliveryName').value = recipient;
+        document.getElementById('HomeDeliveryPhone').value = phone;
+
+        var cityPrefix = address.slice(0, 3); // 取得前三個字作為城市
+        var citySelect = document.getElementById('HomeDeliveryCity');
+
+        // 對應城市
+        for (var i = 0; i < citySelect.options.length; i++) {
+            if (citySelect.options[i].value === cityPrefix) {
+                citySelect.selectedIndex = i; // 城市選項
+                break;
+            }
+        }
+        document.getElementById('HomeDeliveryAddress').value = address.slice(3);
+    }
+});
+
 
 // 結帳
 let checkoutNow = document.getElementById('checkoutNow');
@@ -567,3 +628,4 @@ function electronicMapFami() {
     document.body.appendChild(form);
     form.submit();
 }
+

@@ -88,7 +88,16 @@
                                 </select>
                             </div>
                             <input type="text" class="form-control" id="HomeDeliveryAddress" placeholder="地址" for="HomeDeliveryPickup" disabled />
-                        </div>                        
+                        </div>
+                        <div class="ms-2 d-flex align-items-center mb-3">
+                            <select class="form-select" id="HomeDeliveryAllInfo" placeholder="宅配資料" for="HomeDeliveryPickup" disabled>
+                                <option value="" disabled selected>-- 選取儲存的資訊 --</option>
+                                @foreach (var item in ViewBag.ForDeliveryInfo)
+                                {
+                                <option value="@item.Address">@item.Recepient - @item.Phone - @item.Address</option>
+                                }
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <!-- 總計和按鈕 -->

@@ -5,13 +5,16 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SportMatch.Models;
 
-public partial class ProductFavorite
+public partial class DeliveryInfo
 {
-    [Key]    
-    public int ProductFavoriteID { get; set; }
+    [Key]
+    public int DeliveryInfoID { get; set; }
 
-    public int ProductID { get; set; }
+    public string Address { get; set; }
+
+    public string Recepient { get; set; }
+
+    public string Phone { get; set; }
 
     public int UserID { get; set; }
 }
-//250320新增

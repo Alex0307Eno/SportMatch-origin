@@ -20,8 +20,10 @@ public partial class Order
     //250320新增
     public string Payment { get; set; }
 
-    //250320新增
-    public string Address { get; set; } = null!;
+    ////250320新增
+    //public string Address { get; set; } = null!;
+
+    public int DeliveryInfoID { get; set; }
 
 
     public virtual Product Product { get; set; } = null!;

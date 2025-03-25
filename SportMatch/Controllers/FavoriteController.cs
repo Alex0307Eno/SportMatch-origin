@@ -33,9 +33,12 @@ namespace SportMatch.Controllers
                     .Select(u => u.UserId)
                     .FirstOrDefaultAsync();
 
-                var existingFavorite = await MartDb.ProductFavorite
-                    .FirstOrDefaultAsync(pf => pf.ProductID == favorites.myHeartProductsID && pf.UserID == FavoriteUserEmailLinqResult);
+                var existingFavorite = await MartDb.Favorite
+                    .FirstOrDefaultAsync(pf => (pf.Type == "商品" && pf.MyFavorite == favorites.myHeartProductsID) && pf.UserID == FavoriteUserEmailLinqResult);
+                Console.WriteLine("\n\n\n");
                 Console.WriteLine(JsonConvert.SerializeObject(existingFavorite, Formatting.Indented));
+                Console.WriteLine("\n\n\n");
+
 
 
                 using (var transaction = await MartDb.Database.BeginTransactionAsync())
@@ -43,17 +46,18 @@ namespace SportMatch.Controllers
                     if (existingFavorite != null)
                     {
                         // 如果兩者都對應，則刪除該記錄
-                        MartDb.ProductFavorite.Remove(existingFavorite);
+                        MartDb.Favorite.Remove(existingFavorite);
                     }
                     else
                     {
                         // 如果兩者都無對應，則新增該記錄
-                        var ProductFavoriteInfo = new ProductFavorite
+                        var ProductFavoriteInfo = new Favorite
                         {
-                            ProductID = favorites.myHeartProductsID,
-                            UserID = FavoriteUserEmailLinqResult
+                            UserID = FavoriteUserEmailLinqResult,
+                            Type = "商品",
+                            MyFavorite = favorites.myHeartProductsID
                         };
-                        MartDb.ProductFavorite.Add(ProductFavoriteInfo);
+                        MartDb.Favorite.Add(ProductFavoriteInfo);
                     }
 
                     // 提交交易
@@ -66,7 +70,7 @@ namespace SportMatch.Controllers
             catch (Exception ex)
             {
                 // 發生錯誤，回滾交易
-                return StatusCode(500, new { message = $"錯誤發生: {ex.Message}" });
+                return StatusCode(500, new { message = $"錯誤發生: api連線錯誤" });
             }
         }
     }

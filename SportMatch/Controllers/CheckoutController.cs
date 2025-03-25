@@ -50,7 +50,6 @@ namespace SportMatch.Controllers
         [HttpPost]
         public async Task<IActionResult> CartInfo([FromBody] List<ProductInfo> products)
         {
-            //Console.WriteLine(JsonConvert.SerializeObject(products, Formatting.Indented));
             try
             {                
                 using (var transaction = await MartDb.Database.BeginTransactionAsync())
@@ -112,8 +111,7 @@ namespace SportMatch.Controllers
                             ProductId = productInfo.id,
                             UserId = userDetails.UserId,
                             Quantity = productInfo.quantity,
-                            Payment = productInfo.selectedPaymentMethod,
-                            Address = productInfo.address
+                            Payment = productInfo.selectedPaymentMethod
                         };
 
                         MartDb.Orders.Add(orderProductInfo);
@@ -121,58 +119,84 @@ namespace SportMatch.Controllers
                         var userNameAndMobile = await MartDb.Users
                             .FirstOrDefaultAsync(u => u.Email == productInfo.email);
 
-                        if (userNameAndMobile.Name == "")
-                        {
-                            //Console.WriteLine("\n\n\n" + userNameAndMobile.Name + userNameAndMobile.Mobile + "\n\n\n");
-                            if (productInfo.userInputName != "")
+                        var deliveryInfoNameAndMobile = await MartDb.DeliveryInfo
+                            .Select(d => new { d.Recepient, d.Phone, d.Address})
+                            .ToListAsync();                        
+
+                        if (deliveryInfoNameAndMobile.All(
+                            d => d.Recepient != productInfo.userInputName ||
+                                 d.Phone != productInfo.userInputMobile ||
+                                 d.Address != productInfo.address)){
+
+                            DeliveryInfo addDeliveryInfo = new DeliveryInfo
                             {
-                                string namePattern = @"^[\u4e00-\u9fa5]{2,5}$";
-                                if (Regex.IsMatch(productInfo.userInputName, namePattern))
+                                Address = productInfo.address,
+                                UserID = userDetails.UserId
+                            };
+
+                            if (deliveryInfoNameAndMobile.All(d => d.Recepient != userNameAndMobile.Name) && userNameAndMobile.Name == "")
+                            {
+                                //Console.WriteLine("\n\n\n");
+                                //Console.WriteLine(JsonConvert.SerializeObject(addDeliveryInfo, Formatting.Indented));
+                                //Console.WriteLine("\n\n\n");
+                                if (productInfo.userInputName != "")
                                 {
-                                userNameAndMobile.Name = productInfo.userInputName;
-                                MartDb.Users.Update(userNameAndMobile);
-                                extendedProductInfos.userName = productInfo.userInputName;
+                                    string namePattern = @"^[\u4e00-\u9fa5]{2,5}$";
+                                    if (Regex.IsMatch(productInfo.userInputName, namePattern))
+                                    {
+                                        addDeliveryInfo.Recepient = productInfo.userInputName;
+                                        extendedProductInfos.userName = productInfo.userInputName;
+                                    }
+                                    else
+                                    {
+                                        return BadRequest(new { message = "姓名格式錯誤" });
+                                    }
                                 }
                                 else
                                 {
-                                    return BadRequest(new { message = "姓名格式錯誤" });
+                                    return BadRequest(new { message = "尚未登錄姓名" });
                                 }
                             }
-                            else
+                            if (deliveryInfoNameAndMobile.All(d => d.Phone != userNameAndMobile.Mobile) && userNameAndMobile.Mobile == "")
                             {
-                                return BadRequest(new { message = "尚未登錄姓名" });
-                            }
-                        }
-                        if (userNameAndMobile.Mobile == "")
-                        {
-                            //Console.WriteLine("\n\n\n" + userNameAndMobile.Name + userNameAndMobile.Mobile + "\n\n\n");
-                            if (productInfo.userInputMobile != "")
-                            {
-                                string mobilePattern = @"^(09)[0-9]{8}$";
-                                if (Regex.IsMatch(productInfo.userInputMobile, mobilePattern))
+                                if (productInfo.userInputMobile != "")
                                 {
-                                    userNameAndMobile.Mobile = productInfo.userInputMobile;
-                                    MartDb.Users.Update(userNameAndMobile);
-                                    extendedProductInfos.mobile = productInfo.userInputMobile;
+                                    string mobilePattern = @"^(09)[0-9]{8}$";
+                                    if (Regex.IsMatch(productInfo.userInputMobile, mobilePattern))
+                                    {
+                                        addDeliveryInfo.Phone = productInfo.userInputMobile;
+                                        extendedProductInfos.mobile = productInfo.userInputMobile;
+                                    }
+                                    else
+                                    {
+                                        return BadRequest(new { message = "電話格式錯誤" });
+                                    }
                                 }
-                                else 
+                                else
                                 {
-                                    return BadRequest(new { message = "電話格式錯誤" });
+                                    return BadRequest(new { message = "尚未登錄電話" });
                                 }
-                            }
-                            else
-                            {
-                                return BadRequest(new { message = "尚未登錄電話" });
-                            }
+                            }                            
+
+                            MartDb.DeliveryInfo.Add(addDeliveryInfo);
+                            await MartDb.SaveChangesAsync();
+
+                            //var getDeliveryInfoID = await MartDb.DeliveryInfo
+                            //    .Where(d => d.Recepient == addDeliveryInfo.Recepient &&
+                            //                d.Phone == addDeliveryInfo.Phone &&
+                            //                d.Address == addDeliveryInfo.Address &&
+                            //                d.UserID == addDeliveryInfo.UserID)
+                            //    .Select(d => d.DeliveryInfoID)
+                            //    .ToListAsync();
+                            //foreach (var ID in getDeliveryInfoID) { 
+                            //orderProductInfo.DeliveryInfoID = ID;
+                            //}
                         }
-                        //Console.WriteLine(JsonConvert.SerializeObject(orderProductInfo, Formatting.Indented));
                     }
 
                     // 提交交易
                     await MartDb.SaveChangesAsync();
                     await transaction.CommitAsync();                    
-                    //Console.WriteLine(string.Join(", ", extendedProducts));
-                    //Console.WriteLine(JsonConvert.SerializeObject(extendedProducts, Formatting.Indented));
                     return Ok(extendedProducts);
                 }
             } 

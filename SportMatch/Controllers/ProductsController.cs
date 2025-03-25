@@ -46,13 +46,14 @@ public class ProductsController : ControllerBase
             };
 
         var favoriteQuery =
-            from PF in MartDb.ProductFavorite
-            join P in MartDb.Product on PF.ProductID equals P.ProductID
+            from PF in MartDb.Favorite
+            join P in MartDb.Product on PF.MyFavorite equals P.ProductID
             join U in MartDb.Users on PF.UserID equals U.UserId
+            where PF.Type == "商品"
             select new
             {
-                productID = PF.ProductID,
-                storage = ((PF.ProductID == P.ProductID && U.Email == _myHeartUserEmail) ? "fill" : null)
+                productID = PF.MyFavorite,
+                storage = (((PF.Type == "商品" && PF.MyFavorite == P.ProductID) && U.Email == _myHeartUserEmail) ? "fill" : null)
             };
 
         //var productStrings = favoriteQuery

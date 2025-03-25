@@ -24,9 +24,10 @@
 }
 
 .CartBody {
+    height: 48.15rem;
     width: 100%;
     padding: 20px 20px 25px 20px;
-    margin: 15px 0 15px 15px;
+    margin-top: 0.85rem;
     justify-content: center;
 }
 
@@ -36,12 +37,13 @@
 }
 
 .CheckoutLogistics {
-    margin: 8px 0 8px 0;
+    height: 40rem;
+    margin-top: 0.55rem;
 }
 
 .Logistics {
-    padding: 20px 15px 15px 15px;
-    margin: 8px 11px 8px 8px;
+    padding: 11px 15px 11px 15px;
+    margin: 5px 11px 5px 8px;
     flex-grow: 1
 }
 
@@ -206,9 +208,13 @@
     background-color: none;
 }
 
-@media screen and (max-width: 1120px) {
+@media screen and (max-width: 1100px) {
     .Logistics {
-        padding: 15px 15px 10px 15px;
+        font-size: 0.85rem;
+    }
+    .CheckoutLogistics {
+        height: 48.75rem;
+        margin-top: 0.55rem;
     }
 }
 

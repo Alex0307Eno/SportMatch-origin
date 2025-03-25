@@ -17,10 +17,10 @@ namespace SportMatch.Controllers;
 [ApiController]
 public class MemberAccountApiController : ControllerBase
 {
-    // private readonly SportMatchContext _context;
-    private readonly MyDbContext _context;
+     private readonly SportMatchContext _context;
+    //private readonly MyDbContext _context;
 
-    public MemberAccountApiController(MyDbContext context)
+    public MemberAccountApiController(SportMatchContext context)
     {
         _context = context;
     }
@@ -35,7 +35,7 @@ public class MemberAccountApiController : ControllerBase
             return Unauthorized(new {success = false, message = "未登入或登入逾時" });
         }
         
-        var user = _context.User.Include(u => u.Area).FirstOrDefault(u => u.Email == email);
+        var user = _context.Users.Include(u => u.Area).FirstOrDefault(u => u.Email == email);
         if (user == null) return Unauthorized(new { success = false, message = "用戶不存在" });
         
         return Ok(new
@@ -66,22 +66,23 @@ public class MemberAccountApiController : ControllerBase
     [HttpGet("user-sport")]
     public IActionResult GetUserSport()
     {
-        var user = _context.User.FirstOrDefault(u => u.Email == User.FindFirstValue(ClaimTypes.Name));
+        var user = _context.Users.FirstOrDefault(u => u.Email == User.FindFirstValue(ClaimTypes.Name));
         if (user == null) return Unauthorized();
 
-        var userSports = _context.UserSportRole
-            .Where(usr => usr.UserId == user.UserId)
-            .Include(usr => usr.Sport) 
-            .Include(usr => usr.Role)
-            .Select(usr => new
-            {
-                usr.Sport.SportId,
-                usr.Sport.SportName,
-                usr.Role.RoleId,
-                usr.Role.RoleName
-            }).ToList();
+        //var userSports = _context.UserSportRole
+        //    .Where(usr => usr.UserId == user.UserId)
+        //    .Include(usr => usr.Sport) 
+        //    .Include(usr => usr.Role)
+        //    .Select(usr => new
+        //    {
+        //        usr.Sport.SportId,
+        //        usr.Sport.SportName,
+        //        usr.Role.RoleId,
+        //        usr.Role.RoleName
+        //    }).ToList();
         
-        return Ok(userSports);
+        //return Ok(userSports);
+        return Ok(""); // 測試用 要刪掉
     }
     
     // 測
@@ -114,7 +115,7 @@ public class MemberAccountApiController : ControllerBase
                 return Unauthorized(new { success = false, message = "未登入或登入逾時" });
             }
             
-            var member = _context.User.FirstOrDefault(u => u.Email == email);
+            var member = _context.Users.FirstOrDefault(u => u.Email == email);
             if (member == null)
             {
                 return NotFound(new { success = false, message = "會員不存在" });
@@ -137,7 +138,7 @@ public class MemberAccountApiController : ControllerBase
                 member.Password = BCrypt.Net.BCrypt.HashPassword(updateDto.Password);
             }
             
-            _context.User.Update(member);
+            _context.Users.Update(member);
             await _context.SaveChangesAsync();
 
             return Ok(new { success = true, message = "資料更新成功" });

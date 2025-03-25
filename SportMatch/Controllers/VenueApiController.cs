@@ -10,9 +10,9 @@ public class VenueApiController : ControllerBase
 {
     // 公有資料庫字串
     // private readonly SportMatchContext _context;
-    private readonly MyDbContext _context;
+    private readonly SportMatchContext _context;
 
-    public VenueApiController(MyDbContext context)
+    public VenueApiController(SportMatchContext context)
     {
         _context = context;
     }

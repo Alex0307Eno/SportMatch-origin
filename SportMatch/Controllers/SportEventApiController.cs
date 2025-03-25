@@ -6,10 +6,10 @@ namespace SportMatch.Controllers;
 
 public class SportEventApiController: ControllerBase
 {
-    // private readonly SportMatchContext _context;
-    private readonly MyDbContext _context;
+     private readonly SportMatchContext _context;
+    //private readonly MyDbContext _context;
     
-    public SportEventApiController(MyDbContext context)
+    public SportEventApiController(SportMatchContext context)
     {
         _context = context;
     }
@@ -18,13 +18,13 @@ public class SportEventApiController: ControllerBase
     [HttpGet("api/sport-roles")]
     public IActionResult GetSportWithRole()
     {
-        var sportWithRole = _context.Sport
+        var sportWithRole = _context.Sports
             .Include( s => s.Roles)
             .Select (sport => new
             {
                 SportId = sport.SportId,
                 SportName = sport.SportName,
-                Role = _context.Role
+                Role = _context.Roles
                     .Where(role => role.SportId == sport.SportId)
                     .Select(role => new
                     {

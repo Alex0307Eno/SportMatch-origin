@@ -31,9 +31,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 //離開會員中心重設SideNav狀態
 const isInMemberCenter = window.location.pathname.startsWith("/MemberCenter");
-if (!isInMemberCenter) {
-    location.removeItem("sideNavState");
-}
+
+// ***0325合併出現問題 待處理***
+//if (!isInMemberCenter) {
+//    location.removeItem("sideNavState");
+//}
 
 //初始化SideNav
 function restoreSideNavState() {

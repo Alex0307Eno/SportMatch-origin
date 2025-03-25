@@ -80,17 +80,13 @@ namespace SportMatch.Controllers
             return View();
         }
 
-        public IActionResult Checkout(string loggedInEmail)
+        public IActionResult Checkout()
         {
-            var userNameAndMobile = MartDb.Users
-                .Select(u => new { u.Name, u.Mobile })
-                 .ToList();
-
             var deliveryInfo = MartDb.DeliveryInfo
                 .Select(de => new { de.Address, de.Recepient, de.Phone });
 
             ViewBag.ForDeliveryInfo = deliveryInfo;
-            return Ok(userNameAndMobile);
+            return View();
         }
     }
 }

@@ -20,7 +20,7 @@
 
 @* 編輯資訊 *@
 <div class="modal" id="userDataModal" tabindex="-1" data-bs-backdrop="static" aria-labelledby="userDataModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-dialog modal-dialog-centered  modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
                 <h1 class="modal-title fs-6" id="userDataModalLabel">基本資料-編輯</h1>
@@ -377,16 +377,144 @@
 </div>
 <style>
     div:not(#loginModal) {
+        
+        .modal-dialog {
+            p,
+            span {
+                color: var(--dark-grey);
+            }
+        }
         .modal-content {
             width: 100%;
-            background: white;
+            background: #000000d1 !important;
             border: none;
             padding: 0;
+            position: relative;
+            overflow: hidden;
+            
+            &::before {
+                content: "";
+                width: 100%;
+                height: 100%;
+                background: var(--main-gradient);
+                /*background-blend-mode: multiply;*/
+                border-radius: 12px;
+                position: absolute;
+                top: 0;
+                left: 0;
+                pointer-events: none;
+                z-index: -1;
+            }
+            
 
             .modal-header {
+                border-bottom: 1px solid #454545 !important;
 
                 h1 {
                     font-weight: bold;
+                    background: var(--primary-gradient);
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+
+            .modal-body {
+                input[type="text"],
+                input[type="checkbox"],
+                select,
+                textarea,
+                .form-control,
+                .form-select {
+                    background: rgb(187 187 187 / 20%)!important;
+                    border-color: var(--bs-table-th);
+                    color: #d0d0d0;
+
+                    &:disabled {
+                        background: rgb(137 137 137 / 20%);
+                        color: #a4a4a4;
+                    }
+
+                    &::placeholder {
+                        color: #d0d0d0;
+                    }
+                }
+                
+                card {
+                    background: var(--dark-secound-bg);
+                    color: var(--dark-grey);
+                }
+                
+                label {
+                    color: var(--dark-grey);
+                }
+            }
+            
+            .modal-footer {
+                border-top: 1px solid #454545 !important;
+
+                button.btn-primary {
+                    background: var(--primary-gradient) !important;
+                    border: none;
+                }
+
+                .btn-secondary {
+                    background: var(--dark-grey) !important;
+                    color:  var(--dark-white);
+                    border: none;
+
+                    &:hover {
+                        transform: translateY(0);
+                        color:  var(--white);
+                    }
+                }
+            }
+
+            .btn-close {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background-image: unset;
+                transition: all 0.3s;
+                position: relative;
+                
+                &::before {
+                    content: '✕';
+                    font-size: 16px;
+                    color: var(--dark-grey);
+                }
+                
+                &:hover {
+                    &::before {
+                        color: var(--dark-white);
+                    }
+                }
+            }
+
+            button,
+            .btn {
+                &:focus,
+                &:focus-visible {
+                    box-shadow: none !important;
+                    outline: none !important;
+
+                    &.btn-primary {
+                        background: var(--primary-gradient) !important;
+                        border: none;
+
+                        &:hover {
+                            transform: translateY(0);
+                        }
+                    } 
+                    &.btn-secondary {
+                        background: var(--dark-grey) !important;
+                        color:  var(--dark-white);
+                        border: none;
+
+                        &:hover {
+                            transform: translateY(0);
+                            color:  var(--white);
+                        }
+                    }
                 }
             }
         }

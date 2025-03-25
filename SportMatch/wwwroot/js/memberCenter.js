@@ -1,7 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
+    simpleFooter(); //簡單版footer
     fetchAccountInfo();
-    fetchUserSport();
-    // simpleFooter();
+
+    if (window.location.pathname.startsWith("/MemberCenter")) {
+        restoreSideNavState();
+        initSideNavToggle()
+        fetchUserSport();
+    }
     
     const tabWrap = document.querySelector(".tab-wrapper");
     const tabs = document.querySelectorAll(".nav-item a");
@@ -23,6 +28,59 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+//離開會員中心重設SideNav狀態
+const isInMemberCenter = window.location.pathname.startsWith("/MemberCenter");
+if (!isInMemberCenter) {
+    location.removeItem("sideNavState");
+}
+
+//初始化SideNav
+function restoreSideNavState() {
+    const savedState = localStorage.getItem("sideNavState");
+    const sideNav = document.getElementById("sideNav");
+    const toggleNavBtn = document.getElementById("toggleNav");
+
+    if (!sideNav || !toggleNavBtn) return;
+
+    const icon = toggleNavBtn.querySelector("i");
+
+    if (savedState === "min") {
+        sideNav.classList.add("min");
+        icon.classList.remove("fa-outdent");
+        icon.classList.add("fa-indent");
+    } else {
+        sideNav.classList.remove("min");
+        icon.classList.remove("fa-indent");
+        icon.classList.add("fa-outdent");
+    }
+}
+
+//SideNav 切換
+function initSideNavToggle() {
+    const sideNav = document.getElementById("sideNav");
+    const toggleBtn = document.getElementById("toggleNav");
+
+    if (!sideNav || !toggleBtn) return;
+
+    toggleBtn.addEventListener("click", function () {
+        const icon = this.querySelector("i");
+        const isMin = sideNav.classList.contains("min");
+
+        if (isMin) {
+            sideNav.classList.remove("min");
+            icon.classList.remove("fa-indent");
+            icon.classList.add("fa-outdent");
+            localStorage.setItem("sideNavState", "open");
+        } else {
+            sideNav.classList.add("min");
+            icon.classList.remove("fa-outdent");
+            icon.classList.add("fa-indent");
+            localStorage.setItem("sideNavState", "min");
+        }
+    });
+}
+
 
 //取得會員資料
 function fetchAccountInfo() {
@@ -87,7 +145,7 @@ function updateUserUI(user) {
 
     if (userEmailContainer) userEmailContainer.style.display = "block";
     if (userEmail) userEmail.innerText = user.email;
-    if (greeting) greeting.innerHTML = `歡迎，${user.name}<span class="text-secondary">(${user.userName})</span>`;
+    if (greeting) greeting.innerHTML = `歡迎，<p>${user.name}</p><span class="ms-2" style="color: var(--dark-grey);">(${user.userName})</span>`;
     
     //綁定會員基本資料
     const avatar = document.querySelector(".avatar");
@@ -101,7 +159,7 @@ function updateUserUI(user) {
     if(avatar) {
         if (user.genderId === 1) {
             avatar.classList.add("male");
-            genderTagI.classList.add("mars");
+            genderTagI.classList.add("fa-mars");
         } else if (user.genderId === 2) {
             avatar.classList.add("female");
             genderTagI.classList.add("fa-venus");
@@ -216,7 +274,7 @@ function updateSportUI(sports){
             roleGroup.innerHTML =` 
                 <div class="sportRole_group d-flex align-items-center me-3">
                     <p class="sport_name border-start border-secondary border-3 ps-2 me-2 text-nowrap fw-bold">${sport.sportName}</p>
-                    <div class="form-select user-select-none" style="background-color: #e9ecef; cursor: default;">${sport.roleName}</div>
+                    <div class="form-select user-select-none" style="cursor: default;">${sport.roleName}</div>
                 </div> `;
             rolePart.appendChild(roleGroup);
         })
@@ -298,10 +356,14 @@ function updateSportUI(sports){
 //     }
 // });
 
-// function simpleFooter(){
-//     const ft = document.querySelector("footer");
-//     ft.classList.add("simple");
-// }
+function simpleFooter(){
+    const ft = document.querySelector("footer");
+    const memCenter = document.querySelector(".SideNav");
+    
+    if (ft && memCenter) {
+        ft.classList.add("simple");
+    }
+}
 
 //更新基本資料
 function updateUserInfo() {
@@ -339,7 +401,7 @@ function updateUserInfo() {
         })
         .catch(error => {console.error(error)});
 }
-
+//更新運動資料
 function updateUserSport() {
     const updatedData = {
         user: {

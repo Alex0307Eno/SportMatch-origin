@@ -5,11 +5,6 @@
 
 /*會員中心*/
 .userAccount_Page {
-
-    /*@font-face {*/
-    /*    font-family: 'openhuninn';*/
-    /*    src: url('~/image/MatchPage/jf-openhuninn-2.1.ttf');*/
-    /*}*/
     
     form.userAccount {
         display: flex;
@@ -75,11 +70,11 @@
             }
             
             &.female {
-                border-color: #f5c2c7;
+                border-color: #f87582;
 
                 .genderTag {
                     display: flex;
-                    background-color: #f5c2c7;
+                    background-color: #f87582;
                 }
             }
         }
@@ -115,11 +110,19 @@
             }
 
             div.form-control,
-            div.form-select {
-                background-color: #e9ecef;
-                color: #898b8d;
+            div.form-select,
+            div.user-select-none,
+            .form-select {
+                background: rgb(187 187 187 / 20%) !important;
+                border-color: var(--bs-table-th);
+                color: #d0d0d0;
                 user-select: none;
                 cursor: default;
+                
+                &:disabled {
+                    background: rgb(137 137 137 / 20%);
+                    color: #a4a4a4;
+                }
             }
         }
     }

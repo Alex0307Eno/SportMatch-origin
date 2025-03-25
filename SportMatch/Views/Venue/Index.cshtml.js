@@ -197,10 +197,10 @@ function renderVenues(data, query = "") {
     } else {
         venueContainer.classList.add('noData');
         venueContainer.innerHTML = `<div class="noMatchData d-flex flex-column align-items-center">
-            <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 24 24"class="mb-4"><g fill="currentColor"><path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12m10-8a8 8 0 1 0 0 16a8 8 0 0 0 0-16" clip-rule="evenodd" fill="lightgray"/><path fill="lightgray" d="M10.29 17.41a1 1 0 0 0 1.268-.627c.287-.848 1.136-1.391 1.813-1.572c.676-.181 1.683-.136 2.356.455a1 1 0 0 0 1.32-1.502c-1.352-1.188-3.138-1.168-4.194-.885s-2.613 1.159-3.19 2.863a1 1 0 0 0 .627 1.268m-1.54-6.16a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m6.5 0a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3"/></g></svg>
+            <svg xmlns="http://www.w3.org/2000/svg" width="150" height="150" viewBox="0 0 24 24" class="mb-4"><g fill="currentColor"><path fill-rule="evenodd" d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10s-4.477 10-10 10S2 17.523 2 12m10-8a8 8 0 1 0 0 16a8 8 0 0 0 0-16" clip-rule="evenodd" fill="rgb(153 159 165)"/><path fill="rgb(153 159 165)" d="M10.29 17.41a1 1 0 0 0 1.268-.627c.287-.848 1.136-1.391 1.813-1.572c.676-.181 1.683-.136 2.356.455a1 1 0 0 0 1.32-1.502c-1.352-1.188-3.138-1.168-4.194-.885s-2.613 1.159-3.19 2.863a1 1 0 0 0 .627 1.268m-1.54-6.16a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3m6.5 0a1.5 1.5 0 1 0 0-3a1.5 1.5 0 0 0 0 3"/></g></svg>
             <p class="text-center fw-bold fs-5 text-secondary">找不到符合條件的場地...</p>
             <p class="text-center fw-normal fs-7 text-secondary mt-2">請試試其他關鍵字</p>
-            <button class="btn btn-primary clearKeyWordBtn rounded-pill mt-2" onclick="clearKeyword()">清除關鍵字</button>
+            <button class="btn btn-primary clearKeyWordBtn rounded-pill mt-2" onclick="clearKeyword()" style="background:var(--golden-gradient); color: #1e2125;">清除關鍵字</button>
         </div>`;
     }
 
@@ -208,10 +208,10 @@ function renderVenues(data, query = "") {
     const keyword = document.getElementById('venueSearch').value;
 
     if (keyword) {
-        search_keyWord.innerHTML = `<div class="search-keyword d-flex align-items-center fs-4"><i class="fa-solid fa-magnifying-glass me-3"></i>符合條件:&nbsp;"<p class="search-text fs-4 fw-bold pe-2 border-end-1 border-light">${keyword}</p>"</div><p class="result-count fs-4  text-secondary">的場地數量：<span class="venuesVal text-dark fw-bold">${data.length}</span>&nbsp;筆
+        search_keyWord.innerHTML = `<div class="search-keyword d-flex align-items-center fs-4"><i class="fa-solid fa-magnifying-glass me-3"></i>符合條件:&nbsp;"<p class="search-text fs-4 fw-bold pe-2 border-end-1 border-light">${keyword}</p>"</div><p class="result-count fs-4  fw-bold  text-secondary">的場地數量：<span class="venuesVal text-dark fw-bold" style="color: var(--orange-400);">${data.length}</span>&nbsp;筆
     </p>`;
     } else {
-        search_keyWord.innerHTML = `<p class="result-count fs-4  text-secondary">符合條件的場地數量：<span class="venuesVal text-dark fw-bold">${data.length}</span>&nbsp;筆</p>`;
+        search_keyWord.innerHTML = `<p class="result-count fs-4">符合條件的場地數量：<span class="venuesVal fw-bold" style="color: var(--orange-400);">${data.length}</span>&nbsp;筆</p>`;
     }
 }
 
@@ -255,7 +255,7 @@ document.querySelector('.venue-area').addEventListener('click', async function (
         <div class="row justify-content-between">
             <div class="col-5 d-flex flex-column">
                 <div class="card bigPic w-100 h-100 mb-2 p-1 position-relative">
-                  <button class="btn favBtn position-absolute" data-type="venue" data-id="${venueData.venueId}" style="top:10px; left:10px;"><i class="fa-regular fa-heart fs-5"></i></button>
+                  <button class="btn favBtn position-absolute" data-type="venue" data-id="${venueData.venueId}" style="color:var(--dark-grey);top:10px; left:10px;"><i class="fa-regular fa-heart fs-5"></i></button>
                   <img
                         src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445"
                         class="w-100 h-100 mainVenue_image" alt="..." style="object-fit: cover">

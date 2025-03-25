@@ -1,3 +1,17 @@
+.greeting {
+    display: flex;
+    align-items: center;
+    color: var(--orange-400);
+    
+    p {
+        color: var(--dark-white);
+    }
+    
+    span {
+        color: var(--dark-grey) !important;
+    }
+}
+
 .dashboard-body {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -9,11 +23,12 @@
         display: flex;
         flex-direction: column;
         height: 100%;
-        background: white;
+        background: var(--dark-secound-bg);
         padding: 20px;
         border-radius: 10px;
         border: none;
-        box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        /*box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);*/
+        box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
 
         .header {
             width: 100%;
@@ -25,14 +40,15 @@
             h3 {
                 display: flex;
                 align-items: center;
-                font-weight: bold;
+                /*font-weight: bold;*/
                 text-wrap: nowrap;
+                color: hsla(240,7%,62%,1);
             }
 
-            .btn-group {
-                background-color: white;
-                border-radius: 8px;
-            }
+            /*.btn-group {*/
+            /*    background-color: white;*/
+            /*    border-radius: 8px;*/
+            /*}*/
         }
 
         /*即將到來的賽事*/
@@ -58,7 +74,7 @@
                         vertical-align: middle;
                         background-color: var(--bs-table-bg);
                         vertical-align: center;
-                        padding:  1rem;
+                        padding: 16px;
                         text-overflow: ellipsis;
                         overflow: hidden;
                         white-space: nowrap;
@@ -85,18 +101,35 @@
                     th {
                         height: 40px;
                         font-weight: bold;
-                        background: var(--bs-body-bg);
+                        /*background: var(--bs-table-th-sticky);*/
+                        color: var(--dark-white);
+                        position: relative;
+
+                        &::before {
+                            content: "";
+                            width: 100%;
+                            height: 100%;
+                            position: absolute;
+                            inset: 0;
+                            z-index: -1;
+                            backdrop-filter: blur(10px);
+                            -webkit-backdrop-filter: blur(10px);
+                            background-color: rgb(104 104 104 / 40%);
+                        }
                     }
 
                     td {
                         height: 80px;
-                        background: var(--bs-body-bg);
+                        background: var(--dark-secound-bg);
+                        color: var(--dark-grey);
+                        transition: all 0.3s;
                         
                         .dateBlock {
                             width: 58px;
                             display: flex;
                             flex-direction: column;
                             border-radius: 4px;
+                            background: rgb(88 88 88 / 40%);
                             overflow: hidden;
                             margin: 0 auto;
 
@@ -105,10 +138,14 @@
                                 font-weight: bold;
 
                                 &.month {
+                                    background: var(--golden-gradient);
+                                    color: #211f1f;
                                     padding: 5px 0;
+                                    opacity: 0.6;
                                 }
 
                                 &.date {
+                                    color: rgb(88 88 88 / 80%);;
                                     padding: 10px;
                                     font-size: 18px;
                                 }
@@ -119,7 +156,20 @@
                     &:hover {
 
                         td {
-                            background-color: var(--bs-table-hover-bg);
+                            color: #fd7e14;
+                            background: linear-gradient(0deg, #fd7e143b 0%,  transparent 50%);
+
+                            .dateBlock {
+                                background: var(--dark-grey);
+                                
+                                .month {
+                                    opacity: 1;
+                                }
+
+                                .date {
+                                    color: rgb(207 207 207);
+                                }
+                            }
                         }
                     }
                 }
@@ -127,6 +177,7 @@
         }
         /*組隊邀請*/
         &.team-invites {
+            
             .invited_fromTeam {
 
                 li {
@@ -135,28 +186,55 @@
                     cursor: pointer;
 
                     &:hover {
-                        background-color: aliceblue;
+                        background: linear-gradient(350deg, transparent 30%,  #fd7e143b 90%);
+                        
+                        &>div {
+                            color: var(--dark-white);
+                        }
                     }
 
                     div {
                         display: flex;
                         /*隊伍名+發送時間*/
+                        
                         &:first-of-type {
                             width: 57%;
                             flex-direction: column;
 
                             p {
                                 max-width: 85%;
-                                color: #6c757d;
+                                color: var(--dark-grey);
                             }
 
                             span {
                                 font-size: 12px;
+                                color: var(--dark-grey);
                             }
                         }
 
                         &:last-of-type {
                             flex-shrink: 0;
+                            
+                            button {
+                                
+                                &:first-of-type {
+                                    background: var(--primary-gradient);
+                                    
+                                    &:hover {
+                                        color: black;
+                                        transform: rotateY(0) !important;
+                                    }
+                                }
+                                
+                                &:last-of-type {
+                                    color: var(--dark-grey);
+                                    transition: all 0.3s;
+                                    
+                                    &:hover {
+                                        color: var(--dark-white);
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -170,8 +248,10 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
+                padding: 0 16px;
 
                 &>p {
+                    color: var(--dark-grey);
                     font-weight: bold;
                     font-size: 22px;
                     margin-right: 16px;
@@ -192,28 +272,161 @@
                 
                 table {
                     
-                    .orderStatus {
+                    .wrapTrigger {
                         
-                        .bar {
-                            position: relative;
-                        }
-                        
-                        .statusText{
+                        &:hover {
                             
-                            p {
+                            td {
+                                background: #faf9f90f;
+                            }
+                        }
+                    }
+                    
+                    .wrapBody {
+
+                        .orderStatus {
+                            position: relative;
+
+                            /*進度條*/
+
+                            .bar {
                                 position: relative;
-                                
+                            }
+
+                            &::before {
+                                content: "";
+                                height: 5px;
+                                position: absolute;
+                                top: 50%;
+                                left: 0;
+                                transform: translateY(-50%);
+                                transition: width 0.3s;
+                                z-index: 2;
+                            }
+
+                            /*進度點*/
+
+                            .spinner-grow {
+                                position: absolute;
+                                top: 30%;
+                                background: var(--dark-white);
+                                z-index: 3;
+                            }
+
+                            .statusText {
+
+                                p {
+                                    position: relative;
+                                    width: 32px;
+                                    text-wrap: nowrap;
+                                    text-align: center;
+
+                                    &::before {
+                                        content: "";
+                                        width: 15px;
+                                        height: 15px;
+                                        border-radius: 50%;
+                                        background-color: white;
+                                        position: absolute;
+                                        top: 80%;
+                                        left: -5px;
+                                        transform: translateY(-50%);
+                                        box-shadow: var(--shadow);
+                                    }
+                                }
+                            }
+
+                            /*訂單成立*/
+
+                            &.orderCreated {
+
+                                .spinner-grow {
+                                    left: -3px;
+                                }
+                            }
+
+                            /*待出貨*/
+
+                            &.shipping {
+
                                 &::before {
-                                    content: "";
-                                    width: 15px;
-                                    height: 15px;
-                                    border-radius: 50%;
-                                    background-color: white;
-                                    position: absolute;
-                                    top: 80%;
-                                    left: -5px;
-                                    transform: translateY(-50%);
-                                    box-shadow: var(--shadow);
+                                    width: 33%;
+                                    background: var(--primary-gradient);
+                                }
+
+                                .spinner-grow {
+                                    left: 33%;
+                                }
+                            }
+
+                            /*已送達*/
+
+                            &.arrived {
+
+                                &::before {
+                                    width: 64%;
+                                    background: var(--primary-gradient);
+                                }
+
+                                .spinner-grow {
+                                    left: 64%;
+                                }
+                            }
+
+                            /*訂單完成*/
+
+                            &.finished {
+
+                                &::before {
+                                    width: 100%;
+                                    background: var(--primary-gradient);
+                                }
+
+                                .spinner-grow {
+                                    left: unset;
+                                    right: 3px;
+                                }
+                            }
+                        }
+
+                        &:has(.orderCreated) {
+                            .statusText {
+                                
+                                &:nth-of-type(1) {
+                                    p {
+                                        &:nth-of-type(2),
+                                        &:nth-of-type(3),
+                                        &:nth-of-type(4) {
+                                            visibility: hidden
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &:has(.shipping) {
+                            .statusText {
+                                
+                                &:nth-of-type(1) {
+                                    p {
+                                        &:nth-of-type(3),
+                                        &:nth-of-type(4) {
+                                            visibility: hidden
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        &:has(.arrived) {
+                            .statusText {
+                                
+                                &:nth-of-type(1) {
+                                    p {
+                                        &:nth-of-type(4) {
+                                            visibility: hidden
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -239,9 +452,10 @@
         &>h3 {
             display: flex;
             align-items: center;
-            font-weight: bold;
-            text-wrap: nowrap;
             margin-bottom: 10px;
+            /*font-weight: bold;*/
+            text-wrap: nowrap;
+            color: hsla(240,7%,62%,1);
         }
 
         .card {
@@ -258,12 +472,21 @@
                     div {
                         width: 11.5vw;
                         height: 11vh;
+                        background: var(--dark-secound-bg);
                         padding: 16px;
                         transition: all 0.3s;
                         cursor: pointer;
                         
                         &:hover {
-                            scale: 1.1;
+                            background: linear-gradient(206deg, rgb(253 126 20 / 31%) 0%,  var(--dark-secound-bg) 50%);
+                            
+                            .teamName {
+                                letter-spacing: 1.3px;
+                                color: #b8b8b8 !important;
+                            }
+                            .member {
+                                scale: 1.09;
+                            }
                         }
 
                         .teamName {
@@ -275,16 +498,18 @@
                             width:  fit-content;
                             display: flex;
                             align-items: center;
-                            color: #c5e8ef;
+                            background: unset;
+                            color: #493a23;
                             font-size: 35px;
                             height: unset;
                             padding: 0 11px;
                             margin-top: 0.5rem;
+                            position: relative;
 
                             span {
                                 width:2rem;
                                 height: 2rem;
-                                background-color: white;
+                                background: var(--dark-secound-bg);
                                 margin-left: -10px;
                                 border-radius: 50%;
 
@@ -294,7 +519,9 @@
                                     justify-content: center;
                                     font-size: 16px;
                                     font-weight: bold;
+                                    background: #171717;
                                     color: #6b7280;
+                                    z-index: 2;
                                 }
                             }
                         }

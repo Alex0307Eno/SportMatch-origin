@@ -5,8 +5,23 @@ aside {
     flex-shrink: 0;
     border-radius: 16px;
     padding: 16px;
-    background-color: white;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    background: var(--dark-secound-bg);
+    /*box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;*/
+    
+    h2,h3 {
+        background: var(--golden-gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    
+    .clearCondition_Btn {
+        color: var(--dark-grey);
+        transition: all 0.3s;
+        
+        &:hover {
+            color: var(--dark-white);
+        }
+    }
     
     .search-bar {
         
@@ -62,9 +77,10 @@ aside {
             }
 
             &.picked {
-                background-color: var(--primary-color);
+                background: var(--primary-gradient);
                 font-weight: bold;
-                color: white;
+                border: none;
+                color: var(--white);
                 
                 i {
                     display: flex;
@@ -77,6 +93,7 @@ aside {
 
         button {
             transition: all 0.3s;
+            color: var(--dark-white);
 
             &:hover {
                 color: var(--primary-color);
@@ -96,12 +113,13 @@ aside {
 
 /*右-場地*/
 .venues-section {
+    background: transparent !important;
     margin-left: 296px;
     transition: margin-bottom 0.3s ease-in-out;
     position: relative;
 
     .headerRow {
-        background-color: var(--light-bg);
+        background: linear-gradient(90deg, #102a37, #10312f);
         position: sticky;
         top: 63px;
         z-index: 10;
@@ -114,7 +132,17 @@ aside {
         }
         
         .result-layOut {
-            background-color: white;
+            background: var(--dark-secound-bg);
+            
+            button {
+                color: var(--dark-grey);
+                
+                &.active,
+                &:hover{
+                    background: var(--dark-grey);
+                    color: var(--dark-white);
+                }
+            }
         }
     }
 
@@ -122,6 +150,7 @@ aside {
         justify-content: center;
 
         .card {
+            background: var(--dark-secound-bg);
             overflow: hidden;
             cursor: pointer;
             
@@ -137,7 +166,9 @@ aside {
             }
 
             .card-body {
-
+                .card-title {
+                    color: var(--dark-white);
+                }
                 p {
                     i {
                         width: 16px;

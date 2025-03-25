@@ -62,7 +62,7 @@
                     </div>
 
                     <!-- 未登入時顯示 -->
-                    <button onclick="openLoginModal()" class="btn-login" id="loginButton">登入</button>
+                    <button onclick="openLoginModal()" class="btn btn-login me-3" id="loginButton">登入</button>
                     <a href="@Url.Action("Register", "Account")" class="btn-register" id="registerButton">註冊</a>
 
                     <!-- 使用者登入後顯示 -->
@@ -199,14 +199,14 @@
             else
             {
                 <div class="main-content d-flex flex-column">
-                    <div class="alert alert-warning align-items-top position-absolute p-0" style="top: 10%;
-    left: 43%; width: fit-content; background-color: #ffffe0;border-color: #ffc107; z-index: 2;" role="alert"
+                    <div class="alert align-items-top position-absolute p-0" style="top: 2%;
+    left: 43%; width: fit-content; background-color: #97873e8f ;border-color: #ffc107; z-index: 2;" role="alert"
                          aria-live="assertive" aria-atomic="true">
                         <div class="d-flex">
-                            <div class="toast-body d-flex align-items-center">
+                            <div class="toast-body d-flex align-items-center" style="color: var(--dark-white);">
                                 <i class="fa-solid fa-exclamation me-2"></i>
                                 <p class="" style="text-wrap: nowrap;">您的個人資料未完善，請至<a
-                                        href="/MemberCenter/Account" class="text-primary">帳號資訊頁</a>開通手機驗證</p>
+                                        href="/MemberCenter/Account" class="" style="color:#ff9150;">帳號資訊頁</a>填寫</p>
                             </div>
                         </div>
                     </div>
@@ -274,7 +274,12 @@
 
     // 收起
     $('.collapse-wrapper .wrapTrigger').on('click', function () {
+        const openClose_icon = $(this).find("i.fa-minus, i.fa-plus");
         $(this).closest('.collapse-wrapper').toggleClass('collapsed');
+        
+        if (openClose_icon.length) {
+            openClose_icon.toggleClass('fa-minus fa-plus');
+        }
     });
 
     // 愛心按鈕切換
@@ -288,7 +293,11 @@
             const id = this.dataset.id;
             const card = this.closest('.card');
             const tr = this.closest('tr');
+            const venuePage = this.parent('.venue-area');
 
+            if (venuePage) {
+                
+            }   
             if (card) {
                 card.classList.add("removing");
 
@@ -304,7 +313,7 @@
                 }, 400);
             }
             removeFav(type, id);
-            showToast(`已移除 ${type} (ID: ${id})`, 'success');
+            showToast(`已移除 ${type}`, 'success');
         });
     });
 

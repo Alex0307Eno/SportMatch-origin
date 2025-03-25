@@ -2,7 +2,52 @@
 :root {
     --font-family: "Arial", sans-serif;
     --line-height: 1.6;
+    --orange-100: #fdf0e3;
+    --orange-200: #f8d6b6;
+    --orange-300: #f4b980;
+    --orange-400: #f19d4b;
+    --orange-500: #fd7e14; /* 主色 */
+    --orange-600: #cc6511;
+    --orange-700: #a4510e;
+    --orange-800: #7b3d0a;
+    --orange-900: #4c2405;
+
+    --yellow-100: #fff7e3;
+    --yellow-200: #ffedb3;
+    --yellow-300: #ffe380; /* 輔色 */
+    --yellow-400: #ffd74d;
+    --yellow-500: #ffc107; 
+    --yellow-600: #d39e06;
+    --yellow-700: #aa8005;
+    --yellow-800: #806004;
+    --yellow-900: #554002;
+    --primary-color: var(--orange-500);
+    --secondary-color: var(--yellow-300);
+    --dark-bg: #1E1611;
+    /*--dark-secound-bg: #312f2d; #00000061*/
+    --dark-secound-bg: #00000061;
+    --body-color: #00000024;
+    /*--dark-secound-bg: #29221D;*/
+    
+    --white: #ffffff;
+    --dark-white: #E8E8E8;
+    --dark-grey: rgba(255, 255, 255, 0.4);
+    
+    --main-gradient: linear-gradient(135deg, #3a8dde, #34c79b);
+    --primary-gradient: linear-gradient(135deg, var(--yellow-500), var(--primary-color));
+    --golden-gradient: linear-gradient(135deg,  #FFF08D, #F5DF68, #ECCF42, #E2BE1D );
+    
+    --bs-table-bg: #3b3b3b61;
+    --bs-table-th: rgba(255, 255, 255, 0.2);
+    --bs-table-th-sticky: rgb(164, 164, 164);
+    --bs-table-hover-bg: var(--golden-gradient);
+    --accordion-bg: var(--dark-secound-bg);
 }
+
+/*@font-face {*/
+/*    font-family: 'openhuninn';*/
+/*    src: url('../image/MatchPage/jf-openhuninn-2.1.ttf');*/
+/*}*/
 
 /*通用樣式重置*/
 body,
@@ -16,22 +61,71 @@ button {
     padding: 0;
     box-sizing: border-box;
     font-family: "Arial", sans-serif;
+    /*font-family: "openhuninn", sans-serif;*/
 }
+
+button,
+.btn {
+    &:focus,
+    &:focus-visible {
+        box-shadow: none !important;
+        outline: none !important;
+        
+        &.btn-primary {
+            
+            &:hover {
+                transform: translateY(0);
+            }
+        }
+    }
+}
+
 
 /*基本排版*/
 body {
+    /*background: var(--dark-bg);x*/
     font-family: var(--font-family);
+    position: relative;
+    
+    &::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -2;
+        background: var(--main-gradient);
+        pointer-events: none;
+    }
+    
+    &::after {
+        content: "";
+        background-color: rgb(0 0 0 / 73%);
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+    }
 }
 
 /*導航欄樣式*/
 header {
-    background: white;
-    box-shadow: var(--shadow);
+    background: rgb(255 255 255 / 10%);
+    /*box-shadow: var(--shadow);*/
     width: 100%;
     z-index: 1000;
     position: fixed;
     top: 0;
     left: 0;
+    
+    &::before {
+        content: "";
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        backdrop-filter: blur(10px); 
+        -webkit-backdrop-filter: blur(10px);
+    }
 
     .header-container {
         display: flex;
@@ -43,6 +137,9 @@ header {
             display: flex;
             align-items: center;
             gap: 10px;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
             font-family: "Galada", serif;
             font-weight: 400;
             font-style: normal;
@@ -61,8 +158,29 @@ header {
                 list-style: none;
                 margin: 0;
                 padding: 0;
+                
+                li {
+                    
+                    a {
+                        color: var(--dark-grey);
+                        transition: all 0.3s ease-in-out;
+                        
+                        &:hover {
+                            color: var(--yellow-100);
+                        }
+                    }
+                }
             }
         }
+    }
+
+    .btn-login {
+        background: var(--primary-gradient);
+        color: var(--white);
+    }
+    
+    .btn-register {
+        color: #F5DF68;
     }
 }
 
@@ -124,6 +242,7 @@ header {
     padding: 0;
 
     main {
+        position: relative;
 
         .main-wrap {
             width: 100%;
@@ -131,7 +250,6 @@ header {
             margin-top: 66px;
             padding: 16px 0;
             display: flex;
-            background-color: var(--light-bg);
 
             .main-content {
                 width: 100%;
@@ -169,8 +287,33 @@ header {
                 .data-container {
                     min-height: 84vh;
                     padding: 16px;
-                    background-color: white;
+                    background: var(--dark-secound-bg);
+                    color: var(--dark-grey);
                     border-radius: 16px;
+                    
+                    input[type="text"],
+                    input[type="checkbox"],
+                    select,
+                    textarea,
+                    .form-control,
+                    .form-select {
+                        background: rgb(187 187 187 / 20%)!important;
+                        border-color: var(--bs-table-th);
+                        color: #d0d0d0;
+                       
+                        &:disabled {
+                            background: rgb(137 137 137 / 20%);
+                            color: #a4a4a4;
+                        }
+                        
+                        &::placeholder {
+                            color: #d0d0d0;
+                        }
+                        
+                        &:checked {
+                            background: var(--primary-gradient);
+                        }
+                    }
                     
                     /*loading遮罩*/
                     .loading-overlay {
@@ -192,11 +335,10 @@ header {
                         align-items: center;
                         padding: 0 1rem;
 
-
                         li {
                             width: 100%;
                             border-radius: 8px;
-                            background-color: lightgray;
+                            background: var(--dark-secound-bg);
                             padding: 1rem;
                             gap: 1rem;
                             position: relative;
@@ -204,7 +346,7 @@ header {
                             .notifyIcon {
                                 width: 4rem;
                                 height: 4rem;
-                                background-color: #d8e5fb;
+                                background-color: #515151;
                                 display: flex;
                                 align-items: center;
                                 justify-content: center;
@@ -218,7 +360,7 @@ header {
                             }
 
                             &.unread {
-                                background-color: aliceblue;
+                                background: #88888833;
                             }
 
                             .content {
@@ -239,7 +381,7 @@ header {
                             .actions {
                                 position: absolute;
                                 left: unset;
-                                right: 1rem;
+                                right: 20px;
                                 top: 50%;
                                 transform: translateY(-50%);
                             }
@@ -249,6 +391,7 @@ header {
                     /*tab線條版*/
                     ul.nav.nav-underline {
                         margin-bottom: 2rem;
+                        position: relative;
 
                         li {
                             cursor: pointer;
@@ -257,13 +400,14 @@ header {
                                 color: darkgray;
                                 font-size: 19px;
                                 position: relative;
+                                transition: all 0.3s ease;
                                 cursor: pointer;
 
                                 &:before {
                                     content: '';
                                     width: 0;
                                     height: 4px;
-                                    background: var(--primary-color);
+                                    background: var(--primary-gradient);
                                     border-radius: 4px;
                                     position: absolute;
                                     top: unset;
@@ -272,11 +416,12 @@ header {
                                     transition: width 0.4s ease-out, width 0.4s ease-out;
                                 }
                                 &:hover {
+                                    color: var(--white);
                                     font-weight: bold;
                                 }
 
                                 &.active {
-                                    color: var(--primary-color);
+                                    color: var(--white);
                                     font-weight: bold;
 
                                     &:before {
@@ -284,6 +429,14 @@ header {
                                     }
                                 }
                             }
+                        }
+                        
+                        button.action {
+                            position: absolute;
+                            top: 50%;
+                            left: unset;
+                            right: 16px;
+                            transform: translateY(-50%);
                         }
                     }
                     
@@ -299,7 +452,7 @@ header {
                             transition: opacity 0.3s ease-in-out;
 
                             table {
-                                border: 1px solid lightgray;
+                                /*border: 1px solid lightgray;*/
                                 font-size: 14px;
                                 margin-bottom: 0;
 
@@ -312,10 +465,13 @@ header {
                                 }
 
                                 th {
-                                    background-color: lightgray;
+                                    background: var(--bs-table-th);
+                                    color: var(--white);
                                 }
 
                                 td {
+                                    background: var(--bs-table-bg);
+                                    
                                     .status {
                                         text-wrap: nowrap;
                                         border: 1px solid green;
@@ -405,54 +561,123 @@ header {
 
                     /*會員中心共用-table*/
                     table.memCt {
-                        border: 1px solid lightgray;
+                        border-collapse: separate;
+                        /*border: 1px solid var(--bs-table-th);*/
                         font-size: 14px;
                         margin-bottom: 0;
 
                         tr {
                             border-bottom: 1px solid lightgray;
-                        }
 
-                        th {
-                            background-color: lightgray;
-                        }
+                            th,
+                            td {
+                                color: var(--dark-grey);
+                                vertical-align: middle;
+                                position: relative;
 
-                        td {
-                            .status {
-                                border: 1px solid green;
-                                padding: 2px 4px;
-                                text-wrap: nowrap;
+                                &:after{
+                                    content: '';
+                                    width: 1px;
+                                    height: 30%;
+                                    background: var(--dark-grey);
+                                    position: absolute;
+                                    left: unset;
+                                    right: 0;
+                                    top: 50%;
+                                    transform: translateY(-50%);
+                                }
 
-                                &.default {
-                                    border-color: lightgreen;
-                                    color: green;
+                                &:last-of-type {
+                                    &:after{
+                                        display: none;
+                                    }
                                 }
                             }
-                            button {
-                                font-size: 12px;
+
+                            th {
+                                background: var(--bs-table-th);
+                                height: 45px;
+
+                                &:nth-of-type(1) {
+                                    border-radius: 16px 0 0 0;
+                                }
+
+                                &:last-of-type {
+                                    border-radius: 0 16px 0 0;
+                                }
+                            }
+
+                            td {
+                                height: 50px;
+                                background: var(--bs-table-bg);
+
+                                .status {
+                                    border: 1px solid green;
+                                    padding: 2px 4px;
+                                    text-wrap: nowrap;
+
+                                    &.default {
+                                        border-color: lightgreen;
+                                        color: green;
+                                    }
+                                }
+                                button {
+                                    font-size: 12px;
+                                }
+                            }
+                        }
+                        
+                        /*儀表板-訂單紀錄*/
+                        &.orderList {
+
+                            th,
+                            td {
+                                &:nth-of-type(1) {
+                                    width: 8%;
+                                }
+
+                                &:nth-of-type(2) {
+                                    width: 22.5%;
+                                }
+
+                                &:nth-of-type(3) {
+                                    width: 23.5%;
+                                }
+
+                                &:nth-of-type(4) {
+                                    width: 34%;
+                                }
+                                
+                                &:nth-of-type(5) {
+                                    width: 10%;
+                                }
                             }
                         }
 
-                        th,
-                        td {
-                            vertical-align: middle;
-                            position: relative;
+                        &.collapse-wrapper {
+                        
+                            tr.wrapTrigger {
+                        
+                                td {
+                                    &:nth-of-type(1) {
+                                        width: 8%;
+                                    }
+                        
+                                    &:nth-of-type(2) {
+                                        width: 22.5%;
+                                    }
+                        
+                                    &:nth-of-type(3) {
+                                        width: 23.5%;
+                                    }
 
-                            &:after{
-                                content: '';
-                                width: 1px;
-                                height: 30%;
-                                background: lightgrey;
-                                position: absolute;
-                                left: unset;
-                                right: 0;
-                                top: 50%;
-                                transform: translateY(-50%);
-                            }
+                                    &:nth-of-type(4) {
+                                        width: 34%;
+                                    }
 
-                            &:last-of-type {
-                                &:after{
-                                    display: none;
+                                    &:nth-of-type(5) {
+                                        width: 10%;
+                                    }
                                 }
                             }
                         }
@@ -489,10 +714,29 @@ header {
 
                     /*下拉選單樣式*/
                     .accordion {
+                        background: var(--accordion-bg) !important;
+                        color: var(--dark-grey) !important;
+                        
+                        .accordion-body,
+                        .accordion-item {
+                            background: var(--accordion-bg) !important;
+                            
+                            &:has(.collapsed){
+                                h2 {
+                                    color: var(--orange-500) !important;
+                                }
+                            }
+                        }
+                        
                         .accordion-header {
+                            background: unset !important;
+                            
                             .accordion-button {
+                                background: var(--accordion-bg) !important;
+                                
                                 .blockTitle {
                                     font-size: 15px !important;
+                                    color: var(--dark-white);
                                 }
 
                                 i {
@@ -532,7 +776,7 @@ header {
                         align-items: center;
                         justify-content: space-between;
                         font-size: 17px;
-                        color: #6c757d;
+                        color: var(--dark-grey);
                         font-weight: bold;
                         border-bottom: 1px solid;
                         padding: 0 0 10px;
@@ -544,6 +788,14 @@ header {
                             font-weight: lighter;
                             color: lightslategray;
                             font-size: 14px;
+                        }
+
+                        .blockAction_Btn {
+                            color: var(--dark-grey);
+
+                            &:hover {
+                                color: var(--dark-white);
+                            }
                         }
                     }
 
@@ -585,6 +837,14 @@ header {
                                 }
 
                             }
+                            
+                            .btn {
+                                color: var(--dark-grey);
+
+                                &:hover {
+                                    color: var(--dark-white);
+                                }
+                            }
                         }
 
                         .wrapTrigger {
@@ -606,6 +866,7 @@ header {
 
                                 .card {
                                     width: calc((100% - 2rem) / 2);
+                                    background: var(--dark-secound-bg);
 
                                     &.product {
                                         width: calc((100% - 2rem) / 3);
@@ -739,8 +1000,6 @@ header {
                                 }
                             }
                         }
-                        
-                        .
 
                         .venue-area {
                             justify-content: center;

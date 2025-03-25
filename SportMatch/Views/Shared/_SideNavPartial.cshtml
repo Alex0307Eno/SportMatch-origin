@@ -30,8 +30,8 @@
         height: fit-content;
         border-radius: 0 16px 16px 0;
         padding: 16px;
-        background-color: white;
-        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+        background-color: var(--dark-secound-bg);
+        /*box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;*/
         transition: all 0.3s;
         
         ul{
@@ -41,7 +41,8 @@
                 content: "";
                 width: 100%;
                 height: 1px;
-                background-color: lightgrey;
+                background: var(--dark-grey);
+                opacity: 0.4;
                 position: absolute;
                 bottom: -16px;
             }
@@ -58,7 +59,7 @@
                 a {
                     display: flex;
                     width: inherit;
-                    color: black;
+                    color: var(--dark-grey);
                     font-weight: bold;
                     text-decoration: none;
                     padding: 1rem;
@@ -69,7 +70,12 @@
                     &:active,
                     &.active,
                     &:hover {
-                        background-color: lightgray;
+                        background: var(--golden-gradient);
+                        color: black;
+                        
+                        .fa-chevron-right {
+                            color: black;
+                        }
                     }
 
                     &:hover {
@@ -85,14 +91,10 @@
                     &:focus {
                         outline: none;
                     }
-
-                    &:focus-visible {
-                        outline: 2px solid blue; /* 只在鍵盤導航時顯示 */
-                    }
-
+                    
                     .fa-chevron-right {
                         font-size: 0.85rem;
-                        color: darkgray;
+                        color: var(--dark-white);
                         position: absolute;
                         top: 50%;
                         left: unset;
@@ -135,11 +137,17 @@
                     }
                 }
             }
-            
-            button {
-                i {
-                    font-size: 23px;
-                }
+        }
+
+        button {
+
+            i {
+                color: var(--dark-grey);
+                font-size: 23px;
+            }
+
+            &:hover {
+                color: var(--dark-white);
             }
         }
 
@@ -151,22 +159,6 @@
 </style>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    let toggleSideNav_btn = document.getElementById("toggleNav");
-    let sideNav = document.getElementById('sideNav');
-    
-    toggleSideNav_btn.addEventListener("click", function () {
-        let icon = this.querySelector("i");
-        if ( sideNav.classList.contains('min')) {
-            icon.classList.remove('fa-indent');
-            icon.classList.add('fa-outdent');
-            sideNav.classList.remove('min')
-        } else {
-            icon.classList.remove('fa-outdent');
-            icon.classList.add('fa-indent');
-            sideNav.classList.add('min')
-        }
-    });
-
     document.querySelectorAll('[data-bs-toggle="popover"]').forEach((popoverEl) => {
         let bsPopover = new bootstrap.Popover(popoverEl, { trigger: 'manual' });
 
@@ -180,4 +172,5 @@
             bsPopover.hide();
         });
     });
+
 </script>

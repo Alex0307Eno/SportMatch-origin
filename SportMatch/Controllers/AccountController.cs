@@ -24,12 +24,20 @@ namespace SportMatch.Controllers
 
     public class AccountController : Controller
     {
-        private readonly SportMatchContext _context;
+        // private readonly SportMatchContext _context;
         private readonly IConfiguration _configuration;
 
 
 
-        public AccountController(SportMatchContext context, IConfiguration configuration)
+        // public AccountController(SportMatchContext context, IConfiguration configuration)
+        // {
+        //     _context = context;
+        //     _configuration = configuration;
+        //    
+        //
+        // }
+        
+        public AccountController(MyDbContext context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;

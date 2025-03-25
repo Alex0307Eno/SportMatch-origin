@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SportMatch.Models;
 
 public partial class SportsVenue
 {
+    [Key]
     public int VenueId { get; set; }
 
     public string VenueName { get; set; } = null!;
@@ -12,7 +14,9 @@ public partial class SportsVenue
     public string? Description { get; set; }
 
     public int SportId { get; set; }
-
+    
+    public string? City { get; set; }
+    
     public string Address { get; set; } = null!;
 
     public string? Facilities { get; set; }
@@ -22,6 +26,8 @@ public partial class SportsVenue
     public string ContactLineId { get; set; } = null!;
 
     public string? ContactWebsite { get; set; }
+    
+    public int? Price { get; set; }
 
     public virtual Sport Sport { get; set; } = null!;
 

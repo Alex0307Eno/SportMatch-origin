@@ -1,77 +1,82 @@
-@* @model IEnumerable<SportMatch.Models.Venue> *@
+@model dynamic
 
 @{
     Layout = "_MemberLayout";
 }
+
 @* 篩選條件 *@
 <aside class="filter-sidebar me-4">
     <div class="filter-header d-flex align-items-center justify-content-between mb-3">
         <h2 class="fs-5 fw-bold mb-0">篩選條件</h2>
         <button class="btn btn-sm clearCondition_Btn">清除條件</button>
     </div>
-    <div class="search-bar">
-        <input type="text" class="form-control w-100" placeholder="搜尋">
+    <div class="search-bar position-relative">
+        <input type="text" id="venueSearch" class="form-control w-100" placeholder="搜尋">
+        <button class="btn btn-sm search position-absolute" onclick="searchVenues()"><i
+                class="fa-solid fa-magnifying-glass"></i></button>
     </div>
-    <section class="filter-group">
+    <section class="filter-group mb-3">
         <div class="areaSelect d-flex align-items-center justify-content-between my-2">
-            <h3 class="fs-6 fw-bold text-secondary my-2">地點</h3>
-            <div class="filter-tags">
-                <button class="btn btn-sm btn-secondary text-light">北</button>
-                <button class="btn btn-sm btn-outline-secondary text-secondary">中</button>
-                <button class="btn btn-sm btn-outline-secondary text-secondary">南</button>
-                <button class="btn btn-sm btn-outline-secondary text-secondary">東</button>
+            <h3 class="fs-6 fw-bold my-2">地點</h3>
+            <div class="cityList filter-tags">
+                <button class="btn btn-sm shadow-sm active">北</button>
+                <button class="btn btn-sm shadow-sm">中</button>
+                <button class="btn btn-sm shadow-sm">南</button>
+                <button class="btn btn-sm shadow-sm">東</button>
+                <button class="btn btn-sm shadow-sm">離</button>
             </div>
         </div>
         <div class="cityTag d-flex flex-wrap gap-2">
-            <span class="ct-tag">基隆市</span>
-            <span class="ct-tag">宜蘭縣</span>
-            <span class="ct-tag selected"><i class="fa-solid fa-check me-1"></i>臺北市</span>
-            <span class="ct-tag selected"><i class="fa-solid fa-check me-1"></i>新北市</span>
-            <span class="ct-tag">桃園市</span>
-            <span class="ct-tag">新竹市</span>
-            <span class="ct-tag">新竹縣</span>
+            <span class="ct-tag"><i class="fa-solid fa-check me-1"></i>基隆市</span>
+            <span class="ct-tag"><i class="fa-solid fa-check me-1"></i>宜蘭縣</span>
+            <span class="ct-tag"><i class="fa-solid fa-check me-1"></i>臺北市</span>
+            <span class="ct-tag"><i class="fa-solid fa-check me-1"></i>新北市</span>
+            <span class="ct-tag"><i class="fa-solid fa-check me-1"></i>桃園市</span>
+            <span class="ct-tag"><i class="fa-solid fa-check me-1"></i>新竹市</span>
+            <span class="ct-tag"><i class="fa-solid fa-check me-1"></i>新竹縣</span>
         </div>
     </section>
-    <section class="filter-group">
-        <h3 class="fs-6 fw-bold text-secondary my-2">運動類型</h3>
+    <section class="filter-group mb-3">
+        <h3 class="fs-6 fw-bold my-2">運動類型</h3>
         <div class="filter-tags d-flex flex-wrap gap-1">
-            <span class="sport-tag">籃球</span>
-            <span class="sport-tag selected">網球</span>
-            <span class="sport-tag">羽球</span>
-            <span class="sport-tag">排球</span>
-            <span class="sport-tag">游泳</span>
-            <span class="sport-tag">瑜伽</span>
-            <span class="sport-tag">皮拉提斯</span>
-            <span class="sport-tag">足球</span>
+            <span class="sport-tag" onclick="toggleFilter(this, 'sportType')">籃球</span>
+            <span class="sport-tag" onclick="toggleFilter(this, 'sportType')">網球</span>
+            <span class="sport-tag" onclick="toggleFilter(this, 'sportType')">羽球</span>
+            <span class="sport-tag" onclick="toggleFilter(this, 'sportType')">排球</span>
+            <span class="sport-tag" onclick="toggleFilter(this, 'sportType')">游泳</span>
+            <span class="sport-tag" onclick="toggleFilter(this, 'sportType')">瑜伽</span>
+            <span class="sport-tag" onclick="toggleFilter(this, 'sportType')">皮拉提斯</span>
+            <span class="sport-tag" onclick="toggleFilter(this, 'sportType')">足球</span>
         </div>
     </section>
-    <section class="filter-group">
-        <h3 class="fs-6 fw-bold text-secondary my-2">設備</h3>
+    <section class="filter-group mb-3">
+        <h3 class="fs-6 fw-bold my-2">設備</h3>
         <div class="filter-tags d-flex flex-wrap gap-1">
-            <span class="equipment-tag"><i class="fa-solid fa-shower me-1"></i>淋浴間</span>
-            <span class="equipment-tag selected"><i class="fa-solid fa-restroom me-1"></i>廁所</span>
-            <span class="equipment-tag"><i class="fa-solid fa-square-parking me-1"></i>停車場</span>
-            <span class="equipment-tag"><i class="fa-solid fa-network-wired me-1"></i>計分版</span>
-            <span class="equipment-tag"><i class="fa-solid fa-wind me-1"></i>空調</span>
-            <span class="equipment-tag"><i class="fa-solid fa-store me-1"></i>販賣部</span>
-            <span class="equipment-tag"><i class="fa-solid fa-dumbbell me-1"></i>用具租借</span>
+            <span class="equipment-tag" onclick="toggleFilter(this, 'facility')"><i class="fa-solid fa-shower me-1"></i>淋浴間</span>
+            <span class="equipment-tag" onclick="toggleFilter(this, 'facility')"><i class="fa-solid fa-restroom me-1"></i>廁所</span>
+            <span class="equipment-tag" onclick="toggleFilter(this, 'facility')"><i class="fa-solid fa-square-parking me-1"></i>停車場</span>
+            <span class="equipment-tag" onclick="toggleFilter(this, 'facility')"><i class="fa-solid fa-network-wired me-1"></i>計分版</span>
+            <span class="equipment-tag" onclick="toggleFilter(this, 'facility')"><i class="fa-solid fa-wind me-1"></i>空調</span>
+            <span class="equipment-tag" onclick="toggleFilter(this, 'facility')"><i class="fa-solid fa-store me-1"></i>販賣部</span>
+            <span class="equipment-tag" onclick="toggleFilter(this, 'facility')"><i class="fa-solid fa-dumbbell me-1"></i>用具租借</span>
         </div>
     </section>
-    <section class="filter-group">
-        <h3 class="fs-6 fw-bold text-secondary my-2">價格範圍</h3>
-        <input type="range" class="form-range w-100" min="0" max="5000">
-        <form class="d-flex justify-content-between">
-            <input class="form-control me-2" type="text" placeholder="300">
-            <input class="form-control" type="text" placeholder="1200">
+    <section class="filter-group mb-3 d-none">
+        <h3 class="fs-6 fw-bold my-2">價格範圍</h3>
+        @* <input type="range" class="form-range w-100" min="0" max="5000"> *@
+        <form class="d-flex align-items-center justify-content-between">
+            <input class="form-control me-2" type="text" placeholder="0">
+            <p class="mx-1">-</p>
+            <input class="form-control" type="text" placeholder="最高價格">
         </form>
     </section>
 
-    <section class="filter-group d-flex flex-column">
-        <h3 class="fs-6 fw-bold text-secondary my-2">開放時間</h3>
-        <label class="mb-2 fw-bold openTime"><input type="checkbox" checked="checked"> 早上 - 06:00 - 12:00</label>
-        <label class="mb-2 fw-bold openTime"><input type="checkbox" checked="checked"> 下午 - 12:00 - 18:00</label>
-        <label class="mb-2 fw-bold openTime"><input type="checkbox"> 晚上 - 20:00 - 23:00</label>
-    </section>
+    @* <section class="filter-group d-flex flex-column"> *@
+    @*     <h3 class="fs-6 fw-bold text-secondary my-2">開放時間</h3> *@
+    @*     <label class="mb-2 fw-bold openTime"><input type="checkbox" checked="checked"> 早上 - 06:00 - 12:00</label> *@
+    @*     <label class="mb-2 fw-bold openTime"><input type="checkbox" checked="checked"> 下午 - 12:00 - 18:00</label> *@
+    @*     <label class="mb-2 fw-bold openTime"><input type="checkbox"> 晚上 - 20:00 - 23:00</label> *@
+    @* </section> *@
 
     @* <section class="filter-group"> *@
     @*     <h3>排序選擇</h3> *@
@@ -80,203 +85,195 @@
     @* </section> *@
 </aside>
 
-<div class="container-fluid venues-section py-4 px-0">
+<div class="container-fluid venues-section py-4 pt-0 px-0">
+    <div id="loading" class="loading-overlay d-none">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div> 
     <div class="headerRow d-flex align-items-center justify-content-between mb-3">
-        <div class="result-group d-flex align-items-center">
-            <div class="search-keyword d-flex align-items-center fs-4">
-                <i class="fa-solid fa-magnifying-glass me-3"></i>
-                <p class="search-text fs-4 fw-bold pe-2 border-end-1 border-light">北</p>
-                符合條件的
-            </div>
-            <p class="result-count fs-4 text-secondary">場地數量：<span class="countVal text-dark fw-bold">@Model.Count()</span>筆
+        <div class="result-group d-flex align-items-baseline">
+            <p class="result-count fs-4 fw-bold text-secondary">場地數量：<span class="venuesVal text-dark fw-bold"></span>筆
             </p>
         </div>
-        <div class="result-layOut d-flex align-items-center justify-content-around rounded-1 shadow-sm bg-light">
+        <div class="result-layOut d-flex align-items-center justify-content-around rounded-1 shadow-sm">
             <button class="btn btn-m grid_Btn"><i class="fa-solid fa-border-all"></i></button>
             <button class="btn btn-m list_Btn"><i class="fa-solid fa-list-ul"></i></button>
         </div>
     </div>
+    @*TODO 未登入的話顯示全部場地，有登入的話：預設載入使用者的喜好運動相關場地 *@
     <div class="venue-area grid">
-        @foreach (var venue in Model)
-        {
-            <div class="card">
+        <div class="card">
+            <div class="imgOuter card-img-top overflow-hidden">
                 <img
                     src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445"
                     class="card-img-top" alt="...">
-                <div class="card-body">
-                    <div class="tag-wrap d-flex align-items-center justify-content-between ">
-                        <p class="card-text sport-type"><small class="text-body-secondary">@venue.SportId</small></p>
-                        <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button>
-                    </div>
-                    <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">@venue.VenueName</h5>
-                    <p class="card-text mb-3 fw-bold txt-overflow">
-                        <i class="fa-solid fa-location-dot me-2 text-secondary"
-                           style="padding: 0 2px;"></i>@venue.City@venue.Address
-                    </p>
-                    <p class="card-text fw-bold txt-overflow">
-                        <i
-                            class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p>
-                </div>
             </div>
-        }
-
-        @* <div class="card"> *@
-        @*     <img *@
-        @*         src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445" *@
-        @*         class="card-img-top" alt="..."> *@
-        @*     <div class="card-body"> *@
-        @*         <div class="tag-wrap d-flex align-items-center justify-content-between "> *@
-        @*             <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p> *@
-        @*             <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button> *@
-        @*         </div> *@
-        @*         <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5> *@
-        @*         <p class="card-text mb-3 fw-bold txt-overflow"><i class="fa-solid fa-location-dot me-2 text-secondary" *@
-        @*                                                           style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號 *@
-        @*         </p> *@
-        @*         <p class="card-text fw-bold txt-overflow"><i *@
-        @*                 class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p> *@
-        @*     </div> *@
-        @* </div> *@
-        @* <div class="card"> *@
-        @*     <img *@
-        @*         src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445" *@
-        @*         class="card-img-top" alt="..."> *@
-        @*     <div class="card-body"> *@
-        @*         <div class="tag-wrap d-flex align-items-center justify-content-between "> *@
-        @*             <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p> *@
-        @*             <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button> *@
-        @*         </div> *@
-        @*         <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5> *@
-        @*         <p class="card-text mb-3 fw-bold txt-overflow"><i class="fa-solid fa-location-dot me-2 text-secondary" *@
-        @*                                                           style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號 *@
-        @*         </p> *@
-        @*         <p class="card-text fw-bold txt-overflow"><i *@
-        @*                 class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p> *@
-        @*     </div> *@
-        @* </div> *@
-        @* <div class="card"> *@
-        @*     <img *@
-        @*         src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445" *@
-        @*         class="card-img-top" alt="..."> *@
-        @*     <div class="card-body"> *@
-        @*         <div class="tag-wrap d-flex align-items-center justify-content-between "> *@
-        @*             <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p> *@
-        @*             <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button> *@
-        @*         </div> *@
-        @*         <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5> *@
-        @*         <p class="card-text mb-3 fw-bold txt-overflow"><i class="fa-solid fa-location-dot me-2 text-secondary" *@
-        @*                                                           style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號 *@
-        @*         </p> *@
-        @*         <p class="card-text fw-bold txt-overflow"><i *@
-        @*                 class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p> *@
-        @*     </div> *@
-        @* </div> *@
-        @* <div class="card"> *@
-        @*     <img *@
-        @*         src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445" *@
-        @*         class="card-img-top" alt="..."> *@
-        @*     <div class="card-body"> *@
-        @*         <div class="tag-wrap d-flex align-items-center justify-content-between "> *@
-        @*             <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p> *@
-        @*             <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button> *@
-        @*         </div> *@
-        @*         <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5> *@
-        @*         <p class="card-text mb-3 fw-bold txt-overflow"><i class="fa-solid fa-location-dot me-2 text-secondary" *@
-        @*                                                           style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號 *@
-        @*         </p> *@
-        @*         <p class="card-text fw-bold txt-overflow"><i *@
-        @*                 class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p> *@
-        @*     </div> *@
-        @* </div> *@
-        @* <div class="card"> *@
-        @*     <img *@
-        @*         src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445" *@
-        @*         class="card-img-top" alt="..."> *@
-        @*     <div class="card-body"> *@
-        @*         <div class="tag-wrap d-flex align-items-center justify-content-between "> *@
-        @*             <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p> *@
-        @*             <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button> *@
-        @*         </div> *@
-        @*         <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5> *@
-        @*         <p class="card-text mb-3 fw-bold txt-overflow"> *@
-        @*             <i class="fa-solid fa-location-dot me-2 text-secondary" *@
-        @*                style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號 *@
-        @*         </p> *@
-        @*         <p class="card-text fw-bold txt-overflow"><i *@
-        @*                 class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p> *@
-        @*     </div> *@
-        @* </div> *@
-        @* <div class="card"> *@
-        @*     <img *@
-        @*         src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445" *@
-        @*         class="card-img-top" alt="..."> *@
-        @*     <div class="card-body"> *@
-        @*         <div class="tag-wrap d-flex align-items-center justify-content-between "> *@
-        @*             <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p> *@
-        @*             <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button> *@
-        @*         </div> *@
-        @*         <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5> *@
-        @*         <p class="card-text mb-3 fw-bold txt-overflow"> *@
-        @*             <i class="fa-solid fa-location-dot me-2 text-secondary" *@
-        @*                style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號 *@
-        @*         </p> *@
-        @*         <p class="card-text fw-bold txt-overflow"><i *@
-        @*                 class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p> *@
-        @*     </div> *@
-        @* </div> *@
-        @* <div class="card"> *@
-        @*     <img *@
-        @*         src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445" *@
-        @*         class="card-img-top" alt="..."> *@
-        @*     <div class="card-body"> *@
-        @*         <div class="tag-wrap d-flex align-items-center justify-content-between "> *@
-        @*             <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p> *@
-        @*             <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button> *@
-        @*         </div> *@
-        @*         <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5> *@
-        @*         <p class="card-text mb-3 fw-bold txt-overflow"><i class="fa-solid fa-location-dot me-2 text-secondary" *@
-        @*                                                           style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號 *@
-        @*         </p> *@
-        @*         <p class="card-text fw-bold txt-overflow"><i *@
-        @*                 class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p> *@
-        @*     </div> *@
-        @* </div> *@
-        @* <div class="card"> *@
-        @*     <img *@
-        @*         src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445" *@
-        @*         class="card-img-top" alt="..."> *@
-        @*     <div class="card-body"> *@
-        @*         <div class="tag-wrap d-flex align-items-center justify-content-between "> *@
-        @*             <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p> *@
-        @*             <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button> *@
-        @*         </div> *@
-        @*         <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5> *@
-        @*         <p class="card-text mb-3 fw-bold txt-overflow"><i class="fa-solid fa-location-dot me-2 text-secondary" *@
-        @*                                                           style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號 *@
-        @*         </p> *@
-        @*         <p class="card-text fw-bold txt-overflow"><i *@
-        @*                 class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p> *@
-        @*     </div> *@
-        @* </div> *@
-        @* <div class="card"> *@
-        @*     <img *@
-        @*         src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445" *@
-        @*         class="card-img-top" alt="..."> *@
-        @*     <div class="card-body"> *@
-        @*         <div class="tag-wrap d-flex align-items-center justify-content-between "> *@
-        @*             <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p> *@
-        @*             <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button> *@
-        @*         </div> *@
-        @*         <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5> *@
-        @*         <p class="card-text mb-3 fw-bold txt-overflow"><i class="fa-solid fa-location-dot me-2 text-secondary" *@
-        @*                                                           style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號 *@
-        @*         </p> *@
-        @*         <p class="card-text fw-bold txt-overflow"><i *@
-        @*                 class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p> *@
-        @*     </div> *@
-        @* </div> *@
+            <div class="card-body">
+                <div class="tag-wrap d-flex align-items-center justify-content-between ">
+                    <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p>
+                    <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5>
+                <p class="card-text mb-3 fw-bold txt-overflow">
+                    <i class="fa-solid fa-location-dot me-2 text-secondary"
+                       style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號
+                </p>
+                <p class="card-text fw-bold txt-overflow">
+                    <i
+                        class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="imgOuter card-img-top overflow-hidden">
+                <img
+                    src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445"
+                    class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="tag-wrap d-flex align-items-center justify-content-between ">
+                    <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p>
+                    <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5>
+                <p class="card-text mb-3 fw-bold txt-overflow">
+                    <i class="fa-solid fa-location-dot me-2 text-secondary"
+                       style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號
+                </p>
+                <p class="card-text fw-bold txt-overflow">
+                    <i
+                        class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="imgOuter card-img-top overflow-hidden">
+                <img
+                    src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445"
+                    class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="tag-wrap d-flex align-items-center justify-content-between ">
+                    <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p>
+                    <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5>
+                <p class="card-text mb-3 fw-bold txt-overflow">
+                    <i class="fa-solid fa-location-dot me-2 text-secondary"
+                       style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號
+                </p>
+                <p class="card-text fw-bold txt-overflow">
+                    <i
+                        class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="imgOuter card-img-top overflow-hidden">
+                <img
+                    src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445"
+                    class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="tag-wrap d-flex align-items-center justify-content-between ">
+                    <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p>
+                    <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5>
+                <p class="card-text mb-3 fw-bold txt-overflow">
+                    <i class="fa-solid fa-location-dot me-2 text-secondary"
+                       style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號
+                </p>
+                <p class="card-text fw-bold txt-overflow">
+                    <i
+                        class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="imgOuter card-img-top overflow-hidden">
+                <img
+                    src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445"
+                    class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="tag-wrap d-flex align-items-center justify-content-between ">
+                    <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p>
+                    <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5>
+                <p class="card-text mb-3 fw-bold txt-overflow">
+                    <i class="fa-solid fa-location-dot me-2 text-secondary"
+                       style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號
+                </p>
+                <p class="card-text fw-bold txt-overflow">
+                    <i
+                        class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="imgOuter card-img-top overflow-hidden">
+                <img
+                    src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445"
+                    class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="tag-wrap d-flex align-items-center justify-content-between ">
+                    <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p>
+                    <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5>
+                <p class="card-text mb-3 fw-bold txt-overflow">
+                    <i class="fa-solid fa-location-dot me-2 text-secondary"
+                       style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號
+                </p>
+                <p class="card-text fw-bold txt-overflow">
+                    <i
+                        class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="imgOuter card-img-top overflow-hidden">
+                <img
+                    src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445"
+                    class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="tag-wrap d-flex align-items-center justify-content-between ">
+                    <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p>
+                    <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5>
+                <p class="card-text mb-3 fw-bold txt-overflow">
+                    <i class="fa-solid fa-location-dot me-2 text-secondary"
+                       style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號
+                </p>
+                <p class="card-text fw-bold txt-overflow">
+                    <i
+                        class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="imgOuter card-img-top overflow-hidden">
+                <img
+                    src="https://sportspod.in/cdn/shop/files/dominate-the-tennis-court-with-hiper-interlocking-tiles-604943.jpg?v=1726484993&width=1445"
+                    class="card-img-top" alt="...">
+            </div>
+            <div class="card-body">
+                <div class="tag-wrap d-flex align-items-center justify-content-between ">
+                    <p class="card-text sport-type"><small class="text-body-secondary">網球</small></p>
+                    <button class="btn favBtn" data-type="venue"><i class="fa-solid fa-heart"></i></button>
+                </div>
+                <h5 class="card-title fw-bold fs-5 mb-3 txt-overflow">北車網球</h5>
+                <p class="card-text mb-3 fw-bold txt-overflow">
+                    <i class="fa-solid fa-location-dot me-2 text-secondary"
+                       style="padding: 0 2px;"></i>114台北市內湖區民權東路六段208號
+                </p>
+                <p class="card-text fw-bold txt-overflow">
+                    <i
+                        class="fa-solid fa-hand-holding-dollar me-2 text-secondary"></i>500/小時 1人</p>
+            </div>
+        </div>
     </div>
 </div>
+
 @section scripts
 {
     <script src="/Views/Venue/Index.cshtml.js" asp-append-version="true"></script>

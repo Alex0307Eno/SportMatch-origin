@@ -1,21 +1,24 @@
-@* @model SportMatch.Models.User *@
+@model SportMatch.Models.User
 <!DOCTYPE html>
 <html lang="zh">
 <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8"/>
     <link rel="stylesheet"
           href="~/SportMatch.styles.css"
-          asp-append-version="true" />
-    <link href="~/css/site.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <link href="/Index/reset.css" rel="stylesheet" type="text/css" />
+          asp-append-version="true"/>
+    <link href="~/css/site.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link href="/Index/reset.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="~/css/memberLayout.css" asp-append-version="true"/>
     <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"/>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Barriecito&family=Galada&family=Noto+Sans+TC:wght@100..900&family=Racing+Sans+One&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Bangers&family=Barriecito&family=Galada&family=Noto+Sans+TC:wght@100..900&family=Racing+Sans+One&display=swap"
+        rel="stylesheet">
     <title>SportMatch</title>
 </head>
 <body>
@@ -27,14 +30,19 @@
         <nav class="main-nav">
             <ul>
                 <li><a href="/Home/Index">首頁</a></li>
-                <li><a href="/Match/MatchPage" onclick="checkLoginStatus(event)">配對系統</a></li>
-                <li><a href="#events" onclick="checkLoginStatus(event)">賽事資訊</a></li>
+                <li><a href="/Match/MatchPage" id="matchingLink">配對系統</a></li>
+                <li><a href="/Event/EventPage" id="eventsLink">賽事資訊</a></li>
                 <li><a href="/Venue/Index">場地資訊</a></li>
-                <li><a href="#shop" onclick="checkLoginStatus(event)">運動商城</a></li>
+                <li><a href="/Mart/Mart">運動商城</a></li>
             </ul>
-            <div class="header-actions">
-                <div class="user-actions">
-                    <div class="cart-container" style="display: none">
+            <div class="header-actions" style="position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: unset;
+    right: 31px;">
+                <div class="user-actions position-relative" style="">
+                    <!-- 購物車 -->
+                    <div class="cart-container" style="display: none;">
                         <button class="btn-cart" data-count="0" onclick="toggleCart()">
                             <i class="fas fa-shopping-cart"></i>
                         </button>
@@ -42,29 +50,38 @@
                             <div class="no-cart-items">目前購物車是空的</div>
                         </div>
                     </div>
-                    <div class="notifications-container" style="display: none">
-                        <button class="btn-notifications"
-                                data-count="0"
-                                onclick="toggleNotifications()">
+
+                    <!-- 通知 -->
+                    <div class="notifications-container" style="display: none;">
+                        <button class="btn-notifications" data-count="0" onclick="toggleNotifications()">
                             <i class="fas fa-bell"></i>
                         </button>
                         <div class="notifications-dropdown">
                             <div class="no-notifications">目前沒有任何通知</div>
                         </div>
                     </div>
-                    <button onclick="openLoginModal()" class="btn-login">登入</button>
-                    <a href="@Url.Action("Register", "Account")" class="btn-register">註冊</a>
-                    <div class="user-email-container" style="display: none">
-                        <span class="user-email"></span>
-                        <div class="dropdown-content">
-                            <a href="#profile">個人資料</a>
-                            <a href="#matches">配對資訊</a>
 
-                            <a href="#cart">購物車清單</a>
-                            <a href="#favorites">收藏清單</a>
-                            <button class="btn-logout" onclick="handleLogout()">
-                                登出
-                            </button>
+                    <!-- 未登入時顯示 -->
+                    <button onclick="openLoginModal()" class="btn btn-login me-3" id="loginButton">登入</button>
+                    <a href="@Url.Action("Register", "Account")" class="btn-register" id="registerButton">註冊</a>
+
+                    <!-- 使用者登入後顯示 -->
+                    <div class="user-email-container" data-identity="@ViewBag.Role" style="display: none;">
+                        <span class="user-email"></span>
+                        <div class="dropdown-content d-none" id="userDropdown" style="display:none; top: 61px;
+    left: unset;
+    right: 0;">
+                            <a href="/MemberCenter/Index">個人資料</a>
+                            <a href="#matches">配對資訊</a>
+                            <a href="/Mart/Checkout">購物車清單</a>
+                            <a href="/MemberCenter/MyFav">收藏清單</a>
+                            <button class="btn-logout" onclick="handleLogout()">登出</button>
+                        </div>
+
+                        <div class="dropdown-content2" id="adminDropdown" style="display:none;">
+                            <a href="/MemberCenter/Index" class="memberLink">個人資料</a>
+                            <a href="/Back/Backstage" id="adminLink" class="adminLink">後臺管理</a>
+                            <button class="btn-logout" onclick="handleLogout()">登出</button>
                         </div>
                     </div>
                 </div>
@@ -72,6 +89,14 @@
         </nav>
     </div>
 </header>
+<!-- 自訂的確認框 -->
+<div id="custom-confirm" class="confirm-modal" style="display:none;">
+    <div class="confirm-content">
+        <p id="confirm-message">您尚未登入，是否要立即登入？</p>
+        <button id="confirm-yes">確定</button>
+        <button id="confirm-no">取消</button>
+    </div>
+</div>
 <!-- 登入彈窗 -->
 
 <div id="loginModal" class="modal">
@@ -88,7 +113,7 @@
         <form action="/Account/Login" method="post" class="login-form" id="loginForm">
             <div class="input-group">
                 <i class="fas fa-person"></i>
-                <input type="email" id="email" placeholder="請輸入Email" required />
+                <input type="email" id="email" placeholder="請輸入Email" required/>
                 <button type="button" class="toggle-email">
                         <span class="icon">
                             <ion-icon name="mail-outline"></ion-icon>
@@ -98,7 +123,7 @@
 
             <div class="input-group password-group">
                 <i class="fas fa-lock"></i>
-                <input type="password" id="password" placeholder="請輸入密碼" required />
+                <input type="password" id="password" placeholder="請輸入密碼" required/>
                 <button type="button" class="toggle-password">
                         <span class="icon">
                             <ion-icon name="lock-closed" id="Pwhide"></ion-icon>
@@ -107,7 +132,7 @@
             </div>
             <div class="remember-me">
                 <label class="checkbox-container">
-                    <input type="checkbox" id="remember" />
+                    <input type="checkbox" id="remember"/>
                     <span class="checkmark"></span>
                     記住我的帳號
                 </label>
@@ -163,7 +188,8 @@
                         @RenderBody()
                     </div>
                 </div>
-            } else if (Context.Request.Path.StartsWithSegments("/ContactUs"))
+            }
+            else if (Context.Request.Path.StartsWithSegments("/ContactUs"))
             {
                 <div class="main-content ContactUsPage">
                     @await Html.PartialAsync("_ToastPartial")
@@ -173,12 +199,14 @@
             else
             {
                 <div class="main-content d-flex flex-column">
-                    <div class="alert alert-warning align-items-top position-absolute p-0" style="top: 10%;
-    left: 43%; width: fit-content; background-color: #ffffe0;border-color: #ffc107; z-index: 2;" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="alert align-items-top position-absolute p-0" style="top: 2%;
+    left: 43%; width: fit-content; background-color: #97873e8f ;border-color: #ffc107; z-index: 2;" role="alert"
+                         aria-live="assertive" aria-atomic="true">
                         <div class="d-flex">
-                            <div class="toast-body d-flex align-items-center">
+                            <div class="toast-body d-flex align-items-center" style="color: var(--dark-white);">
                                 <i class="fa-solid fa-exclamation me-2"></i>
-                                <p class="" style="text-wrap: nowrap;">您的個人資料未完善，請至<a href="/MemberCenter/Account" class="text-primary">帳號資訊頁</a>開通手機驗證</p>
+                                <p class="" style="text-wrap: nowrap;">您的個人資料未完善，請至<a
+                                        href="/MemberCenter/Account" class="" style="color:#ff9150;">帳號資訊頁</a>填寫</p>
                             </div>
                         </div>
                     </div>
@@ -193,25 +221,83 @@
 @await Html.PartialAsync("_PopupPartial")
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/memberCenter.js"></script>
 <script>
 
+    document.addEventListener("DOMContentLoaded", function () {
+        const userRole = localStorage.getItem("userRole"); // 從 localStorage 讀取角色
+        const dropdownContent = document.querySelector(".dropdown-content");
+        const dropdownContent2 = document.querySelector(".dropdown-content2");
+        const cartContainer = document.querySelector(".cart-container");
+        const notificationsContainer = document.querySelector(".notifications-container");
+
+        // 顯示購物車和通知
+        if (userRole !== null) {
+            cartContainer.style.display = "block";
+            notificationsContainer.style.display = "block";
+        }
+
+        // 根據角色顯示/隱藏選項
+        if (userRole === "admin" || userRole === "vendor") {
+            // 顯示管理員和廠商選項
+            if (dropdownContent2) {
+                dropdownContent2.style.display = "block";
+                dropdownContent2.style.opacity = "1";  // 顯示時顯示透明度
+            }
+            if (dropdownContent) {
+                dropdownContent.style.display = "none";
+            }
+        } else {
+            // 如果是普通會員，顯示個人資料
+            if (dropdownContent) {
+                dropdownContent.style.display = "block";
+                dropdownContent.style.opacity = "1";  // 顯示時顯示透明度
+            }
+            if (dropdownContent2) {
+                dropdownContent2.style.display = "none";
+            }
+        }
+
+        // 顯示使用者 email
+        const userEmailContainer = document.querySelector(".user-email-container");
+        const userEmail = document.querySelector(".user-email");
+
+        if (userEmailContainer) userEmailContainer.style.display = "block";
+        if (userEmail) userEmail.innerText = localStorage.getItem("savedEmail");
+
+        // 控制下拉選單顯示
+        document.querySelector(".user-email").addEventListener("click", function () {
+            const dropdown = (userRole === "admin" || userRole === "vendor") ? dropdownContent2 : dropdownContent;
+            dropdown.classList.toggle("show"); // 切換顯示狀態
+        });
+    });
+
     // 收起
-    $('.collapse-wrapper .wrapTrigger').on('click',function (){
+    $('.collapse-wrapper .wrapTrigger').on('click', function () {
+        const openClose_icon = $(this).find("i.fa-minus, i.fa-plus");
         $(this).closest('.collapse-wrapper').toggleClass('collapsed');
+        
+        if (openClose_icon.length) {
+            openClose_icon.toggleClass('fa-minus fa-plus');
+        }
     });
 
     // 愛心按鈕切換
-    $('button.favBtn').on('click', function(){
+    $('button.favBtn').on('click', function () {
         $(this).children('i').toggleClass('fa-solid fa-regular');
     });
 
     document.querySelectorAll("button.favBtn").forEach(button => {
-        button.addEventListener('click',function () {
+        button.addEventListener('click', function () {
             const type = this.dataset.type;
             const id = this.dataset.id;
             const card = this.closest('.card');
             const tr = this.closest('tr');
+            const venuePage = this.parent('.venue-area');
 
+            if (venuePage) {
+                
+            }   
             if (card) {
                 card.classList.add("removing");
 
@@ -226,12 +312,12 @@
                     tr.remove();
                 }, 400);
             }
-            removeFav(type , id);
-            showToast(`已移除 ${type} (ID: ${id})`, 'success');
+            removeFav(type, id);
+            showToast(`已移除 ${type}`, 'success');
         });
     });
 
-    function removeFav(type, id){
+    function removeFav(type, id) {
         //fetch(`/api/favorites/remove`, {
         //    method: "POST",
         //    headers:{'Content-Type': 'application/json'},

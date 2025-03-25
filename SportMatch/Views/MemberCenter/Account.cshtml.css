@@ -5,6 +5,7 @@
 
 /*會員中心*/
 .userAccount_Page {
+    
     form.userAccount {
         display: flex;
         align-items: center;
@@ -19,9 +20,63 @@
             display: flex;
             flex-shrink: 0;
             border-radius: 50%;
-            background-color: aliceblue;
             border: 4px solid #e8e8e8;
+            position: relative;
             overflow: hidden;
+            
+           .genderTag {
+               position: absolute;
+               width: 30px;
+               height: 30px;
+               color: #ffffff;
+               font-size: 16px;
+               font-weight: bold;
+               display: none;
+               align-items: center;
+               justify-content: center;
+               border-radius: 50%;
+               top: unset;
+               left: unset;
+               right: 20px;
+               bottom: 8px;
+               
+               i {
+                   width: 20px;
+                   height: 20px;
+                   display: flex;
+                   align-items: center;
+                   justify-content: center;
+                   margin: auto;
+               }
+           }
+            
+            .userPic {
+                width: 100%;
+                height: 100%;
+                border-radius: 50%;
+                background-color: aliceblue;
+                object-fit: cover;
+                background-position: center;
+                background-size: cover;
+            }
+            
+            &.male {
+                border-color: #4a90e2;
+
+                .genderTag {
+                    display: flex;
+                    background-color: #4a90e2;
+                }
+            }
+            
+            &.female {
+                border-color: #f87582;
+
+                .genderTag {
+                    display: flex;
+                    background-color: #f87582;
+                }
+            }
         }
 
         .group {
@@ -42,5 +97,33 @@
         }
         /*付款資訊*/
 
+    }
+    
+    .tab-content-container {
+        .tab-content {
+            .favSport {
+                
+                .card {
+                    width: 500px;
+                    height: 300px;
+                }
+            }
+
+            div.form-control,
+            div.form-select,
+            div.user-select-none,
+            .form-select {
+                background: rgb(187 187 187 / 20%) !important;
+                border-color: var(--bs-table-th);
+                color: #d0d0d0;
+                user-select: none;
+                cursor: default;
+                
+                &:disabled {
+                    background: rgb(137 137 137 / 20%);
+                    color: #a4a4a4;
+                }
+            }
+        }
     }
 }

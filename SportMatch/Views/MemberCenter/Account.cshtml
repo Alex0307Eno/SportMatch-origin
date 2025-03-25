@@ -3,167 +3,244 @@
 @{
     Layout = "_MemberLayout";
 }
-<h4 class="blockTitle d-flex">基本資料<button class="blockAction_Btn btn" role="button" data-bs-target="#userDataModal" data-bs-toggle="modal">編輯</button></h4>
-<div class="userAccount_Page">
-    <form class="userAccount mb-3">
-        <div class="avatar me-4"></div>
-        <div class="group w-75">
-            <div>
-                <label for="userNameInput" class="form-label">姓名</label>
-                <input type="text" id="userNameInput" class="form-control" placeholder="請輸入姓名" disabled="disabled">
+<div class="userAccount_Page tab-wrapper">
+    <ul class="nav nav-underline" role="tablist">
+        <li class="nav-item" aria-selected="false">
+            <a class="nav-link active" href="" aria-controls="tab1">基本資料</a>
+        </li>
+        <li class="nav-item"  aria-selected="false" >
+            <a class="nav-link" href="" aria-controls="tab2">運動資料</a>
+        </li>
+    </ul>
+    <div class="tab-content-container">
+        <div class="tab-content active " id="tab1">
+            <h4 class="blockTitle d-flex"><p><i class="fa-solid fa-address-card me-1"></i>基本資料</p><button class="blockAction_Btn btn" role="button" data-bs-toggle="modal" data-bs-target="#userDataModal" id="editProfileBtn">編輯</button></h4>
+            <form class="userAccount mb-3">
+                <div class="avatar me-4">
+                    <div class="userPic" id="userPic_img"></div>
+                    <span class="genderTag rounded-circle overflow-hidden">
+                        <i class="fa-solid"></i>
+                    </span>
+                </div>
+                <div class="group w-75">
+                    <div>
+                        <label for="userNameInput" class="form-label">姓名</label>
+                        <input type="text" id="userNameInput" class="form-control" disabled="disabled">
+                    </div>
+                    <div>
+                        <label for="userAccountInput" class="form-label">帳號名稱</label>
+                        <input type="text" id="userAccountInput" class="form-control" disabled="disabled">
+                    </div>
+                    <div>
+                        <label for="userPwInput" class="form-label">密碼</label>
+                        <input type="password" id="userPwInput" class="form-control" disabled="disabled">
+                    </div>
+                    <div>
+                        <label for="userEmailInput" class="form-label">信箱</label>
+                        <input type="text" id="userEmailInput" class="form-control" disabled="disabled">
+                    </div>
+                    <div>
+                        <label for="userBirthInput" class="form-label">生日</label>
+                        <input type="date" id="userBirthInput" class="form-control" disabled="disabled">
+                    </div>
+                    <div>
+                        <label for="userPhoneInput" class="form-label">手機</label>
+                        <input type="number" id="userPhoneInput" class="form-control" disabled="disabled">
+                    </div>
+                </div>
+            </form>
+            @* <div class="collapse-wrapper"> *@
+            @*     <div class="wrapHeader"> *@
+            @*         <p class="wrapTrigger blockTitle d-flex align-items-center pb-0 border-0"><span><i class="fa-solid fa-credit-card me-1"></i></span>付款資訊<span class="badge bg-secondary ms-2">3</span><i class="fa-solid fa-caret-down ms-2"></i></p> *@
+            @*         <button class="btn btn-sm flex-shrink-0 ms-1" role="button" data-bs-target="#userPaymentModal" data-bs-toggle="modal">新增</button> *@
+            @*     </div> *@
+            @*     <div class="wrapBody"> *@
+            @*         <table class="table memCt table-hover"> *@
+            @*             <thead class=""> *@
+            @*             <tr> *@
+            @*                 <th class="text-center" scope="col"><input class="form-check-input" type="checkbox" value="" id=""></th> *@
+            @*                 <th scope="col">卡號</th> *@
+            @*                 <th scope="col">卡片類型</th> *@
+            @*                 <th scope="col">有效日期</th> *@
+            @*                 <th scope="col">操作</th> *@
+            @*             </tr> *@
+            @*             </thead> *@
+            @*             <tbody> *@
+            @*             <tr> *@
+            @*                 <td class="text-center"><input class="form-check-input" type="checkbox" value="" id=""></td> *@
+            @*                 <td>**** **** **** 3841<span class="status default ms-2">預設</span></td> *@
+            @*                 <td class="text-center">Visa</td> *@
+            @*                 <td class="text-center">05/25</td> *@
+            @*                 <td> *@
+            @*                     <button class="btn me-1">編輯</button> *@
+            @*                     <button class="btn" role="button" data-bs-target="#noticeDeleteModal" data-bs-toggle="modal">刪除</button> *@
+            @*                 </td> *@
+            @*             </tr> *@
+            @*             <tr> *@
+            @*                 <td class="text-center"><input class="form-check-input" type="checkbox" value="" id=""></td> *@
+            @*                 <td>**** **** **** 3841</td> *@
+            @*                 <td class="text-center">Visa</td> *@
+            @*                 <td class="text-center">05/25</td> *@
+            @*                 <td> *@
+            @*                     <button class="btn me-1">設為預設</button> *@
+            @*                     <button class="btn me-1">編輯</button> *@
+            @*                     <button class="btn">刪除</button> *@
+            @*                 </td> *@
+            @*             </tr> *@
+            @*             <tr> *@
+            @*                 <td class="text-center"> *@
+            @*                     <input class="form-check-input" type="checkbox" value="" id=""> *@
+            @*                 </td> *@
+            @*                 <td>**** **** **** 3841</td> *@
+            @*                 <td class="text-center">Visa</td> *@
+            @*                 <td class="text-center">05/25</td> *@
+            @*                 <td> *@
+            @*                     <button class="btn me-1">設為預設</button> *@
+            @*                     <button class="btn me-1">編輯</button> *@
+            @*                     <button class="btn">刪除</button> *@
+            @*                 </td> *@
+            @*             </tr> *@
+            @*             </tbody> *@
+            @*         </table> *@
+            @*     </div> *@
+            @* </div> *@
+            <div class="collapse-wrapper">
+                <div class="wrapHeader">
+                    <p class="wrapTrigger blockTitle d-flex align-items-center pb-0 border-0"><span><i class="fa-solid fa-truck me-1"></i>宅配資訊</span><span class="badge bg-secondary ms-2">3</span><i class="fa-solid fa-caret-down ms-2"></i></p>
+                    <button class="btn btn-sm flex-shrink-0 ms-1" role="button" data-bs-target="#userReceiveAddressModal" data-bs-toggle="modal">新增</button>
+                </div>
+                <div class="wrapBody">
+                    <table class="table memCt table-hover">
+                        <thead class="">
+                        <tr>
+                            <th class="text-center" scope="col"><input class="form-check-input" type="checkbox" value="" id=""></th>
+                            <th scope="col">收貨地址</th>
+                            <th scope="col">收件人</th>
+                            <th scope="col">手機</th>
+                            <th scope="col">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center"><input class="form-check-input" type="checkbox" value="" id=""></td>
+                            <td>台北市大安區信義路三段88號<span class="status default ms-2">預設</span></td>
+                            <td class="text-center">夏琳瑞</td>
+                            <td class="text-center">0912-345-678</td>
+                            <td>
+                                <button class="btn me-1">編輯</button>
+                                <button class="btn">刪除</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-center"><input class="form-check-input" type="checkbox" value="" id=""></td>
+                            <td>新北市板橋區中山路一段23號</td>
+                            <td class="text-center">王小明</td>
+                            <td class="text-center">0987-654-321</td>
+                            <td>
+                                <button class="btn me-1">設為預設</button>
+                                <button class="btn me-1">編輯</button>
+                                <button class="btn">刪除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
-            <div>
-                <label for="userAccountInput" class="form-label">帳號</label>
-                <input type="text" id="userAccountInput" class="form-control" placeholder="請輸入姓名" disabled="disabled">
-            </div>
-            <div>
-                <label for="userPwInput" class="form-label">密碼</label>
-                <input type="password" id="userPwInput" class="form-control" placeholder="" disabled="disabled">
-            </div>
-            <div>
-                <label for="userEmailInput" class="form-label">信箱</label>
-                <input type="password" id="userEmailInput" class="form-control" placeholder="" disabled="disabled">
-            </div>
-            <div>
-                <label for="userBirthInput" class="form-label">信箱</label>
-                <input type="date" id="userBirthInput" class="form-control" placeholder="" disabled="disabled">
-            </div>
-            <div>
-                <label for="userPhoneInput" class="form-label">手機</label>
-                <input type="date" id="userPhoneInput" class="form-control" placeholder="" disabled="disabled">
+            <div class="collapse-wrapper">
+                <div class="wrapHeader">
+                    <p class="wrapTrigger blockTitle d-flex align-items-center pb-0 border-0"><span><i class="fa-solid fa-shop me-1"></i>超商取貨</span><span class="badge bg-secondary ms-2">3</span><i class="fa-solid fa-caret-down ms-2"></i></p>
+                    <button class="btn btn-sm flex-shrink-0 ms-1">新增</button>
+                </div>
+                <div class="wrapBody">
+                    <table class="table memCt table-hover">
+                        <thead class="">
+                        <tr>
+                            <th class="text-center" scope="col"><input class="form-check-input" type="checkbox"></th>
+                            <th scope="col">超商</th>
+                            <th scope="col">門市</th>
+                            <th scope="col">地址</th>
+                            <th scope="col">收件人</th>
+                            <th scope="col">手機</th>
+                            <th scope="col">操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td class="text-center"><input class="form-check-input" type="checkbox"></td>
+                            <td class="text-center">7-11</td>
+                            <td class="text-center">新五廊</td>
+                            <td>台中市西區民生路109、111號<span class="status default ms-2">預設</span></td>
+                            <td class="text-center">夏琳瑞</td>
+                            <td class="text-center">0912-345-678</td>
+                            <td>
+                                <button class="btn me-1">編輯</button>
+                                <button class="btn">刪除</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
-    </form>
-    <div class="collapse-wrapper">
-        <div class="wrapHeader">
-            <p class="wrapTrigger blockTitle d-flex align-items-center pb-0 border-0">付款資訊<span class="badge bg-secondary ms-2">3</span><i class="fa-solid fa-caret-down ms-2"></i></p>
-            <button class="btn btn-sm flex-shrink-0 ms-1" role="button" data-bs-target="#userPaymentModal" data-bs-toggle="modal">新增</button>
-        </div>
-        <div class="wrapBody">
-            <table class="table memCt table-hover">
-                <thead class="bg-light">
-                <tr>
-                    <th class="text-center" scope="col"><input class="form-check-input" type="checkbox" value="" id=""></th>
-                    <th scope="col">卡號</th>
-                    <th scope="col">卡片類型</th>
-                    <th scope="col">有效日期</th>
-                    <th scope="col">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="text-center"><input class="form-check-input" type="checkbox" value="" id=""></td>
-                    <td>**** **** **** 3841<span class="status default ms-2">預設</span></td>
-                    <td class="text-center">Visa</td>
-                    <td  class="text-center">05/25</td>
-                    <td>
-                        <button class="btn me-1">編輯</button>
-                        <button class="btn" role="button" data-bs-target="#noticeDeleteModal" data-bs-toggle="modal">刪除</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center"><input class="form-check-input" type="checkbox" value="" id=""></td>
-                    <td>**** **** **** 3841</td>
-                    <td class="text-center">Visa</td>
-                    <td class="text-center">05/25</td>
-                    <td>
-                        <button class="btn me-1">設為預設</button>
-                        <button class="btn me-1">編輯</button>
-                        <button class="btn">刪除</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center">
-                        <input class="form-check-input" type="checkbox" value="" id="">
-                    </td>
-                    <td>**** **** **** 3841</td>
-                    <td class="text-center">Visa</td>
-                    <td class="text-center">05/25</td>
-                    <td>
-                        <button class="btn me-1">設為預設</button>
-                        <button class="btn me-1">編輯</button>
-                        <button class="btn">刪除</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="collapse-wrapper">
-        <div class="wrapHeader">
-            <p class="wrapTrigger blockTitle d-flex align-items-center pb-0 border-0">宅配資訊<span class="badge bg-secondary ms-2">3</span><i class="fa-solid fa-caret-down ms-2"></i></p>
-            <button class="btn btn-sm flex-shrink-0 ms-1" role="button" data-bs-target="#userReceiveAddressModal" data-bs-toggle="modal">新增</button>
-        </div>
-        <div class="wrapBody">
-            <table class="table memCt table-hover">
-                <thead class="bg-light">
-                <tr>
-                    <th  class="text-center" scope="col"><input class="form-check-input" type="checkbox" value="" id=""></th>
-                    <th scope="col">收貨地址</th>
-                    <th scope="col">收件人</th>
-                    <th scope="col">手機</th>
-                    <th scope="col">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="text-center"><input class="form-check-input" type="checkbox" value="" id=""></td>
-                    <td>台北市大安區信義路三段88號<span class="status default ms-2">預設</span></td>
-                    <td class="text-center">夏琳瑞</td>
-                    <td  class="text-center">0912-345-678</td>
-                    <td>
-                        <button class="btn me-1">編輯</button>
-                        <button class="btn">刪除</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="text-center"><input class="form-check-input" type="checkbox" value="" id=""></td>
-                    <td>新北市板橋區中山路一段23號</td>
-                    <td class="text-center">王小明</td>
-                    <td class="text-center">0987-654-321</td>
-                    <td>
-                        <button class="btn me-1">設為預設</button>
-                        <button class="btn me-1">編輯</button>
-                        <button class="btn">刪除</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <div class="collapse-wrapper">
-        <div class="wrapHeader">
-            <p class="wrapTrigger blockTitle d-flex align-items-center pb-0 border-0">超商取貨<span class="badge bg-secondary ms-2">3</span><i class="fa-solid fa-caret-down ms-2"></i></p>
-            <button class="btn btn-sm flex-shrink-0 ms-1">新增</button>
-        </div>
-        <div class="wrapBody">
-            <table class="table memCt table-hover">
-                <thead class="bg-light">
-                <tr>
-                    <th class="text-center" scope="col"><input class="form-check-input" type="checkbox"></th>
-                    <th scope="col">超商</th>
-                    <th scope="col">門市</th>
-                    <th scope="col">地址</th>
-                    <th scope="col">收件人</th>
-                    <th scope="col">手機</th>
-                    <th scope="col">操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td class="text-center"><input class="form-check-input" type="checkbox"></td>
-                    <td class="text-center">7-11</td>
-                    <td class="text-center">新五廊</td>
-                    <td>台中市西區民生路109、111號<span class="status default ms-2">預設</span></td>
-                    <td class="text-center">夏琳瑞</td>
-                    <td class="text-center">0912-345-678</td>
-                    <td>
-                        <button class="btn me-1">編輯</button>
-                        <button class="btn">刪除</button>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="tab-content position-relative" id="tab2">
+            <button class="action btn btn-dark btn-sm edit_Btn d-flex align-items-center position-absolute" style="top: -60px; left: unset; right: 0;" role="button" data-bs-target="#userSportModal" data-bs-toggle="modal" id="editPreferBtn">編輯運動資料</button>
+            <h4 class="blockTitle d-flex align-items-center justify-content-start mb-3"><span><i class="fa-solid fa-heart me-1"></i>喜好運動</span><span class="hint ms-3">將推薦所選運動類別的相關賽事和隊伍</span></h4>
+            <div class="favSport d-flex align-items-center gap-3 mb-3" id="favSport_wrap">
+                <div class="card text-bg-dark border-0 rounded-3 overflow-hidden">
+                    <img src="https://cdn.pixabay.com/photo/2016/11/18/22/10/man-1837119_1280.jpg" class="card-img" alt="...">
+                    <div class="card-img-overlay">
+                        <h5 class="card-title text-white">籃球</h5>
+                    </div>
+                </div>
+                <div class="card text-bg-dark border-0 rounded-3 overflow-hidden">
+                    <img src="https://cdn.pixabay.com/photo/2021/07/21/20/11/beach-volleyball-6483905_1280.jpg" class="card-img" alt="...">
+                    <div class="card-img-overlay">
+                        <h5 class="card-title text-white">排球</h5>
+                    </div>
+                </div>
+                <div class="card text-bg-dark border-0 rounded-3 overflow-hidden">
+                    <img src="https://cdn.pixabay.com/photo/2021/02/19/16/36/badminton-6030861_1280.jpg" class="card-img" alt="...">
+                    <div class="card-img-overlay">
+                        <h5 class="card-title text-white">羽球</h5>
+                    </div>
+                </div>
+            </div>
+            <h4 class="blockTitle d-flex align-items-center justify-content-start mb-3"><span><i class="fa-solid fa-thumbs-up me-1"></i>擅長位置</span><span class="hint ms-3">擅長的運動位置，預設會推薦相關有招募此位置的隊伍</span></h4>
+            <div class="content-group d-flex align-items-center mb-3" id="roleContent_wrap">
+                <div class="sportRole_group d-flex align-items-center me-3">
+                    <p class="sport_name border-start border-secondary border-3 ps-2 me-2 text-nowrap fw-bold">籃球</p>
+                    <div class="form-select">籃球位置</div>
+                </div> 
+                <div class="sportRole_group d-flex align-items-center me-3">
+                    <p class="sport_name border-start border-3 border-secondary ps-2 me-2 text-nowrap fw-bold">排球</p>
+                    <div class="form-select">排球位置</div>
+                </div> 
+                <div class="sportRole_group d-flex align-items-center">
+                    <p class="sport_name border-start border-secondary border-3  ps-2 me-2 text-nowrap fw-bold">羽球</p>
+                    <div class="form-select">羽球位置</div>
+                </div>
+            </div>
+            <div class="content-group row">
+                <div class="col-6 d-flex flex-column">
+                    <h4 class="blockTitle d-flex align-items-center justify-content-start mb-3"><span><i class="fa-solid fa-child me-1"></i>個人介紹</span><span class="hint ms-3">讓大家更了解你擅長的運動及位置</span></h4>
+                    <div class="form-control w-100 text-dark user-select-none" id="user_memo" style="height: 150px;"></div>
+                </div>
+                <div class="col-3 d-flex flex-column">
+                    <h4 class="blockTitle d-flex align-items-center justify-content-start mb-3"><span><i class="fa-solid fa-location-dot me-1"></i>所在地</span><span class="hint ms-3">將會推薦您此區域的賽事及隊伍</span></h4>
+                    <div class="form-select" id="sportArea"></div>
+                </div>
+                <div class="col-3 d-flex flex-column">
+                    <h4 class="blockTitle d-flex align-items-center justify-content-start mb-3"><span><i class="fa-solid fa-users me-1"></i>接受招募</span><span class="hint ms-3">啟用後，系統將推薦你給需要隊員的隊伍</span></h4>
+                    <div class="form-check d-flex align-items-center form-switch">
+                        <input class="form-check-input me-2" type="checkbox" id="flexSwitchCheckInvited">
+                        <label class="form-check-label mt-1" for="flexSwitchCheckInvited">啟用</label>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+@section scripts
+{
+    <script src="/Views/MemberCenter/Account.cshtml.js" asp-append-version="true"></script>
+}

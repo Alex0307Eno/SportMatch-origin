@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
+using NSwag.Generation.Processors;
 using SportMatch.Controllers;
 using SportMatch.Models;
 
@@ -15,14 +16,14 @@ builder.Services.AddMemoryCache();
 builder.Services.AddSession(options =>
 
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // ³]©w Session ¹L´Á®É¶¡
+    // options.IdleTimeout = TimeSpan.FromMinutes(30); // ï¿½]ï¿½w Session ï¿½Lï¿½ï¿½ï¿½É¶ï¿½
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options =>
 {
-    // ¦bProgram.cs³]©wJSON -> ¨C·í«Ø¸m®É¡A½s½X¶i¦æ²Î¤@³]©w	        
+    // ï¿½bProgram.csï¿½]ï¿½wJSON -> ï¿½Cï¿½ï¿½Ø¸mï¿½É¡Aï¿½sï¿½Xï¿½iï¿½ï¿½Î¤@ï¿½]ï¿½w	        
     options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(
                 UnicodeRanges.BasicLatin,
                 UnicodeRanges.CjkUnifiedIdeographs);
@@ -30,7 +31,7 @@ builder.Services.AddControllersWithViews()
 
 
 
-builder.Services.AddDbContext<SportMatchContext>(  // §ï¦¨ SportMatchContext
+builder.Services.AddDbContext<SportMatchContext>(  // æ”¹æˆ SportMatchContext
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
@@ -40,11 +41,11 @@ builder.Services.AddDbContext<SportMatchContext>(  // §ï¦¨ SportMatchContext
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.Cookie.Name = "YourAppCookie";  // ³]©w Cookie ¦WºÙ
-        options.ExpireTimeSpan = TimeSpan.FromDays(1);  // ³]©w¦³®Ä´Á¬° 1 ¤Ñ
-        options.SlidingExpiration = true;  // ±Ò¥Îºu°Ê¹L´Á¡A¹L´Á®É¶¡·|®Ú¾Ú¥Î¤á¬¡°Ê©µªø
-        options.LoginPath = "/Account/Login";  // ³]©wµn¤J­¶­±¸ô®|
-        options.LogoutPath = "/Account/Logout";  // ³]©wµn¥X­¶­±¸ô®|
+        options.Cookie.Name = "YourAppCookie";  // è¨­å®š Cookie åç¨±
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);  // è¨­å®šæœ‰æ•ˆæœŸç‚º 1 å¤©
+        options.SlidingExpiration = true;  // å•Ÿç”¨æ»¾å‹•éæœŸï¼ŒéæœŸæ™‚é–“æœƒæ ¹æ“šç”¨æˆ¶æ´»å‹•å»¶é•·
+        options.LoginPath = "/Account/Login";  // è¨­å®šç™»å…¥é é¢è·¯å¾‘
+        options.LogoutPath = "/Account/Logout";  // è¨­å®šç™»å‡ºé é¢è·¯å¾‘
     });
 
 
@@ -53,11 +54,40 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddControllersWithViews();
 
 //builder.Services.AddScoped<AuthenticationService>();
-// ³o¸Ì¥[¤J VerificationCodeService ©M HttpContextAccessor
+// ï¿½oï¿½Ì¥[ï¿½J VerificationCodeService ï¿½M HttpContextAccessor
 builder.Services.AddSingleton<VerificationCodeService>();
-builder.Services.AddHttpContextAccessor(); // Åı IHttpContextAccessor ¥i¥H³Qª`¤J
-builder.Services.AddControllersWithViews(); // ¨ä¥LªA°È°t¸m
-builder.Services.AddHttpClient(); // µù¥U IHttpClientFactory
+builder.Services.AddHttpContextAccessor(); // ï¿½ï¿½ IHttpContextAccessor ï¿½iï¿½Hï¿½Qï¿½`ï¿½J
+builder.Services.AddControllersWithViews(); // ï¿½ï¿½Lï¿½Aï¿½È°tï¿½m
+builder.Services.AddHttpClient(); // ï¿½ï¿½ï¿½U IHttpClientFactory
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend",
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5000")
+                .AllowCredentials()
+                .AllowAnyMethod()
+                .AllowAnyHeader();
+        });
+});
+
+builder.Services.AddControllers();
+//Swag
+builder.Services.AddOpenApiDocument(config =>
+{
+    config.Title = "Sport Match";
+    config.Version = "v1";
+    
+    // config.OperationProcessors.Add(new OperationProcessor("session"));
+    // config.AddSecurity("session", new NSwag.OpenApiSecurityScheme)
+    // {
+    //     Type = NSwag.OpenApiSecuritySchemeType.ApiKey,
+    //     Name = "Cookie",
+    //     In = NSwag.OpenApiSecurityApiKeyLocation.Header,
+    //     Description = ""
+    // }
+});
 
 var app = builder.Build();
 
@@ -70,6 +100,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+//Swag
+if (app.Environment.IsDevelopment())
+{
+    // Add OpenAPI 3.0 document serving middleware
+    // Available at: http://localhost:<port>/swagger/v1/swagger.json
+    app.UseOpenApi();
+
+    // Add web UIs to interact with the document
+    // Available at: http://localhost:<port>/swagger
+    app.UseSwaggerUi(); // UseSwaggerUI Protected by if (env.IsDevelopment())
+}
+
 app.UseSession();
 
 app.UseHttpsRedirection();
@@ -77,10 +119,11 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
-    _ = endpoints.MapControllers(); // ½T«O¯à°÷§ä¨ì±±¨î¾¹ªº¸ô¥Ñ
+    _ = endpoints.MapControllers(); // ï¿½Tï¿½Oï¿½ï¿½ï¿½ï¿½ï¿½ì±±ï¿½î¾¹ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 });
 
 app.MapControllerRoute(
@@ -88,7 +131,7 @@ app.MapControllerRoute(
     pattern: "{controller=Door}/{action=Door}/{id?}");
 
 
-// ³]¸m BackController ªº¸ô¥Ñ
+// è¨­ç½® BackController çš„è·¯ç”±
 app.MapControllerRoute(
     name: "back",
     pattern: "Back/{action=RedirectToBackstage}");

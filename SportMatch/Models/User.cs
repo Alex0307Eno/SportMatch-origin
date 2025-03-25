@@ -15,7 +15,7 @@ public partial class User
 
     public int? GenderId { get; set; }
 
-    public DateTime? Birthday { get; set; }
+    public DateOnly? Birthday { get; set; }
 
     public string Email { get; set; } = null!;
 

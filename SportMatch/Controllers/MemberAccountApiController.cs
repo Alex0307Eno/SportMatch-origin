@@ -17,11 +17,11 @@ namespace SportMatch.Controllers;
 [ApiController]
 public class MemberAccountApiController : ControllerBase
 {
-     private readonly SportMatchContext _context;
+     private readonly SportMatchV1Context _context;
     //private readonly MyDbContext _context;
 
-    public MemberAccountApiController(SportMatchContext context)
-    {
+    public MemberAccountApiController(SportMatchV1Context context)
+    {   
         _context = context;
     }
 

@@ -23,9 +23,9 @@ public partial class Contact
 
     public string? Status { get; set; }
 
-    public string ReplyContent { get; set; } = null!;
+    public string? ReplyContent { get; set; }
 
-    public string ReplyBy { get; set; } = null!;
+    public string? ReplyBy { get; set; }
 
-    public DateTime ReplyTime { get; set; }
+    public DateTime? ReplyTime { get; set; }
 }

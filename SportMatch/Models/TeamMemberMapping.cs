@@ -15,6 +15,8 @@ public partial class TeamMemberMapping
 
     public int SportId { get; set; }
 
+    public DateTime JoinTime { get; set; }
+
     public virtual Sport Sport { get; set; } = null!;
 
     public virtual Team? TeamIdLeaderNavigation { get; set; }

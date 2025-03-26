@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SportMatch.Models;
 
@@ -17,12 +15,11 @@ public partial class Order
 
     public int Quantity { get; set; }
 
-    //250320新增
-    public string Payment { get; set; }
+    public string Payment { get; set; } = null!;
 
-    //250320新增
-    public string Address { get; set; } = null!;
+    public int? DeliveryInfoId { get; set; }
 
+    public virtual DeliveryInfo? DeliveryInfo { get; set; }
 
     public virtual Product Product { get; set; } = null!;
 

@@ -9,9 +9,9 @@ public partial class VenueImage
 
     public int VenueId { get; set; }
 
-    public string Image { get; set; } = null!;
+    public string? Image { get; set; }
 
-    public DateTime UploadedAt { get; set; }
+    public DateTime? UploadedAt { get; set; }
 
     public virtual SportsVenue Venue { get; set; } = null!;
 }

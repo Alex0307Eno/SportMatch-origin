@@ -6,6 +6,9 @@ $(document).ready(function () {
     checkEventOrNot();
     //getUserInfoFromlocalStorage()
     getSelectionCard(1)
+    window.addEventListener("beforeunload", function () {
+        sessionStorage.removeItem("hasRunUserInfo"); // 在頁面重新整理時清除標記
+    });
     if (!sessionStorage.getItem("hasRunUserInfo")) {
         getUserInfoFromlocalStorage();
         sessionStorage.setItem("hasRunUserInfo", "true"); // **設定標記，確保只執行一次**
@@ -26,6 +29,7 @@ function getUserInfoFromlocalStorage() {
             data: JSON.stringify(userInfo), // 傳遞 JSON 格式
             success: function (response) {
                 console.log("後端回應:", response);
+                $("#CardContainerTitle").text("為您推薦");
                 loadCards(1);
             },
             error: function (xhr, status, error) {
@@ -43,7 +47,7 @@ function loadEvent() {
         success: function (response) {
             $("#badmintonEventList").empty(); // 清空舊的賽事
             $("#basketballEventList").empty(); // 清空舊的賽事
-            $("#valleyballEventList").empty(); // 清空舊的賽事
+            $("#volleyballEventList").empty(); // 清空舊的賽事
             console.log(response);
             response.badmintonEventList.forEach(x => {
                 $("#badmintonEventList").append(`
@@ -63,8 +67,8 @@ function loadEvent() {
                     <br>
                     `)
             })
-            response.valleyballEventList.forEach(x => {
-                $("#valleyballEventList").append(`
+            response.volleyballEventList.forEach(x => {
+                $("#volleyballEventList").append(`
                     <label class="col-6">
 	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer">
 	                    <label for="${x}" style="cursor:pointer">${x}</label>
@@ -103,7 +107,7 @@ function matchTypeChangeOrNot() {
             $("#RoleContainer").empty();
             $("#badmintonEventList").empty();
             $("#basketballEventList").empty();
-            $("#valleyballEventList").empty();
+            $("#volleyballEventList").empty();
         } else if ($("#radioOption2").is(":checked")) {
             $(".forCheckCategory").attr("data-bs-toggle", "collapse");
             // 當 radioOption2 被選中時，執行 loadEvent()
@@ -161,32 +165,6 @@ function getRole() {
     });
 }
 
-
-
-
-
-// 加入最愛功能
-function addToMyFavorite() {
-    var dom = document.getElementById('heartIcon');
-    var toa = document.getElementById('toastMessage');
-    var toast = new bootstrap.Toast(document.getElementById("heartToast"));
-    if (dom.classList.contains("bi-heart")) {
-        dom.classList.toggle("bi-heart");
-        dom.classList.toggle("bi-heart-fill");
-        dom.style.color = "pink";
-        toa.innerHTML = "已加入收藏"
-        // alert("已加入收藏");
-    }
-    else {
-        dom.classList.toggle("bi-heart");
-        dom.classList.toggle("bi-heart-fill");
-        dom.style.color = "white";
-        toa.innerHTML = "已取消收藏"
-        // alert("已取消收藏");
-    }
-    toast.show();
-}
-
 // 一頁顯示幾個Card
 const pageSize = 6;
 
@@ -199,15 +177,16 @@ function loadCards(page) {
         success: function (response) {
             console.log(response);
             const cardContainer = $("#CardContainer");
-            const playerModalLabel = $("#playerModalLabel");
-            const applyModalLabel = $("#applyModalLabel");
             cardContainer.empty();
-            // 判斷回傳的是User還是Team          
-            playerModalLabel.text("隊伍簡介");
-            applyModalLabel.text("申請確認");
-            type = "Team";
-            response.cards.forEach(card => {
-                cardContainer.append(`
+            if ("cards" in response) {
+                const playerModalLabel = $("#playerModalLabel");
+                const applyModalLabel = $("#applyModalLabel");
+                // 判斷回傳的是User還是Team          
+                playerModalLabel.text("隊伍簡介");
+                applyModalLabel.text("申請確認");
+                type = "Team";
+                response.cards.forEach(card => {
+                    cardContainer.append(`
                  <div class="col-md-6 mb-3">
                      <div class="card mb-3 " style="max-width: 540px;">
                          <div class="row g-0">
@@ -239,8 +218,14 @@ function loadCards(page) {
                      </div>
                  </div>
                  `);
-            });
-            updatePagination(response.totalPages, page, response.totalItems, "loadCard");
+                });
+                updatePagination(response.totalPages, page, response.totalItems, "loadCard");
+            }
+            else {
+                cardContainer.append(`
+                <div style="font-size:x-larger;color:#f3f5f5">您好，${response.admin}</div>
+                `)
+            }
         }
     });
 }
@@ -287,7 +272,9 @@ function getSelectionCard(page) {
                 const playerModalLabel = $("#playerModalLabel");
                 const applyModalLabel = $("#applyModalLabel");
                 const cardContainer = $("#CardContainer");
+                const CardContainerTitle = $("#CardContainerTitle");
                 cardContainer.empty();
+                CardContainerTitle.text("查詢結果")
                 if (response.cards.length != 0) {
                     console.log(response)
                     let type;
@@ -379,7 +366,7 @@ function getSelectionCard(page) {
                     console.log("error");
                     cardContainer.append(`
                     <img src="../image/MatchPage/NotFound2.gif" alt="GIF Image" style="width:40%">
-                    <label class="text-light text-center" style="font-size:x-large" >抱歉，目前沒有符合的查詢結果</label>
+                    <label class="text-light text-center" style="font-size:x-large" >抱歉，目前沒有符合的查詢結果😓</label>
                     `);
 
                     $("#paginationInfo").text(`當前第 0 頁 ，總共 0 筆資料`);
@@ -408,10 +395,19 @@ function getSelectionCard(page) {
 
 // 送出篩選後切換分頁
 function getSelectionCardNextPage(page) {
+    var type;
+
+    if ($(".Memo").text().indexOf("個人簡介") == 0) {
+        type = "FindPlayer";
+    }
+    else {
+        type = "FindTeam";
+    }
+
     $.ajax({
         url: "/Match/GetSelectionNextPage",
         type: "GET",
-        data: { page: page },
+        data: { page: page, type: type },
         success: function (response) {
             console.log(response)
             const playerModalLabel = $("#playerModalLabel");
@@ -648,3 +644,27 @@ $("#dropdownMenuButton").on("click", function () {
         }
     });
 })
+
+// 加入最愛功能
+function addToMyFavorite() {
+    var dom = document.getElementById('heartIcon');
+    var toa = document.getElementById('toastMessage');
+    var toast = new bootstrap.Toast(document.getElementById("heartToast"));
+    if (dom.classList.contains("bi-heart")) {
+        dom.classList.toggle("bi-heart");
+        dom.classList.toggle("bi-heart-fill");
+        dom.style.color = "pink";
+        toa.innerHTML = "已加入收藏"
+        // alert("已加入收藏");
+    }
+    else {
+        dom.classList.toggle("bi-heart");
+        dom.classList.toggle("bi-heart-fill");
+        dom.style.color = "white";
+        toa.innerHTML = "已取消收藏"
+        // alert("已取消收藏");
+    }
+    toast.show();
+}
+
+

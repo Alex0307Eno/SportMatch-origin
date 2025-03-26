@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using static SportMatch.Controllers.MartController;
+//using static SportMatch.Controllers.MartController;
 
 namespace SportMatch.Controllers
 {

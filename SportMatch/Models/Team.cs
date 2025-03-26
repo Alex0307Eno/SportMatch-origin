@@ -20,8 +20,6 @@ public partial class Team
 
     public DateTime CreateTime { get; set; }
 
-    public int? RoleId { get; set; }
-
     public int? GenderId { get; set; }
 
     public int? AreaId { get; set; }
@@ -34,17 +32,19 @@ public partial class Team
 
     public virtual Event? Event { get; set; }
 
+    public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+
     public virtual Gender? Gender { get; set; }
 
     public virtual ICollection<JoinInformation> JoinInformations { get; set; } = new List<JoinInformation>();
-
-    public virtual Role? Role { get; set; }
 
     public virtual Sport Sport { get; set; } = null!;
 
     public virtual ICollection<TeamMemberMapping> TeamMemberMappingTeamIdLeaderNavigations { get; set; } = new List<TeamMemberMapping>();
 
     public virtual ICollection<TeamMemberMapping> TeamMemberMappingTeamIdMemberNavigations { get; set; } = new List<TeamMemberMapping>();
+
+    public virtual ICollection<TeamRecruitment> TeamRecruitments { get; set; } = new List<TeamRecruitment>();
 
     public virtual User User { get; set; } = null!;
 }

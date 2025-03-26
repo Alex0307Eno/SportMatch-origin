@@ -6,10 +6,10 @@ namespace SportMatch.Controllers;
 
 public class SportEventApiController: ControllerBase
 {
-     private readonly SportMatchContext _context;
+     private readonly SportMatchV1Context _context;
     //private readonly MyDbContext _context;
     
-    public SportEventApiController(SportMatchContext context)
+    public SportEventApiController(SportMatchV1Context context)
     {
         _context = context;
     }

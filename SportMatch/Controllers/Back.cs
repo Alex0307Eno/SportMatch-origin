@@ -9,9 +9,9 @@ namespace SportMatch.Controllers
     [Authorize]  // 確保使用者登入後才能訪問
     public class BackController : Controller
     {
-        private readonly SportMatchContext _context;
+        private readonly SportMatchV1Context _context;
 
-        public BackController(SportMatchContext context)
+        public BackController(SportMatchV1Context context)
         {
             _context = context;
         }
@@ -136,18 +136,18 @@ namespace SportMatch.Controllers
         public IActionResult GetProducts()
         {
             // 先從資料庫獲取資料
-            var products = _context.Product.ToList();
+            var products = _context.Products.ToList();
 
             // 在 C# 轉換 Identity 數值為對應的角色名稱
             var productList = products.Select(p => new
             {
-                ProductName = p.Name, 
+                ProductName = p.ProductName,
                 Price = p.Price,
                 Discount = p.Discount,
                 Stock = p.Stock,
                 Image01 = p.Image01,
                 ReleaseDate = p.ReleaseDate.ToString("yyyy-MM-dd") // 格式化日期
-                
+
             }).ToList();
 
             return Json(productList);
@@ -169,22 +169,22 @@ namespace SportMatch.Controllers
                 }
 
                 // 再刪除 ProductCategoryMapping 表中與該商品關聯的資料
-                var categoryMappings = _context.ProductCategoryMapping.Where(m => m.ProductID == id).ToList();
+                var categoryMappings = _context.ProductCategoryMappings.Where(m => m.ProductId == id).ToList();
                 if (categoryMappings.Any())
                 {
-                    _context.ProductCategoryMapping.RemoveRange(categoryMappings);  // 刪除商品與類別的關聯資料
+                    _context.ProductCategoryMappings.RemoveRange(categoryMappings);  // 刪除商品與類別的關聯資料
                     _context.SaveChanges();  // 保存更改
                 }
 
                 // 然後刪除商品
-                var product = _context.Product.FirstOrDefault(p => p.ProductID == id);
+                var product = _context.Products.FirstOrDefault(p => p.ProductId == id);
                 if (product == null)
                 {
                     return Json(new { success = false, message = "找不到該商品" });
                 }
 
                 // 刪除商品
-                _context.Product.Remove(product);
+                _context.Products.Remove(product);
                 _context.SaveChanges();  // 保存刪除商品資料
 
                 return Json(new { success = true });

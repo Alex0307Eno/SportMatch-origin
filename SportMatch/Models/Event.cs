@@ -33,6 +33,8 @@ public partial class Event
 
     public virtual EventGroup EventGroup { get; set; } = null!;
 
+    public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+
     public virtual Gender Gender { get; set; } = null!;
 
     public virtual ICollection<JoinInformation> JoinInformations { get; set; } = new List<JoinInformation>();

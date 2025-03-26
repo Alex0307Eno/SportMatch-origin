@@ -15,15 +15,11 @@ public partial class User
 
     public int? GenderId { get; set; }
 
-    public DateTime? Birthday { get; set; }
+    public DateOnly? Birthday { get; set; }
 
     public string Email { get; set; } = null!;
 
     public string? Mobile { get; set; }
-
-    public int? SportId { get; set; }
-
-    public int? RoleId { get; set; }
 
     public int? AreaId { get; set; }
 
@@ -43,17 +39,23 @@ public partial class User
 
     public virtual Area? Area { get; set; }
 
+    public virtual ICollection<DeliveryInfo> DeliveryInfos { get; set; } = new List<DeliveryInfo>();
+
+    public virtual ICollection<Favorite> FavoriteMyFavorite3s { get; set; } = new List<Favorite>();
+
+    public virtual ICollection<Favorite> FavoriteUsers { get; set; } = new List<Favorite>();
+
     public virtual Gender? Gender { get; set; }
 
     public virtual ICollection<JoinInformation> JoinInformations { get; set; } = new List<JoinInformation>();
 
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
-    public virtual Role? Role { get; set; }
-
-    public virtual Sport? Sport { get; set; }
-
     public virtual ICollection<TeamMemberMapping> TeamMemberMappings { get; set; } = new List<TeamMemberMapping>();
 
     public virtual ICollection<Team> Teams { get; set; } = new List<Team>();
+
+    public virtual ICollection<UserSportRole> UserSportRoles { get; set; } = new List<UserSportRole>();
+
+    public virtual ICollection<VenueRent> VenueRents { get; set; } = new List<VenueRent>();
 }

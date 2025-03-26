@@ -21,5 +21,5 @@ public partial class Sport
 
     public virtual ICollection<Team> Teams { get; set; } = new List<Team>();
 
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public virtual ICollection<UserSportRole> UserSportRoles { get; set; } = new List<UserSportRole>();
 }

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace SportMatch.Models;
 
-public partial class ProductSubCategory
+public partial class ProducCategory
 {
-    public int SubCategoryId { get; set; }
+    public int CategoryId { get; set; }
 
-    public string SubCategoryName { get; set; } = null!;
+    public string CategoryName { get; set; } = null!;
 
     public virtual ICollection<ProductCategoryMapping> ProductCategoryMappings { get; set; } = new List<ProductCategoryMapping>();
 }

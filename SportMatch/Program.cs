@@ -30,7 +30,7 @@ builder.Services.AddControllersWithViews()
 
 
 
-builder.Services.AddDbContext<SportMatchContext>(  // 改成 SportMatchContext
+builder.Services.AddDbContext<SportMatchV1Context>(  // 改成 SportMatchV1Context
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 
@@ -85,7 +85,7 @@ app.UseEndpoints(endpoints =>
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Door}/{action=Door}/{id?}");
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
 // 設置 BackController 的路由

@@ -24,12 +24,12 @@ namespace SportMatch.Controllers
 
     public class AccountController : Controller
     {
-        private readonly SportMatchContext _context;
+        private readonly SportMatchV1Context _context;
         private readonly IConfiguration _configuration;
 
 
 
-        public AccountController(SportMatchContext context, IConfiguration configuration)
+        public AccountController(SportMatchV1Context context, IConfiguration configuration)
         {
             _context = context;
             _configuration = configuration;
@@ -370,8 +370,8 @@ namespace SportMatch.Controllers
         // 幫助方法：生成驗證碼（這是一個簡單範例，您可以根據需要改進）
         private string GenerateVerificationCode()
         {
-            var random = new Random();            
-            return random.Next(1000, 9999).ToString();            
+            var random = new Random();
+            return random.Next(1000, 9999).ToString();
         }
 
         // 幫助方法：發送電子郵件

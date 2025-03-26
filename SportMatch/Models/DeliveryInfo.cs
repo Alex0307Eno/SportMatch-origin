@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SportMatch.Models;
 
 public partial class DeliveryInfo
 {
-    [Key]
-    public int DeliveryInfoID { get; set; }
+    public int DeliveryInfoId { get; set; }
 
-    public string Address { get; set; }
+    public string Address { get; set; } = null!;
 
-    public string Recepient { get; set; }
+    public string Recepient { get; set; } = null!;
 
-    public string Phone { get; set; }
+    public string Phone { get; set; } = null!;
 
-    public int UserID { get; set; }
+    public int UserId { get; set; }
+
+    public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
+
+    public virtual User User { get; set; } = null!;
 }

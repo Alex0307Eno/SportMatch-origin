@@ -21,8 +21,8 @@ namespace SportMatch.Controllers
     [ApiController]
     public class CheckoutRadioController : ControllerBase
     {
-        private readonly SportMatchContext MartDb;
-        public CheckoutRadioController(SportMatchContext context)
+        private readonly SportMatchV1Context MartDb;
+        public CheckoutRadioController(SportMatchV1Context context)
         {
             MartDb = context;
         }
@@ -37,13 +37,8 @@ namespace SportMatch.Controllers
         {
             var email = _loggedInEmail?.FirstOrDefault()?.Email;
 
-            //var userNameAndMobile = await MartDb.Users
-            //    .Where(u => u.Email == email)
-            //    .Select(u => new { u.Name, u.Mobile })
-            //    .ToListAsync();
-
             var deliveryInfo = await (from u in MartDb.Users
-                                      join de in MartDb.DeliveryInfo on u.UserId equals de.UserID
+                                      join de in MartDb.DeliveryInfos on u.UserId equals de.UserId
                                       where u.Email == email
                                       select new { de.Address, de.Recepient, de.Phone, u.Name, u.Mobile })
                                       .ToListAsync();

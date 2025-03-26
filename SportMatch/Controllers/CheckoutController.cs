@@ -21,8 +21,8 @@ namespace SportMatch.Controllers
     [ApiController]
     public class CheckoutController : ControllerBase
     {
-        private readonly SportMatchContext MartDb;
-        public CheckoutController(SportMatchContext context)
+        private readonly SportMatchV1Context MartDb;
+        public CheckoutController(SportMatchV1Context context)
         {
             MartDb = context;
         }
@@ -57,9 +57,9 @@ namespace SportMatch.Controllers
                     var productIds = products.Select(p => p.id).ToList();
                     var userEmail = products.Select(p => p.email).ToList();
 
-                    var productsLinqResult = await MartDb.Product
-                        .Where(p => productIds.Contains(p.ProductID))
-                        .Select(p => new { p.ProductID, p.Name, p.Price, p.Discount })
+                    var productsLinqResult = await MartDb.Products
+                        .Where(p => productIds.Contains(p.ProductId))
+                        .Select(p => new { p.ProductId, p.ProductName, p.Price, p.Discount })
                         .ToListAsync();
 
                     var userLinqResult = await MartDb.Users
@@ -72,16 +72,16 @@ namespace SportMatch.Controllers
                     foreach (var productInfo in products)
                     {
 
-                        var product = await MartDb.Product
-                            .FirstOrDefaultAsync(p => p.ProductID == productInfo.id);
+                        var product = await MartDb.Products
+                            .FirstOrDefaultAsync(p => p.ProductId == productInfo.id);
 
-                        var productDetails = productsLinqResult.FirstOrDefault(p => p.ProductID == productInfo.id);
+                        var productDetails = productsLinqResult.FirstOrDefault(p => p.ProductId == productInfo.id);
 
                         var userDetails = userLinqResult.FirstOrDefault(u => u.Email == productInfo.email);
 
                         if (product.Stock < productInfo.quantity)
                         {   
-                            return BadRequest(new { message = $"產品ID {productInfo.id} 庫存不足", name = productDetails.Name });
+                            return BadRequest(new { message = $"產品ID {productInfo.id} 庫存不足", name = productDetails.ProductName });
                         }
 
                         // 更新庫存
@@ -94,7 +94,7 @@ namespace SportMatch.Controllers
                             billNumber = productInfo.billNumber,
 
                             discount = productDetails.Discount,
-                            name = productDetails.Name,
+                            name = productDetails.ProductName,
                             price = productDetails.Price,
 
                             userName = userDetails.Name,
@@ -116,14 +116,11 @@ namespace SportMatch.Controllers
 
                         MartDb.Orders.Add(orderProductInfo);
 
-                        var userNameAndMobile = await MartDb.Users
-                            .FirstOrDefaultAsync(u => u.Email == productInfo.email);
-
-                        var deliveryInfoNameAndMobile = await MartDb.DeliveryInfo
+                        var deliveryInfoNameAndMobile = await MartDb.DeliveryInfos
                             .Select(d => new { d.Recepient, d.Phone, d.Address})
                             .ToListAsync();
 
-                        var deliveryInfoExists = await MartDb.DeliveryInfo
+                        var deliveryInfoExists = await MartDb.DeliveryInfos
                             .Where(d => d.Recepient == productInfo.userInputName &&
                                      d.Phone == productInfo.userInputMobile &&
                                      d.Address == productInfo.address)
@@ -138,54 +135,41 @@ namespace SportMatch.Controllers
                                     DeliveryInfo addDeliveryInfo = new DeliveryInfo
                                     {
                                         Address = productInfo.address,
-                                        UserID = userDetails.UserId
+                                        UserId = userDetails.UserId
                                     };
-                                    //if (deliveryInfoNameAndMobile.All(d => d.Recepient != productInfo.userInputName))
-                                    //{
-                                        string namePattern = @"^[\u4e00-\u9fa5]{2,5}$";
-                                        if (Regex.IsMatch(productInfo.userInputName, namePattern))
-                                        {
-                                            addDeliveryInfo.Recepient = productInfo.userInputName;
-                                            extendedProductInfos.userName = productInfo.userInputName;
-                                        }
-                                        else
-                                        {
-                                            return BadRequest(new { message = "姓名格式錯誤" });
-                                        }
-                                    //}
-                                    //else
-                                    //{
-                                    //    addDeliveryInfo.Recepient = userNameAndMobile.Name;
-                                    //    extendedProductInfos.userName = productInfo.userInputName;
-                                    //}
-                                    //if (deliveryInfoNameAndMobile.All(d => d.Phone != productInfo.userInputMobile))
-                                    //{
-                                        string mobilePattern = @"^(09)[0-9]{8}$";
-                                        if (Regex.IsMatch(productInfo.userInputMobile, mobilePattern))
-                                        {
-                                            addDeliveryInfo.Phone = productInfo.userInputMobile;
-                                            extendedProductInfos.mobile = productInfo.userInputMobile;
-                                        }
-                                        else
-                                        {
-                                            return BadRequest(new { message = "電話格式錯誤" });
-                                        }
-                                    //}
-                                    //else
-                                    //{
-                                    //    addDeliveryInfo.Phone = userNameAndMobile.Mobile;
-                                    //    extendedProductInfos.userName = productInfo.userInputName;
-                                    //}
-                                    MartDb.DeliveryInfo.Add(addDeliveryInfo);
+
+                                    string namePattern = @"^[\u4e00-\u9fa5]{2,5}$";
+                                    if (Regex.IsMatch(productInfo.userInputName, namePattern))
+                                    {
+                                        addDeliveryInfo.Recepient = productInfo.userInputName;
+                                        extendedProductInfos.userName = productInfo.userInputName;
+                                    }
+                                    else
+                                    {
+                                        return BadRequest(new { message = "姓名格式錯誤" });
+                                    }
+
+                                    string mobilePattern = @"^(09)[0-9]{8}$";
+                                    if (Regex.IsMatch(productInfo.userInputMobile, mobilePattern))
+                                    {
+                                        addDeliveryInfo.Phone = productInfo.userInputMobile;
+                                        extendedProductInfos.mobile = productInfo.userInputMobile;
+                                    }
+                                    else
+                                    {
+                                        return BadRequest(new { message = "電話格式錯誤" });
+                                    }
+
+                                    MartDb.DeliveryInfos.Add(addDeliveryInfo);
                                     await MartDb.SaveChangesAsync();
-                                    orderProductInfo.DeliveryInfoID = addDeliveryInfo.DeliveryInfoID;
+                                    orderProductInfo.DeliveryInfoId = addDeliveryInfo.DeliveryInfoId;
                                 }
                                 else
                                 {
                                     extendedProductInfos.userName = productInfo.userInputName;
                                     extendedProductInfos.mobile = productInfo.userInputMobile;
                                     await MartDb.SaveChangesAsync();
-                                    orderProductInfo.DeliveryInfoID = deliveryInfoExists.DeliveryInfoID;
+                                    orderProductInfo.DeliveryInfoId = deliveryInfoExists.DeliveryInfoId;
                                 }
                             }
                             else
@@ -193,11 +177,12 @@ namespace SportMatch.Controllers
                                 return BadRequest(new { message = "未填寫完整收件資訊" });
                             }
                         }
-                        else if (userNameAndMobile.Name != "" && userNameAndMobile.Mobile != "")
+                        else if (userDetails.Name != "" && userDetails.Mobile != "")
                         {
-                            extendedProductInfos.userName = userNameAndMobile.Name;
-                            extendedProductInfos.mobile = userNameAndMobile.Mobile;
-                            orderProductInfo.DeliveryInfoID = -1;
+                            extendedProductInfos.userName = userDetails.Name;
+                            extendedProductInfos.mobile = userDetails.Mobile;
+
+                            orderProductInfo.DeliveryInfoId = -1;
 
                             await MartDb.SaveChangesAsync();
                         }

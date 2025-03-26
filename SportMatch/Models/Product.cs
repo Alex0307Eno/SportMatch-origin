@@ -1,18 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SportMatch.Models;
 
 public partial class Product
 {
-    [Key]
-    [Column("ProductId")]
-    public int ProductID { get; set; }
+    public int ProductId { get; set; }
 
-    [Column("ProductName")]
-    public string? Name { get; set; }
+    public string ProductName { get; set; } = null!;
 
     public decimal Price { get; set; }
 
@@ -20,17 +15,19 @@ public partial class Product
 
     public int Stock { get; set; }
 
-    public string? Image01 { get; set; }
+    public string Image01 { get; set; } = null!;
 
     public string? Image02 { get; set; }
 
     public string? Image03 { get; set; }
 
-    public string? ProductDetails { get; set; }
+    public string ProductDetails { get; set; } = null!;
 
     public DateTime ReleaseDate { get; set; }
 
+    public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+
     public virtual ICollection<Order> Orders { get; set; } = new List<Order>();
 
-    //public virtual ProductCategoryMapping? ProductCategoryMapping { get; set; }
+    public virtual ProductCategoryMapping? ProductCategoryMapping { get; set; }
 }

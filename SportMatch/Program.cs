@@ -30,7 +30,7 @@ builder.Services.AddControllersWithViews()
 
 
 
-builder.Services.AddDbContext<SportMatchContext>(  // 改成 SportMatchContext
+builder.Services.AddDbContext<SportMatchV1Context>(  // 改成 SportMatchV1Context
     options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 

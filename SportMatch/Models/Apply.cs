@@ -15,6 +15,8 @@ public partial class Apply
 
     public string? Memo { get; set; }
 
+    public string? Type { get; set; }
+
     public virtual Team Team { get; set; } = null!;
 
     public virtual User User { get; set; } = null!;

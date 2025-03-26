@@ -16,9 +16,9 @@ namespace SportMatch.Controllers
 {
     public class MartController : Controller
     {
-        private readonly SportMatchContext MartDb;
+        private readonly SportMatchV1Context MartDb;
 
-        public MartController(SportMatchContext context)
+        public MartController(SportMatchV1Context context)
         {
             MartDb = context;
         }
@@ -26,18 +26,18 @@ namespace SportMatch.Controllers
         public IActionResult Mart()
         {
             var CategoryLinq = (
-                         from PM in MartDb.ProductCategoryMapping
-                         join PC in MartDb.ProductCategory on PM.CategoryID equals PC.CategoryID
-                         join PSC in MartDb.ProductSubCategory on PM.SubCategoryID equals PSC.SubCategoryID
-                         group new { PC.CategoryName, PC.CategoryID, PSC.SubCategoryName, PSC.SubCategoryID } by new { PC.CategoryName, PC.CategoryID } into g
-                         orderby g.Key.CategoryID
+                         from PM in MartDb.ProductCategoryMappings
+                         join PC in MartDb.ProductCategories on PM.CategoryId equals PC.CategoryId
+                         join PSC in MartDb.ProductSubCategories on PM.SubCategoryId equals PSC.SubCategoryId
+                         group new { PC.CategoryName, PC.CategoryId, PSC.SubCategoryName, PSC.SubCategoryId } by new { PC.CategoryName, PC.CategoryId } into g
+                         orderby g.Key.CategoryId
                          select new
                          {
-                             SubCategoryCount = g.Select(ps => ps.SubCategoryID).Distinct().Count(),
+                             SubCategoryCount = g.Select(ps => ps.SubCategoryId).Distinct().Count(),
                              CategoryName = g.Key.CategoryName,
-                             CategoryID = g.Key.CategoryID,
+                             CategoryID = g.Key.CategoryId,
                              SubCategoryNames = g.ToList(),
-                             SubCategoryIDs = g.ToList()
+                             SubCategoryIds = g.ToList()
                          }
                          ).ToList();
 
@@ -51,7 +51,7 @@ namespace SportMatch.Controllers
                 for (int i = 1; i <= SubCategoryCount; i++)
                 {
                     var _iName = item.SubCategoryNames
-                    .Where(ps => ps.SubCategoryID == i)
+                    .Where(ps => ps.SubCategoryId == i)
                     .Select(ps => ps.SubCategoryName)
                     .FirstOrDefault();
 
@@ -61,9 +61,9 @@ namespace SportMatch.Controllers
                     }
                     else
                     {
-                        int _iID = item.SubCategoryIDs
-                        .Where(ps => ps.SubCategoryID == i)
-                        .Select(ps => ps.SubCategoryID)
+                        int _iID = item.SubCategoryIds
+                        .Where(ps => ps.SubCategoryId == i)
+                        .Select(ps => ps.SubCategoryId)
                         .FirstOrDefault();
                         _subCategorys[$"{_iID}"] = _iName;
                     }

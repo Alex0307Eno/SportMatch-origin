@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query.Internal;
 using Microsoft.Identity.Client.Extensions.Msal;
+using Newtonsoft.Json;
 using SportMatch.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Drawing;
@@ -12,8 +13,8 @@ using static SportMatch.Controllers.MartController;
 [ApiController]
 public class ProductsController : ControllerBase
 {
-    private readonly SportMatchContext MartDb;
-    public ProductsController(SportMatchContext context)
+    private readonly SportMatchV1Context MartDb;
+    public ProductsController(SportMatchV1Context context)
     {
         MartDb = context;
     }
@@ -23,16 +24,16 @@ public class ProductsController : ControllerBase
     {
         List<string> subCategoryNames = _subCategoryName.Split(',').ToList() ?? new List<string>();
         var productsQuery =
-            from P in MartDb.Product
-            join PM in MartDb.ProductCategoryMapping on P.ProductID equals PM.ProductID
-            join PC in MartDb.ProductCategory on PM.CategoryID equals PC.CategoryID
-            join PSC in MartDb.ProductSubCategory on PM.SubCategoryID equals PSC.SubCategoryID
-            orderby (orderByDesc == "none" ? P.ProductID : (orderByDesc == "high" ? P.Price : -P.Price))
+            from P in MartDb.Products
+            join PM in MartDb.ProductCategoryMappings on P.ProductId equals PM.ProductId
+            join PC in MartDb.ProductCategories on PM.CategoryId equals PC.CategoryId
+            join PSC in MartDb.ProductSubCategories on PM.SubCategoryId equals PSC.SubCategoryId
+            orderby (orderByDesc == "none" ? P.ProductId : (orderByDesc == "high" ? P.Price : -P.Price))
             where (_categoryName == "全部" ? true : (PC.CategoryName == _categoryName && (subCategoryNames.Contains("無") || subCategoryNames.Any(subCategory => PSC.SubCategoryName == subCategory))))
             select new
             {
-                productID = P.ProductID,
-                name = P.Name,
+                productID = P.ProductId,
+                name = P.ProductName,
                 price = P.Price,
                 discount = P.Discount,
                 stock = P.Stock,
@@ -46,19 +47,15 @@ public class ProductsController : ControllerBase
             };
 
         var favoriteQuery =
-            from PF in MartDb.Favorite
-            join P in MartDb.Product on PF.MyFavorite equals P.ProductID
-            join U in MartDb.Users on PF.UserID equals U.UserId
+            from PF in MartDb.Favorites
+            join P in MartDb.Products on PF.MyFavorite equals P.ProductId
+            join U in MartDb.Users on PF.UserId equals U.UserId
             where PF.Type == "商品"
             select new
             {
                 productID = PF.MyFavorite,
-                storage = (((PF.Type == "商品" && PF.MyFavorite == P.ProductID) && U.Email == _myHeartUserEmail) ? "fill" : null)
+                storage = (((PF.Type == "商品" && PF.MyFavorite == P.ProductId) && U.Email == _myHeartUserEmail) ? "fill" : null)
             };
-
-        //var productStrings = favoriteQuery
-        //    .Select(p => $"ProductID: {p.productID}, Name: {p.storage}")
-        //    .ToList();
 
         var combinedQuery =
             from P in productsQuery
@@ -81,18 +78,9 @@ public class ProductsController : ControllerBase
                 storage = ((PF.storage == null) ? "nuel" : "fill")
             };
 
-        //var productStrings = combinedQuery
-        //    .Select(p => $"ProductID: {p.productID}, Name: {p.name}, Price: {p.price:F2}, Discount: {p.discount:F2}, Stock: {p.stock}, " +  // 格式化價格和折扣，保留兩位小數
-        //                $"Image01: {(string.IsNullOrEmpty(p.image01) ? "No Image" : p.image01)}, " +  // 檢查 image01 是否為 null 或空
-        //                $"Image02: {(string.IsNullOrEmpty(p.image02) ? "No Image" : p.image02)}, " +  // 檢查 image02 是否為 null 或空
-        //                $"Image03: {(string.IsNullOrEmpty(p.image03) ? "No Image" : p.image03)}, " +  // 檢查 image03 是否為 null 或空
-        //                $"ProductDetails: {p.productDetails}, " +
-        //                $"ReleaseDate: {p.releaseDate:yyyy-MM-dd}, " +  // 格式化日期
-        //                $"Category: {p.categoryName}, SubCategory: {p.subCategoryName}, " +
-        //                $"Storage: {p.storage}")
-        //    .ToList();
-        //Console.WriteLine("\n\n\n\n\n" + string.Join("\n", productStrings) + "\n\n\n\n\n");
-
+        Console.WriteLine("\n\n\n");
+        Console.WriteLine(JsonConvert.SerializeObject(combinedQuery, Formatting.Indented));
+        Console.WriteLine("\n\n\n");
         int totalItems = combinedQuery.Count();
 
         // 計算總頁數

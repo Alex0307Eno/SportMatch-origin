@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SportMatch.Models;
 
@@ -14,7 +13,7 @@ public partial class Role
 
     public virtual Sport Sport { get; set; } = null!;
 
-    public virtual ICollection<Team> Teams { get; set; } = new List<Team>();
+    public virtual ICollection<TeamRecruitment> TeamRecruitments { get; set; } = new List<TeamRecruitment>();
 
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public virtual ICollection<UserSportRole> UserSportRoles { get; set; } = new List<UserSportRole>();
 }

@@ -85,7 +85,8 @@ app.UseEndpoints(endpoints =>
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Door}/{action=Door}/{id?}");
+    //pattern: "{controller=Back}/{action=adminBackstage}/{id?}");
 
 
 // 設置 BackController 的路由

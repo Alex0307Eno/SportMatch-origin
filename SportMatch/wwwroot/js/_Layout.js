@@ -250,7 +250,7 @@ function handleLogout() {
     document.querySelector(".login-btn").style.display = "block";
     document.querySelector(".logout-btn").style.display = "none";
     document.querySelector(".user-email-container").style.display = "none";
-    window.location.href = '/';  // 假設首頁是根目錄
+    window.location.href = '/Home/Index';  // 假設首頁是根目錄
 
     checkLoginStatus();
     console.log("用戶已登出");
@@ -341,7 +341,7 @@ function handleLogout() {
                 console.log("👋 用戶已登出");
 
                 // ✅ 跳轉回首頁
-                window.location.href = '/';
+                window.location.href = '/Home/Index';
             } else {
                 console.error('登出失敗，伺服器回應錯誤');
             }
@@ -417,7 +417,7 @@ function handleLogout() {
     document.querySelector(".notifications-container").style.display = "none";
 
     // 強制跳轉到首頁
-    window.location.href = '/'; // 根據需要調整首頁的路徑
+    window.location.href = '/Home/Index'; // 根據需要調整首頁的路徑
 }
 
 

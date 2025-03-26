@@ -54,41 +54,59 @@ namespace SportMatch.Controllers
             string UserInfo = HttpContext.Session.GetString("UserInfo")!; // 從 Session 取出
             List<SelectViewModel> UserInfoForSuggest = (from u in _context.Users
                                                         join usr in _context.UserSportRoles
-                                                        on u.UserId equals usr.UserId
+                                                            on u.UserId equals usr.UserId into usrGroup
+                                                        from usr in usrGroup.DefaultIfEmpty()  // Left Join
+
                                                         join t in _context.Teams
-                                                        on u.UserId equals t.UserId
-                                                        where u.Email.ToString().ToLower() == UserInfo.ToLower()
-                                                        select new SelectViewModel { User = u, RoleID = usr.RoleId, SportID = usr.SportId, TeamID = t.TeamId }).ToList();
-            HttpContext.Session.SetString("UserInfoForSuggest", JsonConvert.SerializeObject(UserInfoForSuggest)); // 把查詢結果放入Session
+                                                            on u.UserId equals t.UserId into tGroup
+                                                        from t in tGroup.DefaultIfEmpty()  // Left Join
 
-            // 推薦與使用者擅長位置以及招募性別相同的隊伍(排除已加入的隊伍)
-            var TeamInfoFromSQL = (from t in _context.Teams
-                                   join tr in _context.TeamRecruitments
-                                   on t.TeamId equals tr.TeamId
-                                   join r in _context.Roles
-                                   on tr.RoleId equals r.RoleId
-                                   where tr.RoleId == UserInfoForSuggest[0].RoleID && t.GenderId == UserInfoForSuggest[0].User!.GenderId && t.TeamId != UserInfoForSuggest[0].TeamID
-                                   select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
-
-            // 符合條件小於6筆則取招募性別與使用者相同的隊伍
-            if (TeamInfoFromSQL.Count() < 6)
+                                                        where u.Email.ToLower() == UserInfo.ToLower()
+                                                        select new SelectViewModel
+                                                        {
+                                                            User = u,
+                                                            RoleID = usr != null ? usr.RoleId : 0,   // 避免 Null 例外
+                                                            SportID = usr != null ? usr.SportId : 0, // 避免 Null 例外
+                                                            TeamID = t != null ? t.TeamId : 0        // 避免 Null 例外
+                                                        }).ToList();
+            if (UserInfoForSuggest[0].RoleID == 0)
             {
-                TeamInfoFromSQL = (from t in _context.Teams
-                                   join tr in _context.TeamRecruitments
-                                   on t.TeamId equals tr.TeamId
-                                   join r in _context.Roles
-                                   on tr.RoleId equals r.RoleId
-                                   where t.GenderId == UserInfoForSuggest[0].User!.GenderId && t.SportId == UserInfoForSuggest[0].SportID && t.TeamId != UserInfoForSuggest[0].TeamID
-                                   select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                var admin = UserInfoForSuggest[0].User!.Name;
+                return Json(new { admin });
             }
+            else
+            {
+                HttpContext.Session.SetString("UserInfoForSuggest", JsonConvert.SerializeObject(UserInfoForSuggest)); // 把查詢結果放入Session
 
-            int totalItems = TeamInfoFromSQL.Count();
-            int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
-            var cards = TeamInfoFromSQL.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-            cards = cards.OrderBy(x => random.Next()).ToList();
+                // 推薦與使用者擅長位置以及招募性別相同的隊伍(排除已加入的隊伍)
+                var TeamInfoFromSQL = (from t in _context.Teams
+                                       join tr in _context.TeamRecruitments
+                                       on t.TeamId equals tr.TeamId
+                                       join r in _context.Roles
+                                       on tr.RoleId equals r.RoleId
+                                       where tr.RoleId == UserInfoForSuggest[0].RoleID && t.GenderId == UserInfoForSuggest[0].User!.GenderId && t.TeamId != UserInfoForSuggest[0].TeamID
+                                       select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
 
-            return Json(new { cards, totalPages, totalItems });
-            //return Json("'");
+                // 符合條件小於6筆則取招募性別與使用者相同的隊伍
+                if (TeamInfoFromSQL.Count() < 6)
+                {
+                    TeamInfoFromSQL = (from t in _context.Teams
+                                       join tr in _context.TeamRecruitments
+                                       on t.TeamId equals tr.TeamId
+                                       join r in _context.Roles
+                                       on tr.RoleId equals r.RoleId
+                                       where t.GenderId == UserInfoForSuggest[0].User!.GenderId && t.SportId == UserInfoForSuggest[0].SportID && t.TeamId != UserInfoForSuggest[0].TeamID
+                                       select new { TeamID = t.UserId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
+                }
+
+                int totalItems = TeamInfoFromSQL.Count();
+                int totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
+                var cards = TeamInfoFromSQL.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+                cards = cards.OrderBy(x => random.Next()).ToList();
+
+                return Json(new { cards, totalPages, totalItems });
+                //return Json("'");
+            }
         }
 
         // 取得賽事資料
@@ -291,10 +309,10 @@ namespace SportMatch.Controllers
                                   join tr in _context.TeamRecruitments
                                   on t.TeamId equals tr.TeamId
                                   join r in _context.Roles
-                                  on tr.RoleId equals r.RoleId                                  
+                                  on tr.RoleId equals r.RoleId
                                   join a in _context.Areas
                                   on t.AreaId equals a.AreaId
-                                  where t.SportId == SportType && t.GenderId == data[0].User!.GenderId && model.MatchRole.Contains(r.RoleName) && model.MatchArea.Contains(a.AreaName)                                  
+                                  where t.SportId == SportType && t.GenderId == data[0].User!.GenderId && model.MatchRole.Contains(r.RoleName) && model.MatchArea.Contains(a.AreaName)
                                   select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
                     totalItems = filterTeam.Count();
                     totalPages = (int)Math.Ceiling((double)totalItems / pageSize);
@@ -313,7 +331,7 @@ namespace SportMatch.Controllers
                                   join tr in _context.TeamRecruitments
                                   on t.TeamId equals tr.TeamId
                                   join r in _context.Roles
-                                  on tr.RoleId equals r.RoleId                                  
+                                  on tr.RoleId equals r.RoleId
                                   where t.SportId == SportType && t.GenderId == data[0].User!.GenderId && model.MatchRole.Contains(r.RoleName)
                                   select new SelectViewModel { TeamID = t.TeamId, Name = t.TeamName, Role = r.RoleName, Memo = t.TeamMemo, Image = t.TeamPic }).ToList();
                     totalItems = filterTeam.Count();

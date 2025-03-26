@@ -35,10 +35,10 @@
                 <i class="fas fa-bars"></i> <!-- Hamburger icon -->
             </div>
             <ul>
-                <li><a href="/">首頁</a></li>
+                <li><a href="/Home/Index">首頁</a></li>
                 <li><a href="/Match/MatchPage" id="matchingLink">配對系統</a></li>
                 <li><a href="/Event/EventPage" id="eventsLink">賽事資訊</a></li>
-                <li><a href="#Venue">場地資訊</a></li>
+                <li><a href="/Venue/Index">場地資訊</a></li>
                 <li><a href="/Mart/Mart" id="martLink">運動商城</a></li>
             </ul>
             <div class="header-actions">
@@ -74,7 +74,7 @@
                         <span class="user-email"></span>
                         <div class="dropdown-content" id="userDropdown" style="display:none;">
                             <a href="/MemberCenter/Index">個人資料</a>
-                            <a href="#matches">配對資訊</a>
+                            <a href="/MemberCenter/HistoryRecords">配對資訊</a>
                             <a href="/Mart/Checkout">購物車清單</a>
                             <a href="/MemberCenter/MyFav">收藏清單</a>
                             @* <button class="btn-logout" onclick="handleLogout()">登出</button> *@
@@ -194,7 +194,7 @@
     
 
 
-    <div class="container-fluid">
+    <div class="container-fluid p-0">
       @RenderBody()
 
     </div>

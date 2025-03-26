@@ -177,15 +177,16 @@ function loadCards(page) {
         success: function (response) {
             console.log(response);
             const cardContainer = $("#CardContainer");
-            const playerModalLabel = $("#playerModalLabel");
-            const applyModalLabel = $("#applyModalLabel");
             cardContainer.empty();
-            // 判斷回傳的是User還是Team          
-            playerModalLabel.text("隊伍簡介");
-            applyModalLabel.text("申請確認");
-            type = "Team";
-            response.cards.forEach(card => {
-                cardContainer.append(`
+            if ("cards" in response) {
+                const playerModalLabel = $("#playerModalLabel");
+                const applyModalLabel = $("#applyModalLabel");
+                // 判斷回傳的是User還是Team          
+                playerModalLabel.text("隊伍簡介");
+                applyModalLabel.text("申請確認");
+                type = "Team";
+                response.cards.forEach(card => {
+                    cardContainer.append(`
                  <div class="col-md-6 mb-3">
                      <div class="card mb-3 " style="max-width: 540px;">
                          <div class="row g-0">
@@ -217,8 +218,14 @@ function loadCards(page) {
                      </div>
                  </div>
                  `);
-            });
-            updatePagination(response.totalPages, page, response.totalItems, "loadCard");
+                });
+                updatePagination(response.totalPages, page, response.totalItems, "loadCard");
+            }
+            else {
+                cardContainer.append(`
+                <div style="font-size:x-larger;color:#f3f5f5">您好，${response.admin}</div>
+                `)
+            }
         }
     });
 }
@@ -389,18 +396,18 @@ function getSelectionCard(page) {
 // 送出篩選後切換分頁
 function getSelectionCardNextPage(page) {
     var type;
-    
+
     if ($(".Memo").text().indexOf("個人簡介") == 0) {
-        type = "FindPlayer";       
+        type = "FindPlayer";
     }
     else {
-        type = "FindTeam";       
+        type = "FindTeam";
     }
-    
+
     $.ajax({
         url: "/Match/GetSelectionNextPage",
         type: "GET",
-        data: { page: page ,type:type},
+        data: { page: page, type: type },
         success: function (response) {
             console.log(response)
             const playerModalLabel = $("#playerModalLabel");

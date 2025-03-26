@@ -37,12 +37,18 @@ namespace SportMatch.Controllers
         {
             var email = _loggedInEmail?.FirstOrDefault()?.Email;
 
-            var userNameAndMobile = await MartDb.Users
-                .Where(u => u.Email == email)
-                .Select(u => new { u.Name, u.Mobile })
-                 .ToListAsync();
+            //var userNameAndMobile = await MartDb.Users
+            //    .Where(u => u.Email == email)
+            //    .Select(u => new { u.Name, u.Mobile })
+            //    .ToListAsync();
 
-            return Ok(userNameAndMobile);
+            var deliveryInfo = await (from u in MartDb.Users
+                                      join de in MartDb.DeliveryInfo on u.UserId equals de.UserID
+                                      where u.Email == email
+                                      select new { de.Address, de.Recepient, de.Phone, u.Name, u.Mobile })
+                                      .ToListAsync();
+
+            return Ok(deliveryInfo);
         }
     }
 }

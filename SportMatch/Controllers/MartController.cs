@@ -82,10 +82,6 @@ namespace SportMatch.Controllers
 
         public IActionResult Checkout()
         {
-            var deliveryInfo = MartDb.DeliveryInfo
-                .Select(de => new { de.Address, de.Recepient, de.Phone });
-
-            ViewBag.ForDeliveryInfo = deliveryInfo;
             return View();
         }
     }

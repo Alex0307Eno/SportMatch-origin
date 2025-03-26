@@ -230,15 +230,15 @@ public partial class SportMatchContext : DbContext
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
-            entity.HasOne(d => d.Product).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.ProductId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Order__ProductID__17036CC0");
+            //entity.HasOne(d => d.Product).WithMany(p => p.Orders)
+            //    .HasForeignKey(d => d.ProductId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK__Order__ProductID__17036CC0");
 
-            entity.HasOne(d => d.User).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.UserId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__Order__UserID__17F790F9");
+            //entity.HasOne(d => d.User).WithMany(p => p.Orders)
+            //    .HasForeignKey(d => d.UserId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK__Order__UserID__17F790F9");
         });
                     //250314ProducCategory改為ProductCategory
         modelBuilder.Entity<ProductCategory>(entity =>

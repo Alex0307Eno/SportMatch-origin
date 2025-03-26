@@ -91,11 +91,8 @@
                         </div>
                         <div class="ms-2 d-flex align-items-center mb-3">
                             <select class="form-select" id="HomeDeliveryAllInfo" placeholder="宅配資料" for="HomeDeliveryPickup" disabled>
-                                <option value="" disabled selected>-- 選取儲存的資訊 --</option>
-                                @foreach (var item in ViewBag.ForDeliveryInfo)
-                                {
-                                <option value="@item.Address">@item.Recepient - @item.Phone - @item.Address</option>
-                                }
+                                <option value="" id="HomeDeliveryAllInfoTittle" disabled selected>-- 選取儲存的資訊 --</option>
+                                <!--JS迴圈-->
                             </select>
                         </div>
                     </div>

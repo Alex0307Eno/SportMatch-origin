@@ -268,7 +268,7 @@ let HomeDeliveryName = document.getElementById('HomeDeliveryName');
 let HomeDeliveryPhone = document.getElementById('HomeDeliveryPhone');
 let HomeDeliveryAddress = document.getElementById('HomeDeliveryAddress');
 let HomeDeliveryCity = document.getElementById('HomeDeliveryCity');
-
+let HomeDeliveryAllInfo = document.getElementById('HomeDeliveryAllInfo');
 
 function CheckoutRadioChange(_loggedInEmail = localStorage.getItem('loggedInEmail')) {
     var loggedInEmail = [{
@@ -287,6 +287,13 @@ function CheckoutRadioChange(_loggedInEmail = localStorage.getItem('loggedInEmai
             if (data && data.length > 0) {
                 HomeDeliveryName.value = data[0].name;
                 HomeDeliveryPhone.value = data[0].mobile;
+
+                data.forEach(item => {
+                    let option = document.createElement('option')
+                    option.value = item.address;
+                    option.text = item.recepient + " - " + item.phone + " - " + item.address;
+                    HomeDeliveryAllInfo.appendChild(option);
+                });
             }
             else
             {
@@ -294,6 +301,15 @@ function CheckoutRadioChange(_loggedInEmail = localStorage.getItem('loggedInEmai
                 HomeDeliveryPhone.value = "";
                 HomeDeliveryAddress.value = "";
                 HomeDeliveryCity.value = "";
+
+                HomeDeliveryAllInfo.innerHTML = '';
+
+                let defaultOption = document.createElement('option');
+                defaultOption.value = "";
+                defaultOption.text = "-- 選取儲存的資訊 --";
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                HomeDeliveryAllInfo.appendChild(defaultOption);
             }
         })
 }

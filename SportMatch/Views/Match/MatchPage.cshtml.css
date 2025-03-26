@@ -47,6 +47,10 @@
     overflow: hidden;
 }
 
+#badmintonEventList, #basketballEventList, #volleyballEventList {
+    height: 300px; /* 🔹 限制最大高度 */
+}
+
 .accordion-item {
     background-color: rgba(51,25,4,0.3);
     border: 1px solid #fd7e14; /* 藍色邊框 */

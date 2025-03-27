@@ -106,13 +106,55 @@
                                     </div>
                                 </div>
                                 <div class="event-info">
-                                    <h1>@countdownData.Id</h1>
+                                    <h1>@countdownData.EventName</h1>
                                     <p>比賽日期:@countdownData.EventDate</p>
                                 </div>
                                 <h1 class="countdown" data-target-time="@targetTimestamp"></h1>
                             <!-- 按鈕開啟報名彈窗 -->
-                            <button class="join-btn" id="join-btn_@countdownData.Id" onclick="openModal()">立即報名</button>
+                            <button class="join-btn open-modal" data-title="@countdownData.EventName">立即報名</button>
                             </div>
+                        <!-- 報名彈窗 -->
+                        <div id="modal-overlay" class="modal-overlay">
+                            <div class="modal-content">
+                                <button class="close-btn">&times;</button>
+                                <h2 id="modal-title">比賽名稱</h2>
+                                <form action="#" method="post">
+                                    <label for="name">姓名：</label>
+                                    <input type="text" id="name" name="name" required><br><br>
+
+                                    <label for="id">身分證字號：</label>
+                                    <input type="text" id="id" name="id" required><br><br>
+
+                                    <label for="phone">手機號碼：</label>
+                                    <input type="tel" id="phone" name="phone" required><br><br>
+
+                                    <label for="email">Email：</label>
+                                    <input type="email" id="email" name="email" required><br><br>
+
+                                    <label>性別：</label>
+                                    <input type="radio" id="male" name="gender" value="男" required>
+                                    <label for="male">男</label>
+                                    <input type="radio" id="female" name="gender" value="女" required>
+                                    <label for="female">女</label><br><br>
+
+                                    <label for="birthdate">生日：</label>
+                                    <input type="date" id="birthdate" name="birthdate" required><br><br>
+
+                                    <h4>緊急聯絡人資訊</h4>
+                                    <label for="emergency_name">緊急聯絡人姓名：</label>
+                                    <input type="text" id="emergency_name" name="emergency_name" required><br><br>
+
+                                    <label for="emergency_phone">電話：</label>
+                                    <input type="tel" id="emergency_phone" name="emergency_phone" required><br><br>
+
+                                    <label for="relationship">與報名者關係：</label>
+                                    <input type="text" id="relationship" name="relationship" required><br><br>
+
+                                    <button class="btn btn-primary" type="submit">報名</button>
+                                    <button class="btn btn-primary" type="reset">取消報名</button>
+                                </form>
+                            </div>
+                        </div>
                         }
                     </div>
                 </div>
@@ -145,48 +187,6 @@
                     <div class="calendar-days"></div>
                 </div>
             </div>
-        </div>
-    </div>
-    <!-- 報名彈窗 -->
-    <div id="JoincustomModal" class="modal-overlay">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <h2>報名表單</h2>
-            <form action="#" method="post">
-                <label for="name">姓名：</label>
-                <input type="text" id="name" name="name" required><br><br>
-
-                <label for="id">身分證字號：</label>
-                <input type="text" id="id" name="id" required><br><br>
-
-                <label for="phone">手機號碼：</label>
-                <input type="tel" id="phone" name="phone" required><br><br>
-
-                <label for="email">Email：</label>
-                <input type="email" id="email" name="email" required><br><br>
-
-                <label>性別：</label>
-                <input type="radio" id="male" name="gender" value="男" required>
-                <label for="male">男</label>
-                <input type="radio" id="female" name="gender" value="女" required>
-                <label for="female">女</label><br><br>
-
-                <label for="birthdate">出生年月日：</label>
-                <input type="date" id="birthdate" name="birthdate" required><br><br>
-
-                <h3>緊急聯絡人資訊</h3>
-                <label for="emergency_name">姓名：</label>
-                <input type="text" id="emergency_name" name="emergency_name" required><br><br>
-
-                <label for="emergency_phone">電話：</label>
-                <input type="tel" id="emergency_phone" name="emergency_phone" required><br><br>
-
-                <label for="relationship">與報名者關係：</label>
-                <input type="text" id="relationship" name="relationship" required><br><br>
-
-                <button class="btn btn-primary" type="submit">報名</button>
-                <button class="btn btn-primary" type="reset">取消報名</button>
-            </form>
         </div>
     </div>
 </body>

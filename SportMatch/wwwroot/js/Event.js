@@ -290,9 +290,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 8000);
     updateCarousel();
 //彈窗開啟 / 關閉
-function openModal() {
-    document.getElementById("JoincustomModal").style.display = "flex";
-}
-function closeModal() {
-    document.getElementById("JoincustomModal").style.display = "none";
-}
+document.addEventListener("DOMContentLoaded", function () {
+    // 取得所有報名按鈕
+    const buttons = document.querySelectorAll(".open-modal");
+    const modal = document.getElementById("modal-overlay");
+    const modalTitle = document.getElementById("modal-title");
+    const closeButton = document.querySelector(".close-btn");
+
+    // 監聽每個按鈕的點擊事件
+    buttons.forEach(button => {
+        button.addEventListener("click", function () {
+            const matchTitle = this.getAttribute("data-title"); // 取得比賽名稱
+            modalTitle.textContent = matchTitle + " 報名表單"; // 更新彈窗標題
+            modal.style.display = "flex"; // 顯示彈窗
+        });
+    });
+
+    // 關閉彈窗
+    closeButton.addEventListener("click", function () {
+        modal.style.display = "none";
+    });
+
+    // 點擊彈窗外部區域關閉
+    modal.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+});

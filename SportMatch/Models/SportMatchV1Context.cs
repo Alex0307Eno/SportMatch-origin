@@ -35,7 +35,7 @@ public partial class SportMatchV1Context : DbContext
 
     public virtual DbSet<Order> Orders { get; set; }
 
-    public virtual DbSet<ProducCategory> ProducCategories { get; set; }
+    public virtual DbSet<ProductCategory> ProductCategories { get; set; }
 
     public virtual DbSet<Product> Products { get; set; }
 
@@ -289,9 +289,9 @@ public partial class SportMatchV1Context : DbContext
             entity.Property(e => e.ProductId).HasColumnName("ProductID");
             entity.Property(e => e.UserId).HasColumnName("UserID");
 
-            entity.HasOne(d => d.DeliveryInfo).WithMany(p => p.Orders)
-                .HasForeignKey(d => d.DeliveryInfoId)
-                .HasConstraintName("FK_Order_DeliveryInfo");
+            //entity.HasOne(d => d.DeliveryInfo).WithMany(p => p.Orders)
+            //    .HasForeignKey(d => d.DeliveryInfoId)
+            //    .HasConstraintName("FK_Order_DeliveryInfo");
 
             entity.HasOne(d => d.Product).WithMany(p => p.Orders)
                 .HasForeignKey(d => d.ProductId)
@@ -304,11 +304,11 @@ public partial class SportMatchV1Context : DbContext
                 .HasConstraintName("FK__Order__UserID__17F790F9");
         });
 
-        modelBuilder.Entity<ProducCategory>(entity =>
+        modelBuilder.Entity<ProductCategory>(entity =>
         {
             entity.HasKey(e => e.CategoryId).HasName("PK__ProducCa__19093A2BBD40185B");
 
-            entity.ToTable("ProducCategory");
+            entity.ToTable("ProductCategory");
 
             entity.HasIndex(e => e.CategoryId, "UQ__ProducCa__19093A2A52CAE684").IsUnique();
 

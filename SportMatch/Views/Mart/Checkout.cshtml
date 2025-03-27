@@ -30,15 +30,15 @@
                     <div class="d-flex flex-column mx-5 my-3">
                         <div class="d-flex align-items-center mb-4">
                             <input type="radio" name="PaymentMethod" id="Seveneleven" onclick="TogglePaymentMethod();" />
-                            <label for="Seveneleven">7-11取貨付款</label>
+                            <label for="Seveneleven">&nbsp;&nbsp;7-11取貨付款</label>
                         </div>
                         <div class="d-flex align-items-center mb-4">
                             <input type="radio" name="PaymentMethod" id="Familymart" onclick="TogglePaymentMethod();" />
-                            <label for="Familymart">全家取貨付款</label>
+                            <label for="Familymart">&nbsp;&nbsp;全家取貨付款</label>
                         </div>
                         <div class="d-flex align-items-center mb-4">
                             <input type="radio" name="PaymentMethod" id="ComeHome" onclick="TogglePaymentMethod();" />
-                            <label for="ComeHome">貨到付款</label>
+                            <label for="ComeHome">&nbsp;&nbsp;貨到付款</label>
                         </div>
                     </div>
                 </div>
@@ -88,16 +88,22 @@
                                 </select>
                             </div>
                             <input type="text" class="form-control" id="HomeDeliveryAddress" placeholder="地址" for="HomeDeliveryPickup" disabled />
-                        </div>                        
+                        </div>
+                        <div class="ms-2 d-flex align-items-center mb-3">
+                            <select class="form-select" id="HomeDeliveryAllInfo" placeholder="宅配資料" for="HomeDeliveryPickup" disabled>
+                                <option value="" id="HomeDeliveryAllInfoTittle" disabled selected>-- 選取儲存的資訊 --</option>
+                                <!--JS迴圈-->
+                            </select>
+                        </div>
                     </div>
                 </div>
                 <!-- 總計和按鈕 -->
                 <div class="Logistics">                    
                     <div class="d-flex justify-content-between">
-                      <strong>總計:</strong><span id="NoDiscountPrice"><!--折扣前價格--></span>
+                      <strong>總計:</strong><span id="NoDiscountPrice"> <!--折扣前價格--></span>
                     </div>
                     <div class="d-flex justify-content-between">
-                      <div></div><span id="TotalPrice"><!--折扣後價格--></span>
+                    <div></div><span id="TotalPrice">&nbsp;<!--折扣後價格--></span>
                     </div>
                     <div class="d-flex justify-content-between mt-3">
                         <div class="w-100 backBtnClass" onclick="window.location.href='Mart'">繼續選購</div>

@@ -262,7 +262,7 @@ namespace SportMatch.Controllers
             TempData["Email"] = model.Email;
             TempData["LastSentTime"] = DateTime.Now;
             //250318用console直接查看驗證碼
-            Console.WriteLine(verificationCode);
+            Console.WriteLine("\n\n\n" + verificationCode + "\n\n\n");
 
             // 發送電子郵件
             bool isSent = SendEmail(model.Email, "您的驗證碼", $"您的驗證碼是：{verificationCode}");

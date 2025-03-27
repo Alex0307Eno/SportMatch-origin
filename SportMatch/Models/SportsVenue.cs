@@ -31,6 +31,8 @@ public partial class SportsVenue
 
     public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
 
+    public virtual ICollection<Favorite> Favorites { get; set; } = new List<Favorite>();
+
     public virtual Sport Sport { get; set; } = null!;
 
     public virtual ICollection<VenueFee> VenueFees { get; set; } = new List<VenueFee>();

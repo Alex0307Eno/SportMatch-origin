@@ -23,7 +23,7 @@ builder.Services.AddSession(options =>
 builder.Services.AddControllersWithViews()
     .AddJsonOptions(options =>
 {
-    // �bProgram.cs�]�wJSON -> �C��ظm�ɡA�s�X�i��Τ@�]�w	        
+    // 在Program.cs設定JSON -> 每當建置時，編碼進行統一設定	        
     options.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(
                 UnicodeRanges.BasicLatin,
                 UnicodeRanges.CjkUnifiedIdeographs);
@@ -54,7 +54,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
 builder.Services.AddControllersWithViews();
 
 //builder.Services.AddScoped<AuthenticationService>();
-// �o�̥[�J VerificationCodeService �M HttpContextAccessor
+// 這裡加入 VerificationCodeService 和 HttpContextAccessor
 builder.Services.AddSingleton<VerificationCodeService>();
 builder.Services.AddHttpContextAccessor(); // �� IHttpContextAccessor �i�H�Q�`�J
 builder.Services.AddControllersWithViews(); // ��L�A�Ȱt�m
@@ -123,7 +123,7 @@ app.UseCors("AllowFrontend");
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
-    _ = endpoints.MapControllers(); // �T�O�����챱�������
+    _ = endpoints.MapControllers(); // 確保能夠找到控制器的路由
 });
 
 app.MapControllerRoute(

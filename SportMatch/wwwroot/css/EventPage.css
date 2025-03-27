@@ -71,18 +71,18 @@ h5 {
     grid-template-rows: repeat(6, 1fr); /* 固定6行 */
 }
 
-    .calendar-days div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 40px;
-        border-radius: 5px;
-        cursor: pointer;
-    }
+.calendar-days div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+}
 
-        .calendar-days div:hover {
-            background: #ddd;
-        }
+.calendar-days div:hover {
+    background: #ddd;
+}
 
 .today {
     background: #efca6d;
@@ -91,10 +91,9 @@ h5 {
 }
 
 .marked {
-    background: orange;
+    background: #ff4d4db3;
     color: white;
     font-weight: bold;
-    border-radius: 50%;
 }
 /*下拉選單*/
 .filter-section h2 {
@@ -211,7 +210,9 @@ h5 {
     align-items: center; /* 垂直置中 */
     justify-content: space-between; /* 左右分布 */
 }
-
+.event-card h1{
+    font-size:32px;
+}
 .event-heart {
     min-width: 50px;
 }
@@ -222,7 +223,7 @@ h5 {
     flex-shrink: 0; /* 防止區塊被壓縮 */
     flex-direction: column;
     justify-content: center; /* 讓內部文字靠近 */
-    margin-left: -150px;
+    margin-left: -135px;
 }
 
 .countdown {

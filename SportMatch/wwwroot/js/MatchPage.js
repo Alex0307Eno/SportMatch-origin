@@ -39,49 +39,108 @@ function getUserInfoFromlocalStorage() {
     }
 }
 
+
+
+
 // 載入獲得賽事資料
+
+const itemsPerPage = 10;
+let eventLists = {
+    badminton: [],
+    basketball: [],
+    volleyball: []
+};
+let currentPages = {
+    badminton: 1,
+    basketball: 1,
+    volleyball: 1
+};
+
 function loadEvent() {
     $.ajax({
         url: "/Match/GetEvent",  // 呼叫後端 Controller
         type: "GET",
         success: function (response) {
-            $("#badmintonEventList").empty(); // 清空舊的賽事
-            $("#basketballEventList").empty(); // 清空舊的賽事
-            $("#volleyballEventList").empty(); // 清空舊的賽事
             console.log(response);
-            response.badmintonEventList.forEach(x => {
-                $("#badmintonEventList").append(`
-                    <label class="col-6">
-	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer" onselect="checkEventOrNot()">
-	                    <label for="${x}" style="cursor:pointer">${x}</label>
-                    </label>
-                    <br>
-                    `)
-            })
-            response.basketballEventList.forEach(x => {
-                $("#basketballEventList").append(`
-                    <label class="col-6">
-	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer">
-	                    <label for="${x}" style="cursor:pointer">${x}</label>
-                    </label>
-                    <br>
-                    `)
-            })
-            response.volleyballEventList.forEach(x => {
-                $("#volleyballEventList").append(`
-                    <label class="col-6">
-	                    <input type="checkbox" id="${x}" name="MatchEvent" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer">
-	                    <label for="${x}" style="cursor:pointer">${x}</label>
-                    </label>
-                    <br>
-                    `)
-            })
+            eventLists.badminton = response.badmintonEventList || [];
+            eventLists.basketball = response.basketballEventList || [];
+            eventLists.volleyball = response.volleyballEventList || [];
+
+            renderPage('badminton');
+            renderPage('basketball');
+            renderPage('volleyball');
+
         },
         error: function () {
             alert("請求失敗，請稍後再試");
         }
     });
 }
+
+//
+function renderPage(sport) {
+    let container = $("#" + sport + "EventList");
+    container.html(""); // 清空內容
+    let start = (currentPages[sport] - 1) * itemsPerPage;
+    let end = start + itemsPerPage;
+    let pageItems = eventLists[sport].slice(start, end);
+
+    pageItems.forEach(event => {
+        let checkbox = `<div class="col-6">
+                                <input type="checkbox" id="${event}" name="MatchEvent" value="${event}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer">
+                                <label for="${event}" style="cursor:pointer">${event}</label><br>
+                                </div>`;
+        container.append(checkbox);
+    });
+    renderPagination(sport);
+}
+
+function renderPagination(sport) {
+    let paginationContainer = $("#pagination" + capitalizeFirstLetter(sport));
+    paginationContainer.html(""); // 清空 Pagination
+
+    let totalPages = Math.ceil(eventLists[sport].length / itemsPerPage);
+    let prevDisabled = currentPages[sport] === 1 ? "disabled" : "";
+    let nextDisabled = currentPages[sport] === totalPages ? "disabled" : "";
+
+    // 🔹「上一頁」按鈕
+    paginationContainer.append(
+        `<li class="page-item ${prevDisabled}">
+            <a class="page-link" href="#" data-page="${currentPages[sport] - 1}" data-sport="${sport}">&laquo;</a>
+        </li>`
+    );
+
+    // 🔹「當前頁碼」，不允許點擊
+    paginationContainer.append(
+        `<li class="page-item active">
+            <span class="page-link" style="border: 1px solid #fd7e14;">${currentPages[sport]}</span>
+        </li>`
+    );
+
+    // 🔹「下一頁」按鈕
+    paginationContainer.append(
+        `<li class="page-item ${nextDisabled}">
+            <a class="page-link" href="#" data-page="${currentPages[sport] + 1}" data-sport="${sport}">&raquo;</a>
+        </li>`
+    );
+}
+
+// 監聽分頁按鈕點擊事件
+$(document).on("click", ".pagination .page-link", function (e) {
+    e.preventDefault();
+    let sport = $(this).data("sport");
+    let newPage = parseInt($(this).data("page"));
+
+    if (newPage >= 1 && newPage <= Math.ceil(eventLists[sport].length / itemsPerPage)) {
+        currentPages[sport] = newPage;
+        renderPage(sport);
+    }
+});
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
 
 // 
 function ExpandAccordion() {

@@ -50,11 +50,11 @@ public class ProductsController : ControllerBase
             from PF in MartDb.Favorites
             join P in MartDb.Products on PF.MyFavorite equals P.ProductId
             join U in MartDb.Users on PF.UserId equals U.UserId
-            where PF.Type == "商品"
+            where U.Email == _myHeartUserEmail
             select new
             {
                 productID = PF.MyFavorite,
-                storage = (((PF.Type == "商品" && PF.MyFavorite == P.ProductId) && U.Email == _myHeartUserEmail) ? "fill" : null)
+                storage = ((PF.Type == "商品") ? "fill" : null)
             };
 
         var combinedQuery =

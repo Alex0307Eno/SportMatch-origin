@@ -18,7 +18,9 @@ body {
 
 /* 基本變數 */
 :root {
-    --primary-color: #2563eb;
+    --orange-500: #fd7e14;
+    --yellow-500: #ffc107;
+    --primary-color: var(--orange-500);    
     --secondary-color: #3b82f6;
     --accent-color: #f59e0b;
     --text-color: #1f2937;
@@ -29,6 +31,7 @@ body {
     --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --font-family: 'openhuninn';
     --line-height: 1.6;
+    --primary-gradient: linear-gradient(135deg, var(--yellow-500), var(--primary-color));
 }
 
 /* 通用樣式重置 */
@@ -43,6 +46,18 @@ button {
     box-sizing: border-box;
     font-family: 'openhuninn';
 }
+
+.Linkclass {
+    color: #f3f5f5;
+    text-decoration: none;
+}
+
+    .Linkclass.active {
+        color: #ffc107;
+        font-weight: bold;
+        text-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3);
+    }
+
 
 .user-email {
     font-family: 'openhuninn';
@@ -73,11 +88,15 @@ body {
 }
 
 .header-container {
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: #331904;
+    background-color: rgb(255 255 255 / 10%);
+    backdrop-filter: blur(10px);
     color: white;
 }
 
@@ -85,6 +104,13 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    background: linear-gradient(135deg, #ffc107, #fd7e14);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-family: "Galada", serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 2rem;
 }
 
     .logo img {

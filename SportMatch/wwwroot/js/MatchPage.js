@@ -1,5 +1,5 @@
 ﻿// 初始化載入第一頁
-$(document).ready(function () {
+$(function () {
     getRole();
     loadEvent()
     matchTypeChangeOrNot();
@@ -87,8 +87,8 @@ function renderPage(sport) {
 
     pageItems.forEach(event => {
         let checkbox = `<div class="col-6">
-                                <input type="checkbox" id="${event}" name="MatchEvent" value="${event}" class="MatchCheckBoxItem me-1 mt-2 forCheckEvent" style="cursor:pointer">
-                                <label for="${event}" style="cursor:pointer">${event}</label><br>
+                                <input type="checkbox" id="${event}" name="MatchEvent" value="${event}" class="MatchCheckBoxItem me-1 forCheckEvent d-block" style="cursor:pointer">
+                                <label for="${event}" style="cursor:pointer" class="d-block">${event}</label><br>
                                 </div>`;
         container.append(checkbox);
     });
@@ -103,21 +103,21 @@ function renderPagination(sport) {
     let prevDisabled = currentPages[sport] === 1 ? "disabled" : "";
     let nextDisabled = currentPages[sport] === totalPages ? "disabled" : "";
 
-    // 🔹「上一頁」按鈕
+    // 上一頁按鈕
     paginationContainer.append(
         `<li class="page-item ${prevDisabled}">
             <a class="page-link" href="#" data-page="${currentPages[sport] - 1}" data-sport="${sport}">&laquo;</a>
         </li>`
     );
 
-    // 🔹「當前頁碼」，不允許點擊
+    // 當前頁碼
     paginationContainer.append(
         `<li class="page-item active">
             <span class="page-link" style="border: 1px solid #fd7e14;">${currentPages[sport]}</span>
         </li>`
     );
 
-    // 🔹「下一頁」按鈕
+    // 下一頁按鈕
     paginationContainer.append(
         `<li class="page-item ${nextDisabled}">
             <a class="page-link" href="#" data-page="${currentPages[sport] + 1}" data-sport="${sport}">&raquo;</a>
@@ -142,7 +142,7 @@ function capitalizeFirstLetter(string) {
 }
 
 
-// 
+// 控制點籍球類時展開位置與區域
 function ExpandAccordion() {
     $(".forCheckCategory").on('click', function () {
         $("#Area").addClass("show");

@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css">
 
 <!-- 主頁面 -->
-<div class="container-fluid">
+<div class="container-fluid" id="MartTopContainer">
     <div class="d-flex MartContainer">
         <!-- 左側欄位 -->
         <div class="BodyLiftField">
@@ -80,10 +80,10 @@
             <div class="row ProductsList">
                 <!-- 這邊使用JS加入HTML -->
             </div>
-@* @await Html.PartialAsync("_PartialFooter") *@
         </div>
     </div>
 </div>
+
 <!-- 加入我的最愛彈出視窗 -->
 <div class="modal fade HeartModal" id="HeartModal" tabindex="-1" role="dialog" data-bs-backdrop="false">
     <div class="modal-dialog" role="document">
@@ -105,3 +105,10 @@
         </div>
     </div>
 </div>
+
+<div class="PartialFooter">
+@await Html.PartialAsync("_PartialFooter")
+</div>
+
+
+

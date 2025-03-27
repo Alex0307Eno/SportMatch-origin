@@ -3,15 +3,19 @@
     src: url('../image/MatchPage/jf-openhuninn-2.1.ttf');
 }
 
-.MainModal {
-    background-color: rgba(0,0,0,0.65);
+body {
+    background: linear-gradient(135deg, #e74c3c, #3498db, #2ecc71, #f1c40f);
 }
 
-.container-fluid {
+#MartTopContainer {
     font-family: 'openhuninn';
     display: flex;
     justify-content: center;
-    background: linear-gradient(135deg, #4b2606, #984c0c, #653208, #ca6510);
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.MainModal {
+    background-color: rgba(0,0,0,0.65);
 }
 
 .MartContainer {
@@ -63,11 +67,11 @@ form input[type="radio"], form input[type="checkbox"], form label,
     background-image: linear-gradient(to right, #4b2606, #331904);
 }
 
-    .ProductsCard {        
-        border-top: 1px solid #150900;
-        border-left: 1px solid #150900;
-        box-shadow: -5px 5px 5px #150900, 5px 5px 5px #150900;
-    }
+.ProductsCard {
+    border-top: 1px solid rgba(21, 9, 0, 0.7);
+    border-left: 1px solid rgba(21, 9, 0, 0.7);
+    box-shadow: -5px 5px 5px rgba(21, 9, 0, 0.7), 5px 5px 5px rgba(21, 9, 0, 0.7);
+}
         .ProductsCard:hover {
             border: none;
             transform: scale(1.04);
@@ -84,10 +88,6 @@ select:focus {
 }
 
 /*配色整合*/
-/*}*/
-/*.MartContainer {
-    background-color: rgba(0,0,0,0.65);
-}*/
 select:focus,
 .BootstrapChildItemClass,
 /* 底下JS */
@@ -158,7 +158,11 @@ select:focus,
 .BootstrapItemClass.ListPage,
 .PageButton,
 .numberPageButton,
-.numberPageButtonLink,
+.numberPageButtonLink
+{
+    background-color: rgba(25, 13, 2, 0.7);
+}
+
 .ModalContent {
     background-color: #190d02;
 }
@@ -285,8 +289,9 @@ select:focus,
     body {
         overflow-x: auto;
     }
-    .container-fluid {
-        justify-content: flex-start;
+    #MartTopContainer {
+        /*                justify-content: flex-start;*/
+
         width: 63.5rem;
     }
     .MartContainer {

@@ -8,19 +8,20 @@
     border-radius: 0.2rem;
 }
 
-#CheckoutTopContainer {
-    display: flex;
-    justify-content: center;
-    font-family: 'openhuninn';
-    background: linear-gradient(135deg, #4b2606, #984c0c, #653208, #ca6510);
+body {
+    background: linear-gradient(135deg, #e74c3c, #3498db, #2ecc71, #f1c40f);
 }
 
-.CheckoutContainer {    
-/*    position: relative;
-    transform: translate(-50%, 0);*/
+#CheckoutTopContainer {
+    font-family: 'openhuninn';
+    display: flex;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.CheckoutContainer {
     height: 50rem;
     width: 75rem;
-/*    left: 50%;*/
 }
 
 .CartBody {
@@ -75,7 +76,7 @@
 .container-fluid,*/
 /*以下訂單頁*/
 .OrderFrame {
-    background-color: #000000;
+    background-color: rgba(0, 0, 0, 0.7);
 }
 
 .PickupBtn,
@@ -91,7 +92,7 @@
 .btnPlusMinus:hover,
 /*以下訂單頁*/
 .OrderSection {
-    background-color: #190d02;
+    background-color: rgba(25, 13, 2, 0.7);
 }
 
 .OrangeBtnClass,

@@ -48,7 +48,7 @@
 }
 
 #badmintonEventList, #basketballEventList, #volleyballEventList {
-    height: 300px; /* 🔹 限制最大高度 */
+    height: 200px; /* 🔹 限制最大高度 */
 }
 
 .accordion-item {

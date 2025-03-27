@@ -44,7 +44,7 @@ function getUserInfoFromlocalStorage() {
 
 // 載入獲得賽事資料
 
-const itemsPerPage = 10;
+const itemsPerPage = 6;
 let eventLists = {
     badminton: [],
     basketball: [],

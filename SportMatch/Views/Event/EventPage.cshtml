@@ -1,11 +1,11 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
- @model List<SportMatch.Models.EventPageModel>
+@model List<SportMatch.Models.EventPageModel>
 @{
     Layout = "_Layout";
     @using System.Text.Json;
-    var countdowns = ViewBag.Countdowns as List<object>;
+    // var countdowns = ViewBag.Countdowns as List<object>;
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -59,15 +59,15 @@
                     </div>
                     <!--賽事資訊區域 + 報名按鈕 -->
                     <div class="events-section" id="events-container">
-                        @foreach (var item in countdowns!)
+                        @foreach (var item in Model)
                         {
-                            var countdownData = item as dynamic;
-                            long targetTimestamp = ((DateTimeOffset)countdownData.TargetTime).ToUnixTimeMilliseconds();
+                            @* var countdownData = item as dynamic; *@
+                            long targetTimestamp = ((DateTimeOffset)item.EventDate).ToUnixTimeMilliseconds();
                                 <div class="event-card event-item">
                                 <div class="event-heart">
                                     <div class="heartbox">
-                                        <input type="checkbox" class="checkbox" id="checkbox_@countdownData.Id" />
-                                    <label for="checkbox_@countdownData.Id" class="custom-checkbox">
+                                        <input type="checkbox" class="checkbox" id="checkbox_@item.EventID" />
+                                    <label for="checkbox_@item.EventID" class="custom-checkbox">
                                             <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
                                                 <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
                                                     <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2" />
@@ -106,12 +106,12 @@
                                     </div>
                                 </div>
                                 <div class="event-info">
-                                    <h1>@countdownData.EventName</h1>
-                                    <p>比賽日期:@countdownData.EventDate</p>
+                                    <h1>@item.EventName</h1>
+                                    <p>比賽日期:@item.EventDate</p>
                                 </div>
                                 <h1 class="countdown" data-target-time="@targetTimestamp"></h1>
                             <!-- 按鈕開啟報名彈窗 -->
-                            <button class="join-btn open-modal" data-title="@countdownData.EventName">立即報名</button>
+                            <button class="join-btn open-modal" data-title="@item.EventName">立即報名</button>
                             </div>
                         <!-- 報名彈窗 -->
                         <div id="modal-overlay" class="modal-overlay">
@@ -192,7 +192,6 @@
 </body>
 <script defer>
     var markedDates = @Html.Raw(JsonSerializer.Serialize(Model?.Select(e => e.EventDate.ToString("yyyy-MM-dd")) ?? new List<string>()))
-
 </script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/Event.js" defer></script>

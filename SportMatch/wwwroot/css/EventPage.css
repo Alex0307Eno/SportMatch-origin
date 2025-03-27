@@ -6,10 +6,6 @@ body {
     font-family: 'openhuninn';
 }
 .background {
-    /*background-image: url("/image/icon.jpg");
-    background-size: cover;*/ /*圖片覆蓋整個畫面*/
-    /*background-repeat: repeat;*/ /* 防圖片重複no-repeat */
-    /*background-position: center center;*/ /* 置中 */
     background: linear-gradient(135deg, #e74c3c, #3498db, #2ecc71, #f1c40f);
     background-color: rgba(0, 0, 0, 0.7);
     background-blend-mode: overlay; /* 背景圖片與顏色混合 */
@@ -206,12 +202,11 @@ h5 {
     background-image: url('/image/EventPicture/basketball-ticket.png');
     padding: 15px; /*距離邊框*/
     width: auto;
-    height: 180px;
+    height:180px;
     background-position: center center; /*置中*/
-    background-size: 100% 180px; /* 寬度拉伸到100%，高度固定px */
+    background-size: 100% 180px; /* 寬度拉伸到100%，高度固定180 */
     background-repeat: no-repeat; /* 圖片是否重複 */
     margin-bottom: 15px;
-    border-radius: 5px;
     display: flex; /*flex內部區塊*/
     align-items: center; /* 垂直置中 */
     justify-content: space-between; /* 左右分布 */
@@ -550,28 +545,49 @@ footer {
 .modal-overlay {
     display: none;
     position: fixed;
-    top: 10%;
-    left: 25%;
-    width: 50%;
-    height: 80%;
-    background: rgba(0, 0, 0, 0.5);
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #e74c3c, #3498db, #2ecc71, #f1c40f);
+    background-color: rgba(0, 0, 0, 0.7); /* 半透明背景 */
+    background-blend-mode: overlay;
+    backdrop-filter: blur(5px); /* 模糊效果，讓背景更有層次 */
     justify-content: center;
     align-items: center;
-    z-index: 2;
+    z-index: 1000; /* 確保彈窗在最上層 */
 }
 
+/* 調整彈窗的位置與大小 */
 .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 5px;
-    text-align: center;
-    position: relative;
+background: rgba(255, 255, 255, 0.9); /* 讓內容區域微透明，融合背景 */
+padding: 20px;
+border-radius: 10px;
+text-align: left;
+position: relative;
+width: 50%;
+max-width: 600px; /* 限制最大寬度，確保適配不同螢幕 */
+box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* 添加陰影，讓視覺更立體 */
+}
+.modal-content h2,h4{
+    text-align:center;
+}
+.modal-content input{
+
+}
+/* 關閉按鈕樣式 */
+.close-btn {
+position: absolute;
+top: 10px;
+right: 10px;
+font-size: 24px;
+font-weight: bold;
+color: #333;
+background: none;
+border: none;
+cursor: pointer;
 }
 
-.close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    font-size: 20px;
-    cursor: pointer;
+.close-btn:hover {
+    color: #e74c3c; /* 滑鼠懸停時變色 */
 }

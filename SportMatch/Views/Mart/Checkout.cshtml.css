@@ -76,7 +76,7 @@ body {
 .container-fluid,*/
 /*以下訂單頁*/
 .OrderFrame {
-    background-color: rgba(0, 0, 0, 0.7);
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 .PickupBtn,
@@ -89,10 +89,12 @@ body {
 .Logistics,
 /* 以下JS */
 .quantityText,
-.btnPlusMinus:hover,
-/*以下訂單頁*/
-.OrderSection {
+.btnPlusMinus:hover {
     background-color: rgba(25, 13, 2, 0.7);
+}
+
+.OrderSection {
+    background-color: rgba(25, 13, 2, 0.5);
 }
 
 .OrangeBtnClass,

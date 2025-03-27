@@ -15,6 +15,20 @@
 //});
 
 
+//
+document.addEventListener("DOMContentLoaded", function () {
+    // 取得當前網址路徑
+    let currentPath = window.location.pathname;
+
+    // 遍歷所有 .Linkclass 連結
+    document.querySelectorAll(".Linkclass").forEach(link => {
+        if (link.getAttribute("href") === currentPath) {
+            link.classList.add("active"); // 加上 active 類別
+        }
+    });
+});
+
+
 // ✅ 自訂確認框
 function customConfirm(message, callback) {
     let modal = document.getElementById("custom-confirm");

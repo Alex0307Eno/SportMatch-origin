@@ -152,6 +152,38 @@ namespace SportMatch.Controllers
 
             return Json(productList);
         }
+
+        [HttpGet]
+        public IActionResult GetOrders()
+        {
+            // 先從資料庫獲取資料
+            var orderQuery = ( _context.Orders
+                            .Join(_context.Users,
+                             o => o.UserId,
+                             u => u.UserId,
+                             (o, u) => new { o, u })
+                         .Join(_context.Products,
+                             ou => ou.o.ProductId,
+                             p => p.ProductId,
+                             (ou, p) => new { ou.o, ou.u, p })
+                         .Join(_context.DeliveryInfos,
+                             oup => oup.o.DeliveryInfoId,
+                             d => d.DeliveryInfoId,
+                             (oup, d) => new
+                             {
+                                 oup.o.OrderId,
+                                 oup.o.OrderNumber,
+                                 oup.o.UserId,
+                                 oup.u.Name,
+                                 oup.p.ProductName,
+                                 oup.o.Quantity,
+                                 oup.o.Payment,
+                                 d.Address
+                             })).ToList();
+
+            return Json(orderQuery);
+        }
+
         [HttpDelete]
         public IActionResult DeleteProduct(int id)
         {

@@ -426,6 +426,45 @@ function getProducts() {
         });
 }
 
+
+// 獲取訂單資料
+function getOrders() {
+    $.ajax({
+        url: '/Back/GetOrders', // 假設 API 路徑是這樣
+        method: 'GET',
+        dataType: 'json',
+        success: function (data) {
+            console.log(data)
+            const orderTable = $('#orderTable');
+            orderTable.empty(); // 清空表格
+
+            if (data && data.length > 0) {
+                data.forEach(order => {                    
+                    orderTable.append(`<tr>                    
+                        <td>${order.orderNumber}</td>
+                        <td>${order.userId}</td>
+                        <td>${order.name}</td>
+                        <td>${order.productName}</td>
+                        <td>${order.quantity}</td>
+                        <td>${order.payment}</td>
+                        <td>${order.address}</td>
+                        <td>
+                            <button onclick="deleteProduct(${order.productID})">刪除</button>
+                        </td>
+                    </tr>`);
+                });
+            } else {
+                alert('沒有商品資料');
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching products:', error);
+            alert('獲取商品資料時發生錯誤: ' + error);
+        }
+    });
+}
+document.addEventListener('DOMContentLoaded', getOrders);
+
 // 用來刪除商品
 function deleteProduct(id) {
     fetch(`/Back/DeleteProduct/${id}`, {

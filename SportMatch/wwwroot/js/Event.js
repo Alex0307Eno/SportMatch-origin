@@ -9,23 +9,52 @@ document.addEventListener("DOMContentLoaded", () => {
     let currentYear = date.getFullYear();
     let currentMonth = date.getMonth();
 
+    // 建立一個 Tooltip 元素
+    const tooltip = document.createElement("div");
+    tooltip.className = "calendar-tooltip";
+    tooltip.style.display = "none";
+    document.body.appendChild(tooltip);
+
+    // 顯示 Tooltip 函數
+    function showTooltip(e, text) {
+        tooltip.textContent = text;
+        tooltip.style.left = e.pageX + "px";
+        tooltip.style.top = e.pageY - 40 + "px";
+        tooltip.style.display = "block";
+    }
+
+    // 隱藏 Tooltip 函數
+    function hideTooltip() {
+        tooltip.style.display = "none";
+    }
     function renderCalendar() {
         calendarDays.innerHTML = "";
-        const firstDayOfMonth = new Date(currentYear, currentMonth, 1).getDay();
-        const totalDaysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
 
-        monthYear.textContent = `${currentYear}年 ${currentMonth + 1}月`;
+        const firstDay = new Date(currentYear, currentMonth, 1);
+        const lastDay = new Date(currentYear, currentMonth + 1, 0);
 
-        // 添加空白占位符
-        for (let i = 0; i < firstDayOfMonth; i++) {
-            const emptyCell = document.createElement("div");
-            calendarDays.appendChild(emptyCell);
+        const startDayOfWeek = firstDay.getDay(); // 星期幾開始
+        const totalDaysInMonth = lastDay.getDate(); // 當月總天數
+
+        // 前一個月的資訊
+        const prevMonth = currentMonth === 0 ? 11 : currentMonth - 1;
+        const prevYear = currentMonth === 0 ? currentYear - 1 : currentYear;
+        const prevMonthTotalDays = new Date(prevYear, prevMonth + 1, 0).getDate();
+
+        //補前一個月的尾巴
+        for (let i = startDayOfWeek - 1; i >= 0; i--) {
+            const day = prevMonthTotalDays - i;
+            const dayElement = document.createElement("div");
+            dayElement.textContent = day;
+            dayElement.classList.add("dimmed"); // 加淡色樣式
+            calendarDays.appendChild(dayElement);
         }
 
-        // 填充日期
+        //當月天數
         for (let day = 1; day <= totalDaysInMonth; day++) {
             const dayElement = document.createElement("div");
             dayElement.textContent = day;
+            dayElement.style.position = "relative";
 
             let dateString = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
 
@@ -38,13 +67,38 @@ document.addEventListener("DOMContentLoaded", () => {
                 dayElement.classList.add("today");
             }
 
-            // 標記重要日期
+            // 標記事件
             if (markedDates.includes(dateString)) {
                 dayElement.classList.add("marked");
+                const event = eventData.find(ev => ev.date === dateString);
+                dayElement.addEventListener("click", (e) => {
+                    const ripple = document.createElement("span");
+                    ripple.classList.add("ripple");
+                    ripple.style.left = `${e.offsetX}px`;
+                    ripple.style.top = `${e.offsetY}px`;
+                    dayElement.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600);
+                    if (event) showTooltip(e, event.eventName);
+                });
+                dayElement.addEventListener("mouseleave", () => hideTooltip());
             }
 
             calendarDays.appendChild(dayElement);
         }
+
+        //補下個月的開頭
+        const currentCells = calendarDays.children.length;
+        const nextDays = 42 - currentCells;
+
+        for (let i = 1; i <= nextDays; i++) {
+            const dayElement = document.createElement("div");
+            dayElement.textContent = i;
+            dayElement.classList.add("dimmed"); // 加淡色樣式
+            calendarDays.appendChild(dayElement);
+        }
+
+        // 標題更新
+        monthYear.textContent = `${currentYear}年 ${currentMonth + 1}月`;
     }
 
     prevMonth.addEventListener("click", () => {
@@ -67,7 +121,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     renderCalendar();
 });
-//寫jquery在原頁面
 //倒數計時器
 document.addEventListener("DOMContentLoaded", function () {
     var countdownElements = document.querySelectorAll(".countdown");

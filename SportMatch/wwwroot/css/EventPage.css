@@ -29,13 +29,13 @@ h5 {
 /*日曆區*/
 .calendar {
     width: 350px;
-    height:355px;
-    background: white;
+    height: 355px;
+    background: linear-gradient(rgba(255, 255, 255, 0.5), navajowhite);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     overflow: hidden;
     padding: 10px;
-    margin-top:15px;
+    margin-top: 15px;
     z-index: 2;
 }
 
@@ -44,7 +44,7 @@ h5 {
     justify-content: space-between;
     align-items: center;
     padding: 10px;
-    background: #c69f65e9;
+    background: #c89e76d1;
     color: white;
 }
 
@@ -59,7 +59,7 @@ h5 {
 .calendar-weekdays {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
-    background: #ddd;
+    background: #ffebd229;
     text-align: center;
     padding: 5px 0;
     font-weight: bold;
@@ -84,17 +84,81 @@ h5 {
     background: #ddd;
 }
 
-.today {
+    .calendar-days div.dimmed {
+        color: #b69494;
+        opacity: 0.6;
+    }
+
+.calendar-days .today {
     background: #efca6d;
     color: white;
     font-weight: bold;
 }
+    .calendar-days .today:hover {
+        background: #fbcc54;
+    }
 
-.marked {
+.calendar-days .marked {
     background: #ff4d4db3;
     color: white;
     font-weight: bold;
+    transition: background 0.2s ease;
 }
+
+.calendar-days .marked:hover {
+    background: #ff0d0db3;
+}
+/*日曆特效*/
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255, 0, 0, 0.3);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    animation: ripple 0.6s ease-out;
+    z-index: 10;
+}
+
+@keyframes ripple {
+    from {
+        width: 10px;
+        height: 10px;
+        opacity: 0.5;
+    }
+
+    to {
+        width: 120px;
+        height: 120px;
+        opacity: 0;
+    }
+}
+/*tooltip*/
+.calendar-tooltip {
+    position: absolute;
+    background: #7a66ff;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 20;
+    transform: translate(-50%, -100%);
+    animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -90%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -100%);
+    }
+}
+
 /*下拉選單*/
 .filter-section h2 {
     margin-bottom: 20px;
@@ -201,7 +265,7 @@ h5 {
     background-image: url('/image/EventPicture/basketball-ticket.png');
     padding: 15px; /*距離邊框*/
     width: auto;
-    height:180px;
+    height: 180px;
     background-position: center center; /*置中*/
     background-size: 100% 180px; /* 寬度拉伸到100%，高度固定180 */
     background-repeat: no-repeat; /* 圖片是否重複 */

@@ -1,11 +1,10 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model List<SportMatch.Models.EventPageModel>
 @{
     Layout = "_Layout";
     @using System.Text.Json;
-    // var countdowns = ViewBag.Countdowns as List<object>;
+    @model List<SportMatch.Models.EventPageModel>
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -191,12 +190,18 @@
     </div>
 </body>
 <script defer>
-    var markedDates = @Html.Raw(JsonSerializer.Serialize(Model?.Select(e => e.EventDate.ToString("yyyy-MM-dd")) ?? new List<string>()))
+        const eventData = @Html.Raw(JsonSerializer.Serialize(
+            Model.Select(e => new
+            {
+                date = e.EventDate.ToString("yyyy-MM-dd"), 
+                eventName = e.EventName
+            })
+        ));
+        const markedDates = eventData.map(ev => ev.date);
 </script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/js/Event.js" defer></script>
-
-<script>//jquery先寫在這
+<script>
       $(document).ready(function () {
         $(".toggle-button").on("click", function () {
             let carousel = $(".EventCarousel");

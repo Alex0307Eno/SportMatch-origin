@@ -402,7 +402,7 @@ function loadMember() {
     const paymentMethodSelect = document.getElementById("payment-method");
     const paginationContainer = document.getElementById("pagination"); // 分頁容器
     let currentPage = 1;  // 當前頁數
-    const itemsPerPage = 15; // 每頁顯示筆數
+    const itemsPerPage = 8; // 每頁顯示筆數
     let allData = []; // 存放所有會員資料
 
     // 動態填充篩選選項
@@ -536,7 +536,7 @@ function loadMember() {
 // 0328_OneLine_新改寫_獲取商品資料
 function loadProducts() {
     let currentPage = 1; // 當前頁數
-    const pageSize = 15; // 每頁顯示筆數
+    const pageSize = 4; // 每頁顯示筆數
     let allProducts = []; // 存放所有商品
     let totalPages = 1; // 總頁數
 
@@ -665,7 +665,7 @@ function loadProducts() {
 // 0328_OneLine_新改寫_獲取訂單資料
 function loadOrders() {
     let currentPage = 1; // 當前頁數
-    const pageSize = 15; // 每頁顯示的筆數
+    const pageSize = 8; // 每頁顯示的筆數
     let totalPages = 1; // 總頁數
     let allOrders = []; // 存放所有訂單
     function getOrders() {
@@ -814,7 +814,7 @@ function deleteProduct(id) {
 //
 function loadContact() {
     let currentPage = 1; // 當前頁數
-    const pageSize = 5; // 每頁顯示的筆數
+    const pageSize = 4; // 每頁顯示的筆數
     let totalPages = 1; // 總頁數
     let allContact = []; // 存放所有訂單
     function getContact() {

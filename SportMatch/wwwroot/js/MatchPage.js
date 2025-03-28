@@ -87,8 +87,8 @@ function renderPage(sport) {
 
     pageItems.forEach(event => {
         let checkbox = `<div class="col-6">
-                                <input type="checkbox" id="${event}" name="MatchEvent" value="${event}" class="MatchCheckBoxItem me-1 forCheckEvent d-block" style="cursor:pointer">
-                                <label for="${event}" style="cursor:pointer" class="d-block">${event}</label><br>
+                                <input type="checkbox" id="${event}" name="MatchEvent" value="${event}" class="MatchCheckBoxItem me-1 forCheckEvent" style="cursor:pointer">
+                                <label for="${event}" style="cursor:pointer;font-size:larger" >${event}</label><br>
                                 </div>`;
         container.append(checkbox);
     });
@@ -212,7 +212,7 @@ function getRole() {
                     $("#RoleContainer").append(`
                     <label class="col-6">
 						<input type="checkbox" id="${x}" name="MatchRole" value="${x}" class="MatchCheckBoxItem me-1 mt-2 forCheckRole" style="cursor:pointer">
-                        <label for="${x}" style="cursor:pointer">${x}</label>
+                        <label for="${x}" style="cursor:pointer;font-size:large">${x}</label>
 					</label><br>
                     `)
                 })
@@ -247,19 +247,19 @@ function loadCards(page) {
                 response.cards.forEach(card => {
                     cardContainer.append(`
                  <div class="col-md-6 mb-3">
-                     <div class="card mb-3 " style="max-width: 540px;">
+                     <div class="card mb-3 " style="max-width: 100%;">
                          <div class="row g-0">
                              <div class="col-md-4">
 	                                <img src="${card.image}" class="img-fluid rounded-start" alt="...">
                              </div>
                              <div class="col-md-8">
 	                                <div class="card-body">
-		                                <p class="card-title" style="font-size:x-large">${card.name}</p>
+		                                <p class="card-title" style="font-size:xx-large">${card.name}</p>
 		                                <hr/>
-		                                <p class="card-text">招募位置：${card.role}</p>
+		                                <p class="card-text" style="font-size:x-large">招募位置：${card.role}</p>
 		                                <div class="row">
 			                                <div class="col-md-8 d-flex align-items-center">
-				                                <label class="card-text Memo" >隊伍簡介</label>
+				                                <label class="card-text Memo" style="font-size:large">隊伍簡介</label>
 				                                <a id="personalInfo" class="bi bi-info-square ms-2"
 				                                   style="color: white;cursor: pointer;" data-bs-toggle="modal"
 				                                   data-bs-target="#playerModal"
@@ -345,19 +345,19 @@ function getSelectionCard(page) {
                         response.cards.forEach(card => {
                             cardContainer.append(`
                  <div class="col-md-6 mb-3">
-                     <div class="card mb-3 " style="max-width: 540px;">
+                     <div class="card mb-3 " style="max-width: 100%">
                          <div class="row g-0">
                              <div class="col-md-4">
 	                                <img src="${card.image}" class="img-fluid rounded-start" alt="...">
                              </div>
                              <div class="col-md-8">
 	                                <div class="card-body">
-		                                <p class="card-title" style="font-size:x-large">${card.name}</p>
+		                                <p class="card-title" style="font-size:xx-large">${card.name}</p>
 		                                <hr/>
-		                                <p class="card-text">擅長位置：${card.role}</p>
+		                                <p class="card-text" style="font-size:x-large">擅長位置：${card.role}</p>
 		                                <div class="row">
 			                                <div class="col-md-8 d-flex align-items-center">
-				                                <label class="card-text Memo" >個人簡介</label>
+				                                <label class="card-text Memo" style="font-size:large">個人簡介</label>
 				                                <a id="personalInfo" class="bi bi-info-square ms-2"
 				                                   style="color: white;cursor: pointer;" data-bs-toggle="modal"
 				                                   data-bs-target="#playerModal"
@@ -384,19 +384,19 @@ function getSelectionCard(page) {
                         response.cards.forEach(card => {
                             cardContainer.append(`
                  <div class="col-md-6 mb-3">
-                     <div class="card mb-3 " style="max-width: 540px;">
+                     <div class="card mb-3 " style="max-width:100%;">
                          <div class="row g-0">
                              <div class="col-md-4">
 	                                <img src="${card.image}" class="img-fluid rounded-start" alt="...">
                              </div>
                              <div class="col-md-8">
 	                                <div class="card-body">
-		                                <p class="card-title" style="font-size:x-large">${card.name}</p>
+		                                <p class="card-title" style="font-size:xx-large">${card.name}</p>
 		                                <hr/>
-		                                <p class="card-text">招募位置：${card.role}</p>
+		                                <p class="card-text" style="font-size:x-large">招募位置：${card.role}</p>
 		                                <div class="row">
 			                                <div class="col-md-8 d-flex align-items-center">
-				                                <label class="card-text Memo">隊伍簡介</label>
+				                                <label class="card-text Memo" style="font-size:large">隊伍簡介</label>
 				                                <a id="personalInfo" class="bi bi-info-square ms-2"
 				                                   style="color: white;cursor: pointer;" data-bs-toggle="modal"
 				                                   data-bs-target="#playerModal"
@@ -425,7 +425,7 @@ function getSelectionCard(page) {
                     console.log("error");
                     cardContainer.append(`
                     <img src="../image/MatchPage/NotFound2.gif" alt="GIF Image" style="width:40%">
-                    <label class="text-light text-center" style="font-size:x-large" >抱歉，目前沒有符合的查詢結果😓</label>
+                    <label class="text-light text-center" style="font-size:xx-large" >抱歉，目前沒有符合的查詢結果😓</label>
                     `);
 
                     $("#paginationInfo").text(`當前第 0 頁 ，總共 0 筆資料`);
@@ -482,19 +482,19 @@ function getSelectionCardNextPage(page) {
                 response.cards.forEach(card => {
                     cardContainer.append(`
                  <div class="col-md-6 mb-3">
-                     <div class="card mb-3 " style="max-width: 540px;">
+                     <div class="card mb-3 " style="max-width: 100%">
                          <div class="row g-0">
                              <div class="col-md-4">
                                  <img src="${card.image}" class="img-fluid rounded-start" alt="...">
                              </div>
                              <div class="col-md-8">
                                  <div class="card-body">
-                                  <p class="card-title" style="font-size:x-large">${card.name}</p>
+                                  <p class="card-title" style="font-size:xx-large">${card.name}</p>
                                   <hr/>
-                                  <p class="card-text">擅長位置：${card.role}</p>
+                                  <p class="card-text" style="font-size:x-large">擅長位置：${card.role}</p>
                                   <div class="row">
                                    <div class="col-md-8 d-flex align-items-center">
-                                    <label class="card-text Memo">個人簡介</label>
+                                    <label class="card-text Memo" style="font-size:large">個人簡介</label>
                                     <a id="personalInfo" class="bi bi-info-square ms-2"
                                        style="color: white;cursor: pointer;" data-bs-toggle="modal"
                                        data-bs-target="#playerModal"
@@ -521,19 +521,19 @@ function getSelectionCardNextPage(page) {
                 response.cards.forEach(card => {
                     cardContainer.append(`
                  <div class="col-md-6 mb-3">
-                     <div class="card mb-3 " style="max-width: 540px;">
+                     <div class="card mb-3 " style="max-width: 100%">
                          <div class="row g-0">
                              <div class="col-md-4">
                                  <img src="${card.image}" class="img-fluid rounded-start" alt="...">
                              </div>
                              <div class="col-md-8">
                                  <div class="card-body">
-                                  <p class="card-title" style="font-size:x-large">${card.name}</p>
+                                  <p class="card-title" style="font-size:xx-large">${card.name}</p>
                                   <hr/>
-                                  <p class="card-text">招募位置：${card.role}</p>
+                                  <p class="card-text" style="font-size:x-large">招募位置：${card.role}</p>
                                   <div class="row">
                                    <div class="col-md-8 d-flex align-items-center">
-                                    <label class="card-text Memo">隊伍簡介</label>
+                                    <label class="card-text Memo" style="font-size:large">隊伍簡介</label>
                                     <a id="personalInfo" class="bi bi-info-square ms-2"
                                        style="color: white;cursor: pointer;" data-bs-toggle="modal"
                                        data-bs-target="#playerModal"

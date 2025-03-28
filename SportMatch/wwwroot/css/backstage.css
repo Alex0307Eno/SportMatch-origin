@@ -15,7 +15,7 @@ h1 {
 
 table {
     width: 100%;
-    border-collapse: collapse;
+/*    border-collapse: collapse;*/
     margin-top: 20px;
 }
 
@@ -114,8 +114,7 @@ body {
 
 /* 內容區 */
 .content {
-    flex: 1;
-    background-color: #fff;
+    flex: 1;    
     margin-left: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     border-radius: 8px;
@@ -183,10 +182,10 @@ h1 {
 /* 表格樣式 */
 table {
     width: 100%;
-    border-collapse: collapse;
-    background-color: #fff;
+/*    border-collapse: collapse;*/
+    background-color: rgba(255, 255, 255, 0.7);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+/*    border-radius: 8px;*/
 }
 
 thead {
@@ -197,7 +196,7 @@ th,
 td {
     padding: 10px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+/*    border-bottom: 1px solid #ddd;*/
 }
 
 tbody tr:hover {
@@ -313,16 +312,14 @@ tbody tr:hover {
     }
 
 /* 歡迎訊息的樣式 */
-.welcome-message {
-    background-color: #f4f4f4;
+.welcome-message {    
     padding: 10px;
     width: 200px;
     border-radius: 5px;
     margin-bottom: 20px;
     font-size: 18px;
     font-weight: bold;
-    text-align: center;
-    color: #333;
+    text-align: center;    
 }
 
 /* 側邊欄圖標樣式 */

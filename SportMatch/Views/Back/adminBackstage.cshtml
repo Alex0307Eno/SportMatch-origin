@@ -9,11 +9,10 @@
 
 
 
-<title>SportMatch 訂單紀錄</title>
-<link rel="stylesheet" href="/css/backstage.css" />
-<link rel="stylesheet" href="/layout/layout.css" />
-<link rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
+
+
+<link rel="stylesheet" href="~/css/backstage.css" />
 
 <style>    
     #background {
@@ -34,6 +33,26 @@
         background-color: rgba(0, 0, 0, 0.7);
         z-index: -50;
     }
+
+    .content{
+        background-color: rgba(255, 255, 255, 0.2);
+    }
+
+    .welcome-message {
+        background-color:transparent;
+        color: #f3f5f5;
+    }
+
+    label {
+        color:#f3f5f5;
+        font-size:xx-large;
+    }
+    
+    .delete-btn{
+        border-radius: 8px;
+        background-color:rgb(255,0,0,0.7);
+    }
+
 </style>
 
 <div id="background" style="width:100%">
@@ -45,15 +64,15 @@
                     <ul>
                         <li class="active"
                             data-target="member-management"
-                            onclick="switchTab('member-management')">
+                            onclick="switchTab('member-management');loadMember()">
                             <i class="fas fa-person"></i> 會員管理
                         </li>
                         <li data-target="product-management"
-                            onclick="switchTab('product-management')">
+                            onclick="switchTab('product-management');loadProducts()">
                             <i class="fas fa-box"></i> 商品管理
                         </li>
                         <li data-target="order-management"
-                            onclick="switchTab('order-management')">
+                            onclick="switchTab('order-management');loadOrders()">
                             <i class="fas fa-clipboard-list"></i> 訂單管理
                         </li>
                     </ul>
@@ -61,12 +80,11 @@
             </aside>
 
             <main class="content">
-                <div class="welcome-message">
+                <div class="welcome-message mt-2">
                     <p id="userNameDisplay">歡迎，訪客</p>
                 </div>
 
-                <header style="" id="header">
-                    <h1>歷史紀錄</h1>
+                <header style="" id="header" class="ms-5">                    
                     <div class="tabs">
                         <button class="tab-button active" data-target="order-history">
                             已上架
@@ -91,7 +109,7 @@
                         <button id="search-btn">搜尋</button>
                     </div>
                 </header>
-                <div class="filter">
+                <div class="filter me-5">
                     <label for="payment-method">篩選方式</label>
                     <select id="payment-method">
                         <!-- JavaScript 會填充這些選項 -->
@@ -101,8 +119,8 @@
 
 
                 <!-- 會員管理區域 -->
-                <section id="member-management" class="section-content">
-                    <h2>會員管理</h2>
+                <section id="member-management" class="section-content mx-5">
+                    <label>會員管理</label>
                     <table>
                         <thead>
                             <tr>
@@ -121,8 +139,8 @@
                     </table>
                 </section>
                 <!-- 商品管理區域 -->
-                <section id="product-management" class="section-content">
-                    <h2>商品管理</h2>
+                <section id="product-management" class="section-content mx-5">
+                    <label>商品管理</label>
                     <table>
                         <thead>
                             <tr>
@@ -141,8 +159,8 @@
                 </section>
 
                 <!-- 訂單管理區域 -->
-                <section id="order-management" class="section-content">
-                    <h2>訂單管理</h2>
+                <section id="order-management" class="section-content mx-5">
+                    <label>訂單管理</label>
                     <table>
                         <thead>
                             <tr>
@@ -161,7 +179,9 @@
                         </tbody>
                     </table>
                 </section>
-
+                <div style="display: flex; justify-content: flex-end;">
+                    <div id="pagination" style="padding: 5px;" class="me-5 mt-3"></div>
+                </div>
                 @* <!-- 已上架商品區 --> *@
                 @* <section id="order-history" class="tab-content active" style="display:none;"> *@
                 @*     <h2>已上架</h2> *@

@@ -11,7 +11,8 @@
 
 
 
-
+<link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
 <link rel="stylesheet" href="~/css/backstage.css" />
 
 <style>    
@@ -74,6 +75,10 @@
                         <li data-target="order-management"
                             onclick="switchTab('order-management');loadOrders()">
                             <i class="fas fa-clipboard-list"></i> 訂單管理
+                        </li>
+                        <li data-target="contact-management"
+                            onclick="switchTab('contact-management');loadContact()">
+                            <i class="fa-solid fa-comments"></i>客戶回饋                                                   
                         </li>
                     </ul>
                 </nav>
@@ -179,6 +184,31 @@
                         </tbody>
                     </table>
                 </section>
+
+                <!-- 客戶回饋區域 -->
+                <section id="contact-management" class="section-content mx-5">
+                    <label>客戶回饋</label>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>案件編號</th>                                
+                                <th>客戶名稱</th>
+                                <th>聯絡信箱</th>
+                                <th>聯絡電話</th>
+                                <th>類型</th>
+                                <th>標題</th>
+                                <th>內容</th>
+                                <th>狀態</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="contactTable">
+                            <!-- 這裡會透過 JS 插入會員資料 -->
+                        </tbody>
+                    </table>
+                </section>
+
+
                 <div style="display: flex; justify-content: flex-end;">
                     <div id="pagination" style="padding: 5px;" class="me-5 mt-3"></div>
                 </div>

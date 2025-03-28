@@ -184,6 +184,29 @@ namespace SportMatch.Controllers
             return Json(orderQuery);
         }
 
+        [HttpGet]
+        public IActionResult GetContact()
+        {
+            // 先從資料庫獲取資料
+            var contacts = _context.Contacts.ToList();
+            
+            var contactList = contacts.Select(c => new
+            {
+                contactId = c.MessageId,
+                Name = c.Name,
+                Email = c.Email,
+                Phone = c.Phone,
+                Type = c.Type,
+                Title = c.Title,
+                Content = c.Content,
+                Status=c.ReplyContent,
+
+            }).ToList();
+
+            return Json(contactList);
+        }
+
+
         [HttpDelete]
         public IActionResult DeleteProduct(int id)
         {

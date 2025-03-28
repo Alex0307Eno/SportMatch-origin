@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const targetSection = document.getElementById(targetId);
             targetSection.classList.add("active");
 
-            if (targetId === "member-management") {
+            if (!(targetId === "product-management")) {
                 // 隱藏 header 和已上架、待審核的部分
                 if (header) header.style.display = "none"; // 隱藏 header
                 document.getElementById("order-history").style.display = "none"; // 隱藏已上架
@@ -808,6 +808,97 @@ function deleteProduct(id) {
             console.error('Error deleting product:', error);
             alert('刪除商品時發生錯誤');
         });
+}
+
+
+//
+function loadContact() {
+    let currentPage = 1; // 當前頁數
+    const pageSize = 5; // 每頁顯示的筆數
+    let totalPages = 1; // 總頁數
+    let allContact = []; // 存放所有訂單
+    function getContact() {
+        $.ajax({
+            url: '/Back/GetContact', // 假設 API 支援返回所有訂單的接口
+            method: 'GET',
+            dataType: 'json',
+            success: function (data) {
+                if (data && Array.isArray(data)) {
+                    allContact = data; // 儲存回饋數據
+                    totalPages = Math.ceil(allContact.length / pageSize); // 計算總頁數
+                    currentPage = 1; // 預設從第 1 頁開始
+                    renderTable(); // 渲染表格
+                    renderPagination(); // 渲染分頁按鈕
+                } else {
+                    alert('沒有回饋資料');
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('獲取回饋資料時發生錯誤:', error);
+                alert('獲取回饋資料時發生錯誤: ' + error);
+            }
+        });
+    }
+    getContact();
+    // 渲染表格（根據當前頁數）
+    function renderTable() {
+        const contactTable = $('#contactTable');
+        contactTable.empty(); // 清空表格
+
+        let start = (currentPage - 1) * pageSize;
+        let end = start + pageSize;
+        let paginatedContacts = allContact.slice(start, end); // 根據當前頁數分頁
+
+        paginatedContacts.forEach(contact => {
+            contactTable.append(`<tr>
+            <td>${contact.contactId}</td>
+            <td>${contact.name}</td>
+            <td>${contact.email}</td>
+            <td>${contact.phone}</td>
+            <td>${contact.type}</td>
+            <td>${contact.title}</td>
+            <td>${contact.content}</td>
+            <td>${contact.status}</td>
+            <td>
+                <button onclick="deleteProduct(${contact.productID})" class="delete-btn">刪除</button>
+            </td>
+        </tr>`);
+        });
+
+        renderPagination(); // 更新分頁按鈕
+    }
+
+    // 渲染分頁按鈕
+    function renderPagination() {
+        const paginationDiv = $('#pagination');
+        paginationDiv.empty(); // 清空分頁區域
+
+        if (totalPages <= 1) return; // 只有一頁則不顯示分頁按鈕
+
+        const prevDisabled = currentPage === 1 ? 'disabled' : '';
+        const nextDisabled = currentPage === totalPages ? 'disabled' : '';
+
+        paginationDiv.append(`
+        <button id="prevPage" style="background-color:transparent;font-size:x-large" ${prevDisabled}><</button>
+        <span style="background-color:transparent;font-size:x-large;color:white">${currentPage} / ${totalPages} </span>
+        <button id="nextPage" style="background-color:transparent;font-size:x-large" ${nextDisabled}>></button>
+    `);
+
+        // 綁定按鈕事件
+        $('#prevPage').on('click', function () {
+            if (currentPage > 1) {
+                currentPage--;
+                renderTable();
+            }
+        });
+
+        $('#nextPage').on('click', function () {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderTable();
+            }
+        });
+    }
 }
 
 

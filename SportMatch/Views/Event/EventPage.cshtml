@@ -4,7 +4,7 @@
 @{
     Layout = "_Layout";
     @using System.Text.Json;
-    @model List<SportMatch.Models.EventPageModel>
+    @model SportMatch.Models.FilterResultViewModel
 }
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -19,142 +19,46 @@
                     <div class="filter-section">
                         <h2>篩選賽事:</h2>
                         <div class="dropdowns">
-                            <select class="form-control">
-                                <option>籃球</option>
-                                <option>羽球</option>
-                                <option>排球</option>
-                            </select>
-                            <select class="form-control">
-                                <option>比賽日期</option>
-                                <option>一周內開始</option>
-                                <option>一個月內</option>
-                                <option>三個月內</option>
-                                <option>三個月以上</option>
-                            </select>
-                            <select class="form-control">
-                                <option>比賽類型</option>
-                                <option>兒童組</option>
-                                <option>青少年組</option>
-                                <option>社會組</option>
-                                <option>長青組</option>
-                            </select>
-                            <select class="form-control">
-                                <option>性別類組</option>
-                                <option>男子組</option>
-                                <option>女子組</option>
-                            </select>
-                            <select class="form-control">
-                                <option>賽事地點</option>
-                                <option>北部</option>
-                                <option>中部</option>
-                                <option>南部</option>
-                                <option>東部</option>
-                            </select>
-                        <input type="submit" value="搜尋" class="btn btn-danger">
+                            <form id="filterForm" method="post" action="/Event/FilterEvents">
+                                <select name="SportType" class="form-control">
+                                    <option value="">所有運動</option>
+                                    <option value="籃球">籃球</option>
+                                    <option value="排球">排球</option>
+                                    <option value="羽球">羽球</option>
+                                </select>
+                                <select name="DateRange" class="form-control">
+                                    <option value="">比賽日期</option>
+                                    <option value="一周內開始">一周內開始</option>
+                                    <option value="一個月內">一個月內</option>
+                                    <option value="三個月內">三個月內</option>
+                                    <option value="三個月以上">三個月以上</option>
+                                </select>
+                                <select name="EventGroup" class="form-control">
+                                        <option value="">比賽類型</option>
+                                        <option value="兒童組">兒童組</option>
+                                        <option value="青少年組">青少年組</option>
+                                        <option value="社會組">社會組</option>
+                                        <option value="長青組">長青組</option>
+                                </select>
+                                <select name="Gender" class="form-control">
+                                        <option value="">性別類組</option>
+                                        <option value="男子組">男子組</option>
+                                        <option value="女子組">女子組</option>
+                                </select>
+                                <select name="Area" class="form-control">
+                                        <option value="">賽事地點</option>
+                                        <option value="北部">北部</option>
+                                        <option value="中部">中部</option>
+                                        <option value="南部">南部</option>
+                                        <option value="東部">東部</option>
+                                </select>
+                                <input type="submit" value="搜尋" class="btn btn-danger">
+                            </form>
                         </div>
                     </div>
-                    <!-- 分頁按鈕區域 -->
-                    <div class="MyPagination" id="MyPagination">
-                    </div>
-                    <!--賽事資訊區域 + 報名按鈕 -->
+                <!--分頁按鈕區域+賽事資訊區域 + 報名按鈕 -->
                     <div class="events-section" id="events-container">
-                        @foreach (var item in Model)
-                        {
-                            @* var countdownData = item as dynamic; *@
-                            long targetTimestamp = ((DateTimeOffset)item.EventDate).ToUnixTimeMilliseconds();
-                                <div class="event-card event-item">
-                                <div class="event-heart">
-                                    <div class="heartbox">
-                                        <input type="checkbox" class="checkbox" id="checkbox_@item.EventID" />
-                                    <label for="checkbox_@item.EventID" class="custom-checkbox">
-                                            <svg id="heart-svg" viewBox="467 392 58 57" xmlns="http://www.w3.org/2000/svg">
-                                                <g id="Group" fill="none" fill-rule="evenodd" transform="translate(467 392)">
-                                                    <path d="M29.144 20.773c-.063-.13-4.227-8.67-11.44-2.59C7.63 28.795 28.94 43.256 29.143 43.394c.204-.138 21.513-14.6 11.44-25.213-7.214-6.08-11.377 2.46-11.44 2.59z" id="heart" fill="#AAB8C2" />
-                                                    <circle id="main-circ" fill="#E2264D" opacity="0" cx="29.5" cy="29.5" r="1.5" />
-                                                    <g id="heartgroup7" opacity="0" transform="translate(7 6)">
-                                                        <circle id="heart1" fill="#9CD8C3" cx="2" cy="6" r="2" />
-                                                        <circle id="heart2" fill="#8CE8C3" cx="5" cy="2" r="2" />
-                                                    </g>
-                                                    <g id="heartgroup6" opacity="0" transform="translate(0 28)">
-                                                        <circle id="heart1" fill="#CC8EF5" cx="2" cy="7" r="2" />
-                                                        <circle id="heart2" fill="#91D2FA" cx="3" cy="2" r="2" />
-                                                    </g>
-                                                    <g id="heartgroup3" opacity="0" transform="translate(52 28)">
-                                                        <circle id="heart2" fill="#9CD8C3" cx="2" cy="7" r="2" />
-                                                        <circle id="heart1" fill="#8CE8C3" cx="4" cy="2" r="2" />
-                                                    </g>
-                                                    <g id="heartgroup2" opacity="0" transform="translate(44 6)">
-                                                        <circle id="heart2" fill="#CC8EF5" cx="5" cy="6" r="2" />
-                                                        <circle id="heart1" fill="#CC8EF5" cx="2" cy="2" r="2" />
-                                                    </g>
-                                                    <g id="heartgroup5" opacity="0" transform="translate(14 50)">
-                                                        <circle id="heart1" fill="#91D2FA" cx="6" cy="5" r="2" />
-                                                        <circle id="heart2" fill="#91D2FA" cx="2" cy="2" r="2" />
-                                                    </g>
-                                                    <g id="heartgroup4" opacity="0" transform="translate(35 50)">
-                                                        <circle id="heart1" fill="#F48EA7" cx="6" cy="5" r="2" />
-                                                        <circle id="heart2" fill="#F48EA7" cx="2" cy="2" r="2" />
-                                                    </g>
-                                                    <g id="heartgroup1" opacity="0" transform="translate(24)">
-                                                        <circle id="heart1" fill="#9FC7FA" cx="2.5" cy="3" r="2" />
-                                                        <circle id="heart2" fill="#9FC7FA" cx="7.5" cy="2" r="2" />
-                                                    </g>
-                                                </g>
-                                            </svg>
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="event-info">
-                                    <h1>@item.EventName</h1>
-                                    <p>比賽日期:@item.EventDate</p>
-                                </div>
-                                <h1 class="countdown" data-target-time="@targetTimestamp"></h1>
-                            <!-- 按鈕開啟報名彈窗 -->
-                            <button class="join-btn open-modal" data-title="@item.EventName">立即報名</button>
-                            </div>
-                        <!-- 報名彈窗 -->
-                        <div id="modal-overlay" class="modal-overlay">
-                            <div class="modal-content">
-                                <button class="close-btn">&times;</button>
-                                <h2 id="modal-title">比賽名稱</h2>
-                                <form action="#" method="post">
-                                    <label for="name">姓名：</label>
-                                    <input type="text" id="name" name="name" required><br><br>
-
-                                    <label for="id">身分證字號：</label>
-                                    <input type="text" id="id" name="id" required><br><br>
-
-                                    <label for="phone">手機號碼：</label>
-                                    <input type="tel" id="phone" name="phone" required><br><br>
-
-                                    <label for="email">Email：</label>
-                                    <input type="email" id="email" name="email" required><br><br>
-
-                                    <label>性別：</label>
-                                    <input type="radio" id="male" name="gender" value="男" required>
-                                    <label for="male">男</label>
-                                    <input type="radio" id="female" name="gender" value="女" required>
-                                    <label for="female">女</label><br><br>
-
-                                    <label for="birthdate">生日：</label>
-                                    <input type="date" id="birthdate" name="birthdate" required><br><br>
-
-                                    <h4>緊急聯絡人資訊</h4>
-                                    <label for="emergency_name">緊急聯絡人姓名：</label>
-                                    <input type="text" id="emergency_name" name="emergency_name" required><br><br>
-
-                                    <label for="emergency_phone">電話：</label>
-                                    <input type="tel" id="emergency_phone" name="emergency_phone" required><br><br>
-
-                                    <label for="relationship">與報名者關係：</label>
-                                    <input type="text" id="relationship" name="relationship" required><br><br>
-
-                                    <button class="btn btn-primary" type="submit">報名</button>
-                                    <button class="btn btn-primary" type="reset">取消報名</button>
-                                </form>
-                            </div>
-                        </div>
-                        }
+                        @await Html.PartialAsync("~/Views/Event/_EventListPartial.cshtml", Model)
                     </div>
                 </div>
             <div class="right">
@@ -191,7 +95,7 @@
 </body>
 <script defer>
         const eventData = @Html.Raw(JsonSerializer.Serialize(
-            Model.Select(e => new
+            Model.Events.Select(e => new
             {
                 date = e.EventDate.ToString("yyyy-MM-dd"), 
                 eventName = e.EventName

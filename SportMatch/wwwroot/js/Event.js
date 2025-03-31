@@ -118,11 +118,26 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         renderCalendar();
     });
+    let eventData = []; // 存放所有事件
+    let markedDates = []; // 所有需標記的日期
 
-    renderCalendar();
+    async function fetchAndMarkEventDates() {
+        try {
+            const res = await fetch("/Event/GetAllEventDates");
+            const events = await res.json();
+
+            eventData = events;
+            markedDates = events.map(e => e.date);
+
+            renderCalendar(); // 重新渲染日曆，會套用標記
+        } catch (err) {
+            console.error("活動日期資料載入失敗：", err);
+        }
+    }
+    fetchAndMarkEventDates();
 });
 //倒數計時器
-document.addEventListener("DOMContentLoaded", function () {
+function initCountdownTimers() {
     var countdownElements = document.querySelectorAll(".countdown");
 
     function updateCountdown() {
@@ -136,12 +151,12 @@ document.addEventListener("DOMContentLoaded", function () {
                 element.innerHTML = "賽事逾期";
                 return;
             }
-            //運算式
+
             var days = Math.floor(distance / (1000 * 60 * 60 * 24));
             var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-            //缺項補零
+
             days = String(days).padStart(2, '0');
             hours = String(hours).padStart(2, '0');
             minutes = String(minutes).padStart(2, '0');
@@ -151,9 +166,11 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 
-    // 每秒更新一次
     setInterval(updateCountdown, 1000);
     updateCountdown();
+}
+document.addEventListener("DOMContentLoaded", function () {
+    initCountdownTimers();
 });
 //報名特效
 document.addEventListener("DOMContentLoaded", function () {
@@ -167,21 +184,21 @@ document.addEventListener("DOMContentLoaded", function () {
             this.innerText = "立即報名";
         });
     });
+    initJoinModalButtons();
 });
 //資料換頁功能
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("Event.js 成功載入！");
+    console.log("Event.js 成功載入");
 
     const itemsPerPage = 5; // 每頁顯示的賽事數量
     let currentPage = 1; 
-    const eventsContainer = document.getElementById("events-container");
+    //const eventsContainer = document.getElementById("events-container");
     const paginationContainer = document.getElementById("MyPagination");
     const eventItems = Array.from(document.querySelectorAll(".event-item"));
     const totalPages = Math.ceil(eventItems.length / itemsPerPage);
     function renderPagination() {
-        paginationContainer.innerHTML = ""; // 先清空按鈕
-
-        const totalVisibleButtons = 7; // 固定按鈕顯示數量，包括 ...
+        //paginationContainer.innerHTML = ""; // 先清空按鈕
+        //const totalVisibleButtons = 7; // 固定按鈕顯示數量，包括 ...
 
         // 建立「上一頁」按鈕
         const prevBtn = document.createElement("button");
@@ -343,31 +360,81 @@ document.addEventListener("DOMContentLoaded", function () {
     }, 8000);
     updateCarousel();
 //彈窗開啟 / 關閉
-document.addEventListener("DOMContentLoaded", function () {
-    // 取得所有報名按鈕
+function initJoinModalButtons() {
     const buttons = document.querySelectorAll(".open-modal");
     const modal = document.getElementById("modal-overlay");
     const modalTitle = document.getElementById("modal-title");
     const closeButton = document.querySelector(".close-btn");
 
-    // 監聽每個按鈕的點擊事件
+    // 清除舊的事件（避免重複綁定）
     buttons.forEach(button => {
+        button.replaceWith(button.cloneNode(true));
+    });
+
+    // 重新選取 clone 後的按鈕
+    document.querySelectorAll(".open-modal").forEach(button => {
         button.addEventListener("click", function () {
-            const matchTitle = this.getAttribute("data-title"); // 取得比賽名稱
-            modalTitle.textContent = matchTitle + " 報名表單"; // 更新彈窗標題
-            modal.style.display = "flex"; // 顯示彈窗
+            const matchTitle = this.getAttribute("data-title");
+            modalTitle.textContent = matchTitle + " 報名表單";
+            modal.style.display = "flex";
         });
     });
 
     // 關閉彈窗
-    closeButton.addEventListener("click", function () {
+    closeButton?.addEventListener("click", function () {
         modal.style.display = "none";
     });
 
-    // 點擊彈窗外部區域關閉
-    modal.addEventListener("click", function (event) {
+// 點擊彈窗外部關閉(不合理，先不要)
+    modal?.addEventListener("click", function (event) {
         if (event.target === modal) {
-            modal.style.display = "none";
+            alert("請透過右上角 X 關閉表單");
         }
     });
+}
+//篩選欄位
+document.addEventListener("DOMContentLoaded", () => {
+    const filterForm = document.getElementById("filterForm");
+
+    // 篩選提交時，送出頁數 = 1
+    filterForm?.addEventListener("submit", function (e) {
+        e.preventDefault();
+        submitWithPage(1);
+    });
+
+    // 點擊任何分頁按鈕（包括上一頁、下一頁）
+    document.addEventListener("click", function (e) {
+        if (e.target.classList.contains("page-btn")) {
+            const page = e.target.dataset.page;
+            if (page) {
+                submitWithPage(page);
+            }
+        }
+    });
+
+    function submitWithPage(page) {
+        const formData = new FormData(filterForm);
+        formData.append("Page", page);
+
+        fetch("/Event/FilterEvents", {
+            method: "POST",
+            body: new URLSearchParams(formData)
+        })
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("events-container").innerHTML = html;
+
+                initCountdownTimers();
+                initJoinModalButtons();     
+
+                window.scrollTo({
+                    top: document.getElementById("events-container").offsetTop - 100,
+                    behavior: "smooth"
+                });
+            })
+            .catch(err => {
+                console.error("分頁載入失敗：", err);
+            });
+    }
 });
+

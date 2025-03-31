@@ -164,7 +164,7 @@ h5 {
     margin-bottom: 20px;
     color:whitesmoke;
 }
-.dropdowns {
+.dropdowns  form{
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
@@ -190,7 +190,7 @@ h5 {
     color: #d32f2f !important; /* 文字顏色變成深紅色 */
 }
 /*換頁按鈕*/
-#MyPagination {
+.MyPagination {
     display: flex;
     justify-content: left; /* 按鈕靠左 */
     margin-bottom: 20px; /* 增加與底下內容的間距 */
@@ -545,9 +545,16 @@ svg #main-circ {
         opacity: 1;
     }
 }
+/*篩選結果為空時*/
+.no-result {
+    text-align: center;
+    font-size: 1.2rem;
+    color: white;
+    margin: 2rem 0;
+}
+
 /*控制頁底距離*/
 footer {
-/*    margin-top: 220px;*/
 }
 /* 輪播區域樣式 */
 .EventCarousel {

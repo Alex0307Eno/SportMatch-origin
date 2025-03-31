@@ -87,8 +87,8 @@ function renderPage(sport) {
 
     pageItems.forEach(event => {
         let checkbox = `<div class="col-6">
-                                <input type="checkbox" id="${event}" name="MatchEvent" value="${event}" class="MatchCheckBoxItem me-1 forCheckEvent" style="cursor:pointer">
-                                <label for="${event}" style="cursor:pointer;font-size:larger" >${event}</label><br>
+                                <input type="checkbox" id="${event}" name="MatchEvent" value="${event}" class="MatchCheckBoxItem me-1 forCheckEvent d-block" style="cursor:pointer">
+                                <label for="${event}" style="cursor:pointer;font-size:larger" class="d-block">${event}</label><br>
                                 </div>`;
         container.append(checkbox);
     });

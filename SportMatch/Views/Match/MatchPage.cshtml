@@ -2,357 +2,357 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    Layout = "_Layout";
+	Layout = "_Layout";
 }
 
 <style>
-    #personalInfo:hover {
-        transform: scale(1.2);
-    }
+	#personalInfo:hover {
+		transform: scale(1.2);
+	}
 
-    .card, .page-link {
-        background-color: rgba(51,25,4,0.3) !important;
-        color: #f3f5f5;
-        backdrop-filter: blur(10px);
-        border: 1px solid #fd7e14; /* 橘色邊框 */
-        box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
-    }
+	.card, .page-link {
+		background-color: rgba(51,25,4,0.3) !important;
+		color: #f3f5f5;
+		backdrop-filter: blur(10px);
+		border: 1px solid #fd7e14; /* 橘色邊框 */
+		box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
+	}
 
-    .modal-content, .dropdown-menu {
-        background-color: rgba(26,10,1);
-        color: #f3f5f5;
-        border: 1px solid #fd7e14; /* 橘色邊框 */
-        box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
-    }
+	.modal-content, .dropdown-menu {
+		background-color: rgba(26,10,1);
+		color: #f3f5f5;
+		border: 1px solid #fd7e14; /* 橘色邊框 */
+		box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
+	}
 
-    .confirm-content {
-        position: fixed; /* 固定在畫面中 */
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%); /* 讓它真正置中 */
-        background-color: rgba(26,10,1);
-        color: #f3f5f5;
-        border: 1px solid #fd7e14; /* 橘色邊框 */
-        box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
-    }
+	.confirm-content {
+		position: fixed; /* 固定在畫面中 */
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%); /* 讓它真正置中 */
+		background-color: rgba(26,10,1);
+		color: #f3f5f5;
+		border: 1px solid #fd7e14; /* 橘色邊框 */
+		box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
+	}
 
-    .pagination .disabled .page-link {
-        background-color: rgb(51,25,4,0.3);
-        color: #331904;
-        border: 1px solid #fd7e14; /* 橘色邊框 */
-        box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
-    }
+	.pagination .disabled .page-link {
+		background-color: rgb(51,25,4,0.3);
+		color: #331904;
+		border: 1px solid #fd7e14; /* 橘色邊框 */
+		box-shadow: 2px 2px 10px rgba(255, 195, 0, 0.3); /* 柔和陰影 */
+	}
 
-    .btn {
-        /* background-color: #fd7e14; */
-        background: linear-gradient(145deg, #fd7e14,#984c0c);
-        color: #f3f5f5;
-        border-radius: 10px;
-    }
+	.btn {
+		/* background-color: #fd7e14; */
+		background: linear-gradient(145deg, #fd7e14,#984c0c);
+		color: #f3f5f5;
+		border-radius: 10px;
+	}
 
-        .btn:hover {
-            background: linear-gradient(145deg, #984c0c, #fd7e14); /* 反向漸變效果 */
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 94, 98, 0.2); /* 增強陰影 */
-            color: #f3f5f5;
-            transition: 0.2s;
-        }
+		.btn:hover {
+			background: linear-gradient(145deg, #984c0c, #fd7e14); /* 反向漸變效果 */
+			transform: translateY(-2px);
+			box-shadow: 0 6px 15px rgba(255, 94, 98, 0.2); /* 增強陰影 */
+			color: #f3f5f5;
+			transition: 0.2s;
+		}
 
-    .dropdown-item:hover {
-        background: linear-gradient(145deg, #984c0c, #fd7e14);
-        color: #f3f5f5;
-        cursor: default;
-    }
+	.dropdown-item:hover {
+		background: linear-gradient(145deg, #984c0c, #fd7e14);
+		color: #f3f5f5;
+		cursor: default;
+	}
 
-    #CardContainerTitle {
-        color: #f3f5f5;
-        font-size: x-large;
-    }
+	#CardContainerTitle {
+		color: #f3f5f5;
+		font-size: x-large;
+	}
 </style>
-<div id="background" style="width:100%">
-    <div id="bg-overlay">       
-        <div class="container-fluid " style="height: 100vh;padding-top: 80px;width:90%">
-            <!-- 輪播圖區域 -->
-            <div class="row d-flex  mb-5">
-                <!-- 賽事廣告 -->
-                <div class="col-6 mt-2" style="height: 10vh;">
-                    <label for="" style="font-size: x-large;color: white;">賽事快訊</label>
-                    <br />
-                    <br />
-                    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" style="width: 100%; height: 100%;">
-                        <div class="carousel-inner" style="height: 100%;">
-                            <div class="carousel-item active" data-bs-interval="3000">
-                                <a id="imgshref" href="/Event/EventPage" target="_self">
-                                    <img src="~/image/MatchPage/badminton.webp" class="d-block w-100 h-100" alt="...">
-                                </a>
-                            </div>
-                            <div class="carousel-item" data-bs-interval="3000">
-                                <a id="imgshref" href="/Event/EventPage" target="_self">
-                                    <img src="~/image/MatchPage/basketball.webp" class="d-block w-100 h-100" alt="...">
-                                </a>
-                            </div>
-                            <div class="carousel-item" data-bs-interval="3000">
-                                <a id="imgshref" href="/Event/EventPage" target="_self">
-                                    <img src="~/image/MatchPage/volleyball.webp" class="d-block w-100 h-100" alt="...">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- 商品廣告 -->
-                <div class="col-6 bg-muted mt-2" style="height: 10vh;">
-                    <label for="" style="font-size: x-large;color: white;">商品優惠</label>
-                    <br />
-                    <br />
-                    <div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" style="width: 100%; height: 100%;">
-                        <div class="carousel-inner" style="height: 100%;">
-                            <div class="carousel-item active" data-bs-interval="3000">
-                                <a id="imgshref" href="/Mart/Mart" target="_blank">
-                                    <img src="~/image/MatchPage/badminton-1.webp" class="d-block w-100 h-100" alt="...">
-                                </a>
-                            </div>
-                            <div class="carousel-item" data-bs-interval="3000">
-                                <a id="imgshref" href="/Mart/Mart" target="_blank">
-                                    <img src="~/image/MatchPage/basketball-1.webp" class="d-block w-100 h-100" alt="...">
-                                </a>
-                            </div>
-                            <div class="carousel-item" data-bs-interval="3000">
-                                <a id="imgshref" href="/Mart/Mart" target="_blank">
-                                    <img src="~/image/MatchPage/volleyball-1.webp" class="d-block w-100 h-100" alt="...">
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+<div id="background" style="width:100%;height:1100px">
+	<div id="bg-overlay">
+		<div class="container-fluid " style="height: 100vh;padding-top: 80px;width:90%">
+			<!-- 輪播圖區域 -->
+			<div class="row d-flex  mb-5">
+				<!-- 賽事廣告 -->
+				<div class="col-6 mt-2" style="height: 10vh;">
+					<label for="" style="font-size: x-large;color: white;">賽事快訊</label>
+					<br />
+					<br />
+					<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" style="width: 100%; height: 100%;">
+						<div class="carousel-inner" style="height: 100%;">
+							<div class="carousel-item active" data-bs-interval="3000">
+								<a id="imgshref" href="/Event/EventPage" target="_self">
+									<img src="~/image/MatchPage/badminton.webp" class="d-block w-100 h-100" alt="...">
+								</a>
+							</div>
+							<div class="carousel-item" data-bs-interval="3000">
+								<a id="imgshref" href="/Event/EventPage" target="_self">
+									<img src="~/image/MatchPage/basketball.webp" class="d-block w-100 h-100" alt="...">
+								</a>
+							</div>
+							<div class="carousel-item" data-bs-interval="3000">
+								<a id="imgshref" href="/Event/EventPage" target="_self">
+									<img src="~/image/MatchPage/volleyball.webp" class="d-block w-100 h-100" alt="...">
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- 商品廣告 -->
+				<div class="col-6 bg-muted mt-2" style="height: 10vh;">
+					<label for="" style="font-size: x-large;color: white;">商品優惠</label>
+					<br />
+					<br />
+					<div id="carouselExampleAutoplaying" class="carousel slide" data-bs-ride="carousel" style="width: 100%; height: 100%;">
+						<div class="carousel-inner" style="height: 100%;">
+							<div class="carousel-item active" data-bs-interval="3000">
+								<a id="imgshref" href="/Mart/Mart" target="_blank">
+									<img src="~/image/MatchPage/badminton-1.webp" class="d-block w-100 h-100" alt="...">
+								</a>
+							</div>
+							<div class="carousel-item" data-bs-interval="3000">
+								<a id="imgshref" href="/Mart/Mart" target="_blank">
+									<img src="~/image/MatchPage/basketball-1.webp" class="d-block w-100 h-100" alt="...">
+								</a>
+							</div>
+							<div class="carousel-item" data-bs-interval="3000">
+								<a id="imgshref" href="/Mart/Mart" target="_blank">
+									<img src="~/image/MatchPage/volleyball-1.webp" class="d-block w-100 h-100" alt="...">
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
 
-            <!-- 配對區域 -->
-            <div class="row" style="">
-                <div class="col-3 mt-3">
-                    <form id="filterForm">
-                        <div class="row mb-2">
-                            <!-- 找隊友/找隊員 -->
-                            <div class="d-flex col-9 align-items-center justify-content-start">
-                                <div class="">
-                                    <input type="radio" name="MatchType" class="" id="radioOption1" value="FindPlayer" style="cursor:pointer"><label for="radioOption1"
-                                                                                                                                                     style="color: white;cursor:pointer">招募隊友</label>
-                                </div>
-                                <div>&nbsp&nbsp&nbsp</div>
-                                <div class="">
-                                    <input type="radio" name="MatchType" class="" id="radioOption2" value="FindTeam" style="cursor:pointer" checked="checked"><label for="radioOption2"
-                                                                                                                                                                     style="color: white;cursor:pointer">尋找隊伍</label>
-                                </div>
-                            </div>
-                            <!-- 搜尋按鈕 -->
-                            <div class="col-3 bg-muted d-flex align-items-center justify-content-end">
-                                <input type="submit" value="搜尋" class="btn ms-2 w-auto">
-                            </div>
-                        </div>
-                        <!-- 漢堡選單區域 -->
-                        <div class="bg-muted mt-1" >
-                            <div class="accordion " id="sportsFilter">
-                                <!-- 羽球 -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header sportRadio">
-                                        <input type="radio" name="MatchCategory" id="badmintonRadio" class="ms-3 my-3 me-1 forCheckCategory" data-bs-toggle="collapse" data-bs-target="#sport1"
-                                               style="font-size:x-large;cursor:pointer" aria-controls="sport1" value="badminton" onselect="GetRole('badminton')"><label for="badmintonRadio" style="color:white;font-size:xx-large;cursor:pointer" class="my-3">羽球</label>
-                                    </h2>
-                                    <div id="sport1" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
-                                        <div class="accordion-body row" id="badmintonEventList">
-                                        </div>
-                                        <nav class="mb-3">
-                                            <ul class="pagination justify-content-center mt-3" id="paginationBadminton"></ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                                <!-- 籃球 -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header sportRadio">
-                                        <input type="radio" name="MatchCategory" id="basketballRadio" class="ms-3 my-3 me-1 forCheckCategory" data-bs-toggle="collapse" data-bs-target="#sport2"
-                                               style="font-size:x-large;cursor:pointer" aria-controls="sport1" value="basketball" onselect="GetRole('basketball')"><label for="basketballRadio" style="color:white;font-size:xx-large;cursor:pointer" class="my-3">籃球</label>
-                                    </h2>
-                                    <div id="sport2" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
-                                        <div class="accordion-body row" id="basketballEventList">
-                                        </div>
-                                        <nav class="mb-3">
-                                            <ul class="pagination justify-content-center mt-3" id="paginationBasketball"></ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                                <!-- 排球 -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header sportRadio">
-                                        <input type="radio" name="MatchCategory" id="volleyballRadio" class="ms-3 my-3 me-1 forCheckCategory" data-bs-toggle="collapse" data-bs-target="#sport3"
-                                               style="font-size:x-large;cursor:pointer" aria-controls="sport1" value="volleyball" onselect="GetRole('volleyball')"><label for="volleyballRadio" style="color:white;font-size:xx-large;cursor:pointer" class="my-3">排球</label>
-                                    </h2>
-                                    <div id="sport3" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
-                                        <div class="accordion-body row" id="volleyballEventList">
-                                        </div>
-                                        <nav class="mb-3">
-                                            <ul class="pagination justify-content-center mt-3" id="paginationVolleyball"></ul>
-                                        </nav>
-                                    </div>
-                                </div>
-                                <!-- 區域 -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#Area"
-                                                style="font-size:xx-large;">
-                                            區域
-                                        </button>
-                                    </h2>
-                                    <div id="Area" class="accordion-collapse collapse" data-bs-parent="#sportsArea">
-                                        <div class="accordion-body row">
-                                            <label class="col-6">
-                                                <input type="checkbox" id="checkbox9" name="MatchArea" value="北" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox9" style="cursor:pointer;font-size:large">北</label>
-                                            </label><br>
-                                            <label class="col-6">
-                                                <input type="checkbox" id="checkbox10" name="MatchArea" value="中" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox10" style="cursor:pointer;font-size:large">中</label>
-                                            </label><br>
-                                            <label class="col-6">
-                                                <input type="checkbox" id="checkbox11" name="MatchArea" value="南" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox11" style="cursor:pointer;font-size:large">南</label>
-                                            </label><br>
-                                            <label class="col-6">
-                                                <input type="checkbox" id="checkbox12" name="MatchArea" value="東" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox12" style="cursor:pointer;font-size:large">東</label>
-                                            </label><br>
-                                        </div>
-                                    </div>
-                                </div>
-                                <!-- 位置 -->
-                                <div class="accordion-item">
-                                    <h2 class="accordion-header">
-                                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#Role"
-                                                style="font-size:xx-large;">
-                                            位置
-                                        </button>
-                                    </h2>
-                                    <div id="Role" class="accordion-collapse collapse" data-bs-parent="#sportsRole">
-                                        <div class="accordion-body row" id="RoleContainer">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+			<!-- 配對區域 -->
+			<div class="row" style="">
+				<div class="col-3 mt-3">
+					<form id="filterForm">
+						<div class="row mb-2">
+							<!-- 找隊友/找隊員 -->
+							<div class="d-flex col-9 align-items-center justify-content-start">
+								<div class="">
+									<input type="radio" name="MatchType" class="" id="radioOption1" value="FindPlayer" style="cursor:pointer"><label for="radioOption1"
+																																   style="color: white;cursor:pointer">招募隊友</label>
+								</div>
+								<div>&nbsp&nbsp&nbsp</div>
+								<div class="">
+									<input type="radio" name="MatchType" class="" id="radioOption2" value="FindTeam" style="cursor:pointer" checked="checked"><label for="radioOption2"
+																																		  style="color: white;cursor:pointer">尋找隊伍</label>
+								</div>
+							</div>
+							<!-- 搜尋按鈕 -->
+							<div class="col-3 bg-muted d-flex align-items-center justify-content-end">
+								<input type="submit" value="搜尋" class="btn ms-2 w-auto">
+							</div>
+						</div>
+						<!-- 漢堡選單區域 -->
+						<div class="bg-muted mt-1">
+							<div class="accordion " id="sportsFilter">
+								<!-- 羽球 -->
+								<div class="accordion-item">
+									<h2 class="accordion-header sportRadio">
+										<input type="radio" name="MatchCategory" id="badmintonRadio" class="ms-3 my-3 me-1 forCheckCategory" data-bs-toggle="collapse" data-bs-target="#sport1"
+											   style="font-size:x-large;cursor:pointer" aria-controls="sport1" value="badminton" onselect="GetRole('badminton')"><label for="badmintonRadio" style="color:white;font-size:xx-large;cursor:pointer" class="my-3">羽球</label>
+									</h2>
+									<div id="sport1" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
+										<div class="accordion-body row" id="badmintonEventList">
+										</div>
+										<nav class="mb-3">
+											<ul class="pagination justify-content-center mt-3" id="paginationBadminton"></ul>
+										</nav>
+									</div>
+								</div>
+								<!-- 籃球 -->
+								<div class="accordion-item">
+									<h2 class="accordion-header sportRadio">
+										<input type="radio" name="MatchCategory" id="basketballRadio" class="ms-3 my-3 me-1 forCheckCategory" data-bs-toggle="collapse" data-bs-target="#sport2"
+											   style="font-size:x-large;cursor:pointer" aria-controls="sport1" value="basketball" onselect="GetRole('basketball')"><label for="basketballRadio" style="color:white;font-size:xx-large;cursor:pointer" class="my-3">籃球</label>
+									</h2>
+									<div id="sport2" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
+										<div class="accordion-body row" id="basketballEventList">
+										</div>
+										<nav class="mb-3">
+											<ul class="pagination justify-content-center mt-3" id="paginationBasketball"></ul>
+										</nav>
+									</div>
+								</div>
+								<!-- 排球 -->
+								<div class="accordion-item">
+									<h2 class="accordion-header sportRadio">
+										<input type="radio" name="MatchCategory" id="volleyballRadio" class="ms-3 my-3 me-1 forCheckCategory" data-bs-toggle="collapse" data-bs-target="#sport3"
+											   style="font-size:x-large;cursor:pointer" aria-controls="sport1" value="volleyball" onselect="GetRole('volleyball')"><label for="volleyballRadio" style="color:white;font-size:xx-large;cursor:pointer" class="my-3">排球</label>
+									</h2>
+									<div id="sport3" class="accordion-collapse collapse" data-bs-parent="#sportsFilter">
+										<div class="accordion-body row" id="volleyballEventList">
+										</div>
+										<nav class="mb-3">
+											<ul class="pagination justify-content-center mt-3" id="paginationVolleyball"></ul>
+										</nav>
+									</div>
+								</div>
+								<!-- 區域 -->
+								<div class="accordion-item">
+									<h2 class="accordion-header">
+										<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#Area"
+												style="font-size:xx-large;">
+											區域
+										</button>
+									</h2>
+									<div id="Area" class="accordion-collapse collapse" data-bs-parent="#sportsArea">
+										<div class="accordion-body row">
+											<label class="col-6">
+												<input type="checkbox" id="checkbox9" name="MatchArea" value="北" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox9" style="cursor:pointer;font-size:large">北</label>
+											</label><br>
+											<label class="col-6">
+												<input type="checkbox" id="checkbox10" name="MatchArea" value="中" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox10" style="cursor:pointer;font-size:large">中</label>
+											</label><br>
+											<label class="col-6">
+												<input type="checkbox" id="checkbox11" name="MatchArea" value="南" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox11" style="cursor:pointer;font-size:large">南</label>
+											</label><br>
+											<label class="col-6">
+												<input type="checkbox" id="checkbox12" name="MatchArea" value="東" class="MatchCheckBoxItem me-1 mt-2 forCheckArea" style="cursor:pointer"><label for="checkbox12" style="cursor:pointer;font-size:large">東</label>
+											</label><br>
+										</div>
+									</div>
+								</div>
+								<!-- 位置 -->
+								<div class="accordion-item">
+									<h2 class="accordion-header">
+										<button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#Role"
+												style="font-size:xx-large;">
+											位置
+										</button>
+									</h2>
+									<div id="Role" class="accordion-collapse collapse" data-bs-parent="#sportsRole">
+										<div class="accordion-body row" id="RoleContainer">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
 
-                <!-- 右邊主要回傳資料區域 -->
-                <div class="col-9">
-                    <!-- 當前頁數文字 -->
-                    <div class="row my-3 ">
-                        <div class="col-6 d-flex align-items-center text-start" style="color:white;font-size:large">
-                            <span id="paginationInfo"></span>
-                        </div>
-                        <!-- 上/下頁切換 -->
-                        <div class="col-6 d-flex align-items-center justify-content-end">
-                            <div class="me-3 dropdown">
-                                <a class="bi bi-clock-history me-1 " id="historyIcon" style="cursor:pointer;color:white"></a><label for="historyIcon" style="color:white;cursor:pointer" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuButton">歷史紀錄</label>
-                                <ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuLink" style="max-height: 200px;overflow-y: auto;">
-                                    <li><a class="dropdown-item" href="#">Action</a></li>
-                                    <li><a class="dropdown-item" href="#">Another action</a></li>
-                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                </ul>
-                            </div>
-                            <nav class="">
-                                <ul id="pagination" class="pagination"></ul>
-                            </nav>
-                        </div>
-                    </div>
-                    <div class="col-12 mb-3">
-                        <label id="CardContainerTitle" style="font-size:xx-large"></label>
-                    </div>
-                    <!-- 球員/球隊區域 -->
-                    <div style="">
-                        <div class="row d-flex justify-content-center align-items-center" id="CardContainer">
-                            <img src="~/image/MatchPage/loading.gif" alt="GIF Image" style="width:50%">
-                        </div>
-                    </div>
-                </div>
-            </div>
+				<!-- 右邊主要回傳資料區域 -->
+				<div class="col-9">
+					<!-- 當前頁數文字 -->
+					<div class="row my-3 ">
+						<div class="col-6 d-flex align-items-center text-start" style="color:white;font-size:large">
+							<span id="paginationInfo"></span>
+						</div>
+						<!-- 上/下頁切換 -->
+						<div class="col-6 d-flex align-items-center justify-content-end">
+							<div class="me-3 dropdown">
+								<a class="bi bi-clock-history me-1 " id="historyIcon" style="cursor:pointer;color:white"></a><label for="historyIcon" style="color:white;cursor:pointer" class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" id="dropdownMenuButton">歷史紀錄</label>
+								<ul class="dropdown-menu mt-3" aria-labelledby="dropdownMenuLink" style="max-height: 200px;overflow-y: auto;">
+									<li><a class="dropdown-item" href="#">Action</a></li>
+									<li><a class="dropdown-item" href="#">Another action</a></li>
+									<li><a class="dropdown-item" href="#">Something else here</a></li>
+								</ul>
+							</div>
+							<nav class="">
+								<ul id="pagination" class="pagination"></ul>
+							</nav>
+						</div>
+					</div>
+					<div class="col-12 mb-3">
+						<label id="CardContainerTitle" style="font-size:xx-large"></label>
+					</div>
+					<!-- 球員/球隊區域 -->
+					<div style="">
+						<div class="row d-flex justify-content-center align-items-center" id="CardContainer">
+							<img src="~/image/MatchPage/loading.gif" alt="GIF Image" style="width:50%">
+						</div>
+					</div>
+				</div>
+			</div>
 
-            <!-- 簡介模態視窗 -->
-            <div class="modal fade" id="playerModal" tabindex="-1" aria-labelledby="playerModalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                    <div class="modal-content text-light ">
-                        <div class="modal-header">
-                            <p class="modal-title" id="playerModalLabel" style="font-size:x-large"></p>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <img id="playerImg" src="" class="img-fluid rounded-start" alt="">
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="d-flex align-items-center">
-                                        <p id="modal-player-name" style="font-size:x-large"></p>
-                                        <a id="heartIcon" class="h3 bi bi-heart"
-                                           style="position: absolute;right: 10px;cursor: pointer;"
-                                           onclick="addToMyFavorite()"></a>
-                                    </div>
-                                    <br />
-                                    <p id="modal-player-position"></p>
-                                    <hr />
-                                    <label id="userMemo" for="">**這裡放入個人簡介內容**</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn" data-bs-dismiss="modal">關閉</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!-- 吐司提示 -->
-            <div id="heartToast" class="toast align-items-center position-fixed top-0 end-0 translate-middle-x mt-3" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 1056;">
-                <div class="d-flex">
-                    <div class="toast-body" id="toastMessage">
-                        Hello, world! This is a toast message.
-                    </div>
-                    <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
-                </div>
-            </div>
-            <!-- 申請模態視窗 -->
-            <form action="/Match/ApplyTask" method="post" id="ApplyForm">
-                <div class="modal fade" id="playerApply" tabindex="-1" aria-labelledby="playerModalLabel" aria-hidden="true"
-                     data-bs-backdrop="static">
-                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                        <div class="modal-content text-light ">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="applyModalLabel" style="font-size:x-large"></h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                                        style="filter: invert(1);"></button>
-                            </div>
-                            <div class="modal-body">
-                                <h4 id="modal-apply-name" style="font-size:x-large"></h4>
-                                <br />
-                                <p id="modal-apply-position"></p>
-                                <br />
-                                <div class="mb-3">
-                                    <label for="exampleTextarea" class="form-label">備註：</label>
-                                    <textarea class="form-control" id="exampleTextarea" rows="2" maxlength="50"
-                                              placeholder="請輸入您的內容..."></textarea>
-                                </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn" data-bs-dismiss="modal">關閉</button>
-                                <input type="submit" value="送出" class="btn">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </form>
-            <!-- 自訂的確認框 -->
-            <div id="customConfirm" class="confirm-modal" style="display:none;">
-                <div class="confirm-content">
-                    <p id="confirmMessage"></p>
-                    <button class="btn mt-3" onclick="closeConfirm()">取消</button>
-                </div>
-            </div>
+			<!-- 簡介模態視窗 -->
+			<div class="modal fade" id="playerModal" tabindex="-1" aria-labelledby="playerModalLabel" aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+					<div class="modal-content text-light ">
+						<div class="modal-header">
+							<p class="modal-title" id="playerModalLabel" style="font-size:x-large"></p>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-6">
+									<img id="playerImg" src="" class="img-fluid rounded-start" alt="">
+								</div>
+								<div class="col-md-6">
+									<div class="d-flex align-items-center">
+										<p id="modal-player-name" style="font-size:x-large"></p>
+										<a id="heartIcon" class="h3 bi bi-heart"
+										   style="position: absolute;right: 10px;cursor: pointer;"
+										   onclick="addToMyFavorite()"></a>
+									</div>
+									<br />
+									<p id="modal-player-position"></p>
+									<hr />
+									<label id="userMemo" for="">**這裡放入個人簡介內容**</label>
+								</div>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn" data-bs-dismiss="modal">關閉</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!-- 吐司提示 -->
+			<div id="heartToast" class="toast align-items-center position-fixed top-0 end-0 translate-middle-x mt-3" role="alert" aria-live="assertive" aria-atomic="true" style="z-index: 1056;">
+				<div class="d-flex">
+					<div class="toast-body" id="toastMessage">
+						Hello, world! This is a toast message.
+					</div>
+					<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+				</div>
+			</div>
+			<!-- 申請模態視窗 -->
+			<form action="/Match/ApplyTask" method="post" id="ApplyForm">
+				<div class="modal fade" id="playerApply" tabindex="-1" aria-labelledby="playerModalLabel" aria-hidden="true"
+					 data-bs-backdrop="static">
+					<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+						<div class="modal-content text-light ">
+							<div class="modal-header">
+								<h5 class="modal-title" id="applyModalLabel" style="font-size:x-large"></h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+										style="filter: invert(1);"></button>
+							</div>
+							<div class="modal-body">
+								<h4 id="modal-apply-name" style="font-size:x-large"></h4>
+								<br />
+								<p id="modal-apply-position"></p>
+								<br />
+								<div class="mb-3">
+									<label for="exampleTextarea" class="form-label">備註：</label>
+									<textarea class="form-control" id="exampleTextarea" rows="2" maxlength="50"
+											  placeholder="請輸入您的內容..."></textarea>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn" data-bs-dismiss="modal">關閉</button>
+								<input type="submit" value="送出" class="btn">
+							</div>
+						</div>
+					</div>
+				</div>
+			</form>
+			<!-- 自訂的確認框 -->
+			<div id="customConfirm" class="confirm-modal" style="display:none;">
+				<div class="confirm-content">
+					<p id="confirmMessage"></p>
+					<button class="btn mt-3" onclick="closeConfirm()">取消</button>
+				</div>
+			</div>
 
-            @section Scripts {
-                <script src="~/js/MatchPage.js" asp-append-version="true"></script>
-            }
-        </div>
-    </div>
-    @await Html.PartialAsync("_PartialFooter")
+			@section Scripts {
+				<script src="~/js/MatchPage.js" asp-append-version="true"></script>
+			}
+		</div>
+	</div>
 </div>
+@await Html.PartialAsync("_PartialFooter")

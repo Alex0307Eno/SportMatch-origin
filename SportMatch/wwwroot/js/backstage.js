@@ -133,7 +133,7 @@ function switchTab(tabName) {
 
 document.addEventListener("DOMContentLoaded", function () {
     // 確保頁面加載時，顯示已上架商品區
-    document.getElementById("order-history").style.display = "block";
+    document.getElementById("order-history").style.display = "none";
     document.getElementById("match-history").style.display = "none";
 
     // 點擊商品管理時顯示已上架商品
@@ -539,6 +539,7 @@ function loadProducts() {
     const pageSize = 4; // 每頁顯示筆數
     let allProducts = []; // 存放所有商品
     let totalPages = 1; // 總頁數
+    let currentTab = "order-history"; // 預設顯示已上架商品
 
     // 取得商品資料
     function getProducts() {
@@ -546,11 +547,10 @@ function loadProducts() {
             .then(response => response.json())
             .then(data => {
                 if (data && Array.isArray(data)) {
-                    allProducts = data; // 確保資料正確存入
-                    totalPages = Math.ceil(allProducts.length / pageSize); // 計算總頁數
+                    allProducts = data; // 存入商品資料
+                    updatePendingCount(); // 更新「待上架」數字
                     currentPage = 1; // 預設從第 1 頁開始
                     renderTable();
-                    renderPagination();
                 } else {
                     alert('沒有商品資料');
                 }
@@ -561,14 +561,26 @@ function loadProducts() {
             });
     }
     getProducts();
-    // 渲染表格（根據當前頁數）
+
+    // 更新「待上架」數量
+    function updatePendingCount() {
+        let pendingCount = allProducts.filter(product => product.stock === 0).length;
+        let badge = document.querySelector('.tab-button[data-target="match-history"] .badge');
+        badge.textContent = pendingCount;
+    }
+
+    // 渲染表格
     function renderTable() {
         const productTable = document.getElementById('productTable');
         productTable.innerHTML = ''; // 清空表格
 
+        let filteredProducts = allProducts.filter(product =>
+            currentTab === "order-history" ? product.stock > 0 : product.stock === 0
+        );
+
+        totalPages = Math.ceil(filteredProducts.length / pageSize);
         let start = (currentPage - 1) * pageSize;
-        let end = start + pageSize;
-        let paginatedData = allProducts.slice(start, end); // 取得當前頁資料
+        let paginatedData = filteredProducts.slice(start, start + pageSize);
 
         paginatedData.forEach(product => {
             let row = document.createElement('tr');
@@ -600,12 +612,11 @@ function loadProducts() {
         let nextDisabled = currentPage === totalPages ? 'disabled' : '';
 
         paginationDiv.innerHTML = `
-            <button id="prevPage" style="background-color:transparent;font-size:x-large" ${prevDisabled} ><</button>
-            <span style="background-color:transparent;font-size:x-large;color:white"> ${currentPage} / ${totalPages}</span>
-            <button id="nextPage" style="background-color:transparent;font-size:x-large" ${nextDisabled}>></button>
+            <button id="prevPage" ${prevDisabled}>＜</button>
+            <span>${currentPage} / ${totalPages}</span>
+            <button id="nextPage" ${nextDisabled}>＞</button>
         `;
 
-        // 綁定事件（先移除再綁定，避免多次綁定）
         document.getElementById('prevPage').addEventListener('click', function () {
             if (currentPage > 1) {
                 currentPage--;
@@ -620,7 +631,20 @@ function loadProducts() {
             }
         });
     }
+
+    // 綁定標籤切換事件
+    document.querySelectorAll('.tab-button').forEach(button => {
+        button.addEventListener('click', function () {
+            document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+            currentTab = this.getAttribute('data-target');
+            currentPage = 1; // 重置為第一頁
+            renderTable();
+        });
+    });
 }
+
+
 
 // 獲取商品資料
 //function getProducts() {

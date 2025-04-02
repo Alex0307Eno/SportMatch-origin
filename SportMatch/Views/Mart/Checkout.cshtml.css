@@ -6,6 +6,11 @@
 #CartItem {
     border: 0px;    
     border-radius: 0.2rem;
+    width: 43.5rem;
+}
+
+.img-fluid {
+    max-height: 10.35rem;
 }
 
 body {

@@ -130,10 +130,10 @@ function LoadCart() {
 
             // 左側圖片
             const colImage = document.createElement('div');
-            colImage.className = 'col-3 d-flex align-items-center';
+            colImage.className = 'col-3 d-flex justify-content-center align-items-center';
             const img = document.createElement('img');
             img.src = Item.Image01;
-            img.className = 'img-fluid mx-3';
+            img.className = 'img-fluid px-3';
             img.alt = '商品圖片';
             colImage.appendChild(img);
 
